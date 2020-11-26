@@ -2,10 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>YggdrAshill.Nuadha.Signalization</AssemblyName>
+    <RootNamespace>YggdrAshill.Nuadha.Signalization</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Signalization\Signalization.csproj" />
-  </ItemGroup>
 
 </Project>
