@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YggdrAshill.Nuadha.Specification", "YggdrAshill.Nuadha.Specification\YggdrAshill.Nuadha.Specification.csproj", "{0A170511-3AAC-4BEB-968E-D689D9CE2B90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YggdrAshill.Nuadha", "YggdrAshill.Nuadha\YggdrAshill.Nuadha.csproj", "{446A4D41-D98F-4C51-A8E4-7849FCE40986}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YggdrAshill.Nuadha", "YggdrAshill.Nuadha\YggdrAshill.Nuadha.csproj", "{446A4D41-D98F-4C51-A8E4-7849FCE40986}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Signalization", "Signalization\Signalization.csproj", "{30CACA80-0655-4B5C-9651-6C61A1EBCE51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{446A4D41-D98F-4C51-A8E4-7849FCE40986}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{446A4D41-D98F-4C51-A8E4-7849FCE40986}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{446A4D41-D98F-4C51-A8E4-7849FCE40986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30CACA80-0655-4B5C-9651-6C61A1EBCE51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30CACA80-0655-4B5C-9651-6C61A1EBCE51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30CACA80-0655-4B5C-9651-6C61A1EBCE51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30CACA80-0655-4B5C-9651-6C61A1EBCE51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
