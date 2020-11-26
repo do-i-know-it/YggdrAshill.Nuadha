@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>YggdrAshill.Nuadha.Operation</AssemblyName>
+    <RootNamespace>YggdrAshill.Nuadha.Operation</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Operation\Operation.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
   </ItemGroup>
 
