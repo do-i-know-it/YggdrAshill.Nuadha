@@ -37,14 +37,33 @@ namespace YggdrAshill.Nuadha.Operation
                 throw new ArgumentNullException(nameof(inputTerminal));
             }
 
-            var terminal = new InputTerminal<TInput>(signal =>
+            var terminal = new InputTerminal(inputTerminal, conversion);
+
+            return outputTerminal.Connect(terminal);
+        }
+
+        private sealed class InputTerminal :
+            IInputTerminal<TInput>
+        {
+            private readonly IInputTerminal<TOutput> terminal;
+
+            private readonly IConversion<TInput, TOutput> conversion;
+
+            public InputTerminal(
+                IInputTerminal<TOutput> terminal,
+                IConversion<TInput, TOutput> conversion)
+            {
+                this.terminal = terminal;
+
+                this.conversion = conversion;
+            }
+
+            public void Receive(TInput signal)
             {
                 var converted = conversion.Convert(signal);
 
-                inputTerminal.Receive(converted);
-            });
-
-            return outputTerminal.Connect(terminal);
+                terminal.Receive(converted);
+            }
         }
     }
 }
