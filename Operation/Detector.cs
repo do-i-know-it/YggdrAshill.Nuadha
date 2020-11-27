@@ -7,50 +7,44 @@ namespace YggdrAshill.Nuadha.Operation
         IOutputTerminal<TSignal>
         where TSignal : ISignal
     {
-        private readonly IOutputTerminal<TSignal> outputTerminal;
+        private readonly IOutputTerminal<TSignal> terminal;
 
         private readonly IDetection<TSignal> detection;
 
-        public Detector(
-            IOutputTerminal<TSignal> outputTerminal,
-            IDetection<TSignal> detection)
+        public Detector(IOutputTerminal<TSignal> terminal, IDetection<TSignal> detection)
         {
-            if (outputTerminal == null)
+            if (terminal == null)
             {
-                throw new ArgumentNullException(nameof(outputTerminal));
+                throw new ArgumentNullException(nameof(terminal));
             }
             if (detection == null)
             {
                 throw new ArgumentNullException(nameof(detection));
             }
 
-            this.outputTerminal = outputTerminal;
+            this.terminal = terminal;
 
             this.detection = detection;
         }
 
-        public IDisconnection Connect(IInputTerminal<TSignal> inputTerminal)
+        public IDisconnection Connect(IInputTerminal<TSignal> terminal)
         {
-            if (inputTerminal == null)
+            if (terminal == null)
             {
-                throw new ArgumentNullException(nameof(inputTerminal));
+                throw new ArgumentNullException(nameof(terminal));
             }
 
-            var terminal = new InputTerminal(inputTerminal, detection);
-
-            return outputTerminal.Connect(terminal);
+            return this.terminal.Connect(new Detect(terminal, detection));
         }
 
-        private sealed class InputTerminal :
+        private sealed class Detect :
             IInputTerminal<TSignal>
         {
             private readonly IInputTerminal<TSignal> terminal;
 
             private readonly IDetection<TSignal> detection;
 
-            public InputTerminal(
-                IInputTerminal<TSignal> terminal,
-                IDetection<TSignal> detection)
+            public Detect(IInputTerminal<TSignal> terminal, IDetection<TSignal> detection)
             {
                 this.terminal = terminal;
 
