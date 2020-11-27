@@ -6,6 +6,20 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(OutputTerminal<>))]
     internal class OutputTerminalSpecification
     {
+        private InputTerminal<Signal> inputTerminal;
+
+        [SetUp]
+        public void SetUp()
+        {
+            inputTerminal = new InputTerminal<Signal>();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            inputTerminal = default;
+        }
+
         [Test]
         public void ShouldExecuteFunctionWhenHasConnected()
         {
@@ -17,7 +31,7 @@ namespace YggdrAshill.Nuadha.Specification
                 return new Disconnection();
             });
 
-            var disconnection = terminal.Connect(new InputTerminal<Signal>());
+            var disconnection = terminal.Connect(inputTerminal);
 
             Assert.IsTrue(expected);
 
@@ -36,7 +50,7 @@ namespace YggdrAshill.Nuadha.Specification
                 });
             });
 
-            var disconnection = terminal.Connect(new InputTerminal<Signal>());
+            var disconnection = terminal.Connect(inputTerminal);
 
             disconnection.Disconnect();
 

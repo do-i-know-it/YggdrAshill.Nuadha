@@ -6,6 +6,20 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(Source<>))]
     internal class SourceSpecification
     {
+        private InputTerminal<Signal> inputTerminal;
+
+        [SetUp]
+        public void SetUp()
+        {
+            inputTerminal = new InputTerminal<Signal>();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            inputTerminal = default;
+        }
+
         [Test]
         public void ShouldExecuteFunctionWhenHasConnected()
         {
@@ -17,7 +31,7 @@ namespace YggdrAshill.Nuadha.Specification
                 return new Emission();
             });
 
-            var emission = source.Connect(new InputTerminal<Signal>());
+            var emission = source.Connect(inputTerminal);
 
             Assert.IsTrue(expected);
         }
@@ -34,7 +48,7 @@ namespace YggdrAshill.Nuadha.Specification
                 });
             });
 
-            var emission = source.Connect(new InputTerminal<Signal>());
+            var emission = source.Connect(inputTerminal);
 
             emission.Emit();
 
