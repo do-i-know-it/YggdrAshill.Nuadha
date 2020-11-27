@@ -10,14 +10,14 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldExecuteFunctionWhenHasConnected()
         {
             var expected = false;
-            var outputTerminal = new OutputTerminal<Signal>(_ =>
+            var terminal = new OutputTerminal<Signal>(_ =>
             {
                 expected = true;
 
                 return new Disconnection();
             });
 
-            var disconnection = outputTerminal.Connect(new InputTerminal<Signal>());
+            var disconnection = terminal.Connect(new InputTerminal<Signal>());
 
             Assert.IsTrue(expected);
 
@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldDisconnectAfterHasConnected()
         {
             var expected = false;
-            var outputTerminal = new OutputTerminal<Signal>(_ =>
+            var terminal = new OutputTerminal<Signal>(_ =>
             {
                 return new Disconnection(() =>
                 {
@@ -36,7 +36,7 @@ namespace YggdrAshill.Nuadha.Specification
                 });
             });
 
-            var disconnection = outputTerminal.Connect(new InputTerminal<Signal>());
+            var disconnection = terminal.Connect(new InputTerminal<Signal>());
 
             disconnection.Disconnect();
 
@@ -48,18 +48,18 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var outputTerminal = new OutputTerminal<Signal>(null);
+                var terminal = new OutputTerminal<Signal>(null);
             });
         }
 
         [Test]
         public void CannotConnectNull()
         {
-            var outputTerminal = new OutputTerminal<Signal>(_ => new Disconnection());
+            var terminal = new OutputTerminal<Signal>();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                outputTerminal.Connect(null);
+                terminal.Connect(null);
             });
         }
     }
