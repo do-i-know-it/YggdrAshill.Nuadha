@@ -9,6 +9,8 @@ namespace YggdrAshill.Nuadha
     {
         private readonly Func<IInputTerminal<TSignal>, IDisconnection> onConnected;
 
+        #region Constructor
+
         public OutputTerminal(Func<IInputTerminal<TSignal>, IDisconnection> onConnected)
         {
             if (onConnected == null)
@@ -19,6 +21,18 @@ namespace YggdrAshill.Nuadha
             this.onConnected = onConnected;
         }
 
+        public OutputTerminal()
+        {
+            onConnected = (_) =>
+            {
+                return new Disconnection();
+            };
+        }
+
+        #endregion
+
+        #region IOutputTerminal
+
         public IDisconnection Connect(IInputTerminal<TSignal> terminal)
         {
             if (terminal == null)
@@ -28,5 +42,7 @@ namespace YggdrAshill.Nuadha
 
             return onConnected.Invoke(terminal);
         }
+
+        #endregion
     }
 }

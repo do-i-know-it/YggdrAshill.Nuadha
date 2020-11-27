@@ -6,48 +6,49 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(Source<>))]
     internal class SourceSpecification
     {
-        private Source<Signal> source;
+        private InputTerminal<Signal> inputTerminal;
 
         [SetUp]
         public void SetUp()
         {
-            source = new Source<Signal>(() => new Signal());
+            inputTerminal = new InputTerminal<Signal>();
         }
 
         [TearDown]
         public void TearDown()
         {
-            source = default;
+            inputTerminal = default;
         }
 
         [Test]
         public void ShouldExecuteFunctionWhenHasConnected()
         {
             var expected = false;
-            var source = new Source<Signal>(() =>
+            var source = new Source<Signal>(_ =>
             {
                 expected = true;
 
-                return default;
+                return new Emission();
             });
 
-            var emission = source.Connect(new InputTerminal<Signal>());
-
-            emission.Emit();
+            var emission = source.Connect(inputTerminal);
 
             Assert.IsTrue(expected);
         }
 
         [Test]
-        public void ShouldEmitSignalWhenHasEmitted()
+        public void ShouldEmitAfterHasConnected()
         {
             var expected = false;
-            var terminal = new InputTerminal<Signal>(_ =>
+            var source = new Source<Signal>(_ =>
             {
-                expected = true;
+                return new Emission(() =>
+                {
+                    expected = true;
+                });
             });
 
-            var emission = source.Connect(terminal);
+            var emission = source.Connect(inputTerminal);
 
             emission.Emit();
 
@@ -66,6 +67,8 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void CannotConnectNull()
         {
+            var source = new Source<Signal>();
+
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var emission = source.Connect(null);

@@ -6,18 +6,32 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(OutputTerminal<>))]
     internal class OutputTerminalSpecification
     {
+        private InputTerminal<Signal> inputTerminal;
+
+        [SetUp]
+        public void SetUp()
+        {
+            inputTerminal = new InputTerminal<Signal>();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            inputTerminal = default;
+        }
+
         [Test]
         public void ShouldExecuteFunctionWhenHasConnected()
         {
             var expected = false;
-            var outputTerminal = new OutputTerminal<Signal>(_ =>
+            var terminal = new OutputTerminal<Signal>(_ =>
             {
                 expected = true;
 
                 return new Disconnection();
             });
 
-            var disconnection = outputTerminal.Connect(new InputTerminal<Signal>());
+            var disconnection = terminal.Connect(inputTerminal);
 
             Assert.IsTrue(expected);
 
@@ -28,7 +42,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldDisconnectAfterHasConnected()
         {
             var expected = false;
-            var outputTerminal = new OutputTerminal<Signal>(_ =>
+            var terminal = new OutputTerminal<Signal>(_ =>
             {
                 return new Disconnection(() =>
                 {
@@ -36,7 +50,7 @@ namespace YggdrAshill.Nuadha.Specification
                 });
             });
 
-            var disconnection = outputTerminal.Connect(new InputTerminal<Signal>());
+            var disconnection = terminal.Connect(inputTerminal);
 
             disconnection.Disconnect();
 
@@ -48,18 +62,18 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var outputTerminal = new OutputTerminal<Signal>(null);
+                var terminal = new OutputTerminal<Signal>(null);
             });
         }
 
         [Test]
         public void CannotConnectNull()
         {
-            var outputTerminal = new OutputTerminal<Signal>(_ => new Disconnection());
+            var terminal = new OutputTerminal<Signal>();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                outputTerminal.Connect(null);
+                terminal.Connect(null);
             });
         }
     }
