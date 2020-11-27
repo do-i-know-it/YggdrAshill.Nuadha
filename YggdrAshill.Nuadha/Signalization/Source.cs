@@ -7,17 +7,31 @@ namespace YggdrAshill.Nuadha
         ISource<TSignal>
         where TSignal : ISignal
     {
-        private readonly Func<TSignal> onEmitted;
+        private readonly Func<IInputTerminal<TSignal>, IEmission> onConnected;
 
-        public Source(Func<TSignal> onEmitted)
+        #region Constructor
+
+        public Source(Func<IInputTerminal<TSignal>, IEmission> onConnected)
         {
-            if (onEmitted == null)
+            if (onConnected == null)
             {
-                throw new ArgumentNullException(nameof(onEmitted));
+                throw new ArgumentNullException(nameof(onConnected));
             }
 
-            this.onEmitted = onEmitted;
+            this.onConnected = onConnected;
         }
+
+        public Source()
+        {
+            onConnected = (_) =>
+            {
+                return new Emission();
+            };
+        }
+
+        #endregion
+
+        #region ISource
 
         public IEmission Connect(IInputTerminal<TSignal> terminal)
         {
@@ -26,12 +40,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(terminal));
             }
 
-            return new Emission(() =>
-            {
-                var emitted = onEmitted.Invoke();
-
-                terminal.Receive(emitted);
-            });
+            return onConnected.Invoke(terminal);
         }
+
+        #endregion
     }
 }
