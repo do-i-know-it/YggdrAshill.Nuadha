@@ -10,6 +10,8 @@ namespace YggdrAshill.Nuadha
     {
         private readonly Func<THardwareHandler, IDisconnection> onConnected;
 
+        #region Constructor
+
         public Hardware(Func<THardwareHandler, IDisconnection> onConnected)
         {
             if (onConnected == null)
@@ -20,9 +22,23 @@ namespace YggdrAshill.Nuadha
             this.onConnected = onConnected;
         }
 
+        public Hardware()
+        {
+            onConnected = (_) =>
+            {
+                return new Disconnection();
+            };
+        }
+
+        #endregion
+
+        #region IHardware
+
         public IDisconnection Connect(THardwareHandler handler)
         {
             return onConnected.Invoke(handler);
         }
+
+        #endregion
     }
 }
