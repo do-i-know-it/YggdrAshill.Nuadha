@@ -9,6 +9,8 @@ namespace YggdrAshill.Nuadha
     {
         private readonly Action<TSignal> onReceived;
 
+        #region Constructor
+
         public InputTerminal(Action<TSignal> onReceived)
         {
             if (onReceived == null)
@@ -27,9 +29,15 @@ namespace YggdrAshill.Nuadha
             };
         }
 
+        #endregion
+
+        #region IInputTerminal
+
         public void Receive(TSignal signal)
         {
             onReceived.Invoke(signal);
         }
+
+        #endregion
     }
 }

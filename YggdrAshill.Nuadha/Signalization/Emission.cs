@@ -6,23 +6,23 @@ namespace YggdrAshill.Nuadha
     public sealed class Emission :
         IEmission
     {
-        private readonly Action onActuated;
+        private readonly Action onEmitted;
 
         #region Constructor
 
-        public Emission(Action onActuated)
+        public Emission(Action onEmitted)
         {
-            if (onActuated == null)
+            if (onEmitted == null)
             {
-                throw new ArgumentNullException(nameof(onActuated));
+                throw new ArgumentNullException(nameof(onEmitted));
             }
 
-            this.onActuated = onActuated;
+            this.onEmitted = onEmitted;
         }
         
         public Emission()
         {
-            onActuated = () =>
+            onEmitted = () =>
             {
 
             };
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha
 
         public void Emit()
         {
-            onActuated.Invoke();
+            onEmitted.Invoke();
         }
 
         #endregion
