@@ -1,18 +1,18 @@
-using YggdrAshill.Nuadha.Signalization;
+﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class Hardware<THardwareHandler> :
-        IHardware<THardwareHandler>
-        where THardwareHandler : IHardwareHandler
+    public sealed class Connection<THandler> :
+        IConnection<THandler>
+        where THandler : IHandler
     {
-        private readonly Func<THardwareHandler, IDisconnection> onConnected;
+        private readonly Func<THandler, IDisconnection> onConnected;
 
         #region Constructor
 
-        public Hardware(Func<THardwareHandler, IDisconnection> onConnected)
+        public Connection(Func<THandler, IDisconnection> onConnected)
         {
             if (onConnected == null)
             {
@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha
             this.onConnected = onConnected;
         }
 
-        public Hardware()
+        public Connection()
         {
             onConnected = (_) =>
             {
@@ -32,9 +32,9 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IHardware
+        #region IConnection
 
-        public IDisconnection Connect(THardwareHandler handler)
+        public IDisconnection Connect(THandler handler)
         {
             return onConnected.Invoke(handler);
         }

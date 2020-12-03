@@ -2,8 +2,8 @@
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    internal sealed class HardwareHandler :
-        IHardwareHandler
+    internal sealed class Handler :
+        IHandler
     {
 
     }

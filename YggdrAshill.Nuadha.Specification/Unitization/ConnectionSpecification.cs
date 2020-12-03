@@ -1,17 +1,17 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Hardware<>))]
-    internal class HardwareSpecification
+    [TestFixture(TestOf = typeof(Connection<>))]
+    internal class ConnectionSpecification
     {
-        private HardwareHandler handler;
+        private Handler handler;
 
         [SetUp]
         public void SetUp()
         {
-            handler = new HardwareHandler();
+            handler = new Handler();
         }
 
         [TearDown]
@@ -24,14 +24,19 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldExecuteFunctionWhenHasConnected()
         {
             var expected = false;
-            var hardware = new Hardware<HardwareHandler>(_ =>
+            var connection = new Connection<Handler>(handler =>
             {
+                if (handler == null)
+                {
+                    throw new ArgumentNullException(nameof(handler));
+                }
+
                 expected = true;
 
                 return new Disconnection();
             });
 
-            var disconnection = hardware.Connect(handler);
+            var disconnection = connection.Connect(handler);
 
             Assert.IsTrue(expected);
 
@@ -42,15 +47,20 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldDisconnectAfterHasConnected()
         {
             var expected = false;
-            var hardware = new Hardware<HardwareHandler>(_ =>
+            var connection = new Connection<Handler>(handler =>
             {
+                if (handler == null)
+                {
+                    throw new ArgumentNullException(nameof(handler));
+                }
+
                 return new Disconnection(() =>
                 {
                     expected = true;
                 });
             });
 
-            var disconnection = hardware.Connect(handler);
+            var disconnection = connection.Connect(handler);
 
             disconnection.Disconnect();
 
@@ -62,7 +72,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var hardware = new Hardware<HardwareHandler>(null);
+                var connection = new Connection<Handler>(null);
             });
         }
     }
