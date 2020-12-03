@@ -7,50 +7,44 @@ namespace YggdrAshill.Nuadha.Operation
         IOutputTerminal<TSignal>
         where TSignal : ISignal
     {
-        private readonly IOutputTerminal<TSignal> outputTerminal;
+        private readonly IOutputTerminal<TSignal> terminal;
 
         private readonly ICorrection<TSignal> correction;
 
-        public Corrector(
-            IOutputTerminal<TSignal> outputTerminal,
-            ICorrection<TSignal> correction)
+        public Corrector(IOutputTerminal<TSignal> terminal, ICorrection<TSignal> correction)
         {
-            if (outputTerminal == null)
+            if (terminal == null)
             {
-                throw new ArgumentNullException(nameof(outputTerminal));
+                throw new ArgumentNullException(nameof(terminal));
             }
             if (correction == null)
             {
                 throw new ArgumentNullException(nameof(correction));
             }
 
-            this.outputTerminal = outputTerminal;
+            this.terminal = terminal;
 
             this.correction = correction;
         }
 
-        public IDisconnection Connect(IInputTerminal<TSignal> inputTerminal)
+        public IDisconnection Connect(IInputTerminal<TSignal> terminal)
         {
-            if (inputTerminal == null)
+            if (terminal == null)
             {
-                throw new ArgumentNullException(nameof(inputTerminal));
+                throw new ArgumentNullException(nameof(terminal));
             }
 
-            var terminal = new InputTerminal(inputTerminal, correction);
-
-            return outputTerminal.Connect(terminal);
+            return this.terminal.Connect(new Correct(terminal, correction));
         }
 
-        private sealed class InputTerminal :
+        private sealed class Correct :
             IInputTerminal<TSignal>
         {
             private readonly IInputTerminal<TSignal> terminal;
 
             private readonly ICorrection<TSignal> correction;
 
-            public InputTerminal(
-                IInputTerminal<TSignal> terminal,
-                ICorrection<TSignal> correction)
+            public Correct(IInputTerminal<TSignal> terminal, ICorrection<TSignal> correction)
             {
                 this.terminal = terminal;
 

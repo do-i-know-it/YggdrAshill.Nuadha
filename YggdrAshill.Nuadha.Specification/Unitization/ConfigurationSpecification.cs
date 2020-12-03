@@ -1,37 +1,42 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Source<>))]
-    internal class SourceSpecification
+    [TestFixture(TestOf = typeof(Configuration<>))]
+    internal class ConfigurationSpecification
     {
-        private InputTerminal<Signal> inputTerminal;
+        private Handler handler;
 
         [SetUp]
         public void SetUp()
         {
-            inputTerminal = new InputTerminal<Signal>();
+            handler = new Handler();
         }
 
         [TearDown]
         public void TearDown()
         {
-            inputTerminal = default;
+            handler = default;
         }
 
         [Test]
         public void ShouldExecuteFunctionWhenHasConnected()
         {
             var expected = false;
-            var source = new Source<Signal>(_ =>
+            var configuration = new Configuration<Handler>(handler =>
             {
+                if (handler == null)
+                {
+                    throw new ArgumentNullException(nameof(handler));
+                }
+
                 expected = true;
 
                 return new Emission();
             });
 
-            var emission = source.Connect(inputTerminal);
+            var emission = configuration.Connect(handler);
 
             Assert.IsTrue(expected);
         }
@@ -40,15 +45,20 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldEmitAfterHasConnected()
         {
             var expected = false;
-            var source = new Source<Signal>(_ =>
+            var configuration = new Configuration<Handler>(handler =>
             {
+                if (handler == null)
+                {
+                    throw new ArgumentNullException(nameof(handler));
+                }
+
                 return new Emission(() =>
                 {
                     expected = true;
                 });
             });
 
-            var emission = source.Connect(inputTerminal);
+            var emission = configuration.Connect(handler);
 
             emission.Emit();
 
@@ -60,18 +70,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var source = new Source<Signal>(null);
-            });
-        }
-
-        [Test]
-        public void CannotConnectNull()
-        {
-            var source = new Source<Signal>();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var emission = source.Connect(null);
+                var configuration = new Configuration<Handler>(null);
             });
         }
     }

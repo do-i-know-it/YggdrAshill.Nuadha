@@ -8,50 +8,44 @@ namespace YggdrAshill.Nuadha.Operation
         where TInput : ISignal
         where TOutput : ISignal
     {
-        private readonly IOutputTerminal<TInput> outputTerminal;
+        private readonly IOutputTerminal<TInput> terminal;
 
         private readonly IConversion<TInput, TOutput> conversion;
 
-        public Converter(
-            IOutputTerminal<TInput> outputTerminal,
-            IConversion<TInput, TOutput> conversion)
+        public Converter(IOutputTerminal<TInput> terminal, IConversion<TInput, TOutput> conversion)
         {
-            if (outputTerminal == null)
+            if (terminal == null)
             {
-                throw new ArgumentNullException(nameof(outputTerminal));
+                throw new ArgumentNullException(nameof(terminal));
             }
             if (conversion == null)
             {
                 throw new ArgumentNullException(nameof(conversion));
             }
 
-            this.outputTerminal = outputTerminal;
+            this.terminal = terminal;
 
             this.conversion = conversion;
         }
 
-        public IDisconnection Connect(IInputTerminal<TOutput> inputTerminal)
+        public IDisconnection Connect(IInputTerminal<TOutput> terminal)
         {
-            if (inputTerminal == null)
+            if (terminal == null)
             {
-                throw new ArgumentNullException(nameof(inputTerminal));
+                throw new ArgumentNullException(nameof(terminal));
             }
 
-            var terminal = new InputTerminal(inputTerminal, conversion);
-
-            return outputTerminal.Connect(terminal);
+            return this.terminal.Connect(new Convert(terminal, conversion));
         }
 
-        private sealed class InputTerminal :
+        private sealed class Convert :
             IInputTerminal<TInput>
         {
             private readonly IInputTerminal<TOutput> terminal;
 
             private readonly IConversion<TInput, TOutput> conversion;
 
-            public InputTerminal(
-                IInputTerminal<TOutput> terminal,
-                IConversion<TInput, TOutput> conversion)
+            public Convert(IInputTerminal<TOutput> terminal, IConversion<TInput, TOutput> conversion)
             {
                 this.terminal = terminal;
 

@@ -25,8 +25,13 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldSendSignalToConnectedTerminalWhenHasReceived()
         {
             var expected = false;
-            var terminal = new InputTerminal<Signal>(_ =>
+            var terminal = new InputTerminal<Signal>(signal =>
             {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
+
                 expected = true;
             });
 
@@ -43,8 +48,13 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldNotSendSignalToDisconnectedTerminalWhenHasReceived()
         {
             var expected = false;
-            var terminal = new InputTerminal<Signal>(_ =>
+            var terminal = new InputTerminal<Signal>(signal =>
             {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
+
                 expected = true;
             });
 
@@ -58,17 +68,22 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldNotSendSignalWhenHasReceivedAfterHasDisconnected()
+        public void ShouldNotSendSignalAfterHasDisconnected()
         {
             var expected = false;
-            var terminal = new InputTerminal<Signal>(_ =>
+            var terminal = new InputTerminal<Signal>(signal =>
             {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
+
                 expected = true;
             });
 
             var disconnection = connector.Connect(terminal);
 
-            disconnection.Disconnect();
+            connector.Disconnect();
 
             connector.Receive(new Signal());
 

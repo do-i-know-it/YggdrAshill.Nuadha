@@ -7,56 +7,52 @@ namespace YggdrAshill.Nuadha.Operation
         IOutputTerminal<Pulse>
         where TSignal : ISignal
     {
-        private readonly IOutputTerminal<TSignal> outputTerminal;
+        private readonly IOutputTerminal<TSignal> terminal;
 
         private readonly IPulsation<TSignal> pulsation;
 
         private readonly TSignal initial;
 
-        public Pulsator(
-            IOutputTerminal<TSignal> outputTerminal,
-            IPulsation<TSignal> pulsation,
-            TSignal initial)
+        public Pulsator(IOutputTerminal<TSignal> terminal, IPulsation<TSignal> pulsation, TSignal initial)
         {
-            if (outputTerminal == null)
+            if (terminal == null)
             {
-                throw new ArgumentNullException(nameof(outputTerminal));
+                throw new ArgumentNullException(nameof(terminal));
             }
             if (pulsation == null)
             {
                 throw new ArgumentNullException(nameof(pulsation));
             }
 
-            this.outputTerminal = outputTerminal;
+            this.terminal = terminal;
 
             this.pulsation = pulsation;
 
             this.initial = initial;
         }
 
-        public IDisconnection Connect(IInputTerminal<Pulse> inputTerminal)
+        public IDisconnection Connect(IInputTerminal<Pulse> terminal)
         {
-            if (inputTerminal == null)
+            if (terminal == null)
             {
-                throw new ArgumentNullException(nameof(inputTerminal));
+                throw new ArgumentNullException(nameof(terminal));
             }
 
-            return outputTerminal.Connect(new Pulsate(inputTerminal, pulsation, initial));
+            return this.terminal.Connect(new Pulsate(terminal, pulsation, initial));
         }
 
         private sealed class Pulsate :
             IInputTerminal<TSignal>
         {
-            private readonly IInputTerminal<Pulse> inputTerminal;
+            private readonly IInputTerminal<Pulse> terminal;
+
             private readonly IPulsation<TSignal> pulsation;
+
             private TSignal previous;
 
-            public Pulsate(
-                IInputTerminal<Pulse> inputTerminal,
-                IPulsation<TSignal> pulsation,
-                TSignal previous)
+            public Pulsate(IInputTerminal<Pulse> terminal, IPulsation<TSignal> pulsation, TSignal previous)
             {
-                this.inputTerminal = inputTerminal;
+                this.terminal = terminal;
 
                 this.pulsation = pulsation;
 
@@ -70,7 +66,7 @@ namespace YggdrAshill.Nuadha.Operation
 
                 if (hasPulsed)
                 {
-                    inputTerminal.Receive(Pulse.Instance);
+                    terminal.Receive(Pulse.Instance);
                 }
             }
         }
