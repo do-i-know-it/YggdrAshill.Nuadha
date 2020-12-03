@@ -68,7 +68,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldNotSendSignalWhenHasReceivedAfterHasDisconnected()
+        public void ShouldNotSendSignalAfterHasDisconnected()
         {
             var expected = false;
             var terminal = new InputTerminal<Signal>(signal =>
@@ -83,7 +83,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             var disconnection = connector.Connect(terminal);
 
-            disconnection.Disconnect();
+            connector.Disconnect();
 
             connector.Receive(new Signal());
 
