@@ -3,15 +3,15 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Configuration<>))]
-    internal class ConfigurationSpecification
+    [TestFixture(TestOf = typeof(HardwareConfiguration<>))]
+    internal class HardwareConfigurationSpecification
     {
-        private Handler handler;
+        private HardwareHandler handler;
 
         [SetUp]
         public void SetUp()
         {
-            handler = new Handler();
+            handler = new HardwareHandler();
         }
 
         [TearDown]
@@ -24,7 +24,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldExecuteFunctionWhenHasConnected()
         {
             var expected = false;
-            var configuration = new Configuration<Handler>(handler =>
+            var configuration = new HardwareConfiguration<HardwareHandler>(handler =>
             {
                 if (handler == null)
                 {
@@ -45,7 +45,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldEmitAfterHasConnected()
         {
             var expected = false;
-            var configuration = new Configuration<Handler>(handler =>
+            var configuration = new HardwareConfiguration<HardwareHandler>(handler =>
             {
                 if (handler == null)
                 {
@@ -70,7 +70,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var configuration = new Configuration<Handler>(null);
+                var configuration = new HardwareConfiguration<HardwareHandler>(null);
             });
         }
     }
