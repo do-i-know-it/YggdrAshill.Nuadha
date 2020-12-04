@@ -21,6 +21,24 @@ namespace YggdrAshill.Nuadha
             this.onConnected = onConnected;
         }
 
+        public Source(Func<TSignal> onEmitted)
+        {
+            if (onEmitted == null)
+            {
+                throw new ArgumentNullException(nameof(onEmitted));
+            }
+
+            onConnected = (terminal) =>
+            {
+                return new Emission(() =>
+                {
+                    var emitted = onEmitted.Invoke();
+
+                    terminal.Receive(emitted);
+                });
+            };
+        }
+
         public Source()
         {
             onConnected = (_) =>

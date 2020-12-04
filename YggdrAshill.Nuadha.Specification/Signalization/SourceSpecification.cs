@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -60,7 +61,12 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var source = new Source<Signal>(null);
+                var source = new Source<Signal>((Func<IInputTerminal<Signal>, IEmission>)null);
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var source = new Source<Signal>((Func<Signal>)null);
             });
         }
 

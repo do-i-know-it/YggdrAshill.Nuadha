@@ -4,15 +4,15 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class Connection<THandler> :
-        IConnection<THandler>
-        where THandler : IHandler
+    public sealed class SoftwareConfiguration<TSoftwareHandler> :
+        ISoftwareConfiguration<TSoftwareHandler>
+        where TSoftwareHandler : ISoftwareHandler
     {
-        private readonly Func<THandler, IDisconnection> onConnected;
+        private readonly Func<TSoftwareHandler, IEmission> onConnected;
 
         #region Constructor
 
-        public Connection(Func<THandler, IDisconnection> onConnected)
+        public SoftwareConfiguration(Func<TSoftwareHandler, IEmission> onConnected)
         {
             if (onConnected == null)
             {
@@ -22,19 +22,19 @@ namespace YggdrAshill.Nuadha
             this.onConnected = onConnected;
         }
 
-        public Connection()
+        public SoftwareConfiguration()
         {
             onConnected = (_) =>
             {
-                return new Disconnection();
+                return new Emission();
             };
         }
 
         #endregion
 
-        #region IConnection
+        #region ISoftwareConfiguration
 
-        public IDisconnection Connect(THandler handler)
+        public IEmission Connect(TSoftwareHandler handler)
         {
             return onConnected.Invoke(handler);
         }
