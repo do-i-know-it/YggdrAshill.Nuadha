@@ -5,9 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltEventSystem :
-        IConnection<Tilt>,
-        ITiltEventHandler,
-        IDisconnection
+        ITiltEventSystem
     {
         private readonly PullEventSystem tilted;
         private readonly PullEventSystem left;

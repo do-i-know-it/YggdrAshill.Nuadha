@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PushEventSystem :
-        IConnection<Push>,
-        IPushEventHandler,
-        IDisconnection
+        IPushEventSystem
     {
         private readonly IConnector<Pulse> hasPushed = new Connector<Pulse>();
 
