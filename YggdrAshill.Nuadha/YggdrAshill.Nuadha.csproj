@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Conduction\Conduction.csproj" />
     <ProjectReference Include="..\Operation\Operation.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
     <ProjectReference Include="..\Signals\Signals.csproj" />
     <ProjectReference Include="..\Unitization\Unitization.csproj" />
+    <ProjectReference Include="..\Units\Units.csproj" />
   </ItemGroup>
 
 </Project>

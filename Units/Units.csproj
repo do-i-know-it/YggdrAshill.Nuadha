@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>YggdrAshill.Nuadha.Signals</AssemblyName>
-    <RootNamespace>YggdrAshill.Nuadha.Signals</RootNamespace>
+    <AssemblyName>YggdrAshill.Nuadha.Units</AssemblyName>
+    <RootNamespace>YggdrAshill.Nuadha.Units</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Operation\Operation.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
+    <ProjectReference Include="..\Signals\Signals.csproj" />
     <ProjectReference Include="..\Unitization\Unitization.csproj" />
   </ItemGroup>
 
