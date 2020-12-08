@@ -30,7 +30,6 @@ namespace YggdrAshill.Nuadha.Signals
 
             const float Min = -1.0f;
             const float Max = 1.0f;
-
             if (horizontal < Min || Max < horizontal)
             {
                 throw new ArgumentOutOfRangeException(nameof(horizontal));
@@ -48,15 +47,11 @@ namespace YggdrAshill.Nuadha.Signals
         public Tilt Inversed
             => new Tilt(-Horizontal, -Vertical);
 
-        #region IEquatable as value object
-
         public bool Equals(Tilt other)
         {
             return Horizontal.Equals(other.Horizontal)
                 && Vertical.Equals(other.Vertical);
         }
-
-        #endregion
 
         public override string ToString()
         {

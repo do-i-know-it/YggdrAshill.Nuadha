@@ -30,5 +30,10 @@ namespace YggdrAshill.Nuadha.Signals
         {
             return Ratio.Equals(other.Ratio);
         }
+
+        public override string ToString()
+        {
+            return $"{Ratio}";
+        }
     }
 }

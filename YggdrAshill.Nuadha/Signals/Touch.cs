@@ -11,18 +11,23 @@ namespace YggdrAshill.Nuadha.Signals
 
         public static Touch Disabled { get; } = new Touch(false);
 
-        private readonly bool occured;
+        private readonly bool signal;
 
-        private Touch(bool occured)
+        private Touch(bool signal)
         {
-            this.occured = occured;
+            this.signal = signal;
+        }
+
+        public override string ToString()
+        {
+            return $"{signal}";
         }
 
         #region IEquatable as value object
 
         public override int GetHashCode()
         {
-            return occured.GetHashCode();
+            return signal.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -42,7 +47,7 @@ namespace YggdrAshill.Nuadha.Signals
 
         public bool Equals(Touch other)
         {
-            return occured.Equals(other.occured);
+            return signal.Equals(other.signal);
         }
 
         public static bool operator ==(Touch left, Touch right)

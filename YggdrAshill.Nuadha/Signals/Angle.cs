@@ -30,5 +30,10 @@ namespace YggdrAshill.Nuadha.Signals
         {
             return Degree.Equals(other.Degree);
         }
+
+        public override string ToString()
+        {
+            return $"{Degree}";
+        }
     }
 }

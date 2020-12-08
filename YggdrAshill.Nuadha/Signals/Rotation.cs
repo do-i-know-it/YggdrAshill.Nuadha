@@ -62,14 +62,7 @@ namespace YggdrAshill.Nuadha.Signals
 
         public Rotation Inversed
             => new Rotation(-Horizontal, -Vertical, -Frontal, Angle);
-
-        public override string ToString()
-        {
-            return $"{Horizontal}, {Vertical}, {Frontal}, {Angle}";
-        }
-
-        #region IEquatable as value object
-
+        
         public bool Equals(Rotation other)
         {
             return Angle.Equals(other.Angle)
@@ -78,6 +71,9 @@ namespace YggdrAshill.Nuadha.Signals
                 && Frontal.Equals(other.Frontal);
         }
 
-        #endregion
+        public override string ToString()
+        {
+            return $"{Horizontal}, {Vertical}, {Frontal}, {Angle}";
+        }
     }
 }

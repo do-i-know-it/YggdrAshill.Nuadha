@@ -4,7 +4,8 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     public struct Pull :
-        ISignal
+        ISignal,
+        IEquatable<Pull>
     {
         public float Strength { get; }
 
@@ -23,6 +24,16 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             Strength = strength;
+        }
+
+        public bool Equals(Pull other)
+        {
+            return Strength.Equals(other.Strength);
+        }
+
+        public override string ToString()
+        {
+            return $"{Strength}";
         }
     }
 }

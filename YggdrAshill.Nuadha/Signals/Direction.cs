@@ -60,13 +60,6 @@ namespace YggdrAshill.Nuadha.Signals
         public Direction Inversed
             => new Direction(-Horizontal, -Vertical, -Frontal);
 
-        public override string ToString()
-        {
-            return $"{Horizontal}, {Vertical}, {Frontal}";
-        }
-
-        #region IEquatable as value object
-
         public bool Equals(Direction other)
         {
             return Horizontal.Equals(other.Horizontal)
@@ -74,6 +67,9 @@ namespace YggdrAshill.Nuadha.Signals
                 && Frontal.Equals(other.Frontal);
         }
 
-        #endregion
+        public override string ToString()
+        {
+            return $"{Horizontal}, {Vertical}, {Frontal}";
+        }
     }
 }

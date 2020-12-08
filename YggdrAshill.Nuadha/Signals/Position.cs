@@ -46,13 +46,6 @@ namespace YggdrAshill.Nuadha.Signals
         public Position Inversed
             => new Position(-Horizontal, -Vertical, -Frontal);
 
-        public override string ToString()
-        {
-            return $"{Horizontal}, {Vertical}, {Frontal}";
-        }
-
-        #region IEquatable as value object
-
         public bool Equals(Position other)
         {
             return Horizontal.Equals(other.Horizontal)
@@ -60,6 +53,9 @@ namespace YggdrAshill.Nuadha.Signals
                 && Frontal.Equals(other.Frontal);
         }
 
-        #endregion
+        public override string ToString()
+        {
+            return $"{Horizontal}, {Vertical}, {Frontal}";
+        }
     }
 }
