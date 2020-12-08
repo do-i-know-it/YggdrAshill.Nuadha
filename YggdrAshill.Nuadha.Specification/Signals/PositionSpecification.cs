@@ -7,6 +7,9 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(Position))]
     internal class PositionSpecification
     {
+        [TestCase(0.0f, 0.0f, -1.0f)]
+        [TestCase(0.0f, -1.0f, 0.0f)]
+        [TestCase(-1.0f, 0.0f, 0.0f)]
         [TestCase(0.0f, 0.0f, 1.0f)]
         [TestCase(0.0f, 1.0f, 0.0f)]
         [TestCase(1.0f, 0.0f, 0.0f)]
@@ -24,7 +27,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Position(float.NaN, 0.0f, 0.0f);
+                var signal = new Position(float.NaN, 0.0f, 0.0f);
             });
         }
 
@@ -33,7 +36,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Position(0.0f, float.NaN, 0.0f);
+                var signal = new Position(0.0f, float.NaN, 0.0f);
             });
         }
 
@@ -42,7 +45,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Position(0.0f, 0.0f, float.NaN);
+                var signal = new Position(0.0f, 0.0f, float.NaN);
             });
         }
     }

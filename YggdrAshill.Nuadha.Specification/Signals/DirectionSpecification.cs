@@ -27,7 +27,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Direction(float.NaN, 0.0f, 0.0f);
+                var signal = new Direction(float.NaN, 0.0f, 0.0f);
             });
         }
 
@@ -36,7 +36,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Direction(0.0f, float.NaN, 0.0f);
+                var signal = new Direction(0.0f, float.NaN, 0.0f);
             });
         }
 
@@ -45,7 +45,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Direction(0.0f, 0.0f, float.NaN);
+                var signal = new Direction(0.0f, 0.0f, float.NaN);
             });
         }
 
@@ -54,7 +54,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var position = new Direction(-1.1f, 0.0f, 0.0f);
+                var signal = new Direction(-1.1f, 0.0f, 0.0f);
             });
         }
 
@@ -63,7 +63,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var position = new Direction(1.1f, 0.0f, 0.0f);
+                var signal = new Direction(1.1f, 0.0f, 0.0f);
             });
         }
 
@@ -72,7 +72,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var position = new Direction(0.0f, -1.1f, 0.0f);
+                var signal = new Direction(0.0f, -1.1f, 0.0f);
             });
         }
 
@@ -81,7 +81,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var position = new Direction(0.0f, 1.1f, 0.0f);
+                var signal = new Direction(0.0f, 1.1f, 0.0f);
             });
         }
 
@@ -90,7 +90,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var position = new Direction(0.0f, 0.0f, -1.1f);
+                var signal = new Direction(0.0f, 0.0f, -1.1f);
             });
         }
 
@@ -99,7 +99,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var position = new Direction(0.0f, 0.0f, 1.1f);
+                var signal = new Direction(0.0f, 0.0f, 1.1f);
             });
         }
     }
