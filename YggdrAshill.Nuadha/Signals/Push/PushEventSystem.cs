@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IConnection
+        #region IDivider
 
         public IDisconnection Connect(IOutputTerminal<Push> terminal)
         {

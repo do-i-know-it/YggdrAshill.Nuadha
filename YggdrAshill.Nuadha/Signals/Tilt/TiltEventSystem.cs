@@ -66,7 +66,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IConnection
+        #region IDivider
 
         public IDisconnection Connect(IOutputTerminal<Tilt> terminal)
         {
@@ -75,15 +75,15 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(terminal));
             }
 
-            var tilted = this.tilted.Connect(terminal.Convert(TiltToPull.Tilted));
+            var tilted = terminal.Convert(TiltToPull.Tilted).Connect(this.tilted);
 
-            var left = this.left.Connect(terminal.Convert(TiltToPull.Left));
+            var left = terminal.Convert(TiltToPull.Left).Connect(this.left);
             
-            var right = this.right.Connect(terminal.Convert(TiltToPull.Right));
+            var right = terminal.Convert(TiltToPull.Right).Connect(this.right);
             
-            var up = this.up.Connect(terminal.Convert(TiltToPull.Up));
+            var up = terminal.Convert(TiltToPull.Up).Connect(this.up);
             
-            var down = this.down.Connect(terminal.Convert(TiltToPull.Down));
+            var down = terminal.Convert(TiltToPull.Down).Connect(this.down);
 
             return new Disconnection(() =>
             {
