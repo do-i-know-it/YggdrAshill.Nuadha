@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>YggdrAshill.Nuadha.Unitization</AssemblyName>
-    <RootNamespace>YggdrAshill.Nuadha.Unitization</RootNamespace>
+    <AssemblyName>YggdrAshill.Nuadha.Conduction</AssemblyName>
+    <RootNamespace>YggdrAshill.Nuadha.Conduction</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conduction\Conduction.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
   </ItemGroup>
 
