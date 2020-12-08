@@ -7,54 +7,32 @@ namespace YggdrAshill.Nuadha
     public sealed class TiltEventSystem :
         ITiltEventSystem
     {
-        private readonly PullEventSystem tilted;
+        private readonly PullEventSystem center;
+
         private readonly PullEventSystem left;
+        
         private readonly PullEventSystem right;
+        
         private readonly PullEventSystem up;
+        
         private readonly PullEventSystem down;
 
-        public TiltEventSystem(
-            PullEventSystem tilted,
-            PullEventSystem left,
-            PullEventSystem right, 
-            PullEventSystem up, 
-            PullEventSystem down)
+        public TiltEventSystem(HysteresisThreshold threshold)
         {
-            if (tilted == null)
-            {
-                throw new ArgumentNullException(nameof(tilted));
-            }
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-            if (up == null)
-            {
-                throw new ArgumentNullException(nameof(up));
-            }
-            if (down == null)
-            {
-                throw new ArgumentNullException(nameof(down));
-            }
-
-            this.tilted = tilted;
+            center = new PullEventSystem(threshold);
+          
+            left = new PullEventSystem(threshold);
             
-            this.left = left;
+            right = new PullEventSystem(threshold);
             
-            this.right = right;
+            up = new PullEventSystem(threshold);
             
-            this.up = up;
-            
-            this.down = down;
+            down = new PullEventSystem(threshold);
         }
 
         #region ITiltEventHandler
 
-        public IPullEventHandler Tilted => tilted;
+        public IPullEventHandler Center => center;
 
         public IPullEventHandler Left => left;
 
@@ -75,7 +53,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(terminal));
             }
 
-            var tilted = terminal.Convert(TiltToPull.Tilted).Connect(this.tilted);
+            var center = terminal.Convert(TiltToPull.Tilted).Connect(this.center);
 
             var left = terminal.Convert(TiltToPull.Left).Connect(this.left);
             
@@ -87,7 +65,7 @@ namespace YggdrAshill.Nuadha
 
             return new Disconnection(() =>
             {
-                tilted.Disconnect();
+                center.Disconnect();
 
                 left.Disconnect();
 
@@ -105,7 +83,7 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            tilted.Disconnect();
+            center.Disconnect();
 
             left.Disconnect();
 

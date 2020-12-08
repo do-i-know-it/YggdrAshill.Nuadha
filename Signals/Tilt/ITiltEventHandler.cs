@@ -5,7 +5,7 @@ namespace YggdrAshill.Nuadha.Signals
     public interface ITiltEventHandler :
         ISoftwareHandler
     {
-        IPullEventHandler Tilted { get; }
+        IPullEventHandler Center { get; }
 
         IPullEventHandler Left { get; }
 
