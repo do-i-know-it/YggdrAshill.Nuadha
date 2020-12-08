@@ -20,5 +20,20 @@ namespace YggdrAshill.Nuadha
 
             return source.Connect(new InputTerminal<TSignal>(onReceived));
         }
+
+        public static IDisconnection Connect<TSignal>(this IOutputTerminal<TSignal> terminal, IDivider<TSignal> divider)
+            where TSignal : ISignal
+        {
+            if (terminal == null)
+            {
+                throw new ArgumentNullException(nameof(terminal));
+            }
+            if (divider == null)
+            {
+                throw new ArgumentNullException(nameof(divider));
+            }
+
+            return divider.Connect(terminal);
+        }
     }
 }
