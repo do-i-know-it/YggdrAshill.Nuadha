@@ -6,7 +6,9 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TouchEventSystem :
-        ITouchEventSystem
+        IConnection<Touch>,
+        ITouchEventHandler,
+        IDisconnection
     {
         private readonly IConnector<Pulse> hasTouched = new Connector<Pulse>();
 

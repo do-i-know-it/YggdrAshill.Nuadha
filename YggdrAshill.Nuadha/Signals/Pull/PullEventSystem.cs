@@ -6,7 +6,9 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PullEventSystem :
-        IPullEventSystem
+        IConnection<Pull>,
+        IPullEventHandler,
+        IDisconnection
     {
         private readonly IConnector<Pulse> hasPulled = new Connector<Pulse>();
 

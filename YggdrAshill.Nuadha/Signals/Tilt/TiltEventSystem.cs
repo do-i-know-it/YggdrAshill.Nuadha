@@ -5,20 +5,22 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltEventSystem :
-        ITiltEventSystem
+        IConnection<Tilt>,
+        ITiltEventHandler,
+        IDisconnection
     {
-        private readonly IPullEventSystem tilted;
-        private readonly IPullEventSystem left;
-        private readonly IPullEventSystem right;
-        private readonly IPullEventSystem up;
-        private readonly IPullEventSystem down;
+        private readonly PullEventSystem tilted;
+        private readonly PullEventSystem left;
+        private readonly PullEventSystem right;
+        private readonly PullEventSystem up;
+        private readonly PullEventSystem down;
 
         public TiltEventSystem(
-            IPullEventSystem tilted,
-            IPullEventSystem left,
-            IPullEventSystem right, 
-            IPullEventSystem up, 
-            IPullEventSystem down)
+            PullEventSystem tilted,
+            PullEventSystem left,
+            PullEventSystem right, 
+            PullEventSystem up, 
+            PullEventSystem down)
         {
             if (tilted == null)
             {
