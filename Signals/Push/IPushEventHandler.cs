@@ -2,14 +2,14 @@
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Operation;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Signals
 {
-    public interface ITouchEventHandler :
+    public interface IPushEventHandler :
         ISoftwareHandler
     {
-        IOutputTerminal<Pulse> HasTouched { get; }
+        IOutputTerminal<Pulse> HasPushed { get; }
 
-        IOutputTerminal<Pulse> IsTouched { get; }
+        IOutputTerminal<Pulse> IsPushed { get; }
 
         IOutputTerminal<Pulse> HasReleased { get; }
 

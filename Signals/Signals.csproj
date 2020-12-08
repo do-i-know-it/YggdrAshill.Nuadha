@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Operation\Operation.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
+    <ProjectReference Include="..\Unitization\Unitization.csproj" />
   </ItemGroup>
 
 </Project>

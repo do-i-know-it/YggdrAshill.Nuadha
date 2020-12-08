@@ -1,6 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Unitization;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Signals
 {
     public interface ITiltEventHandler :
         ISoftwareHandler

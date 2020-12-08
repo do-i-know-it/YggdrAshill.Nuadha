@@ -2,7 +2,7 @@
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Operation;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Signals
 {
     public interface IPullEventHandler :
         ISoftwareHandler
