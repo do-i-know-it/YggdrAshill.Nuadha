@@ -5,27 +5,26 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PositionSystem :
-        IPositionSystem
+        IConnector<Position>
     {
-        private readonly IConnector<Position> connector = new Connector<Position>();
+        private readonly IConnector<Position> connector;
 
-        private readonly Position offset;
+        private readonly IConnector<Position> position;
 
         public PositionSystem(Position offset)
         {
-            this.offset = offset;
+            connector = new Connector<Position>();
+
+            position = new Connector<Position>();
+
+            connector.Calibrate(PositionToPosition.Add, offset).Connect(position);
         }
 
-        #region IDivider
+        #region IInputTerminal
 
-        public IDisconnection Connect(IOutputTerminal<Position> terminal)
+        public void Receive(Position signal)
         {
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
-
-            return terminal.Calibrate(PositionToPosition.Add, offset).Connect(connector);
+            connector.Receive(signal);
         }
 
         #endregion
@@ -39,7 +38,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(terminal));
             }
 
-            return connector.Connect(terminal);
+            return position.Connect(terminal);
         }
 
         #endregion
@@ -49,6 +48,8 @@ namespace YggdrAshill.Nuadha
         public void Disconnect()
         {
             connector.Disconnect();
+
+            position.Disconnect();
         }
 
         #endregion

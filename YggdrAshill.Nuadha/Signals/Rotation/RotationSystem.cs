@@ -5,27 +5,26 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class RotationSystem :
-        IRotationSystem
+        IConnector<Rotation>
     {
-        private readonly IConnector<Rotation> connector = new Connector<Rotation>();
+        private readonly IConnector<Rotation> connector;
 
-        private readonly Rotation offset;
+        private readonly IConnector<Rotation> rotation;
 
         public RotationSystem(Rotation offset)
         {
-            this.offset = offset;
+            connector = new Connector<Rotation>();
+
+            rotation = new Connector<Rotation>();
+
+            connector.Calibrate(RotationToRotation.Add, offset).Connect(rotation);
         }
 
-        #region IDivider
+        #region IInputTerminal
 
-        public IDisconnection Connect(IOutputTerminal<Rotation> terminal)
+        public void Receive(Rotation signal)
         {
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
-
-            return terminal.Calibrate(RotationToRotation.Add, offset).Connect(connector);
+            connector.Receive(signal);
         }
 
         #endregion
@@ -39,7 +38,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(terminal));
             }
 
-            return connector.Connect(terminal);
+            return rotation.Connect(terminal);
         }
 
         #endregion
@@ -49,6 +48,8 @@ namespace YggdrAshill.Nuadha
         public void Disconnect()
         {
             connector.Disconnect();
+
+            rotation.Disconnect();
         }
 
         #endregion
