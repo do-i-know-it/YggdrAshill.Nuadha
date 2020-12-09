@@ -1,20 +1,36 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Operation;
 using YggdrAshill.Nuadha.Signals;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class TouchEventSystem :
         ITouchEventSystem
     {
-        private readonly IConnector<Pulse> hasTouched = new Connector<Pulse>();
+        private readonly IConnector<Touch> connector;
 
-        private readonly IConnector<Pulse> isTouched = new Connector<Pulse>();
+        private readonly IConnector<Pulse> hasTouched;
+
+        private readonly IConnector<Pulse> isTouched;
         
-        private readonly IConnector<Pulse> hasReleased = new Connector<Pulse>();
+        private readonly IConnector<Pulse> hasReleased;
         
-        private readonly IConnector<Pulse> isReleased = new Connector<Pulse>();
+        private readonly IConnector<Pulse> isReleased;
+
+        public TouchEventSystem()
+        {
+            connector = new Connector<Touch>();
+
+            hasTouched = new Connector<Pulse>();
+            isTouched = new Connector<Pulse>();
+            hasReleased = new Connector<Pulse>();
+            isReleased = new Connector<Pulse>();
+
+            connector.Pulsate(TouchToPulse.HasTouched).Connect(hasTouched);
+            connector.Pulsate(TouchToPulse.IsTouched).Connect(isTouched);
+            connector.Pulsate(TouchToPulse.HasReleased).Connect(hasReleased);
+            connector.Pulsate(TouchToPulse.IsReleased).Connect(isReleased);
+        }
 
         #region ITouchEventHandler
 
@@ -28,33 +44,11 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IDivider
+        #region IInputTerminal
 
-        public IDisconnection Connect(IOutputTerminal<Touch> terminal)
+        public void Receive(Touch signal)
         {
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
-
-            var hasTouched = terminal.Pulsate(TouchToPulse.HasTouched).Connect(this.hasTouched);
-
-            var isTouched = terminal.Pulsate(TouchToPulse.IsTouched).Connect(this.isTouched);
-            
-            var hasReleased = terminal.Pulsate(TouchToPulse.HasReleased).Connect(this.hasReleased);
-            
-            var isReleased = terminal.Pulsate(TouchToPulse.IsReleased).Connect(this.isReleased);
-
-            return new Disconnection(() =>
-            {
-                hasTouched.Disconnect();
-            
-                isTouched.Disconnect();
-                
-                hasReleased.Disconnect();
-                
-                isReleased.Disconnect();
-            });
+            connector.Receive(signal);
         }
 
         #endregion
@@ -63,6 +57,8 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
+            connector.Disconnect();
+
             hasTouched.Disconnect();
 
             isTouched.Disconnect();
