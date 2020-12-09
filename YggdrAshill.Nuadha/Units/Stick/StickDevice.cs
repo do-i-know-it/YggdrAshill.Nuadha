@@ -13,8 +13,6 @@ namespace YggdrAshill.Nuadha
     {
         private readonly IStickConfiguration configuration;
 
-        private readonly StickModule module = new StickModule();
-
         public StickDevice(IStickConfiguration configuration)
         {
             if (configuration == null)
@@ -27,8 +25,6 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private IStickSoftwareHandler SoftwareHandler => module;
-
         public IDisconnection Connect(IStickHardwareHandler handler)
         {
             if (handler == null)
@@ -36,15 +32,19 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var touch = SoftwareHandler.Touch.Connect(handler.Touch);
+            var touch = configuration.Touch.Connect(handler.Touch);
 
-            var push = SoftwareHandler.Push.Connect(handler.Push);
+            var push = configuration.Push.Connect(handler.Push);
+
+            var tilt = configuration.Tilt.Connect(handler.Tilt);
 
             return new Disconnection(() =>
             {
                 touch.Disconnect();
 
                 push.Disconnect();
+
+                tilt.Disconnect();
             });
         }
 
@@ -54,22 +54,24 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            module.Disconnect();
+            configuration.Touch.Disconnect();
+
+            configuration.Push.Disconnect();
+
+            configuration.Tilt.Disconnect();
         }
 
         #endregion
 
         #region Ignitor
 
-        private IStickHardwareHandler HardwareHandler => module;
-
         public IEmission Ignite()
         {
-            var touch = configuration.Touch.Connect(HardwareHandler.Touch);
+            var touch = configuration.Touch.Ignite();
 
-            var push = configuration.Push.Connect(HardwareHandler.Push);
+            var push = configuration.Push.Ignite();
 
-            var tilt = configuration.Tilt.Connect(HardwareHandler.Tilt);
+            var tilt = configuration.Tilt.Ignite();
 
             return new Emission(() =>
             {

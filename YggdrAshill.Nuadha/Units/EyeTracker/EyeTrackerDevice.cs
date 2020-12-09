@@ -13,8 +13,6 @@ namespace YggdrAshill.Nuadha
     {
         private readonly IEyeTrackerConfiguration configuration;
 
-        private readonly EyeTrackerModule module = new EyeTrackerModule();
-
         public EyeTrackerDevice(IEyeTrackerConfiguration configuration)
         {
             if (configuration == null)
@@ -27,8 +25,6 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private IEyeTrackerSoftwareHandler SoftwareHandler => module;
-
         public IDisconnection Connect(IEyeTrackerHardwareHandler handler)
         {
             if (handler == null)
@@ -36,9 +32,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var pupil = SoftwareHandler.Pupil.Connect(handler.Pupil);
+            var pupil = configuration.Pupil.Connect(handler.Pupil);
 
-            var blink = SoftwareHandler.Blink.Connect(handler.Blink);
+            var blink = configuration.Blink.Connect(handler.Blink);
 
             return new Disconnection(() =>
             {
@@ -54,20 +50,20 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            module.Disconnect();
+            configuration.Pupil.Disconnect();
+
+            configuration.Blink.Disconnect();
         }
 
         #endregion
 
         #region Ignitor
 
-        private IEyeTrackerHardwareHandler HardwareHandler => module;
-
         public IEmission Ignite()
         {
-            var pupil = configuration.Pupil.Connect(HardwareHandler.Pupil);
+            var pupil = configuration.Pupil.Ignite();
 
-            var blink = configuration.Blink.Connect(HardwareHandler.Blink);
+            var blink = configuration.Blink.Ignite();
 
             return new Emission(() =>
             {

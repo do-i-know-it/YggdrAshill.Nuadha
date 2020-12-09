@@ -5,8 +5,8 @@ namespace YggdrAshill.Nuadha
 {
     public interface IPoseTrackerConfiguration
     {
-        ISource<Position> Position { get; }
+        IGenerator<Position> Position { get; }
 
-        ISource<Rotation> Rotation { get; }
+        IGenerator<Rotation> Rotation { get; }
     }
 }
