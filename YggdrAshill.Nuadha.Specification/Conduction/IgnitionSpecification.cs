@@ -3,7 +3,6 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-
     [TestFixture(TestOf = typeof(Ignition))]
     internal class IgnitionSpecification
     {
