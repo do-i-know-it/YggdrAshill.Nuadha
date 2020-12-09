@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class StickDevice :
         IHardware<IStickHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly IStickConfiguration configuration;
 
@@ -59,7 +59,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region Ignition
+        #region Ignitor
 
         private IStickHardwareHandler HardwareHandler => module;
 

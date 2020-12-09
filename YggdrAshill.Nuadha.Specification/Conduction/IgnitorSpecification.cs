@@ -3,21 +3,21 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Ignition))]
-    internal class IgnitionSpecification
+    [TestFixture(TestOf = typeof(Ignitor))]
+    internal class IgnitorSpecification
     {
         [Test]
         public void ShouldExecuteFunctionWhenHasIgnited()
         {
             var expected = false;
-            var ignition = new Ignition(() =>
+            var ignitor = new Ignitor(() =>
             {
                 expected = true;
 
                 return new Emission();
             });
 
-            var emission = ignition.Ignite();
+            var emission = ignitor.Ignite();
 
             Assert.IsTrue(expected);
         }
@@ -26,7 +26,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldEmitAfterHasIgnited()
         {
             var expected = false;
-            var ignition = new Ignition(() =>
+            var ignitor = new Ignitor(() =>
             {
                 return new Emission(() =>
                 {
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha.Specification
                 });
             });
 
-            var emission = ignition.Ignite();
+            var emission = ignitor.Ignite();
 
             emission.Emit();
 
@@ -46,7 +46,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var ignition = new Ignition(null);
+                var ignitor = new Ignitor(null);
             });
         }
     }

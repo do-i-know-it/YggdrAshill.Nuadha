@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class PoseTrackerDevice :
         IHardware<IPoseTrackerHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly IPoseTrackerConfiguration configuration;
 
@@ -59,7 +59,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region Ignition
+        #region Ignitor
 
         private IPoseTrackerHardwareHandler HardwareHandler => module;
 

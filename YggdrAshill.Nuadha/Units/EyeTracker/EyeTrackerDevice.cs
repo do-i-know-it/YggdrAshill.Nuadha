@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class EyeTrackerDevice :
         IHardware<IEyeTrackerHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly IEyeTrackerConfiguration configuration;
 
@@ -59,7 +59,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region Ignition
+        #region Ignitor
 
         private IEyeTrackerHardwareHandler HardwareHandler => module;
 

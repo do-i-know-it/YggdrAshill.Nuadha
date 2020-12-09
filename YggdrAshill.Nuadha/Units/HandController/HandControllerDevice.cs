@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class HandControllerDevice :
         IHardware<IHandControllerHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly IHandControllerConfiguration configuration;
 
@@ -77,7 +77,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region Ignition
+        #region Ignitor
 
         private IHandControllerHardwareHandler HardwareHandler => module;
 

@@ -1,6 +1,6 @@
 ﻿namespace YggdrAshill.Nuadha.Conduction
 {
-    public interface IIgnition
+    public interface IIgnitor
     {
         IEmission Ignite();
     }

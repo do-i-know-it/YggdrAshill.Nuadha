@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class HeadsetDevice :
         IHardware<IHeadsetHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly IHeadsetConfiguration configuration;
 
@@ -73,7 +73,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region Ignition
+        #region Ignitor
 
         private IHeadsetHardwareHandler HardwareHandler => module;
 

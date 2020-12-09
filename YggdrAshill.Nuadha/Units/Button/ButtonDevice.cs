@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class ButtonDevice :
         IHardware<IButtonHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly IButtonConfiguration configuration;
 
@@ -59,7 +59,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region Ignition
+        #region Ignitor
 
         private IButtonHardwareHandler HardwareHandler => module;
 

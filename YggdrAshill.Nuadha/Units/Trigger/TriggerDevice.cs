@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class TriggerDevice :
         IHardware<ITriggerHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly ITriggerConfiguration configuration;
 
@@ -59,7 +59,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region Ignition
+        #region Ignitor
 
         private ITriggerHardwareHandler HardwareHandler => module;
 
