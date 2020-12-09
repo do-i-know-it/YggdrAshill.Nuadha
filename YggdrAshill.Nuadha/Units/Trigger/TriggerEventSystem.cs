@@ -12,20 +12,11 @@ namespace YggdrAshill.Nuadha
 
         private readonly IPullEventSystem pull;
 
-        public TriggerEventSystem(ITouchEventSystem touch, IPullEventSystem pull)
+        public TriggerEventSystem(HysteresisThreshold threshold)
         {
-            if (touch == null)
-            {
-                throw new ArgumentNullException(nameof(touch));
-            }
-            if (pull == null)
-            {
-                throw new ArgumentNullException(nameof(pull));
-            }
+            touch = new TouchEventSystem();
 
-            this.touch = touch;
-
-            this.pull = pull;
+            pull = new PullEventSystem(threshold);
         }
 
         #region ITriggerEventHandler

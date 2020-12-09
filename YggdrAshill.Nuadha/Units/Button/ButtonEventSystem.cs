@@ -12,20 +12,11 @@ namespace YggdrAshill.Nuadha
 
         private readonly IPushEventSystem push;
 
-        public ButtonEventSystem(ITouchEventSystem touch, IPushEventSystem push)
+        public ButtonEventSystem()
         {
-            if (touch == null)
-            {
-                throw new ArgumentNullException(nameof(touch));
-            }
-            if (push == null)
-            {
-                throw new ArgumentNullException(nameof(push));
-            }
+            touch = new TouchEventSystem();
 
-            this.touch = touch;
-
-            this.push = push;
+            push = new PushEventSystem();
         }
 
         #region IButtonEventHandler

@@ -14,26 +14,13 @@ namespace YggdrAshill.Nuadha
 
         private readonly ITiltEventSystem tilt;
 
-        public StickEventSystem(ITouchEventSystem touch, IPushEventSystem push, ITiltEventSystem tilt)
+        public StickEventSystem(HysteresisThreshold threshold)
         {
-            if (touch == null)
-            {
-                throw new ArgumentNullException(nameof(touch));
-            }
-            if (push == null)
-            {
-                throw new ArgumentNullException(nameof(push));
-            }
-            if (tilt == null)
-            {
-                throw new ArgumentNullException(nameof(tilt));
-            }
-            
-            this.touch = touch;
+            touch = new TouchEventSystem();
 
-            this.push = push;
+            push = new PushEventSystem();
             
-            this.tilt = tilt;
+            tilt = new TiltEventSystem(threshold);
         }
 
         #region IButtonEventHandler

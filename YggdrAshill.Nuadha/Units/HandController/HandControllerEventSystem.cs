@@ -13,26 +13,16 @@ namespace YggdrAshill.Nuadha
         
         private readonly ITriggerEventSystem handTrigger;
 
-        public HandControllerEventSystem(IStickEventSystem thumbStick, ITriggerEventSystem fingerTrigger, ITriggerEventSystem handTrigger)
+        public HandControllerEventSystem(
+            HysteresisThreshold thumbStick, 
+            HysteresisThreshold fingerTrigger, 
+            HysteresisThreshold handTrigger)
         {
-            if (thumbStick == null)
-            {
-                throw new ArgumentNullException(nameof(thumbStick));
-            }
-            if (fingerTrigger == null)
-            {
-                throw new ArgumentNullException(nameof(fingerTrigger));
-            }
-            if (handTrigger == null)
-            {
-                throw new ArgumentNullException(nameof(handTrigger));
-            }
-
-            this.thumbStick = thumbStick;
+            this.thumbStick = new StickEventSystem(thumbStick);
             
-            this.fingerTrigger = fingerTrigger;
+            this.fingerTrigger = new TriggerEventSystem(fingerTrigger);
             
-            this.handTrigger = handTrigger;
+            this.handTrigger = new TriggerEventSystem(handTrigger);
         }
 
         #region IHandControllerEventHandler
