@@ -1,22 +1,22 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerEventSystem :
-        IHandControllerEventSystem
+        ISoftware<IHandControllerSoftwareHandler>,
+        IHandControllerEventHandler,
+        IDisconnection
     {
-        private readonly IStickEventSystem thumbStick;
+        private readonly StickEventSystem thumbStick;
 
-        private readonly ITriggerEventSystem fingerTrigger;
+        private readonly TriggerEventSystem fingerTrigger;
         
-        private readonly ITriggerEventSystem handTrigger;
+        private readonly TriggerEventSystem handTrigger;
 
-        public HandControllerEventSystem(
-            HysteresisThreshold thumbStick, 
-            HysteresisThreshold fingerTrigger, 
-            HysteresisThreshold handTrigger)
+        public HandControllerEventSystem(HysteresisThreshold thumbStick, HysteresisThreshold fingerTrigger, HysteresisThreshold handTrigger)
         {
             this.thumbStick = new StickEventSystem(thumbStick);
             

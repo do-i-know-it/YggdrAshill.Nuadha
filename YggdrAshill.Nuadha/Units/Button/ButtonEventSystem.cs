@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -6,7 +7,9 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonEventSystem :
-        IButtonEventSystem
+        ISoftware<IButtonSoftwareHandler>,
+        IButtonEventHandler,
+        IDisconnection
     {
         private readonly TouchEventSystem touch;
 
