@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PushEventSystem :
-        IPushEventSystem
+        IInputTerminal<Push>,
+        IPushEventHandler,
+        IDisconnection
     {
         private readonly IConnector<Push> connector;
 

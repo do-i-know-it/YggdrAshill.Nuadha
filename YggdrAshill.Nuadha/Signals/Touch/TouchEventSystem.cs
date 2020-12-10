@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TouchEventSystem :
-        ITouchEventSystem
+        IInputTerminal<Touch>,
+        ITouchEventHandler,
+        IDisconnection
     {
         private readonly IConnector<Touch> connector;
 

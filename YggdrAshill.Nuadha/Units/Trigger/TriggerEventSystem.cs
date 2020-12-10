@@ -8,9 +8,9 @@ namespace YggdrAshill.Nuadha
     public sealed class TriggerEventSystem :
         ITriggerEventSystem
     {
-        private readonly ITouchEventSystem touch;
+        private readonly TouchEventSystem touch;
 
-        private readonly IPullEventSystem pull;
+        private readonly PullEventSystem pull;
 
         public TriggerEventSystem(HysteresisThreshold threshold)
         {

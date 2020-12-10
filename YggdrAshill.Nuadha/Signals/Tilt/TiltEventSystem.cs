@@ -4,7 +4,9 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltEventSystem :
-        ITiltEventSystem
+        IInputTerminal<Tilt>,
+        ITiltEventHandler,
+        IDisconnection
     {
         private readonly IConnector<Tilt> connector;
 

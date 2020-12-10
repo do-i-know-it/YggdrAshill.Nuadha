@@ -8,11 +8,11 @@ namespace YggdrAshill.Nuadha
     public sealed class StickEventSystem :
         IStickEventSystem
     {
-        private readonly ITouchEventSystem touch;
+        private readonly TouchEventSystem touch;
         
-        private readonly IPushEventSystem push;
+        private readonly PushEventSystem push;
 
-        private readonly ITiltEventSystem tilt;
+        private readonly TiltEventSystem tilt;
 
         public StickEventSystem(HysteresisThreshold threshold)
         {

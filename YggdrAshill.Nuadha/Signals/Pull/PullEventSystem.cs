@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PullEventSystem :
-        IPullEventSystem
+        IInputTerminal<Pull>,
+        IPullEventHandler,
+        IDisconnection
     {
-        private readonly HysteresisThreshold threshold;
-
         private readonly IConnector<Pull> connector;
 
         private readonly IConnector<Pulse> hasPulled;
@@ -21,8 +21,6 @@ namespace YggdrAshill.Nuadha
 
         public PullEventSystem(HysteresisThreshold threshold)
         {
-            this.threshold = threshold;
-
             connector = new Connector<Pull>();
 
             hasPulled = new Connector<Pulse>();

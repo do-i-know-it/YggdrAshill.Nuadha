@@ -8,9 +8,9 @@ namespace YggdrAshill.Nuadha
     public sealed class ButtonEventSystem :
         IButtonEventSystem
     {
-        private readonly ITouchEventSystem touch;
+        private readonly TouchEventSystem touch;
 
-        private readonly IPushEventSystem push;
+        private readonly PushEventSystem push;
 
         public ButtonEventSystem()
         {
