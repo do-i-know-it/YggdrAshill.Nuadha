@@ -73,6 +73,36 @@ namespace YggdrAshill.Nuadha
             return terminal.Correct(new Correction<TSignal>(onCorrected));
         }
 
+        public static IOutputTerminal<TSignal> Calibrate<TSignal>(this IOutputTerminal<TSignal> terminal, IReduction<TSignal> reduction, TSignal offset)
+            where TSignal : ISignal
+        {
+            if (terminal == null)
+            {
+                throw new System.ArgumentNullException(nameof(terminal));
+            }
+            if (reduction == null)
+            {
+                throw new System.ArgumentNullException(nameof(reduction));
+            }
+
+            return terminal.Correct(new Calibration<TSignal>(reduction, offset));
+        }
+
+        public static IOutputTerminal<TSignal> Calibrate<TSignal>(this IOutputTerminal<TSignal> terminal, System.Func<TSignal, TSignal, TSignal> onReduced, TSignal offset)
+            where TSignal : ISignal
+        {
+            if (terminal == null)
+            {
+                throw new System.ArgumentNullException(nameof(terminal));
+            }
+            if (onReduced == null)
+            {
+                throw new System.ArgumentNullException(nameof(onReduced));
+            }
+
+            return terminal.Calibrate(new Reduction<TSignal>(onReduced), offset);
+        }
+
         #endregion
 
         #region Detection

@@ -288,6 +288,16 @@ namespace YggdrAshill.Nuadha
             });
         }
 
+        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Pupil> terminal, HysteresisThreshold threshold, bool isPushed = false)
+        {
+            if (terminal == null)
+            {
+                throw new ArgumentNullException(nameof(terminal));
+            }
+
+            return terminal.Convert(new PupilToPush(threshold, isPushed));
+        }
+
         #endregion
 
         #region Blink
@@ -346,6 +356,16 @@ namespace YggdrAshill.Nuadha
             {
                 onReceived.Invoke(signal.ToSingle());
             });
+        }
+
+        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Blink> terminal, HysteresisThreshold threshold, bool isPushed = false)
+        {
+            if (terminal == null)
+            {
+                throw new ArgumentNullException(nameof(terminal));
+            }
+
+            return terminal.Convert(new BlinkToPush(threshold, isPushed));
         }
 
         #endregion

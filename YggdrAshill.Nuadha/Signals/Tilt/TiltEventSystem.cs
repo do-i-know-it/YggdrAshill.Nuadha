@@ -1,12 +1,15 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Signals;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltEventSystem :
-        ITiltEventSystem
+        IInputTerminal<Tilt>,
+        ITiltEventHandler,
+        IDisconnection
     {
+        private readonly IConnector<Tilt> connector;
+
         private readonly PullEventSystem center;
 
         private readonly PullEventSystem left;
@@ -19,15 +22,19 @@ namespace YggdrAshill.Nuadha
 
         public TiltEventSystem(HysteresisThreshold threshold)
         {
+            connector = new Connector<Tilt>();
+
             center = new PullEventSystem(threshold);
-          
             left = new PullEventSystem(threshold);
-            
             right = new PullEventSystem(threshold);
-            
             up = new PullEventSystem(threshold);
-            
             down = new PullEventSystem(threshold);
+
+            connector.Convert(TiltToPull.Tilted).Connect(center);
+            connector.Convert(TiltToPull.Left).Connect(left);
+            connector.Convert(TiltToPull.Right).Connect(right);
+            connector.Convert(TiltToPull.Up).Connect(up);
+            connector.Convert(TiltToPull.Down).Connect(down);
         }
 
         #region ITiltEventHandler
@@ -44,37 +51,11 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IDivider
+        #region IInputTerminal
 
-        public IDisconnection Connect(IOutputTerminal<Tilt> terminal)
+        public void Receive(Tilt signal)
         {
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
-
-            var center = terminal.Convert(TiltToPull.Tilted).Connect(this.center);
-
-            var left = terminal.Convert(TiltToPull.Left).Connect(this.left);
-            
-            var right = terminal.Convert(TiltToPull.Right).Connect(this.right);
-            
-            var up = terminal.Convert(TiltToPull.Up).Connect(this.up);
-            
-            var down = terminal.Convert(TiltToPull.Down).Connect(this.down);
-
-            return new Disconnection(() =>
-            {
-                center.Disconnect();
-
-                left.Disconnect();
-
-                right.Disconnect();
-
-                up.Disconnect();
-
-                down.Disconnect();
-            });
+            connector.Receive(signal);
         }
 
         #endregion
@@ -83,6 +64,8 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
+            connector.Disconnect();
+
             center.Disconnect();
 
             left.Disconnect();

@@ -1,20 +1,38 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Operation;
 using YggdrAshill.Nuadha.Signals;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class PushEventSystem :
-        IPushEventSystem
+        IInputTerminal<Push>,
+        IPushEventHandler,
+        IDisconnection
     {
-        private readonly IConnector<Pulse> hasPushed = new Connector<Pulse>();
+        private readonly IConnector<Push> connector;
 
-        private readonly IConnector<Pulse> isPushed = new Connector<Pulse>();
+        private readonly IConnector<Pulse> hasPushed;
 
-        private readonly IConnector<Pulse> hasReleased = new Connector<Pulse>();
+        private readonly IConnector<Pulse> isPushed;
 
-        private readonly IConnector<Pulse> isReleased = new Connector<Pulse>();
+        private readonly IConnector<Pulse> hasReleased;
+
+        private readonly IConnector<Pulse> isReleased;
+
+        public PushEventSystem()
+        {
+            connector = new Connector<Push>();
+
+            hasPushed = new Connector<Pulse>();
+            isPushed = new Connector<Pulse>();
+            hasReleased = new Connector<Pulse>();
+            isReleased = new Connector<Pulse>();
+
+            connector.Pulsate(PushToPulse.HasPushed).Connect(hasPushed);
+            connector.Pulsate(PushToPulse.IsPushed).Connect(isPushed);
+            connector.Pulsate(PushToPulse.HasReleased).Connect(hasReleased);
+            connector.Pulsate(PushToPulse.IsReleased).Connect(isReleased);
+        }
 
         #region IPushEventHandler
 
@@ -28,33 +46,11 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IDivider
+        #region IInputTerminal
 
-        public IDisconnection Connect(IOutputTerminal<Push> terminal)
+        public void Receive(Push signal)
         {
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
-
-            var hasPushed = terminal.Pulsate(PushToPulse.HasPushed).Connect(this.hasPushed);
-
-            var isPushed = terminal.Pulsate(PushToPulse.IsPushed).Connect(this.isPushed);
-
-            var hasReleased = terminal.Pulsate(PushToPulse.HasReleased).Connect(this.hasReleased);
-
-            var isReleased = terminal.Pulsate(PushToPulse.IsReleased).Connect(this.isReleased);
-
-            return new Disconnection(() =>
-            {
-                hasPushed.Disconnect();
-
-                isPushed.Disconnect();
-
-                hasReleased.Disconnect();
-
-                isReleased.Disconnect();
-            });
+            connector.Receive(signal);
         }
 
         #endregion
@@ -63,6 +59,8 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
+            connector.Disconnect();
+
             hasPushed.Disconnect();
 
             isPushed.Disconnect();

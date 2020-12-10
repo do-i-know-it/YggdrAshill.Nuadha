@@ -9,11 +9,9 @@ namespace YggdrAshill.Nuadha
     public sealed class PoseTrackerDevice :
         IHardware<IPoseTrackerHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly IPoseTrackerConfiguration configuration;
-
-        private readonly PoseTrackerModule module = new PoseTrackerModule();
 
         public PoseTrackerDevice(IPoseTrackerConfiguration configuration)
         {
@@ -27,8 +25,6 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private IPoseTrackerSoftwareHandler SoftwareHandler => module;
-
         public IDisconnection Connect(IPoseTrackerHardwareHandler handler)
         {
             if (handler == null)
@@ -36,9 +32,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var position = SoftwareHandler.Position.Connect(handler.Position);
+            var position = configuration.Position.Connect(handler.Position);
 
-            var rotation = SoftwareHandler.Rotation.Connect(handler.Rotation);
+            var rotation = configuration.Rotation.Connect(handler.Rotation);
 
             return new Disconnection(() =>
             {
@@ -54,20 +50,20 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            module.Disconnect();
+            configuration.Position.Disconnect();
+
+            configuration.Rotation.Disconnect();
         }
 
         #endregion
 
-        #region Ignition
-
-        private IPoseTrackerHardwareHandler HardwareHandler => module;
+        #region Ignitor
 
         public IEmission Ignite()
         {
-            var position = configuration.Position.Connect(HardwareHandler.Position);
+            var position = configuration.Position.Ignite();
 
-            var rotation = configuration.Rotation.Connect(HardwareHandler.Rotation);
+            var rotation = configuration.Rotation.Ignite();
 
             return new Emission(() =>
             {

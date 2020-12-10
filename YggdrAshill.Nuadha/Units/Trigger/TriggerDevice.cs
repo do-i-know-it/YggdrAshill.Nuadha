@@ -9,11 +9,9 @@ namespace YggdrAshill.Nuadha
     public sealed class TriggerDevice :
         IHardware<ITriggerHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly ITriggerConfiguration configuration;
-
-        private readonly TriggerModule module = new TriggerModule();
 
         public TriggerDevice(ITriggerConfiguration configuration)
         {
@@ -27,8 +25,6 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private ITriggerSoftwareHandler SoftwareHandler => module;
-
         public IDisconnection Connect(ITriggerHardwareHandler handler)
         {
             if (handler == null)
@@ -36,9 +32,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var touch = SoftwareHandler.Touch.Connect(handler.Touch);
+            var touch = configuration.Touch.Connect(handler.Touch);
 
-            var pull = SoftwareHandler.Pull.Connect(handler.Pull);
+            var pull = configuration.Pull.Connect(handler.Pull);
 
             return new Disconnection(() =>
             {
@@ -54,20 +50,20 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            module.Disconnect();
+            configuration.Touch.Disconnect();
+
+            configuration.Pull.Disconnect();
         }
 
         #endregion
 
-        #region Ignition
-
-        private ITriggerHardwareHandler HardwareHandler => module;
+        #region Ignitor
 
         public IEmission Ignite()
         {
-            var touch = configuration.Touch.Connect(HardwareHandler.Touch);
+            var touch = configuration.Touch.Ignite();
 
-            var pull = configuration.Pull.Connect(HardwareHandler.Pull);
+            var pull = configuration.Pull.Ignite();
 
             return new Emission(() =>
             {

@@ -2,9 +2,12 @@
 
 namespace YggdrAshill.Nuadha.Conduction
 {
-    public interface IDivider<TSignal>
+    public interface IGenerator<TSignal> :
+        IOutputTerminal<TSignal>,
+        IIgnitor,
+        IDisconnection
         where TSignal : ISignal
     {
-        IDisconnection Connect(IOutputTerminal<TSignal> terminal);
+
     }
 }

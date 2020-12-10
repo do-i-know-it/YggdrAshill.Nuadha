@@ -9,11 +9,9 @@ namespace YggdrAshill.Nuadha
     public sealed class ButtonDevice :
         IHardware<IButtonHardwareHandler>,
         IDisconnection,
-        IIgnition
+        IIgnitor
     {
         private readonly IButtonConfiguration configuration;
-
-        private readonly ButtonModule module = new ButtonModule();
 
         public ButtonDevice(IButtonConfiguration configuration)
         {
@@ -27,8 +25,6 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private IButtonSoftwareHandler SoftwareHandler => module;
-
         public IDisconnection Connect(IButtonHardwareHandler handler)
         {
             if (handler == null)
@@ -36,9 +32,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var touch = SoftwareHandler.Touch.Connect(handler.Touch);
+            var touch = configuration.Touch.Connect(handler.Touch);
 
-            var push = SoftwareHandler.Push.Connect(handler.Push);
+            var push = configuration.Push.Connect(handler.Push);
 
             return new Disconnection(() =>
             {
@@ -54,20 +50,20 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            module.Disconnect();
+            configuration.Touch.Disconnect();
+
+            configuration.Push.Disconnect();
         }
 
         #endregion
 
-        #region Ignition
-
-        private IButtonHardwareHandler HardwareHandler => module;
+        #region Ignitor
 
         public IEmission Ignite()
         {
-            var touch = configuration.Touch.Connect(HardwareHandler.Touch);
+            var touch = configuration.Touch.Ignite();
 
-            var push = configuration.Push.Connect(HardwareHandler.Push);
+            var push = configuration.Push.Ignite();
 
             return new Emission(() =>
             {
