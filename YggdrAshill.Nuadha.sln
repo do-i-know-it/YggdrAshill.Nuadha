@@ -15,9 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unitization", "Unitization\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Signals", "Signals\Signals.csproj", "{CB003F86-90BC-4404-8773-F81FD2CB73DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Units", "Units\Units.csproj", "{3DFAF22C-7A39-48B2-AC89-C39B65C79C09}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduction", "Conduction\Conduction.csproj", "{966B07BC-FC06-4042-A378-5449D58C8692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Units", "Units\Units.csproj", "{3DFAF22C-7A39-48B2-AC89-C39B65C79C09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +51,6 @@ Global
 		{3DFAF22C-7A39-48B2-AC89-C39B65C79C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DFAF22C-7A39-48B2-AC89-C39B65C79C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DFAF22C-7A39-48B2-AC89-C39B65C79C09}.Release|Any CPU.Build.0 = Release|Any CPU
-		{966B07BC-FC06-4042-A378-5449D58C8692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{966B07BC-FC06-4042-A378-5449D58C8692}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{966B07BC-FC06-4042-A378-5449D58C8692}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{966B07BC-FC06-4042-A378-5449D58C8692}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
