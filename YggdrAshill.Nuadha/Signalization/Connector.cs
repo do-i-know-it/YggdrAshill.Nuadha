@@ -8,8 +8,45 @@ namespace YggdrAshill.Nuadha
         IConnector<TSignal>
         where TSignal : ISignal
     {
-        private readonly List<IInputTerminal<TSignal>> terminalList
-            = new List<IInputTerminal<TSignal>>();
+        private readonly OutputTerminal<TSignal> outputTerminal;
+
+        private readonly InputTerminal<TSignal> inputTerminal;
+
+        private readonly Disconnection disconnection;
+
+        public Connector()
+        {
+            var terminalList = new List<IInputTerminal<TSignal>>();
+
+            outputTerminal = new OutputTerminal<TSignal>(terminal =>
+            {
+                if (!terminalList.Contains(terminal))
+                {
+                    terminalList.Add(terminal);
+                }
+
+                return new Disconnection(() =>
+                {
+                    if (terminalList.Contains(terminal))
+                    {
+                        terminalList.Remove(terminal);
+                    }
+                });
+            });
+
+            inputTerminal = new InputTerminal<TSignal>(signal =>
+            {
+                foreach (var terminal in terminalList)
+                {
+                    terminal.Receive(signal);
+                }
+            });
+
+            disconnection = new Disconnection(() =>
+            {
+                terminalList.Clear();
+            });
+        }
 
         #region IOutputTerminal
 
@@ -20,18 +57,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(terminal));
             }
 
-            if (!terminalList.Contains(terminal))
-            {
-                terminalList.Add(terminal);
-            }
-
-            return new Disconnection(() =>
-            {
-                if (terminalList.Contains(terminal))
-                {
-                    terminalList.Remove(terminal);
-                }
-            });
+            return outputTerminal.Connect(terminal);
         }
 
         #endregion
@@ -40,10 +66,7 @@ namespace YggdrAshill.Nuadha
 
         public void Receive(TSignal signal)
         {
-            foreach (var terminal in terminalList)
-            {
-                terminal.Receive(signal);
-            }
+            inputTerminal.Receive(signal);
         }
 
         #endregion
@@ -52,7 +75,7 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            terminalList.Clear();
+            disconnection.Disconnect();
         }
 
         #endregion
