@@ -1,5 +1,4 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -8,25 +7,37 @@ namespace YggdrAshill.Nuadha
         IGenerator<TSignal>
         where TSignal : ISignal
     {
-        private readonly ISource<TSignal> source;
+        private readonly Connector<TSignal> connector;
 
-        private readonly IConnector<TSignal> connector;
+        private readonly Emission emission;
+        
+        #region Constructor
 
-        public Generator(ISource<TSignal> source, IConnector<TSignal> connector)
+        public Generator(Func<TSignal> onEmitted)
         {
-            if (source == null)
+            if (onEmitted == null)
             {
-                throw new ArgumentNullException(nameof(source));
+                throw new ArgumentNullException(nameof(onEmitted));
             }
-            if (connector == null)
+            
+            connector = new Connector<TSignal>();
+
+            emission = new Emission(() =>
             {
-                throw new ArgumentNullException(nameof(connector));
-            }
+                var emitted = onEmitted.Invoke();
 
-            this.source = source;
-
-            this.connector = connector;
+                connector.Receive(emitted);
+            });
         }
+
+        public Generator()
+        {
+            connector = new Connector<TSignal>();
+
+            emission = new Emission();
+        }
+
+        #endregion
 
         #region IOutputTerminal
 
@@ -55,7 +66,7 @@ namespace YggdrAshill.Nuadha
 
         public IEmission Ignite()
         {
-            return source.Connect(connector);
+            return emission;
         }
 
         #endregion

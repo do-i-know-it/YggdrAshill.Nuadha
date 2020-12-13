@@ -1,4 +1,4 @@
-namespace YggdrAshill.Nuadha.Conduction
+namespace YggdrAshill.Nuadha.Signalization
 {
     public interface IEmission
     {
