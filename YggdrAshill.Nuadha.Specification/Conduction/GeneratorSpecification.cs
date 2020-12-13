@@ -11,11 +11,7 @@ namespace YggdrAshill.Nuadha.Specification
         [SetUp]
         public void SetUp()
         {
-            var source = new Source<Signal>(() => new Signal());
-
-            var connector = new Connector<Signal>();
-
-            generator = new Generator<Signal>(source, connector);
+            generator = new Generator<Signal>(() => new Signal());
         }
 
         [TearDown]
@@ -101,24 +97,13 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithNullSource()
+        public void CannotBeGeneratedWithNull()
         {
             var connector = new Connector<Signal>();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var generator = new Generator<Signal>(null, connector);
-            });
-        }
-
-        [Test]
-        public void CannotBeGeneratedWithNullConnector()
-        {
-            var source = new Source<Signal>();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var generator = new Generator<Signal>(source, null);
+                var generator = new Generator<Signal>(null);
             });
         }
 

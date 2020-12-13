@@ -1,5 +1,4 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Operation;
 using YggdrAshill.Nuadha.Signals;
 using System;
@@ -18,23 +17,6 @@ namespace YggdrAshill.Nuadha
         public static bool ToBoolean(this Touch signal)
         {
             return signal == Touch.Enabled;
-        }
-
-        public static IEmission Connect(this ISource<Touch> source, Action<bool> onReceived)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if (onReceived == null)
-            {
-                throw new ArgumentNullException(nameof(onReceived));
-            }
-
-            return source.Connect(signal =>
-            {
-                onReceived.Invoke(signal.ToBoolean());
-            });
         }
 
         public static IDisconnection Connect(this IOutputTerminal<Touch> terminal, Action<bool> onReceived)
@@ -94,23 +76,6 @@ namespace YggdrAshill.Nuadha
         public static bool ToBoolean(this Push signal)
         {
             return signal == Push.Enabled;
-        }
-
-        public static IEmission Connect(this ISource<Push> source, Action<bool> onReceived)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if (onReceived == null)
-            {
-                throw new ArgumentNullException(nameof(onReceived));
-            }
-
-            return source.Connect(signal =>
-            {
-                onReceived.Invoke(signal.ToBoolean());
-            });
         }
 
         public static IDisconnection Connect(this IOutputTerminal<Push> terminal, Action<bool> onReceived)
@@ -184,23 +149,6 @@ namespace YggdrAshill.Nuadha
             return signal.Strength;
         }
 
-        public static IEmission Connect(this ISource<Pull> source, Action<float> onReceived)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if (onReceived == null)
-            {
-                throw new ArgumentNullException(nameof(onReceived));
-            }
-
-            return source.Connect(signal =>
-            {
-                onReceived.Invoke(signal.ToSingle());
-            });
-        }
-
         public static IDisconnection Connect(this IOutputTerminal<Pull> terminal, Action<float> onReceived)
         {
             if (terminal == null)
@@ -252,23 +200,6 @@ namespace YggdrAshill.Nuadha
         public static float ToSingle(this Pupil signal)
         {
             return signal.Ratio;
-        }
-
-        public static IEmission Connect(this ISource<Pupil> source, Action<float> onReceived)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if (onReceived == null)
-            {
-                throw new ArgumentNullException(nameof(onReceived));
-            }
-
-            return source.Connect(signal =>
-            {
-                onReceived.Invoke(signal.ToSingle());
-            });
         }
 
         public static IDisconnection Connect(this IOutputTerminal<Pupil> terminal, Action<float> onReceived)
@@ -324,23 +255,6 @@ namespace YggdrAshill.Nuadha
             return signal.Ratio;
         }
 
-        public static IEmission Connect(this ISource<Blink> source, Action<float> onReceived)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if (onReceived == null)
-            {
-                throw new ArgumentNullException(nameof(onReceived));
-            }
-
-            return source.Connect(signal =>
-            {
-                onReceived.Invoke(signal.ToSingle());
-            });
-        }
-
         public static IDisconnection Connect(this IOutputTerminal<Blink> terminal, Action<float> onReceived)
         {
             if (terminal == null)
@@ -392,23 +306,6 @@ namespace YggdrAshill.Nuadha
         public static float ToSingle(this Angle signal)
         {
             return signal.Degree;
-        }
-
-        public static IEmission Connect(this ISource<Angle> source, Action<float> onReceived)
-        {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if (onReceived == null)
-            {
-                throw new ArgumentNullException(nameof(onReceived));
-            }
-
-            return source.Connect(signal =>
-            {
-                onReceived.Invoke(signal.ToSingle());
-            });
         }
 
         public static IDisconnection Connect(this IOutputTerminal<Angle> terminal, Action<float> onReceived)
