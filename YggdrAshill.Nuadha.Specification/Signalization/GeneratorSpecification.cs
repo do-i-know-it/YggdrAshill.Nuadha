@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldSendSignalToConnectedTerminalAfterHasIgnited()
+        public void ShouldSendSignalToConnectedAfterHasIgnited()
         {
             var expected = false;
             var terminal = new InputTerminal<Signal>(signal =>
@@ -47,7 +47,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldNotSendSignalToDisconnectedTerminalAfterHasIgnited()
+        public void ShouldNotSendSignalToDisconnectedAfterHasIgnited()
         {
             var expected = false;
             var terminal = new InputTerminal<Signal>(signal =>
