@@ -12,6 +12,16 @@ namespace YggdrAshill.Nuadha
     {
         private readonly IThreePointTrackerConfiguration configuration;
 
+        public ThreePointTrackerDevice(IThreePointTrackerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            this.configuration = configuration;
+        }
+
         #region IHardware
 
         public IDisconnection Connect(IThreePointTrackerHardwareHandler handler)
