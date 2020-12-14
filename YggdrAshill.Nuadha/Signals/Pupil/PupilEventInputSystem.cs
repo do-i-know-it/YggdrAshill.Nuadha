@@ -4,9 +4,9 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PupilEventSystem :
+    public sealed class PupilEventInputSystem :
         IInputTerminal<Pupil>,
-        IPupilEventHandler,
+        IPupilEventOutputHandler,
         IDisconnection
     {
         private readonly IConnector<Pupil> connector;
@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly IConnector<Pulse> isClosed;
 
-        public PupilEventSystem(HysteresisThreshold threshold)
+        public PupilEventInputSystem(HysteresisThreshold threshold)
         {
             connector = new Connector<Pupil>();
 
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha
             connector.Convert(threshold).Pulsate(PushToPulse.IsReleased).Connect(isClosed);
         }
 
-        #region IPupilEventHandler
+        #region IPupilEventOutputHandler
 
         public IOutputTerminal<Pulse> HasOpened => hasOpened;
 

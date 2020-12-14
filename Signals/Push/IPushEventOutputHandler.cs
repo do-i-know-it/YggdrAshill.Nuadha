@@ -4,12 +4,12 @@ using YggdrAshill.Nuadha.Unitization;
 
 namespace YggdrAshill.Nuadha.Signals
 {
-    public interface IPullEventHandler :
+    public interface IPushEventOutputHandler :
         ISoftwareHandler
     {
-        IOutputTerminal<Pulse> HasPulled { get; }
+        IOutputTerminal<Pulse> HasPushed { get; }
 
-        IOutputTerminal<Pulse> IsPulled { get; }
+        IOutputTerminal<Pulse> IsPushed { get; }
 
         IOutputTerminal<Pulse> HasReleased { get; }
 

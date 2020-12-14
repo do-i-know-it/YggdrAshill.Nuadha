@@ -3,32 +3,32 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class TiltEventSystem :
+    public sealed class TiltEventInputSystem :
         IInputTerminal<Tilt>,
-        ITiltEventHandler,
+        ITiltEventOutputHandler,
         IDisconnection
     {
         private readonly IConnector<Tilt> connector;
 
-        private readonly PullEventSystem center;
+        private readonly PullEventInputSystem center;
 
-        private readonly PullEventSystem left;
+        private readonly PullEventInputSystem left;
         
-        private readonly PullEventSystem right;
+        private readonly PullEventInputSystem right;
         
-        private readonly PullEventSystem up;
+        private readonly PullEventInputSystem up;
         
-        private readonly PullEventSystem down;
+        private readonly PullEventInputSystem down;
 
-        public TiltEventSystem(HysteresisThreshold threshold)
+        public TiltEventInputSystem(HysteresisThreshold threshold)
         {
             connector = new Connector<Tilt>();
 
-            center = new PullEventSystem(threshold);
-            left = new PullEventSystem(threshold);
-            right = new PullEventSystem(threshold);
-            up = new PullEventSystem(threshold);
-            down = new PullEventSystem(threshold);
+            center = new PullEventInputSystem(threshold);
+            left = new PullEventInputSystem(threshold);
+            right = new PullEventInputSystem(threshold);
+            up = new PullEventInputSystem(threshold);
+            down = new PullEventInputSystem(threshold);
 
             connector.Convert(TiltToPull.Tilted).Connect(center);
             connector.Convert(TiltToPull.Left).Connect(left);
@@ -37,17 +37,17 @@ namespace YggdrAshill.Nuadha
             connector.Convert(TiltToPull.Down).Connect(down);
         }
 
-        #region ITiltEventHandler
+        #region ITiltEventOutputHandler
 
-        public IPullEventHandler Center => center;
+        public IPullEventOutputHandler Center => center;
 
-        public IPullEventHandler Left => left;
+        public IPullEventOutputHandler Left => left;
 
-        public IPullEventHandler Right => right;
+        public IPullEventOutputHandler Right => right;
 
-        public IPullEventHandler Up => up;
+        public IPullEventOutputHandler Up => up;
 
-        public IPullEventHandler Down => down;
+        public IPullEventOutputHandler Down => down;
 
         #endregion
 

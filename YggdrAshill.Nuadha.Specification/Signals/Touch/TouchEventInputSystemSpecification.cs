@@ -1,20 +1,19 @@
 ﻿using NUnit.Framework;
-using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Operation;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(PushEventSystem))]
-    internal class PushEventSystemSpecification
+    [TestFixture(TestOf = typeof(TouchEventInputSystem))]
+    internal class TouchEventInputSystemSpecification
     {
-        private PushEventSystem system;
+        private TouchEventInputSystem system;
 
         [SetUp]
         public void SetUp()
         {
-            system = new PushEventSystem();
+            system = new TouchEventInputSystem();
         }
 
         [TearDown]
@@ -25,7 +24,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldPulsateWhenHasPushed()
+        public void ShouldPulsateWhenHasTouched()
         {
             var expected = false;
             var terminal = new InputTerminal<Pulse>(signal =>
@@ -38,10 +37,10 @@ namespace YggdrAshill.Nuadha.Specification
                 expected = true;
             });
 
-            var disconnection = system.HasPushed.Connect(terminal);
+            var disconnection = system.HasTouched.Connect(terminal);
 
-            system.Receive(Push.Disabled);
-            system.Receive(Push.Enabled);
+            system.Receive(Touch.Disabled);
+            system.Receive(Touch.Enabled);
 
             Assert.IsTrue(expected);
 
@@ -49,7 +48,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldPulsateWhenIsPushed()
+        public void ShouldPulsateWhenIsTouched()
         {
             var expected = false;
             var terminal = new InputTerminal<Pulse>(signal =>
@@ -62,10 +61,10 @@ namespace YggdrAshill.Nuadha.Specification
                 expected = true;
             });
 
-            var disconnection = system.IsPushed.Connect(terminal);
+            var disconnection = system.IsTouched.Connect(terminal);
 
-            system.Receive(Push.Enabled);
-            system.Receive(Push.Enabled);
+            system.Receive(Touch.Enabled);
+            system.Receive(Touch.Enabled);
 
             Assert.IsTrue(expected);
 
@@ -88,8 +87,8 @@ namespace YggdrAshill.Nuadha.Specification
 
             var disconnection = system.HasReleased.Connect(terminal);
 
-            system.Receive(Push.Enabled);
-            system.Receive(Push.Disabled);
+            system.Receive(Touch.Enabled);
+            system.Receive(Touch.Disabled);
 
             Assert.IsTrue(expected);
 
@@ -112,8 +111,8 @@ namespace YggdrAshill.Nuadha.Specification
 
             var disconnection = system.IsReleased.Connect(terminal);
 
-            system.Receive(Push.Disabled);
-            system.Receive(Push.Disabled);
+            system.Receive(Touch.Disabled);
+            system.Receive(Touch.Disabled);
 
             Assert.IsTrue(expected);
 

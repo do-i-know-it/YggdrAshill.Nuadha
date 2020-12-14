@@ -4,9 +4,9 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class BlinkEventSystem :
+    public sealed class BlinkEventInputSystem :
         IInputTerminal<Blink>,
-        IBlinkEventHandler,
+        IBlinkEventOutputHandler,
         IDisconnection
     {
         private readonly IConnector<Blink> connector;
@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly IConnector<Pulse> isClosed;
 
-        public BlinkEventSystem(HysteresisThreshold threshold)
+        public BlinkEventInputSystem(HysteresisThreshold threshold)
         {
             connector = new Connector<Blink>();
 
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha
             connector.Convert(threshold).Pulsate(PushToPulse.IsReleased).Connect(isClosed);
         }
 
-        #region IBlinkEventHandler
+        #region IBlinkEventOutputHandler
 
         public IOutputTerminal<Pulse> HasOpened => hasOpened;
 

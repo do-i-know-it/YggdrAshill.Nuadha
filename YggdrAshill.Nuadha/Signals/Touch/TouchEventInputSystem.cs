@@ -4,9 +4,9 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class TouchEventSystem :
+    public sealed class TouchEventInputSystem :
         IInputTerminal<Touch>,
-        ITouchEventHandler,
+        ITouchEventOutputHandler,
         IDisconnection
     {
         private readonly IConnector<Touch> connector;
@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         
         private readonly IConnector<Pulse> isReleased;
 
-        public TouchEventSystem()
+        public TouchEventInputSystem()
         {
             connector = new Connector<Touch>();
 
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha
             connector.Pulsate(TouchToPulse.IsReleased).Connect(isReleased);
         }
 
-        #region ITouchEventHandler
+        #region ITouchEventOutputHandler
 
         public IOutputTerminal<Pulse> HasTouched => hasTouched;
 

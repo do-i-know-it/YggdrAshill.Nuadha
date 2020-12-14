@@ -4,7 +4,7 @@ using YggdrAshill.Nuadha.Unitization;
 
 namespace YggdrAshill.Nuadha.Signals
 {
-    public interface IPupilEventHandler :
+    public interface IPupilEventOutputHandler :
         ISoftwareHandler
     {
         IOutputTerminal<Pulse> HasOpened { get; }

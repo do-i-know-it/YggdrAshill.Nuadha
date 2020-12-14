@@ -4,9 +4,9 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PushEventSystem :
+    public sealed class PushEventInputSystem :
         IInputTerminal<Push>,
-        IPushEventHandler,
+        IPushEventOutputHandler,
         IDisconnection
     {
         private readonly IConnector<Push> connector;
@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly IConnector<Pulse> isReleased;
 
-        public PushEventSystem()
+        public PushEventInputSystem()
         {
             connector = new Connector<Push>();
 
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha
             connector.Pulsate(PushToPulse.IsReleased).Connect(isReleased);
         }
 
-        #region IPushEventHandler
+        #region IPushEventOutputHandler
 
         public IOutputTerminal<Pulse> HasPushed => hasPushed;
 
