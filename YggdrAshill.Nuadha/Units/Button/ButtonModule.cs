@@ -9,9 +9,9 @@ namespace YggdrAshill.Nuadha
         IButtonHardwareHandler,
         IDisconnection
     {
-        private readonly IConnector<Touch> touch = new Connector<Touch>();
+        private readonly Connector<Touch> touch = new Connector<Touch>();
 
-        private readonly IConnector<Push> push = new Connector<Push>();
+        private readonly Connector<Push> push = new Connector<Push>();
 
         #region IButtonSoftwareHandler
 
