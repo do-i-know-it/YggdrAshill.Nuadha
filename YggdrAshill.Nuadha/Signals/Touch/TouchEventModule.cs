@@ -25,7 +25,7 @@ namespace YggdrAshill.Nuadha
 
         IInputTerminal<Pulse> ITouchEventInputHandler.HasReleased => hasReleased;
 
-        IInputTerminal<Pulse> ITouchEventInputHandler.IsReleased => isReleased);
+        IInputTerminal<Pulse> ITouchEventInputHandler.IsReleased => isReleased;
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace YggdrAshill.Nuadha
 
         IOutputTerminal<Pulse> ITouchEventOutputHandler.HasReleased => hasReleased;
 
-        IOutputTerminal<Pulse> ITouchEventOutputHandler.IsReleased => isReleased);
+        IOutputTerminal<Pulse> ITouchEventOutputHandler.IsReleased => isReleased;
 
         #endregion
 

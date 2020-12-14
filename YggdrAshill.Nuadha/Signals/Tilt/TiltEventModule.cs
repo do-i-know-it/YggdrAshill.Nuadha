@@ -5,6 +5,7 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class TiltEventModule :
         ITiltEventInputHandler,
+        ITiltEventOutputHandler,
         IDisconnection
     {
         private readonly PullEventModule center = new PullEventModule();
@@ -28,6 +29,20 @@ namespace YggdrAshill.Nuadha
         IPullEventInputHandler ITiltEventInputHandler.Up => up;
 
         IPullEventInputHandler ITiltEventInputHandler.Down => down;
+
+        #endregion
+
+        #region ITiltEventOutputHandler
+
+        IPullEventOutputHandler ITiltEventOutputHandler.Center => center;
+
+        IPullEventOutputHandler ITiltEventOutputHandler.Left => left;
+
+        IPullEventOutputHandler ITiltEventOutputHandler.Right => right;
+
+        IPullEventOutputHandler ITiltEventOutputHandler.Up => up;
+
+        IPullEventOutputHandler ITiltEventOutputHandler.Down => down;
 
         #endregion
 
