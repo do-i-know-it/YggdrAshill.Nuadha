@@ -9,15 +9,15 @@ namespace YggdrAshill.Nuadha
         IPullEventOutputHandler,
         IDisconnection
     {
-        private readonly IConnector<Pull> connector;
+        private readonly Connector<Pull> connector;
 
-        private readonly IConnector<Pulse> hasPulled;
+        private readonly Connector<Pulse> hasPulled;
 
-        private readonly IConnector<Pulse> isPulled;
+        private readonly Connector<Pulse> isPulled;
 
-        private readonly IConnector<Pulse> hasReleased;
+        private readonly Connector<Pulse> hasReleased;
 
-        private readonly IConnector<Pulse> isReleased;
+        private readonly Connector<Pulse> isReleased;
 
         public PullEventInputSystem(HysteresisThreshold threshold)
         {

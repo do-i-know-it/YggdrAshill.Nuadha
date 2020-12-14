@@ -9,15 +9,15 @@ namespace YggdrAshill.Nuadha
         ITouchEventOutputHandler,
         IDisconnection
     {
-        private readonly IConnector<Touch> connector;
+        private readonly Connector<Touch> connector;
 
-        private readonly IConnector<Pulse> hasTouched;
+        private readonly Connector<Pulse> hasTouched;
 
-        private readonly IConnector<Pulse> isTouched;
+        private readonly Connector<Pulse> isTouched;
         
-        private readonly IConnector<Pulse> hasReleased;
+        private readonly Connector<Pulse> hasReleased;
         
-        private readonly IConnector<Pulse> isReleased;
+        private readonly Connector<Pulse> isReleased;
 
         public TouchEventInputSystem()
         {

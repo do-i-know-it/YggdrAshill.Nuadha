@@ -8,7 +8,7 @@ namespace YggdrAshill.Nuadha
         ITiltEventOutputHandler,
         IDisconnection
     {
-        private readonly IConnector<Tilt> connector;
+        private readonly Connector<Tilt> connector;
 
         private readonly PullEventInputSystem center;
 

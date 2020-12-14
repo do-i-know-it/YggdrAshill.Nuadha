@@ -9,15 +9,15 @@ namespace YggdrAshill.Nuadha
         IPushEventOutputHandler,
         IDisconnection
     {
-        private readonly IConnector<Push> connector;
+        private readonly Connector<Push> connector;
 
-        private readonly IConnector<Pulse> hasPushed;
+        private readonly Connector<Pulse> hasPushed;
 
-        private readonly IConnector<Pulse> isPushed;
+        private readonly Connector<Pulse> isPushed;
 
-        private readonly IConnector<Pulse> hasReleased;
+        private readonly Connector<Pulse> hasReleased;
 
-        private readonly IConnector<Pulse> isReleased;
+        private readonly Connector<Pulse> isReleased;
 
         public PushEventInputSystem()
         {

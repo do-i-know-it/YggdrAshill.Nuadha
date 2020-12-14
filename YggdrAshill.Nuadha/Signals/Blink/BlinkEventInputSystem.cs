@@ -9,15 +9,15 @@ namespace YggdrAshill.Nuadha
         IBlinkEventOutputHandler,
         IDisconnection
     {
-        private readonly IConnector<Blink> connector;
+        private readonly Connector<Blink> connector;
 
-        private readonly IConnector<Pulse> hasOpened;
+        private readonly Connector<Pulse> hasOpened;
 
-        private readonly IConnector<Pulse> isOpened;
+        private readonly Connector<Pulse> isOpened;
 
-        private readonly IConnector<Pulse> hasClosed;
+        private readonly Connector<Pulse> hasClosed;
 
-        private readonly IConnector<Pulse> isClosed;
+        private readonly Connector<Pulse> isClosed;
 
         public BlinkEventInputSystem(HysteresisThreshold threshold)
         {
