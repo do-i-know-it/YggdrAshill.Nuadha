@@ -9,11 +9,11 @@ namespace YggdrAshill.Nuadha
         IStickHardwareHandler,
         IDisconnection
     {
-        private readonly IConnector<Touch> touch = new Connector<Touch>();
+        private readonly Connector<Touch> touch = new Connector<Touch>();
 
-        private readonly IConnector<Push> push = new Connector<Push>();
+        private readonly Connector<Push> push = new Connector<Push>();
 
-        private readonly IConnector<Tilt> tilt = new Connector<Tilt>();
+        private readonly Connector<Tilt> tilt = new Connector<Tilt>();
 
         #region IStickSoftwareHandler
 

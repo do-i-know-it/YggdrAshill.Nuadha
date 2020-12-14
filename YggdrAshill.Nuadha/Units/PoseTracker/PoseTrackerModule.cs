@@ -9,9 +9,9 @@ namespace YggdrAshill.Nuadha
         IPoseTrackerHardwareHandler,
         IDisconnection
     {
-        private readonly IConnector<Position> position = new Connector<Position>();
+        private readonly Connector<Position> position = new Connector<Position>();
 
-        private readonly IConnector<Rotation> rotation = new Connector<Rotation>();
+        private readonly Connector<Rotation> rotation = new Connector<Rotation>();
 
         #region IPoseTrackerSoftwareHandler
 

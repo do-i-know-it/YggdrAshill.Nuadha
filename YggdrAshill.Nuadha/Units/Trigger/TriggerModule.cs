@@ -9,9 +9,9 @@ namespace YggdrAshill.Nuadha
         ITriggerHardwareHandler,
         IDisconnection
     {
-        private readonly IConnector<Touch> touch = new Connector<Touch>();
+        private readonly Connector<Touch> touch = new Connector<Touch>();
 
-        private readonly IConnector<Pull> pull = new Connector<Pull>();
+        private readonly Connector<Pull> pull = new Connector<Pull>();
 
         #region ITriggerSoftwareHandler
 

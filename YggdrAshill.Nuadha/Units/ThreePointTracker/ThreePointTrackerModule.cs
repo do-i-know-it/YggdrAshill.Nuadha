@@ -24,7 +24,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IThreePointTrackerHardwareHandler
+        #region IThreePointTrackerSoftwareHandler
 
         IHeadsetSoftwareHandler IThreePointTrackerSoftwareHandler.Head => head;
 

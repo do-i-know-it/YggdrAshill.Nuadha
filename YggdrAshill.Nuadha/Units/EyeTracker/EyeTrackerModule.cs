@@ -9,9 +9,9 @@ namespace YggdrAshill.Nuadha
         IEyeTrackerHardwareHandler,
         IDisconnection
     {
-        private readonly IConnector<Pupil> pupil = new Connector<Pupil>();
+        private readonly Connector<Pupil> pupil = new Connector<Pupil>();
 
-        private readonly IConnector<Blink> blink = new Connector<Blink>();
+        private readonly Connector<Blink> blink = new Connector<Blink>();
 
         #region IEyeTrackerSoftwareHandler
 

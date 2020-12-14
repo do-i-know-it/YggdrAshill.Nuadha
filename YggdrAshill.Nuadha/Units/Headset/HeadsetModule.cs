@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
         IHeadsetHardwareHandler,
         IDisconnection
     {
-        private readonly IConnector<Direction> direction = new Connector<Direction>();
+        private readonly Connector<Direction> direction = new Connector<Direction>();
 
         private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
         
