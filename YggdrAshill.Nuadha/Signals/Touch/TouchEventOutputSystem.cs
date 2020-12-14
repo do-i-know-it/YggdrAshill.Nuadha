@@ -10,6 +10,16 @@ namespace YggdrAshill.Nuadha
     {
         private readonly ITouchEventInputHandler inputHandler;
 
+        public TouchEventOutputSystem(ITouchEventInputHandler inputHandler)
+        {
+            if (inputHandler == null)
+            {
+                throw new ArgumentNullException(nameof(inputHandler));
+            }
+
+            this.inputHandler = inputHandler;
+        }
+
         public IDisconnection Connect(ITouchEventOutputHandler handler)
         {
             if (handler == null)

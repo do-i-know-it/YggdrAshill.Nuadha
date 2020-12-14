@@ -10,6 +10,16 @@ namespace YggdrAshill.Nuadha
     {
         private readonly ITiltEventInputHandler inputHandler;
 
+        public TiltEventOutputSystem(ITiltEventInputHandler inputHandler)
+        {
+            if (inputHandler == null)
+            {
+                throw new ArgumentNullException(nameof(inputHandler));
+            }
+
+            this.inputHandler = inputHandler;
+        }
+
         public IDisconnection Connect(ITiltEventOutputHandler handler)
         {
             if (handler == null)

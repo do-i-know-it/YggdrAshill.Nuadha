@@ -10,6 +10,16 @@ namespace YggdrAshill.Nuadha
     {
         private readonly IPullEventInputHandler inputHandler;
 
+        public PullEventOutputSystem(IPullEventInputHandler inputHandler)
+        {
+            if (inputHandler == null)
+            {
+                throw new ArgumentNullException(nameof(inputHandler));
+            }
+
+            this.inputHandler = inputHandler;
+        }
+
         public IDisconnection Connect(IPullEventOutputHandler handler)
         {
             if (handler == null)
