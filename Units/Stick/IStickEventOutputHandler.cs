@@ -3,10 +3,10 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IStickEventHandler :
+    public interface IStickEventOutputHandler :
         ISoftwareHandler,
-        IButtonEventHandler
+        IButtonEventOutputHandler
     {
-        ITiltEventHandler Tilt { get; }
+        ITiltEventOutputHandler Tilt { get; }
     }
 }

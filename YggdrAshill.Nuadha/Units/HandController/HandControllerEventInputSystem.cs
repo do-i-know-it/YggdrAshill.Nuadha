@@ -5,33 +5,33 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class HandControllerEventSystem :
+    public sealed class HandControllerEventInputSystem :
         ISoftware<IHandControllerSoftwareHandler>,
-        IHandControllerEventHandler,
+        IHandControllerEventOutputHandler,
         IDisconnection
     {
-        private readonly StickEventSystem thumbStick;
+        private readonly StickEventInputSystem thumbStick;
 
-        private readonly TriggerEventSystem fingerTrigger;
+        private readonly TriggerEventInputSystem fingerTrigger;
         
-        private readonly TriggerEventSystem handTrigger;
+        private readonly TriggerEventInputSystem handTrigger;
 
-        public HandControllerEventSystem(HysteresisThreshold thumbStick, HysteresisThreshold fingerTrigger, HysteresisThreshold handTrigger)
+        public HandControllerEventInputSystem(HysteresisThreshold thumbStick, HysteresisThreshold fingerTrigger, HysteresisThreshold handTrigger)
         {
-            this.thumbStick = new StickEventSystem(thumbStick);
+            this.thumbStick = new StickEventInputSystem(thumbStick);
             
-            this.fingerTrigger = new TriggerEventSystem(fingerTrigger);
+            this.fingerTrigger = new TriggerEventInputSystem(fingerTrigger);
             
-            this.handTrigger = new TriggerEventSystem(handTrigger);
+            this.handTrigger = new TriggerEventInputSystem(handTrigger);
         }
 
-        #region IHandControllerEventHandler
+        #region IHandControllerEventOutputHandler
 
-        public IStickEventHandler ThumbStick => thumbStick;
+        public IStickEventOutputHandler ThumbStick => thumbStick;
 
-        public ITriggerEventHandler FingerTrigger => fingerTrigger;
+        public ITriggerEventOutputHandler FingerTrigger => fingerTrigger;
 
-        public ITriggerEventHandler HandTrigger => handTrigger;
+        public ITriggerEventOutputHandler HandTrigger => handTrigger;
 
         #endregion
 

@@ -3,11 +3,11 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IButtonEventHandler :
+    public interface ITriggerEventOutputHandler :
         ISoftwareHandler
     {
-        ITouchEventHandler Touch { get; }
+        ITouchEventOutputHandler Touch { get; }
 
-        IPushEventHandler Push { get; }
+        IPullEventOutputHandler Pull { get; }
     }
 }

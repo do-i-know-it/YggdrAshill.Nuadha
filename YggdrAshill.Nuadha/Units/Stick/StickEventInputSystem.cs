@@ -6,33 +6,33 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class StickEventSystem :
+    public sealed class StickEventInputSystem :
         ISoftware<IStickSoftwareHandler>,
-        IStickEventHandler,
+        IStickEventOutputHandler,
         IDisconnection
     {
-        private readonly TouchEventSystem touch;
+        private readonly TouchEventInputSystem touch;
         
-        private readonly PushEventSystem push;
+        private readonly PushEventInputSystem push;
 
-        private readonly TiltEventSystem tilt;
+        private readonly TiltEventInputSystem tilt;
 
-        public StickEventSystem(HysteresisThreshold threshold)
+        public StickEventInputSystem(HysteresisThreshold threshold)
         {
-            touch = new TouchEventSystem();
+            touch = new TouchEventInputSystem();
 
-            push = new PushEventSystem();
+            push = new PushEventInputSystem();
             
-            tilt = new TiltEventSystem(threshold);
+            tilt = new TiltEventInputSystem(threshold);
         }
 
-        #region IButtonEventHandler
+        #region IStickEventOutputHandler
 
-        public ITouchEventHandler Touch => touch;
+        public ITouchEventOutputHandler Touch => touch;
 
-        public IPushEventHandler Push => push;
+        public IPushEventOutputHandler Push => push;
 
-        public ITiltEventHandler Tilt => tilt;
+        public ITiltEventOutputHandler Tilt => tilt;
 
         #endregion
 

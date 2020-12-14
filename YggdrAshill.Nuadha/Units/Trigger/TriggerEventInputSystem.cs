@@ -6,33 +6,33 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class ButtonEventSystem :
-        ISoftware<IButtonSoftwareHandler>,
-        IButtonEventHandler,
+    public sealed class TriggerEventInputSystem :
+        ISoftware<ITriggerSoftwareHandler>,
+        ITriggerEventOutputHandler,
         IDisconnection
     {
-        private readonly TouchEventSystem touch;
+        private readonly TouchEventInputSystem touch;
 
-        private readonly PushEventSystem push;
+        private readonly PullEventInputSystem pull;
 
-        public ButtonEventSystem()
+        public TriggerEventInputSystem(HysteresisThreshold threshold)
         {
-            touch = new TouchEventSystem();
+            touch = new TouchEventInputSystem();
 
-            push = new PushEventSystem();
+            pull = new PullEventInputSystem(threshold);
         }
 
-        #region IButtonEventHandler
+        #region ITriggerEventOutputHandler
 
-        public ITouchEventHandler Touch => touch;
+        public ITouchEventOutputHandler Touch => touch;
 
-        public IPushEventHandler Push => push;
+        public IPullEventOutputHandler Pull => pull;
 
         #endregion
 
         #region ISoftware
 
-        public IDisconnection Connect(IButtonSoftwareHandler handler)
+        public IDisconnection Connect(ITriggerSoftwareHandler handler)
         {
             if (handler == null)
             {
@@ -41,13 +41,13 @@ namespace YggdrAshill.Nuadha
 
             var touch = handler.Touch.Connect(this.touch);
 
-            var push = handler.Push.Connect(this.push);
+            var pull = handler.Pull.Connect(this.pull);
 
             return new Disconnection(() =>
             {
                 touch.Disconnect();
 
-                push.Disconnect();
+                pull.Disconnect();
             });
         }
 
@@ -59,7 +59,7 @@ namespace YggdrAshill.Nuadha
         {
             touch.Disconnect();
 
-            push.Disconnect();
+            pull.Disconnect();
         }
 
         #endregion

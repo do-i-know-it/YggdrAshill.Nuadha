@@ -6,27 +6,27 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class EyeTrackerEventSystem :
+    public sealed class EyeTrackerEventInputSystem :
         ISoftware<IEyeTrackerSoftwareHandler>,
-        IEyeTrackerEventHandler,
+        IEyeTrackerEventOutputHandler,
         IDisconnection
     {
-        private readonly PupilEventSystem pupil;
+        private readonly PupilEventInputSystem pupil;
 
-        private readonly BlinkEventSystem blink;
+        private readonly BlinkEventInputSystem blink;
 
-        public EyeTrackerEventSystem(HysteresisThreshold pupil, HysteresisThreshold blink)
+        public EyeTrackerEventInputSystem(HysteresisThreshold pupil, HysteresisThreshold blink)
         {
-            this.pupil = new PupilEventSystem(pupil);
+            this.pupil = new PupilEventInputSystem(pupil);
 
-            this.blink = new BlinkEventSystem(blink);
+            this.blink = new BlinkEventInputSystem(blink);
         }
 
         #region IEyeTrackerEventHandler
 
-        public IPupilEventHandler Pupil => pupil;
+        public IPupilEventOutputHandler Pupil => pupil;
 
-        public IBlinkEventHandler Blink => blink;
+        public IBlinkEventOutputHandler Blink => blink;
 
         #endregion
 
