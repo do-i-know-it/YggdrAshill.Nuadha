@@ -1,5 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -20,15 +21,20 @@ namespace YggdrAshill.Nuadha
         
         private readonly PullEventInputSystem down;
 
-        public TiltEventInputSystem(HysteresisThreshold threshold)
+        public TiltEventInputSystem(ITiltThreshold threshold)
         {
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
+
             connector = new Connector<Tilt>();
 
-            center = new PullEventInputSystem(threshold);
-            left = new PullEventInputSystem(threshold);
-            right = new PullEventInputSystem(threshold);
-            up = new PullEventInputSystem(threshold);
-            down = new PullEventInputSystem(threshold);
+            center = new PullEventInputSystem(threshold.Center);
+            left = new PullEventInputSystem(threshold.Left);
+            right = new PullEventInputSystem(threshold.Right);
+            up = new PullEventInputSystem(threshold.Up);
+            down = new PullEventInputSystem(threshold.Down);
 
             connector.Convert(TiltToPull.Tilted).Connect(center);
             connector.Convert(TiltToPull.Left).Connect(left);
