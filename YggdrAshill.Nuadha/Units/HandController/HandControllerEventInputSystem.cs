@@ -16,13 +16,18 @@ namespace YggdrAshill.Nuadha
         
         private readonly TriggerEventInputSystem handTrigger;
 
-        public HandControllerEventInputSystem(HysteresisThreshold thumbStick, HysteresisThreshold fingerTrigger, HysteresisThreshold handTrigger)
+        public HandControllerEventInputSystem(IHandControllerThreshold threshold)
         {
-            this.thumbStick = new StickEventInputSystem(thumbStick);
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
+
+            thumbStick = new StickEventInputSystem(threshold.ThumbStick);
             
-            this.fingerTrigger = new TriggerEventInputSystem(fingerTrigger);
+            fingerTrigger = new TriggerEventInputSystem(threshold.FingerTrigger);
             
-            this.handTrigger = new TriggerEventInputSystem(handTrigger);
+            handTrigger = new TriggerEventInputSystem(threshold.HandTrigger);
         }
 
         #region IHandControllerEventOutputHandler

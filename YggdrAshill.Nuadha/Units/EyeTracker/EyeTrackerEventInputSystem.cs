@@ -15,11 +15,16 @@ namespace YggdrAshill.Nuadha
 
         private readonly BlinkEventInputSystem blink;
 
-        public EyeTrackerEventInputSystem(HysteresisThreshold pupil, HysteresisThreshold blink)
+        public EyeTrackerEventInputSystem(IEyeTrackerThreshold threshold)
         {
-            this.pupil = new PupilEventInputSystem(pupil);
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
 
-            this.blink = new BlinkEventInputSystem(blink);
+            pupil = new PupilEventInputSystem(threshold.Pupil);
+
+            blink = new BlinkEventInputSystem(threshold.Blink);
         }
 
         #region IEyeTrackerEventHandler
