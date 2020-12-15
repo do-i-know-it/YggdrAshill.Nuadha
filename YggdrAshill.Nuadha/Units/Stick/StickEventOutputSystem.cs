@@ -52,15 +52,15 @@ namespace YggdrAshill.Nuadha
             var rightHasReleased = handler.Tilt.Right.HasReleased.Connect(inputHandler.Tilt.Right.HasReleased);
             var rightIsReleased = handler.Tilt.Right.IsReleased.Connect(inputHandler.Tilt.Right.IsReleased);
 
-            var upHasPulled = handler.Tilt.Up.HasPulled.Connect(inputHandler.Tilt.Up.HasPulled);
-            var upIsPulled = handler.Tilt.Up.IsPulled.Connect(inputHandler.Tilt.Up.IsPulled);
-            var upHasReleased = handler.Tilt.Up.HasReleased.Connect(inputHandler.Tilt.Up.HasReleased);
-            var upIsReleased = handler.Tilt.Up.IsReleased.Connect(inputHandler.Tilt.Up.IsReleased);
+            var forwardHasPulled = handler.Tilt.Forward.HasPulled.Connect(inputHandler.Tilt.Forward.HasPulled);
+            var forwardIsPulled = handler.Tilt.Forward.IsPulled.Connect(inputHandler.Tilt.Forward.IsPulled);
+            var forwardHasReleased = handler.Tilt.Forward.HasReleased.Connect(inputHandler.Tilt.Forward.HasReleased);
+            var forwardIsReleased = handler.Tilt.Forward.IsReleased.Connect(inputHandler.Tilt.Forward.IsReleased);
 
-            var downHasPulled = handler.Tilt.Down.HasPulled.Connect(inputHandler.Tilt.Down.HasPulled);
-            var downIsPulled = handler.Tilt.Down.IsPulled.Connect(inputHandler.Tilt.Down.IsPulled);
-            var downHasReleased = handler.Tilt.Down.HasReleased.Connect(inputHandler.Tilt.Down.HasReleased);
-            var downIsReleased = handler.Tilt.Down.IsReleased.Connect(inputHandler.Tilt.Down.IsReleased);
+            var backwardHasPulled = handler.Tilt.Backward.HasPulled.Connect(inputHandler.Tilt.Backward.HasPulled);
+            var backwardIsPulled = handler.Tilt.Backward.IsPulled.Connect(inputHandler.Tilt.Backward.IsPulled);
+            var backwardHasReleased = handler.Tilt.Backward.HasReleased.Connect(inputHandler.Tilt.Backward.HasReleased);
+            var backwardIsReleased = handler.Tilt.Backward.IsReleased.Connect(inputHandler.Tilt.Backward.IsReleased);
 
             return new Disconnection(() =>
             {
@@ -89,15 +89,15 @@ namespace YggdrAshill.Nuadha
                 rightHasReleased.Disconnect();
                 rightIsReleased.Disconnect();
 
-                upHasPulled.Disconnect();
-                upIsPulled.Disconnect();
-                upHasReleased.Disconnect();
-                upIsReleased.Disconnect();
+                forwardHasPulled.Disconnect();
+                forwardIsPulled.Disconnect();
+                forwardHasReleased.Disconnect();
+                forwardIsReleased.Disconnect();
 
-                downHasPulled.Disconnect();
-                downIsPulled.Disconnect();
-                downHasReleased.Disconnect();
-                downIsReleased.Disconnect();
+                backwardHasPulled.Disconnect();
+                backwardIsPulled.Disconnect();
+                backwardHasReleased.Disconnect();
+                backwardIsReleased.Disconnect();
             });
         }
     }

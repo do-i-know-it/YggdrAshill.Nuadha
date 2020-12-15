@@ -17,9 +17,9 @@ namespace YggdrAshill.Nuadha
         
         private readonly PullEventInputSystem right;
         
-        private readonly PullEventInputSystem up;
+        private readonly PullEventInputSystem forward;
         
-        private readonly PullEventInputSystem down;
+        private readonly PullEventInputSystem backward;
 
         public TiltEventInputSystem(ITiltThreshold threshold)
         {
@@ -33,14 +33,14 @@ namespace YggdrAshill.Nuadha
             center = new PullEventInputSystem(threshold.Center);
             left = new PullEventInputSystem(threshold.Left);
             right = new PullEventInputSystem(threshold.Right);
-            up = new PullEventInputSystem(threshold.Up);
-            down = new PullEventInputSystem(threshold.Down);
+            forward = new PullEventInputSystem(threshold.Forward);
+            backward = new PullEventInputSystem(threshold.Backward);
 
             connector.Convert(TiltToPull.Tilted).Connect(center);
             connector.Convert(TiltToPull.Left).Connect(left);
             connector.Convert(TiltToPull.Right).Connect(right);
-            connector.Convert(TiltToPull.Up).Connect(up);
-            connector.Convert(TiltToPull.Down).Connect(down);
+            connector.Convert(TiltToPull.Up).Connect(forward);
+            connector.Convert(TiltToPull.Down).Connect(backward);
         }
 
         #region ITiltEventOutputHandler
@@ -51,9 +51,9 @@ namespace YggdrAshill.Nuadha
 
         public IPullEventOutputHandler Right => right;
 
-        public IPullEventOutputHandler Up => up;
+        public IPullEventOutputHandler Forward => forward;
 
-        public IPullEventOutputHandler Down => down;
+        public IPullEventOutputHandler Backward => backward;
 
         #endregion
 
@@ -78,9 +78,9 @@ namespace YggdrAshill.Nuadha
 
             right.Disconnect();
 
-            up.Disconnect();
+            forward.Disconnect();
             
-            down.Disconnect();
+            backward.Disconnect();
         }
 
         #endregion

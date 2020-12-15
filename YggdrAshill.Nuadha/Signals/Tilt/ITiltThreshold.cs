@@ -8,8 +8,8 @@
 
         HysteresisThreshold Right { get; }
 
-        HysteresisThreshold Up { get; }
+        HysteresisThreshold Forward { get; }
 
-        HysteresisThreshold Down { get; }
+        HysteresisThreshold Backward { get; }
     }
 }
