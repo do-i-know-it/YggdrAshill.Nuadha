@@ -1,5 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -16,25 +17,30 @@ namespace YggdrAshill.Nuadha
         
         private readonly PullEventInputSystem right;
         
-        private readonly PullEventInputSystem up;
+        private readonly PullEventInputSystem forward;
         
-        private readonly PullEventInputSystem down;
+        private readonly PullEventInputSystem backward;
 
-        public TiltEventInputSystem(HysteresisThreshold threshold)
+        public TiltEventInputSystem(ITiltThreshold threshold)
         {
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
+
             connector = new Connector<Tilt>();
 
-            center = new PullEventInputSystem(threshold);
-            left = new PullEventInputSystem(threshold);
-            right = new PullEventInputSystem(threshold);
-            up = new PullEventInputSystem(threshold);
-            down = new PullEventInputSystem(threshold);
+            center = new PullEventInputSystem(threshold.Center);
+            left = new PullEventInputSystem(threshold.Left);
+            right = new PullEventInputSystem(threshold.Right);
+            forward = new PullEventInputSystem(threshold.Forward);
+            backward = new PullEventInputSystem(threshold.Backward);
 
             connector.Convert(TiltToPull.Tilted).Connect(center);
             connector.Convert(TiltToPull.Left).Connect(left);
             connector.Convert(TiltToPull.Right).Connect(right);
-            connector.Convert(TiltToPull.Up).Connect(up);
-            connector.Convert(TiltToPull.Down).Connect(down);
+            connector.Convert(TiltToPull.Up).Connect(forward);
+            connector.Convert(TiltToPull.Down).Connect(backward);
         }
 
         #region ITiltEventOutputHandler
@@ -45,9 +51,9 @@ namespace YggdrAshill.Nuadha
 
         public IPullEventOutputHandler Right => right;
 
-        public IPullEventOutputHandler Up => up;
+        public IPullEventOutputHandler Forward => forward;
 
-        public IPullEventOutputHandler Down => down;
+        public IPullEventOutputHandler Backward => backward;
 
         #endregion
 
@@ -72,9 +78,9 @@ namespace YggdrAshill.Nuadha
 
             right.Disconnect();
 
-            up.Disconnect();
+            forward.Disconnect();
             
-            down.Disconnect();
+            backward.Disconnect();
         }
 
         #endregion

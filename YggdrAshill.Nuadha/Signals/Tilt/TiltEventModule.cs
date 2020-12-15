@@ -14,9 +14,9 @@ namespace YggdrAshill.Nuadha
         
         private readonly PullEventModule right = new PullEventModule();
         
-        private readonly PullEventModule up = new PullEventModule();
+        private readonly PullEventModule forward = new PullEventModule();
         
-        private readonly PullEventModule down = new PullEventModule();
+        private readonly PullEventModule backward = new PullEventModule();
 
         #region ITiltEventInputHandler
 
@@ -26,9 +26,9 @@ namespace YggdrAshill.Nuadha
 
         IPullEventInputHandler ITiltEventInputHandler.Right => right;
 
-        IPullEventInputHandler ITiltEventInputHandler.Up => up;
+        IPullEventInputHandler ITiltEventInputHandler.Forward => forward;
 
-        IPullEventInputHandler ITiltEventInputHandler.Down => down;
+        IPullEventInputHandler ITiltEventInputHandler.Backward => backward;
 
         #endregion
 
@@ -40,9 +40,9 @@ namespace YggdrAshill.Nuadha
 
         IPullEventOutputHandler ITiltEventOutputHandler.Right => right;
 
-        IPullEventOutputHandler ITiltEventOutputHandler.Up => up;
+        IPullEventOutputHandler ITiltEventOutputHandler.Forward => forward;
 
-        IPullEventOutputHandler ITiltEventOutputHandler.Down => down;
+        IPullEventOutputHandler ITiltEventOutputHandler.Backward => backward;
 
         #endregion
 
@@ -56,9 +56,9 @@ namespace YggdrAshill.Nuadha
 
             right.Disconnect();
 
-            up.Disconnect();
+            forward.Disconnect();
          
-            down.Disconnect();
+            backward.Disconnect();
         }
 
         #endregion

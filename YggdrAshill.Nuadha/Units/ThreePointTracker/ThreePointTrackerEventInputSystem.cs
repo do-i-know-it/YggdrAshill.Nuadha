@@ -16,18 +16,18 @@ namespace YggdrAshill.Nuadha
         
         private readonly HandControllerEventInputSystem rightHand;
 
-        public ThreePointTrackerEventInputSystem(
-            HysteresisThreshold pupil, 
-            HysteresisThreshold blink, 
-            HysteresisThreshold thumbStick, 
-            HysteresisThreshold fingerTrigger, 
-            HysteresisThreshold handTrigger)
+        public ThreePointTrackerEventInputSystem(IThreePointTrackerThreshold threshold)
         {
-            head = new HeadsetEventInputSystem(pupil, blink);
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
 
-            leftHand = new HandControllerEventInputSystem(thumbStick, fingerTrigger, handTrigger);
+            head = new HeadsetEventInputSystem(threshold.Head);
 
-            rightHand = new HandControllerEventInputSystem(thumbStick, fingerTrigger, handTrigger);
+            leftHand = new HandControllerEventInputSystem(threshold.LeftHand);
+
+            rightHand = new HandControllerEventInputSystem(threshold.RightHand);
         }
 
         #region IThreePointTrackerEventHandler

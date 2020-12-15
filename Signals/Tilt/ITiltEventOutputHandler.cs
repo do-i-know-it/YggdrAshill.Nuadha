@@ -11,8 +11,8 @@ namespace YggdrAshill.Nuadha.Signals
 
         IPullEventOutputHandler Right { get; }
 
-        IPullEventOutputHandler Up { get; }
+        IPullEventOutputHandler Forward { get; }
 
-        IPullEventOutputHandler Down { get; }
+        IPullEventOutputHandler Backward { get; }
     }
 }

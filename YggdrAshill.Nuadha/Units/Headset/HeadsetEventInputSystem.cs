@@ -14,11 +14,16 @@ namespace YggdrAshill.Nuadha
 
         private readonly EyeTrackerEventInputSystem rightEye;
 
-        public HeadsetEventInputSystem(HysteresisThreshold pupil, HysteresisThreshold blink)
+        public HeadsetEventInputSystem(IHeadsetThreshold threshold)
         {
-            leftEye = new  EyeTrackerEventInputSystem(pupil, blink);
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
 
-            rightEye = new  EyeTrackerEventInputSystem(pupil, blink);
+            leftEye = new  EyeTrackerEventInputSystem(threshold.LeftEye);
+
+            rightEye = new  EyeTrackerEventInputSystem(threshold.RightEye);
         }
 
         #region IHeadsetEventOutputHandler

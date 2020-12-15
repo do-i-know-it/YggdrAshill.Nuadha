@@ -42,15 +42,15 @@ namespace YggdrAshill.Nuadha
             var rightHasReleased = handler.Right.HasReleased.Connect(inputHandler.Right.HasReleased);
             var rightIsReleased = handler.Right.IsReleased.Connect(inputHandler.Right.IsReleased);
 
-            var upHasPulled = handler.Up.HasPulled.Connect(inputHandler.Up.HasPulled);
-            var upIsPulled = handler.Up.IsPulled.Connect(inputHandler.Up.IsPulled);
-            var upHasReleased = handler.Up.HasReleased.Connect(inputHandler.Up.HasReleased);
-            var upIsReleased = handler.Up.IsReleased.Connect(inputHandler.Up.IsReleased);
+            var forwardHasPulled = handler.Forward.HasPulled.Connect(inputHandler.Forward.HasPulled);
+            var forwardIsPulled = handler.Forward.IsPulled.Connect(inputHandler.Forward.IsPulled);
+            var forwardHasReleased = handler.Forward.HasReleased.Connect(inputHandler.Forward.HasReleased);
+            var forwardIsReleased = handler.Forward.IsReleased.Connect(inputHandler.Forward.IsReleased);
 
-            var downHasPulled = handler.Down.HasPulled.Connect(inputHandler.Down.HasPulled);
-            var downIsPulled = handler.Down.IsPulled.Connect(inputHandler.Down.IsPulled);
-            var downHasReleased = handler.Down.HasReleased.Connect(inputHandler.Down.HasReleased);
-            var downIsReleased = handler.Down.IsReleased.Connect(inputHandler.Down.IsReleased);
+            var backwardHasPulled = handler.Backward.HasPulled.Connect(inputHandler.Backward.HasPulled);
+            var backwardIsPulled = handler.Backward.IsPulled.Connect(inputHandler.Backward.IsPulled);
+            var backwardHasReleased = handler.Backward.HasReleased.Connect(inputHandler.Backward.HasReleased);
+            var backwardIsReleased = handler.Backward.IsReleased.Connect(inputHandler.Backward.IsReleased);
 
             return new Disconnection(() =>
             {
@@ -69,15 +69,15 @@ namespace YggdrAshill.Nuadha
                 rightHasReleased.Disconnect();
                 rightIsReleased.Disconnect();
 
-                upHasPulled.Disconnect();
-                upIsPulled.Disconnect();
-                upHasReleased.Disconnect();
-                upIsReleased.Disconnect();
+                forwardHasPulled.Disconnect();
+                forwardIsPulled.Disconnect();
+                forwardHasReleased.Disconnect();
+                forwardIsReleased.Disconnect();
 
-                downHasPulled.Disconnect();
-                downIsPulled.Disconnect();
-                downHasReleased.Disconnect();
-                downIsReleased.Disconnect();
+                backwardHasPulled.Disconnect();
+                backwardIsPulled.Disconnect();
+                backwardHasReleased.Disconnect();
+                backwardIsReleased.Disconnect();
             });
         }
     }

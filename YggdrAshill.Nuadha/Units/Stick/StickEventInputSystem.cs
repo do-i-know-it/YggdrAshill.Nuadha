@@ -17,8 +17,13 @@ namespace YggdrAshill.Nuadha
 
         private readonly TiltEventInputSystem tilt;
 
-        public StickEventInputSystem(HysteresisThreshold threshold)
+        public StickEventInputSystem(ITiltThreshold threshold)
         {
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
+
             touch = new TouchEventInputSystem();
 
             push = new PushEventInputSystem();
