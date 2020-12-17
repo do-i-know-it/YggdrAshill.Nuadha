@@ -1,13 +1,13 @@
 ﻿using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Translation;
 
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IButtonEventInputHandler :
         IHardwareHandler
     {
-        ITouchEventInputHandler Touch { get; }
+        IPulseEventInputHandler Touch { get; }
 
-        IPushEventInputHandler Push { get; }
+        IPulseEventInputHandler Push { get; }
     }
 }

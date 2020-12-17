@@ -1,6 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Units;
 using System;
 
@@ -24,9 +24,9 @@ namespace YggdrAshill.Nuadha
 
         #region IButtonEventOutputHandler
 
-        public ITouchEventOutputHandler Touch => touch;
+        public IPulseEventOutputHandler Touch => touch;
 
-        public IPushEventOutputHandler Push => push;
+        public IPulseEventOutputHandler Push => push;
 
         #endregion
 

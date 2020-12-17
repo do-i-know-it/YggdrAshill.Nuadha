@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
@@ -10,8 +11,6 @@ namespace YggdrAshill.Nuadha
         IDisconnection
     {
         private readonly Connector<Tilt> connector;
-
-        private readonly PullEventInputSystem center;
 
         private readonly PullEventInputSystem left;
         
@@ -30,13 +29,11 @@ namespace YggdrAshill.Nuadha
 
             connector = new Connector<Tilt>();
 
-            center = new PullEventInputSystem(threshold.Center);
             left = new PullEventInputSystem(threshold.Left);
             right = new PullEventInputSystem(threshold.Right);
             forward = new PullEventInputSystem(threshold.Forward);
             backward = new PullEventInputSystem(threshold.Backward);
 
-            connector.Convert(TiltToPull.Tilted).Connect(center);
             connector.Convert(TiltToPull.Left).Connect(left);
             connector.Convert(TiltToPull.Right).Connect(right);
             connector.Convert(TiltToPull.Up).Connect(forward);
@@ -45,15 +42,13 @@ namespace YggdrAshill.Nuadha
 
         #region ITiltEventOutputHandler
 
-        public IPullEventOutputHandler Center => center;
+        public IPulseEventOutputHandler Left => left;
 
-        public IPullEventOutputHandler Left => left;
+        public IPulseEventOutputHandler Right => right;
 
-        public IPullEventOutputHandler Right => right;
+        public IPulseEventOutputHandler Forward => forward;
 
-        public IPullEventOutputHandler Forward => forward;
-
-        public IPullEventOutputHandler Backward => backward;
+        public IPulseEventOutputHandler Backward => backward;
 
         #endregion
 
@@ -71,8 +66,6 @@ namespace YggdrAshill.Nuadha
         public void Disconnect()
         {
             connector.Disconnect();
-
-            center.Disconnect();
 
             left.Disconnect();
 

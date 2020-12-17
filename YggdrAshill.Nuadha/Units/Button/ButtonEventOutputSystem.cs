@@ -27,27 +27,27 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var hasTouched = handler.Touch.HasTouched.Connect(inputHandler.Touch.HasTouched);
-            var isTouched = handler.Touch.IsTouched.Connect(inputHandler.Touch.IsTouched);
-            var touchHasReleased = handler.Touch.HasReleased.Connect(inputHandler.Touch.HasReleased);
-            var touchIsReleased = handler.Touch.IsReleased.Connect(inputHandler.Touch.IsReleased);
+            var touchHasEnabled = handler.Touch.HasEnabled.Connect(inputHandler.Touch.HasEnabled);
+            var touchIsEnabled = handler.Touch.IsEnabled.Connect(inputHandler.Touch.IsEnabled);
+            var touchHasDisabled = handler.Touch.HasDisabled.Connect(inputHandler.Touch.HasDisabled);
+            var touchIsDisabled = handler.Touch.IsDisabled.Connect(inputHandler.Touch.IsDisabled);
 
-            var hasPushed = handler.Push.HasPushed.Connect(inputHandler.Push.HasPushed);
-            var isPushed = handler.Push.IsPushed.Connect(inputHandler.Push.IsPushed);
-            var pushHasReleased = handler.Push.HasReleased.Connect(inputHandler.Push.HasReleased);
-            var pushIsReleased = handler.Push.IsReleased.Connect(inputHandler.Push.IsReleased);
+            var pushHasEnabled = handler.Push.HasEnabled.Connect(inputHandler.Push.HasEnabled);
+            var pushIsEnabled = handler.Push.IsEnabled.Connect(inputHandler.Push.IsEnabled);
+            var pushHasDisabled = handler.Push.HasDisabled.Connect(inputHandler.Push.HasDisabled);
+            var pushIsDisabled = handler.Push.IsDisabled.Connect(inputHandler.Push.IsDisabled);
 
             return new Disconnection(() =>
             {
-                hasTouched.Disconnect();
-                isTouched.Disconnect();
-                touchHasReleased.Disconnect();
-                touchIsReleased.Disconnect();
+                touchHasEnabled.Disconnect();
+                touchIsEnabled.Disconnect();
+                touchHasDisabled.Disconnect();
+                touchIsDisabled.Disconnect();
 
-                hasPushed.Disconnect();
-                isPushed.Disconnect();
-                pushHasReleased.Disconnect();
-                pushIsReleased.Disconnect();
+                pushHasEnabled.Disconnect();
+                pushIsEnabled.Disconnect();
+                pushHasDisabled.Disconnect();
+                pushIsDisabled.Disconnect();
             });
         }
     }

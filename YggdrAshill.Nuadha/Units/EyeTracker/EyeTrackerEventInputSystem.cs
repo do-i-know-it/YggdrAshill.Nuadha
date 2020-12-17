@@ -1,6 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Units;
 using System;
 
@@ -29,9 +29,9 @@ namespace YggdrAshill.Nuadha
 
         #region IEyeTrackerEventHandler
 
-        public IPupilEventOutputHandler Pupil => pupil;
+        public IPulseEventOutputHandler Pupil => pupil;
 
-        public IBlinkEventOutputHandler Blink => blink;
+        public IPulseEventOutputHandler Blink => blink;
 
         #endregion
 

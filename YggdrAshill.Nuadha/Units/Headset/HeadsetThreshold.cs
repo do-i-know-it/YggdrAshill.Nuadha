@@ -1,4 +1,6 @@
-﻿namespace YggdrAshill.Nuadha
+﻿using YggdrAshill.Nuadha.Signals;
+
+namespace YggdrAshill.Nuadha
 {
     public sealed class HeadsetThreshold :
         IHeadsetThreshold

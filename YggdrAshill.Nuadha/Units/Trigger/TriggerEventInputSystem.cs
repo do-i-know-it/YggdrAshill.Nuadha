@@ -1,5 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -24,9 +25,9 @@ namespace YggdrAshill.Nuadha
 
         #region ITriggerEventOutputHandler
 
-        public ITouchEventOutputHandler Touch => touch;
+        public IPulseEventOutputHandler Touch => touch;
 
-        public IPullEventOutputHandler Pull => pull;
+        public IPulseEventOutputHandler Pull => pull;
 
         #endregion
 

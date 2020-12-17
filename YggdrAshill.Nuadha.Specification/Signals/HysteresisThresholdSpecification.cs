@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -7,16 +8,16 @@ namespace YggdrAshill.Nuadha.Specification
     internal class HysteresisThresholdSpecification
     {
         [Test]
-        public void CannotBeGeneratedWithNaNUpperLimit()
+        public void CannotBeGeneratedWithNaNLowerLimit()
         {
             Assert.Throws<ArgumentException>(() =>
             {
                 var threshold = new HysteresisThreshold(float.NaN, 0.0f);
             });
         }
-
+        
         [Test]
-        public void CannotBeGeneratedWithNaNLowerLimit()
+        public void CannotBeGeneratedWithNaNUpperLimit()
         {
             Assert.Throws<ArgumentException>(() =>
             {
@@ -25,7 +26,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithUpperLimitLowerThanZero()
+        public void CannotBeGeneratedWithLowerLimitLowerThanZero()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
@@ -34,7 +35,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithUpperLimitHigherThanOne()
+        public void CannotBeGeneratedWithLowerLimitHigherThanOne()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
@@ -43,7 +44,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithLowerLimitLowerThanZero()
+        public void CannotBeGeneratedWithUpperLimitLowerThanZero()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
@@ -52,7 +53,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithLowerLimitHigherThanOne()
+        public void CannotBeGeneratedWithUpperLimitHigherThanOne()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
@@ -65,7 +66,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var threshold = new HysteresisThreshold(0.5f, 0.6f);
+                var threshold = new HysteresisThreshold(0.6f, 0.5f);
             });
         }
     }

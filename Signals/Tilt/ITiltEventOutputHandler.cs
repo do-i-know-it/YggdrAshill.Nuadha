@@ -1,18 +1,17 @@
 ﻿using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Translation;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     public interface ITiltEventOutputHandler :
         ISoftwareHandler
     {
-        IPullEventOutputHandler Center { get; }
+        IPulseEventOutputHandler Left { get; }
 
-        IPullEventOutputHandler Left { get; }
+        IPulseEventOutputHandler Right { get; }
 
-        IPullEventOutputHandler Right { get; }
+        IPulseEventOutputHandler Forward { get; }
 
-        IPullEventOutputHandler Forward { get; }
-
-        IPullEventOutputHandler Backward { get; }
+        IPulseEventOutputHandler Backward { get; }
     }
 }

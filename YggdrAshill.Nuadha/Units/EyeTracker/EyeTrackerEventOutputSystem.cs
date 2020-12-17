@@ -27,27 +27,27 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var pupilHasOpened = handler.Pupil.HasOpened.Connect(inputHandler.Pupil.HasOpened);
-            var pupilIsOpened = handler.Pupil.IsOpened.Connect(inputHandler.Pupil.IsOpened);
-            var pupilHasClosed = handler.Pupil.HasClosed.Connect(inputHandler.Pupil.HasClosed);
-            var pupilIsClosed = handler.Pupil.IsClosed.Connect(inputHandler.Pupil.IsClosed);
+            var pupilHasEnabled = handler.Pupil.HasEnabled.Connect(inputHandler.Pupil.HasEnabled);
+            var pupilIsEnabled = handler.Pupil.IsEnabled.Connect(inputHandler.Pupil.IsEnabled);
+            var pupilHasDisabled = handler.Pupil.HasDisabled.Connect(inputHandler.Pupil.HasDisabled);
+            var pupilIsDisabled = handler.Pupil.IsDisabled.Connect(inputHandler.Pupil.IsDisabled);
 
-            var blinkHasOpened = handler.Blink.HasOpened.Connect(inputHandler.Blink.HasOpened);
-            var blinkIsOpened = handler.Blink.IsOpened.Connect(inputHandler.Blink.IsOpened);
-            var blinkHasClosed = handler.Blink.HasClosed.Connect(inputHandler.Blink.HasClosed);
-            var blinkIsClosed = handler.Blink.IsClosed.Connect(inputHandler.Blink.IsClosed);
+            var blinkHasEnabled = handler.Blink.HasEnabled.Connect(inputHandler.Blink.HasEnabled);
+            var blinkIsEnabled = handler.Blink.IsEnabled.Connect(inputHandler.Blink.IsEnabled);
+            var blinkHasDisabled = handler.Blink.HasDisabled.Connect(inputHandler.Blink.HasDisabled);
+            var blinkIsDisabled = handler.Blink.IsDisabled.Connect(inputHandler.Blink.IsDisabled);
 
             return new Disconnection(() =>
             {
-                pupilHasOpened.Disconnect();
-                pupilIsOpened.Disconnect();
-                pupilHasClosed.Disconnect();
-                pupilIsClosed.Disconnect();
+                pupilHasEnabled.Disconnect();
+                pupilIsEnabled.Disconnect();
+                pupilHasDisabled.Disconnect();
+                pupilIsDisabled.Disconnect();
 
-                blinkHasOpened.Disconnect();
-                blinkIsOpened.Disconnect();
-                blinkHasClosed.Disconnect();
-                blinkIsClosed.Disconnect();
+                blinkHasEnabled.Disconnect();
+                blinkIsEnabled.Disconnect();
+                blinkHasDisabled.Disconnect();
+                blinkIsDisabled.Disconnect();
             });
         }
     }

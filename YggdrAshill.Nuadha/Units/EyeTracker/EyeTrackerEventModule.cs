@@ -1,5 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
@@ -9,23 +9,23 @@ namespace YggdrAshill.Nuadha
         IEyeTrackerEventOutputHandler,
         IDisconnection
     {
-        private readonly PupilEventModule pupil = new PupilEventModule();
+        private readonly PulseEventModule pupil = new PulseEventModule();
 
-        private readonly BlinkEventModule blink = new BlinkEventModule();
+        private readonly PulseEventModule blink = new PulseEventModule();
 
         #region IEyeTrackerEventInputHandler
 
-        IPupilEventInputHandler IEyeTrackerEventInputHandler.Pupil => pupil;
+        IPulseEventInputHandler IEyeTrackerEventInputHandler.Pupil => pupil;
 
-        IBlinkEventInputHandler IEyeTrackerEventInputHandler.Blink => blink;
+        IPulseEventInputHandler IEyeTrackerEventInputHandler.Blink => blink;
 
         #endregion
 
         #region IEyeTrackerEventOutputHandler
 
-        IPupilEventOutputHandler IEyeTrackerEventOutputHandler.Pupil => pupil;
+        IPulseEventOutputHandler IEyeTrackerEventOutputHandler.Pupil => pupil;
 
-        IBlinkEventOutputHandler IEyeTrackerEventOutputHandler.Blink => blink;
+        IPulseEventOutputHandler IEyeTrackerEventOutputHandler.Blink => blink;
 
         #endregion
 

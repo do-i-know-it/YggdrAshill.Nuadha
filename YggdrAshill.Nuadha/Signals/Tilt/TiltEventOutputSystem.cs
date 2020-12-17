@@ -27,57 +27,47 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var centerHasPulled = handler.Center.HasPulled.Connect(inputHandler.Center.HasPulled);
-            var centerIsPulled = handler.Center.IsPulled.Connect(inputHandler.Center.IsPulled);
-            var centerHasReleased = handler.Center.HasReleased.Connect(inputHandler.Center.HasReleased);
-            var centerIsReleased = handler.Center.IsReleased.Connect(inputHandler.Center.IsReleased);
+            var leftHasEnabled = handler.Left.HasEnabled.Connect(inputHandler.Left.HasEnabled);
+            var leftIsEnabled = handler.Left.IsEnabled.Connect(inputHandler.Left.IsEnabled);
+            var leftHasDisabled = handler.Left.HasDisabled.Connect(inputHandler.Left.HasDisabled);
+            var leftIsDisabled = handler.Left.IsDisabled.Connect(inputHandler.Left.IsDisabled);
 
-            var leftHasPulled = handler.Left.HasPulled.Connect(inputHandler.Left.HasPulled);
-            var leftIsPulled = handler.Left.IsPulled.Connect(inputHandler.Left.IsPulled);
-            var leftHasReleased = handler.Left.HasReleased.Connect(inputHandler.Left.HasReleased);
-            var leftIsReleased = handler.Left.IsReleased.Connect(inputHandler.Left.IsReleased);
+            var rightHasEnabled = handler.Right.HasEnabled.Connect(inputHandler.Right.HasEnabled);
+            var rightIsEnabled = handler.Right.IsEnabled.Connect(inputHandler.Right.IsEnabled);
+            var rightHasDisabled = handler.Right.HasDisabled.Connect(inputHandler.Right.HasDisabled);
+            var rightIsDisabled = handler.Right.IsDisabled.Connect(inputHandler.Right.IsDisabled);
 
-            var rightHasPulled = handler.Right.HasPulled.Connect(inputHandler.Right.HasPulled);
-            var rightIsPulled = handler.Right.IsPulled.Connect(inputHandler.Right.IsPulled);
-            var rightHasReleased = handler.Right.HasReleased.Connect(inputHandler.Right.HasReleased);
-            var rightIsReleased = handler.Right.IsReleased.Connect(inputHandler.Right.IsReleased);
+            var forwardHasEnabled = handler.Forward.HasEnabled.Connect(inputHandler.Forward.HasEnabled);
+            var forwardIsEnabled = handler.Forward.IsEnabled.Connect(inputHandler.Forward.IsEnabled);
+            var forwardHasDisabled = handler.Forward.HasDisabled.Connect(inputHandler.Forward.HasDisabled);
+            var forwardIsDisabled = handler.Forward.IsDisabled.Connect(inputHandler.Forward.IsDisabled);
 
-            var forwardHasPulled = handler.Forward.HasPulled.Connect(inputHandler.Forward.HasPulled);
-            var forwardIsPulled = handler.Forward.IsPulled.Connect(inputHandler.Forward.IsPulled);
-            var forwardHasReleased = handler.Forward.HasReleased.Connect(inputHandler.Forward.HasReleased);
-            var forwardIsReleased = handler.Forward.IsReleased.Connect(inputHandler.Forward.IsReleased);
-
-            var backwardHasPulled = handler.Backward.HasPulled.Connect(inputHandler.Backward.HasPulled);
-            var backwardIsPulled = handler.Backward.IsPulled.Connect(inputHandler.Backward.IsPulled);
-            var backwardHasReleased = handler.Backward.HasReleased.Connect(inputHandler.Backward.HasReleased);
-            var backwardIsReleased = handler.Backward.IsReleased.Connect(inputHandler.Backward.IsReleased);
+            var backwardHasEnabled = handler.Backward.HasEnabled.Connect(inputHandler.Backward.HasEnabled);
+            var backwardIsEnabled = handler.Backward.IsEnabled.Connect(inputHandler.Backward.IsEnabled);
+            var backwardHasDisabled = handler.Backward.HasDisabled.Connect(inputHandler.Backward.HasDisabled);
+            var backwardIsDisabled = handler.Backward.IsDisabled.Connect(inputHandler.Backward.IsDisabled);
 
             return new Disconnection(() =>
             {
-                centerHasPulled.Disconnect();
-                centerIsPulled.Disconnect();
-                centerHasReleased.Disconnect();
-                centerIsReleased.Disconnect();
+                leftHasEnabled.Disconnect();
+                leftIsEnabled.Disconnect();
+                leftHasDisabled.Disconnect();
+                leftIsDisabled.Disconnect();
 
-                leftHasPulled.Disconnect();
-                leftIsPulled.Disconnect();
-                leftHasReleased.Disconnect();
-                leftIsReleased.Disconnect();
+                rightHasEnabled.Disconnect();
+                rightIsEnabled.Disconnect();
+                rightHasDisabled.Disconnect();
+                rightIsDisabled.Disconnect();
 
-                rightHasPulled.Disconnect();
-                rightIsPulled.Disconnect();
-                rightHasReleased.Disconnect();
-                rightIsReleased.Disconnect();
+                forwardHasEnabled.Disconnect();
+                forwardIsEnabled.Disconnect();
+                forwardHasDisabled.Disconnect();
+                forwardIsDisabled.Disconnect();
 
-                forwardHasPulled.Disconnect();
-                forwardIsPulled.Disconnect();
-                forwardHasReleased.Disconnect();
-                forwardIsReleased.Disconnect();
-
-                backwardHasPulled.Disconnect();
-                backwardIsPulled.Disconnect();
-                backwardHasReleased.Disconnect();
-                backwardIsReleased.Disconnect();
+                backwardHasEnabled.Disconnect();
+                backwardIsEnabled.Disconnect();
+                backwardHasDisabled.Disconnect();
+                backwardIsDisabled.Disconnect();
             });
         }
     }

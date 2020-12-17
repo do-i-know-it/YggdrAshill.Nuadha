@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using YggdrAshill.Nuadha.Operation;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
@@ -24,7 +24,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldPulsateWhenHasPushed()
+        public void ShouldPulsateWhenHasEnabled()
         {
             var expected = false;
             var terminal = new InputTerminal<Pulse>(signal =>
@@ -37,7 +37,7 @@ namespace YggdrAshill.Nuadha.Specification
                 expected = true;
             });
 
-            var disconnection = system.HasPushed.Connect(terminal);
+            var disconnection = system.HasEnabled.Connect(terminal);
 
             system.Receive(Push.Disabled);
             system.Receive(Push.Enabled);
@@ -48,7 +48,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldPulsateWhenIsPushed()
+        public void ShouldPulsateWhenIsEnabled()
         {
             var expected = false;
             var terminal = new InputTerminal<Pulse>(signal =>
@@ -61,7 +61,7 @@ namespace YggdrAshill.Nuadha.Specification
                 expected = true;
             });
 
-            var disconnection = system.IsPushed.Connect(terminal);
+            var disconnection = system.IsEnabled.Connect(terminal);
 
             system.Receive(Push.Enabled);
             system.Receive(Push.Enabled);
@@ -72,7 +72,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldPulsateWhenHasReleased()
+        public void ShouldPulsateWhenHasDisabled()
         {
             var expected = false;
             var terminal = new InputTerminal<Pulse>(signal =>
@@ -85,7 +85,7 @@ namespace YggdrAshill.Nuadha.Specification
                 expected = true;
             });
 
-            var disconnection = system.HasReleased.Connect(terminal);
+            var disconnection = system.HasDisabled.Connect(terminal);
 
             system.Receive(Push.Enabled);
             system.Receive(Push.Disabled);
@@ -96,7 +96,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldPulsateWhenIsReleased()
+        public void ShouldPulsateWhenIsDisabled()
         {
             var expected = false;
             var terminal = new InputTerminal<Pulse>(signal =>
@@ -109,7 +109,7 @@ namespace YggdrAshill.Nuadha.Specification
                 expected = true;
             });
 
-            var disconnection = system.IsReleased.Connect(terminal);
+            var disconnection = system.IsDisabled.Connect(terminal);
 
             system.Receive(Push.Disabled);
             system.Receive(Push.Disabled);

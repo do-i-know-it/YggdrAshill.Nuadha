@@ -7,51 +7,43 @@ namespace YggdrAshill.Nuadha.Specification
     internal class PushToPulseSpecification
     {
         [Test]
-        public void ShouldPulsateWhenHasPushed()
+        public void ShouldDetectWhenHasPushed()
         {
-            var pulsation = PushToPulse.HasPushed;
+            var detection = PushToPulse.HasPushed(Push.Disabled);
 
-            Assert.IsTrue(pulsation.Pulsate(Push.Disabled, Push.Enabled));
-
-            Assert.IsFalse(pulsation.Pulsate(Push.Enabled, Push.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Push.Enabled, Push.Disabled));
-            Assert.IsFalse(pulsation.Pulsate(Push.Disabled, Push.Disabled));
+            Assert.IsTrue(detection.Detect(Push.Enabled));
+            Assert.IsFalse(detection.Detect(Push.Enabled));
+            Assert.IsFalse(detection.Detect(Push.Disabled));
         }
 
         [Test]
-        public void ShouldPulsateWhenIsPushed()
+        public void ShouldDetectWhenIsPushed()
         {
-            var pulsation = PushToPulse.IsPushed;
+            var detection = PushToPulse.IsPushed(Push.Disabled);
 
-            Assert.IsTrue(pulsation.Pulsate(Push.Enabled, Push.Enabled));
-
-            Assert.IsFalse(pulsation.Pulsate(Push.Disabled, Push.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Push.Enabled, Push.Disabled));
-            Assert.IsFalse(pulsation.Pulsate(Push.Disabled, Push.Disabled));
+            Assert.IsTrue(detection.Detect(Push.Enabled));
+            Assert.IsTrue(detection.Detect(Push.Enabled));
+            Assert.IsFalse(detection.Detect(Push.Disabled));
         }
 
         [Test]
-        public void ShouldPulsateWhenHasReleased()
+        public void ShouldDetectWhenHasReleased()
         {
-            var pulsation = PushToPulse.HasReleased;
+            var detection = PushToPulse.HasReleased(Push.Enabled);
 
-            Assert.IsTrue(pulsation.Pulsate(Push.Enabled, Push.Disabled));
-
-            Assert.IsFalse(pulsation.Pulsate(Push.Disabled, Push.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Push.Enabled, Push.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Push.Disabled, Push.Disabled));
+            Assert.IsTrue(detection.Detect(Push.Disabled));
+            Assert.IsFalse(detection.Detect(Push.Disabled));
+            Assert.IsFalse(detection.Detect(Push.Enabled));
         }
 
         [Test]
-        public void ShouldPulsateWhenIsReleased()
+        public void ShouldDetectWhenIsReleased()
         {
-            var pulsation = PushToPulse.IsReleased;
+            var detection = PushToPulse.IsReleased(Push.Enabled);
 
-            Assert.IsTrue(pulsation.Pulsate(Push.Disabled, Push.Disabled));
-
-            Assert.IsFalse(pulsation.Pulsate(Push.Disabled, Push.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Push.Enabled, Push.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Push.Enabled, Push.Disabled));
+            Assert.IsTrue(detection.Detect(Push.Disabled));
+            Assert.IsTrue(detection.Detect(Push.Disabled));
+            Assert.IsFalse(detection.Detect(Push.Enabled));
         }
     }
 }

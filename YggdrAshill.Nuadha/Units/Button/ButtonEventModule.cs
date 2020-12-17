@@ -1,5 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
@@ -9,23 +9,23 @@ namespace YggdrAshill.Nuadha
         IButtonEventOutputHandler,
         IDisconnection
     {
-        private readonly TouchEventModule touch = new TouchEventModule();
+        private readonly PulseEventModule touch = new PulseEventModule();
 
-        private readonly PushEventModule push = new PushEventModule();
+        private readonly PulseEventModule push = new PulseEventModule();
 
         #region IButtonEventInputHandler
 
-        ITouchEventInputHandler IButtonEventInputHandler.Touch => touch;
+        IPulseEventInputHandler IButtonEventInputHandler.Touch => touch;
 
-        IPushEventInputHandler IButtonEventInputHandler.Push => push;
+        IPulseEventInputHandler IButtonEventInputHandler.Push => push;
 
         #endregion
 
         #region IButtonEventOutputHandler
 
-        ITouchEventOutputHandler IButtonEventOutputHandler.Touch => touch;
+        IPulseEventOutputHandler IButtonEventOutputHandler.Touch => touch;
 
-        IPushEventOutputHandler IButtonEventOutputHandler.Push => push;
+        IPulseEventOutputHandler IButtonEventOutputHandler.Push => push;
 
         #endregion
 
