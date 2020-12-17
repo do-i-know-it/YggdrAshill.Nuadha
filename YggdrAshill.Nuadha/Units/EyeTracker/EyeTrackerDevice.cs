@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class EyeTrackerDevice :
-        IHardware<IEyeTrackerHardwareHandler>,
-        IDisconnection,
-        IIgnitor
+        IInputDevice<IEyeTrackerHardwareHandler>
     {
         private readonly IEyeTrackerConfiguration configuration;
 

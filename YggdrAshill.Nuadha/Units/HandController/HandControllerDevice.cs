@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerDevice :
-        IHardware<IHandControllerHardwareHandler>,
-        IDisconnection,
-        IIgnitor
+        IInputDevice<IHandControllerHardwareHandler>
     {
         private readonly IHandControllerConfiguration configuration;
 
