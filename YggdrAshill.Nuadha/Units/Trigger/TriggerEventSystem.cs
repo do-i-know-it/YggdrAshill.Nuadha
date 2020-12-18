@@ -1,35 +1,30 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class TriggerEventInputSystem :
+    public sealed class TriggerEventSystem :
         ISoftware<ITriggerSoftwareHandler>,
-        ITriggerEventOutputHandler,
         IDisconnection
     {
-        private readonly TouchEventInputSystem touch;
+        private readonly TouchEventSystem touch;
 
-        private readonly PullEventInputSystem pull;
+        private readonly PullEventSystem pull;
 
-        public TriggerEventInputSystem(HysteresisThreshold threshold)
+        public TriggerEventSystem(HysteresisThreshold threshold, ITriggerEventInputHandler handler)
         {
-            touch = new TouchEventInputSystem();
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
 
-            pull = new PullEventInputSystem(threshold);
+            touch = new TouchEventSystem(handler.Touch);
+
+            pull = new PullEventSystem(threshold, handler.Pull);
         }
-
-        #region ITriggerEventOutputHandler
-
-        public IPulseEventOutputHandler Touch => touch;
-
-        public IPulseEventOutputHandler Pull => pull;
-
-        #endregion
 
         #region ISoftware
 

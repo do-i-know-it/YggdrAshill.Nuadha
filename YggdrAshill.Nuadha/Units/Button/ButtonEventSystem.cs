@@ -1,34 +1,29 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class ButtonEventInputSystem :
+    public sealed class ButtonEventSystem :
         ISoftware<IButtonSoftwareHandler>,
-        IButtonEventOutputHandler,
         IDisconnection
     {
-        private readonly TouchEventInputSystem touch;
+        private readonly TouchEventSystem touch;
 
-        private readonly PushEventInputSystem push;
+        private readonly PushEventSystem push;
 
-        public ButtonEventInputSystem()
+        public ButtonEventSystem(IButtonEventInputHandler handler)
         {
-            touch = new TouchEventInputSystem();
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
 
-            push = new PushEventInputSystem();
+            touch = new TouchEventSystem(handler.Touch);
+
+            push = new PushEventSystem(handler.Push);
         }
-
-        #region IButtonEventOutputHandler
-
-        public IPulseEventOutputHandler Touch => touch;
-
-        public IPulseEventOutputHandler Push => push;
-
-        #endregion
 
         #region ISoftware
 

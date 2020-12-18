@@ -5,40 +5,33 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class ThreePointTrackerEventInputSystem :
+    public sealed class ThreePointTrackerEventSystem :
         ISoftware<IThreePointTrackerSoftwareHandler>,
-        IThreePointTrackerEventOutputHandler,
         IDisconnection
     {
-        private readonly HeadsetEventInputSystem head;
+        private readonly HeadsetEventSystem head;
 
-        private readonly HandControllerEventInputSystem leftHand;
+        private readonly HandControllerEventSystem leftHand;
         
-        private readonly HandControllerEventInputSystem rightHand;
+        private readonly HandControllerEventSystem rightHand;
 
-        public ThreePointTrackerEventInputSystem(IThreePointTrackerThreshold threshold)
+        public ThreePointTrackerEventSystem(IThreePointTrackerThreshold threshold, IThreePointTrackerEventInputHandler handler)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
 
-            head = new HeadsetEventInputSystem(threshold.Head);
+            head = new HeadsetEventSystem(threshold.Head, handler.Head);
 
-            leftHand = new HandControllerEventInputSystem(threshold.LeftHand);
+            leftHand = new HandControllerEventSystem(threshold.LeftHand, handler.LeftHand);
 
-            rightHand = new HandControllerEventInputSystem(threshold.RightHand);
+            rightHand = new HandControllerEventSystem(threshold.RightHand, handler.RightHand);
         }
-
-        #region IThreePointTrackerEventHandler
-
-        public IHeadsetEventOutputHandler Head => head;
-
-        public IHandControllerEventOutputHandler LeftHand => leftHand;
-
-        public IHandControllerEventOutputHandler RightHand => rightHand;
-
-        #endregion
 
         #region ISoftware
 

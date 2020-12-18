@@ -1,39 +1,33 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class EyeTrackerEventInputSystem :
+    public sealed class EyeTrackerEventSystem :
         ISoftware<IEyeTrackerSoftwareHandler>,
-        IEyeTrackerEventOutputHandler,
         IDisconnection
     {
-        private readonly PupilEventInputSystem pupil;
+        private readonly PupilEventSystem pupil;
 
-        private readonly BlinkEventInputSystem blink;
+        private readonly BlinkEventSystem blink;
 
-        public EyeTrackerEventInputSystem(IEyeTrackerThreshold threshold)
+        public EyeTrackerEventSystem(IEyeTrackerThreshold threshold, IEyeTrackerEventInputHandler handler)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
 
-            pupil = new PupilEventInputSystem(threshold.Pupil);
+            pupil = new PupilEventSystem(threshold.Pupil, handler.Pupil);
 
-            blink = new BlinkEventInputSystem(threshold.Blink);
+            blink = new BlinkEventSystem(threshold.Blink, handler.Blink);
         }
-
-        #region IEyeTrackerEventHandler
-
-        public IPulseEventOutputHandler Pupil => pupil;
-
-        public IPulseEventOutputHandler Blink => blink;
-
-        #endregion
 
         #region ISoftware
 

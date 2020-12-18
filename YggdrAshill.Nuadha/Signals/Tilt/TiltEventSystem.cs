@@ -5,34 +5,37 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class TiltEventInputSystem :
+    public sealed class TiltEventSystem :
         IInputTerminal<Tilt>,
-        ITiltEventOutputHandler,
         IDisconnection
     {
         private readonly Connector<Tilt> connector;
 
-        private readonly PullEventInputSystem left;
+        private readonly PullEventSystem left;
         
-        private readonly PullEventInputSystem right;
+        private readonly PullEventSystem right;
         
-        private readonly PullEventInputSystem forward;
+        private readonly PullEventSystem forward;
         
-        private readonly PullEventInputSystem backward;
+        private readonly PullEventSystem backward;
 
-        public TiltEventInputSystem(ITiltThreshold threshold)
+        public TiltEventSystem(ITiltThreshold threshold, ITiltEventInputHandler handler)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
 
             connector = new Connector<Tilt>();
 
-            left = new PullEventInputSystem(threshold.Left);
-            right = new PullEventInputSystem(threshold.Right);
-            forward = new PullEventInputSystem(threshold.Forward);
-            backward = new PullEventInputSystem(threshold.Backward);
+            left = new PullEventSystem(threshold.Left, handler.Left);
+            right = new PullEventSystem(threshold.Right, handler.Right);
+            forward = new PullEventSystem(threshold.Forward, handler.Forward);
+            backward = new PullEventSystem(threshold.Backward, handler.Backward);
 
             connector.Convert(TiltToPull.Left).Connect(left);
             connector.Convert(TiltToPull.Right).Connect(right);
@@ -40,28 +43,10 @@ namespace YggdrAshill.Nuadha
             connector.Convert(TiltToPull.Down).Connect(backward);
         }
 
-        #region ITiltEventOutputHandler
-
-        public IPulseEventOutputHandler Left => left;
-
-        public IPulseEventOutputHandler Right => right;
-
-        public IPulseEventOutputHandler Forward => forward;
-
-        public IPulseEventOutputHandler Backward => backward;
-
-        #endregion
-
-        #region IInputTerminal
-
         public void Receive(Tilt signal)
         {
             connector.Receive(signal);
         }
-
-        #endregion
-
-        #region IDisconnection
 
         public void Disconnect()
         {
@@ -75,7 +60,5 @@ namespace YggdrAshill.Nuadha
             
             backward.Disconnect();
         }
-
-        #endregion
     }
 }

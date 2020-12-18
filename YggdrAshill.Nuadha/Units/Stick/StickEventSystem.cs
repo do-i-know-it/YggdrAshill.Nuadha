@@ -1,46 +1,37 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Translation;
-using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class StickEventInputSystem :
+    public sealed class StickEventSystem :
         ISoftware<IStickSoftwareHandler>,
-        IStickEventOutputHandler,
         IDisconnection
     {
-        private readonly TouchEventInputSystem touch;
+        private readonly TouchEventSystem touch;
         
-        private readonly PushEventInputSystem push;
+        private readonly PushEventSystem push;
 
-        private readonly TiltEventInputSystem tilt;
+        private readonly TiltEventSystem tilt;
 
-        public StickEventInputSystem(ITiltThreshold threshold)
+        public StickEventSystem(ITiltThreshold threshold, IStickEventInputHandler handler)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
 
-            touch = new TouchEventInputSystem();
+            touch = new TouchEventSystem(handler.Touch);
 
-            push = new PushEventInputSystem();
+            push = new PushEventSystem(handler.Push);
             
-            tilt = new TiltEventInputSystem(threshold);
+            tilt = new TiltEventSystem(threshold, handler.Tilt);
         }
-
-        #region IStickEventOutputHandler
-
-        public IPulseEventOutputHandler Touch => touch;
-
-        public IPulseEventOutputHandler Push => push;
-
-        public ITiltEventOutputHandler Tilt => tilt;
-
-        #endregion
 
         #region ISoftware
 

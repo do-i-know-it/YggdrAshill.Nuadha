@@ -5,40 +5,33 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class HandControllerEventInputSystem :
+    public sealed class HandControllerEventSystem :
         ISoftware<IHandControllerSoftwareHandler>,
-        IHandControllerEventOutputHandler,
         IDisconnection
     {
-        private readonly StickEventInputSystem thumbStick;
+        private readonly StickEventSystem thumbStick;
 
-        private readonly TriggerEventInputSystem fingerTrigger;
+        private readonly TriggerEventSystem fingerTrigger;
         
-        private readonly TriggerEventInputSystem handTrigger;
+        private readonly TriggerEventSystem handTrigger;
 
-        public HandControllerEventInputSystem(IHandControllerThreshold threshold)
+        public HandControllerEventSystem(IHandControllerThreshold threshold, IHandControllerEventInputHandler handler)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
 
-            thumbStick = new StickEventInputSystem(threshold.ThumbStick);
+            thumbStick = new StickEventSystem(threshold.ThumbStick, handler.ThumbStick);
             
-            fingerTrigger = new TriggerEventInputSystem(threshold.FingerTrigger);
+            fingerTrigger = new TriggerEventSystem(threshold.FingerTrigger, handler.FingerTrigger);
             
-            handTrigger = new TriggerEventInputSystem(threshold.HandTrigger);
+            handTrigger = new TriggerEventSystem(threshold.HandTrigger, handler.HandTrigger);
         }
-
-        #region IHandControllerEventOutputHandler
-
-        public IStickEventOutputHandler ThumbStick => thumbStick;
-
-        public ITriggerEventOutputHandler FingerTrigger => fingerTrigger;
-
-        public ITriggerEventOutputHandler HandTrigger => handTrigger;
-
-        #endregion
 
         #region ISoftware
 

@@ -5,34 +5,29 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class HeadsetEventInputSystem :
+    public sealed class HeadsetEventSystem :
         ISoftware<IHeadsetSoftwareHandler>,
-        IHeadsetEventOutputHandler,
         IDisconnection
     {
-        private readonly EyeTrackerEventInputSystem leftEye;
+        private readonly EyeTrackerEventSystem leftEye;
 
-        private readonly EyeTrackerEventInputSystem rightEye;
+        private readonly EyeTrackerEventSystem rightEye;
 
-        public HeadsetEventInputSystem(IHeadsetThreshold threshold)
+        public HeadsetEventSystem(IHeadsetThreshold threshold, IHeadsetEventInputHandler handler)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
 
-            leftEye = new  EyeTrackerEventInputSystem(threshold.LeftEye);
+            leftEye = new  EyeTrackerEventSystem(threshold.LeftEye, handler.LeftEye);
 
-            rightEye = new  EyeTrackerEventInputSystem(threshold.RightEye);
+            rightEye = new  EyeTrackerEventSystem(threshold.RightEye, handler.LeftEye);
         }
-
-        #region IHeadsetEventOutputHandler
-
-        public IEyeTrackerEventOutputHandler LeftEye => leftEye;
-
-        public IEyeTrackerEventOutputHandler RightEye => rightEye;
-
-        #endregion
 
         #region ISoftware
 
