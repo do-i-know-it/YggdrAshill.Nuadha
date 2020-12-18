@@ -179,5 +179,59 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         #endregion
+
+        #region Position
+
+        public static IOutputTerminal<Position> Calibrate(this IOutputTerminal<Position> terminal, ICalibration<Position> calibration)
+        {
+            if (terminal == null)
+            {
+                throw new ArgumentNullException(nameof(terminal));
+            }
+            if (calibration == null)
+            {
+                throw new ArgumentNullException(nameof(calibration));
+            }
+
+            return terminal.Calibrate(Signals.Calibrate.Position, calibration);
+        }
+
+        #endregion
+
+        #region Rotation
+
+        public static IOutputTerminal<Rotation> Calibrate(this IOutputTerminal<Rotation> terminal, ICalibration<Rotation> calibration)
+        {
+            if (terminal == null)
+            {
+                throw new ArgumentNullException(nameof(terminal));
+            }
+            if (calibration == null)
+            {
+                throw new ArgumentNullException(nameof(calibration));
+            }
+
+            return terminal.Calibrate(Signals.Calibrate.Rotation, calibration);
+        }
+
+        #endregion
+
+        #region Direction
+
+        public static IOutputTerminal<Direction> Calibrate(this IOutputTerminal<Direction> terminal, ICalibration<Direction> calibration)
+        {
+            if (terminal == null)
+            {
+                throw new ArgumentNullException(nameof(terminal));
+            }
+            if (calibration == null)
+            {
+                throw new ArgumentNullException(nameof(calibration));
+            }
+
+            return terminal.Calibrate(Signals.Calibrate.Direction, calibration);
+        }
+
+        #endregion
     }
 }
