@@ -58,11 +58,15 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Strength;
         }
 
-        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Pull> terminal, HysteresisThreshold threshold, bool isPushed = false)
+        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Pull> terminal, IHysteresisThreshold threshold, bool isPushed = false)
         {
             if (terminal == null)
             {
                 throw new ArgumentNullException(nameof(terminal));
+            }
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
             }
 
             return terminal.Convert(new PullToPush(threshold, isPushed));
@@ -94,11 +98,15 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Ratio;
         }
 
-        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Pupil> terminal, HysteresisThreshold threshold, bool isPushed = false)
+        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Pupil> terminal, IHysteresisThreshold threshold, bool isPushed = false)
         {
             if (terminal == null)
             {
                 throw new ArgumentNullException(nameof(terminal));
+            }
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
             }
 
             return terminal.Convert(new PupilToPush(threshold, isPushed));
@@ -130,11 +138,15 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Ratio;
         }
 
-        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Blink> terminal, HysteresisThreshold threshold, bool isPushed = false)
+        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Blink> terminal, IHysteresisThreshold threshold, bool isPushed = false)
         {
             if (terminal == null)
             {
                 throw new ArgumentNullException(nameof(terminal));
+            }
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
             }
 
             return terminal.Convert(new BlinkToPush(threshold, isPushed));

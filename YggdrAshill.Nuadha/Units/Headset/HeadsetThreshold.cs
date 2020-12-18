@@ -1,4 +1,5 @@
-﻿using YggdrAshill.Nuadha.Signals;
+﻿using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -11,6 +12,15 @@ namespace YggdrAshill.Nuadha
 
         public HeadsetThreshold(HysteresisThreshold pupil, HysteresisThreshold blink)
         {
+            if (pupil == null)
+            {
+                throw new ArgumentNullException(nameof(pupil));
+            }
+            if (blink == null)
+            {
+                throw new ArgumentNullException(nameof(blink));
+            }
+
             LeftEye = new EyeTrackerThreshold(pupil, blink);
 
             RightEye = new EyeTrackerThreshold(pupil, blink);

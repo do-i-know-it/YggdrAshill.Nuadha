@@ -11,8 +11,12 @@ namespace YggdrAshill.Nuadha
     {
         private readonly Connector<Blink> connector;
 
-        public BlinkEventSystem(HysteresisThreshold threshold, IPulseEventInputHandler handler)
+        public BlinkEventSystem(IHysteresisThreshold threshold, IPulseEventInputHandler handler)
         {
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
             if (handler == null)
             {
                 throw new ArgumentNullException(nameof(handler));

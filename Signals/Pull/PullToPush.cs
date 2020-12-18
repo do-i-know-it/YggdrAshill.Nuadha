@@ -1,16 +1,22 @@
 using YggdrAshill.Nuadha.Translation;
+using System;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     public sealed class PullToPush :
         IConversion<Pull, Push>
     {
-        private readonly HysteresisThreshold threshold;
+        private readonly IHysteresisThreshold threshold;
 
         private bool isPushed;
 
-        public PullToPush(HysteresisThreshold threshold, bool isPushed = false)
+        public PullToPush(IHysteresisThreshold threshold, bool isPushed = false)
         {
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
+
             this.threshold = threshold;
 
             this.isPushed = isPushed;
@@ -18,20 +24,16 @@ namespace YggdrAshill.Nuadha.Signals
 
         public Push Convert(Pull signal)
         {
-            isPushed = IsPushed(signal.Strength);
-
-            return isPushed ? Push.Enabled : Push.Disabled;
-        }
-        private bool IsPushed(float strength)
-        {
             if (isPushed)
             {
-                return threshold.LowerLimit <= strength;
+                isPushed = threshold.LowerLimit <= signal.Strength;
             }
             else
             {
-                return threshold.UpperLimit <= strength;
+                isPushed = threshold.UpperLimit <= signal.Strength;
             }
+
+            return isPushed ? Push.Enabled : Push.Disabled;
         }
     }
 }

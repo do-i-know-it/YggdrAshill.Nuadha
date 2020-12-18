@@ -11,8 +11,12 @@ namespace YggdrAshill.Nuadha
     {
         private readonly Connector<Pull> connector;
 
-        public PullEventSystem(HysteresisThreshold threshold, IPulseEventInputHandler handler)
+        public PullEventSystem(IHysteresisThreshold threshold, IPulseEventInputHandler handler)
         {
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
             if (handler == null)
             {
                 throw new ArgumentNullException(nameof(handler));

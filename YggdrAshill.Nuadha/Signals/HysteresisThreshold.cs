@@ -1,8 +1,10 @@
+using YggdrAshill.Nuadha.Signals;
 using System;
 
-namespace YggdrAshill.Nuadha.Signals
+namespace YggdrAshill.Nuadha
 {
-    public struct HysteresisThreshold
+    public sealed class HysteresisThreshold : 
+        IHysteresisThreshold
     {
         public float LowerLimit { get; }
 

@@ -1,4 +1,4 @@
-﻿namespace YggdrAshill.Nuadha
+﻿namespace YggdrAshill.Nuadha.Units
 {
     public interface IHeadsetThreshold
     {

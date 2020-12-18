@@ -1,13 +1,13 @@
 ﻿using YggdrAshill.Nuadha.Signals;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public interface IHandControllerThreshold
     {
         ITiltThreshold ThumbStick { get; }
 
-        HysteresisThreshold FingerTrigger { get; }
+        IHysteresisThreshold FingerTrigger { get; }
 
-        HysteresisThreshold HandTrigger { get; }
+        IHysteresisThreshold HandTrigger { get; }
     }
 }

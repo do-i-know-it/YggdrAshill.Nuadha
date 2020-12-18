@@ -1,4 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -7,12 +9,25 @@ namespace YggdrAshill.Nuadha
     {
         public ITiltThreshold ThumbStick { get; }
 
-        public HysteresisThreshold FingerTrigger { get; }
+        public IHysteresisThreshold FingerTrigger { get; }
 
-        public HysteresisThreshold HandTrigger { get; }
+        public IHysteresisThreshold HandTrigger { get; }
 
         public HandControllerThreshold(HysteresisThreshold thumbStick, HysteresisThreshold fingerTrigger, HysteresisThreshold handTrigger)
         {
+            if (thumbStick == null)
+            {
+                throw new ArgumentNullException(nameof(thumbStick));
+            }
+            if (fingerTrigger == null)
+            {
+                throw new ArgumentNullException(nameof(fingerTrigger));
+            }
+            if (handTrigger == null)
+            {
+                throw new ArgumentNullException(nameof(handTrigger));
+            }
+
             ThumbStick = new TiltThreshold(thumbStick);
 
             FingerTrigger = fingerTrigger;

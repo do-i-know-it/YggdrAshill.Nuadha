@@ -14,7 +14,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly PullEventSystem pull;
 
-        public TriggerEventSystem(HysteresisThreshold threshold, ITriggerEventInputHandler handler)
+        public TriggerEventSystem(IHysteresisThreshold threshold, ITriggerEventInputHandler handler)
         {
             if (handler == null)
             {

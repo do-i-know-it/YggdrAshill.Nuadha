@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signals;
+﻿using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -21,6 +21,27 @@ namespace YggdrAshill.Nuadha
             HysteresisThreshold fingerTrigger,
             HysteresisThreshold handTrigger)
         {
+            if (pupil == null)
+            {
+                throw new ArgumentNullException(nameof(pupil));
+            }
+            if (blink == null)
+            {
+                throw new ArgumentNullException(nameof(blink));
+            }
+            if (thumbStick == null)
+            {
+                throw new ArgumentNullException(nameof(thumbStick));
+            }
+            if (fingerTrigger == null)
+            {
+                throw new ArgumentNullException(nameof(fingerTrigger));
+            }
+            if (handTrigger == null)
+            {
+                throw new ArgumentNullException(nameof(handTrigger));
+            }
+
             Head = new HeadsetThreshold(pupil, blink);
 
             LeftHand = new HandControllerThreshold(thumbStick, fingerTrigger, handTrigger);
