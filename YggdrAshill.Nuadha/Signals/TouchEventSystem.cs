@@ -20,10 +20,10 @@ namespace YggdrAshill.Nuadha
 
             connector = new Connector<Touch>();
 
-            connector.Detect(TouchToPulse.HasTouched()).Connect(handler.HasEnabled);
-            connector.Detect(TouchToPulse.IsTouched()).Connect(handler.IsEnabled);
-            connector.Detect(TouchToPulse.HasReleased()).Connect(handler.HasDisabled);
-            connector.Detect(TouchToPulse.IsReleased()).Connect(handler.IsDisabled);
+            connector.Detect(TouchToPulse.HasEnabled()).Connect(handler.HasEnabled);
+            connector.Detect(TouchToPulse.IsEnabled()).Connect(handler.IsEnabled);
+            connector.Detect(TouchToPulse.HasDisabled()).Connect(handler.HasDisabled);
+            connector.Detect(TouchToPulse.IsDisabled()).Connect(handler.IsDisabled);
         }
 
         public void Receive(Touch signal)

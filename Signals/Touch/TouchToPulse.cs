@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return detection;
         }
-        public static IDetection<Touch> HasTouched()
+        public static IDetection<Touch> HasEnabled()
             => HasTouched(Touch.Disabled);
 
         public static IDetection<Touch> IsTouched(Touch initial)
@@ -37,7 +37,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return detection;
         }
-        public static IDetection<Touch> IsTouched()
+        public static IDetection<Touch> IsEnabled()
             => IsTouched(Touch.Disabled);
 
         public static IDetection<Touch> HasReleased(Touch initial)
@@ -54,7 +54,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return detection;
         }
-        public static IDetection<Touch> HasReleased()
+        public static IDetection<Touch> HasDisabled()
             => HasReleased(Touch.Disabled);
 
         public static IDetection<Touch> IsReleased(Touch initial)
@@ -71,7 +71,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return detection;
         }
-        public static IDetection<Touch> IsReleased()
+        public static IDetection<Touch> IsDisabled()
             => IsReleased(Touch.Disabled);
 
         private Touch previous;

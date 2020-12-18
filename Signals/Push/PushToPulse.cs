@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return detection;
         }
-        public static IDetection<Push> HasPushed()
+        public static IDetection<Push> HasEnabled()
             => HasPushed(Push.Disabled);
 
         public static IDetection<Push> IsPushed(Push initial)
@@ -37,7 +37,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return detection;
         }
-        public static IDetection<Push> IsPushed()
+        public static IDetection<Push> IsEnabled()
             => IsPushed(Push.Disabled);
 
         public static IDetection<Push> HasReleased(Push initial)
@@ -54,7 +54,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return detection;
         }
-        public static IDetection<Push> HasReleased()
+        public static IDetection<Push> HasDisabled()
             => HasReleased(Push.Disabled);
 
         public static IDetection<Push> IsReleased(Push initial)
@@ -71,7 +71,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return detection;
         }
-        public static IDetection<Push> IsReleased()
+        public static IDetection<Push> IsDisabled()
             => IsReleased(Push.Disabled);
 
         private Push previous;
