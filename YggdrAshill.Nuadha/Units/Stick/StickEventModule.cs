@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -9,17 +10,17 @@ namespace YggdrAshill.Nuadha
         IStickEventOutputHandler,
         IDisconnection
     {
-        private readonly TouchEventModule touch = new TouchEventModule();
+        private readonly PulseEventModule touch = new PulseEventModule();
 
-        private readonly PushEventModule push = new PushEventModule();
+        private readonly PulseEventModule push = new PulseEventModule();
 
         private readonly TiltEventModule tilt = new TiltEventModule();
 
         #region IStickEventInputHandler
 
-        ITouchEventInputHandler IButtonEventInputHandler.Touch => touch;
+        IPulseEventInputHandler IButtonEventInputHandler.Touch => touch;
 
-        IPushEventInputHandler IButtonEventInputHandler.Push => push;
+        IPulseEventInputHandler IButtonEventInputHandler.Push => push;
 
         ITiltEventInputHandler IStickEventInputHandler.Tilt => tilt;
 
@@ -27,9 +28,9 @@ namespace YggdrAshill.Nuadha
 
         #region IStickEventOutputHandler
 
-        ITouchEventOutputHandler IButtonEventOutputHandler.Touch => touch;
+        IPulseEventOutputHandler IButtonEventOutputHandler.Touch => touch;
 
-        IPushEventOutputHandler IButtonEventOutputHandler.Push => push;
+        IPulseEventOutputHandler IButtonEventOutputHandler.Push => push;
 
         ITiltEventOutputHandler IStickEventOutputHandler.Tilt => tilt;
 

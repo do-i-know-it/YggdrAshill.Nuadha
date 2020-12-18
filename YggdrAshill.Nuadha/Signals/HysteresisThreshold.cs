@@ -1,14 +1,16 @@
+using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public struct HysteresisThreshold
+    public sealed class HysteresisThreshold : 
+        IHysteresisThreshold
     {
-        public float UpperLimit { get; }
-
         public float LowerLimit { get; }
 
-        public HysteresisThreshold(float upperLimit, float lowerLimit)
+        public float UpperLimit { get; }
+
+        public HysteresisThreshold(float lowerLimit, float upperLimit)
         {
             if (float.IsNaN(upperLimit))
             {
@@ -21,22 +23,22 @@ namespace YggdrAshill.Nuadha
 
             const float Min = 0.0f;
             const float Max = 1.0f;
-            if (upperLimit < Min || Max < upperLimit)
-            {
-                throw new ArgumentOutOfRangeException(nameof(upperLimit));
-            }
             if (lowerLimit < Min || Max < lowerLimit)
             {
                 throw new ArgumentOutOfRangeException(nameof(lowerLimit));
+            }
+            if (upperLimit < Min || Max < upperLimit)
+            {
+                throw new ArgumentOutOfRangeException(nameof(upperLimit));
             }
             if (upperLimit < lowerLimit)
             {
                 throw new ArgumentException($"{nameof(upperLimit)} < {nameof(lowerLimit)}");
             }
 
-            UpperLimit = upperLimit;
-
             LowerLimit = lowerLimit;
+
+            UpperLimit = upperLimit;
         }
     }
 }

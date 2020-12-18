@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonDevice :
-        IHardware<IButtonHardwareHandler>,
-        IDisconnection,
-        IIgnitor
+        IInputDevice<IButtonHardwareHandler>
     {
         private readonly IButtonConfiguration configuration;
 

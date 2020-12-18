@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDevice :
-        IHardware<ITriggerHardwareHandler>,
-        IDisconnection,
-        IIgnitor
+        IInputDevice<ITriggerHardwareHandler>
     {
         private readonly ITriggerConfiguration configuration;
 

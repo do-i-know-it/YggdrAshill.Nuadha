@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickDevice :
-        IHardware<IStickHardwareHandler>,
-        IDisconnection,
-        IIgnitor
+        IInputDevice<IStickHardwareHandler>
     {
         private readonly IStickConfiguration configuration;
 

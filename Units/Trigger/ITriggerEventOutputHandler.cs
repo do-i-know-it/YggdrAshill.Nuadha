@@ -1,13 +1,13 @@
 ﻿using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Translation;
 
 namespace YggdrAshill.Nuadha.Units
 {
     public interface ITriggerEventOutputHandler :
         ISoftwareHandler
     {
-        ITouchEventOutputHandler Touch { get; }
+        IPulseEventOutputHandler Touch { get; }
 
-        IPullEventOutputHandler Pull { get; }
+        IPulseEventOutputHandler Pull { get; }
     }
 }

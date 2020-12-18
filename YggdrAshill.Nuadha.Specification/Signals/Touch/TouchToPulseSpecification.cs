@@ -7,51 +7,43 @@ namespace YggdrAshill.Nuadha.Specification
     internal class TouchToPulseSpecification
     {
         [Test]
-        public void ShouldPulsateWhenHasTouched()
+        public void ShouldDetectWhenHasTouched()
         {
-            var pulsation = TouchToPulse.HasTouched;
+            var detection = TouchToPulse.HasTouched(Touch.Disabled);
 
-            Assert.IsTrue(pulsation.Pulsate(Touch.Disabled, Touch.Enabled));
-
-            Assert.IsFalse(pulsation.Pulsate(Touch.Enabled, Touch.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Touch.Enabled, Touch.Disabled));
-            Assert.IsFalse(pulsation.Pulsate(Touch.Disabled, Touch.Disabled));
+            Assert.IsTrue(detection.Detect(Touch.Enabled));
+            Assert.IsFalse(detection.Detect(Touch.Enabled));
+            Assert.IsFalse(detection.Detect(Touch.Disabled));
         }
 
         [Test]
-        public void ShouldPulsateWhenIsTouched()
+        public void ShouldDetectWhenIsTouched()
         {
-            var pulsation = TouchToPulse.IsTouched;
+            var detection = TouchToPulse.IsTouched(Touch.Disabled);
 
-            Assert.IsTrue(pulsation.Pulsate(Touch.Enabled, Touch.Enabled));
-
-            Assert.IsFalse(pulsation.Pulsate(Touch.Disabled, Touch.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Touch.Enabled, Touch.Disabled));
-            Assert.IsFalse(pulsation.Pulsate(Touch.Disabled, Touch.Disabled));
+            Assert.IsTrue(detection.Detect(Touch.Enabled));
+            Assert.IsTrue(detection.Detect(Touch.Enabled));
+            Assert.IsFalse(detection.Detect(Touch.Disabled));
         }
 
         [Test]
-        public void ShouldPulsateWhenHasReleased()
+        public void ShouldDetectWhenHasReleased()
         {
-            var pulsation = TouchToPulse.HasReleased;
+            var detection = TouchToPulse.HasReleased(Touch.Enabled);
 
-            Assert.IsTrue(pulsation.Pulsate(Touch.Enabled, Touch.Disabled));
-
-            Assert.IsFalse(pulsation.Pulsate(Touch.Disabled, Touch.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Touch.Enabled, Touch.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Touch.Disabled, Touch.Disabled));
+            Assert.IsTrue(detection.Detect(Touch.Disabled));
+            Assert.IsFalse(detection.Detect(Touch.Disabled));
+            Assert.IsFalse(detection.Detect(Touch.Enabled));
         }
 
         [Test]
-        public void ShouldPulsateWhenIsReleased()
+        public void ShouldDetectWhenIsReleased()
         {
-            var pulsation = TouchToPulse.IsReleased;
+            var detection = TouchToPulse.IsReleased(Touch.Enabled);
 
-            Assert.IsTrue(pulsation.Pulsate(Touch.Disabled, Touch.Disabled));
-
-            Assert.IsFalse(pulsation.Pulsate(Touch.Disabled, Touch.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Touch.Enabled, Touch.Enabled));
-            Assert.IsFalse(pulsation.Pulsate(Touch.Enabled, Touch.Disabled));
+            Assert.IsTrue(detection.Detect(Touch.Disabled));
+            Assert.IsTrue(detection.Detect(Touch.Disabled));
+            Assert.IsFalse(detection.Detect(Touch.Enabled));
         }
     }
 }

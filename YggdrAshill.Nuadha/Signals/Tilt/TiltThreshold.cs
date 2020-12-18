@@ -1,21 +1,25 @@
-﻿namespace YggdrAshill.Nuadha
+﻿using YggdrAshill.Nuadha.Signals;
+using System;
+
+namespace YggdrAshill.Nuadha
 {
     public sealed class TiltThreshold :
         ITiltThreshold
     {
-        public HysteresisThreshold Center { get; }
+        public IHysteresisThreshold Left { get; }
 
-        public HysteresisThreshold Left { get; }
+        public IHysteresisThreshold Right { get; }
 
-        public HysteresisThreshold Right { get; }
+        public IHysteresisThreshold Forward { get; }
 
-        public HysteresisThreshold Forward { get; }
-
-        public HysteresisThreshold Backward { get; }
+        public IHysteresisThreshold Backward { get; }
 
         public TiltThreshold(HysteresisThreshold threshold)
         {
-            Center = threshold;
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
 
             Left = threshold;
 

@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.1f)]
         public void ShouldConvertPullToNotPushedWhenStrengthIsLowerThanUpperLimitBeforePushed(float upper)
         {
-            var threshold = new HysteresisThreshold(upper, upper - 0.1f);
+            var threshold = new HysteresisThreshold(upper - 0.1f, upper);
             var conversion = new PullToPush(threshold);
 
             var push = conversion.Convert(new Pull(upper - 0.1f));
@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.1f)]
         public void ShouldConvertPullToPushedWhenStrengthIsHigherThanUpperLimitBeforePushed(float upper)
         {
-            var threshold = new HysteresisThreshold(upper, upper - 0.1f);
+            var threshold = new HysteresisThreshold(upper - 0.1f, upper);
             var conversion = new PullToPush(threshold);
 
             var push = conversion.Convert(new Pull(upper + 0.1f));
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.1f)]
         public void ShouldConvertPullToPushedWhenStrengthIsHigherThanLowerLimitAfterPushed(float lower)
         {
-            var threshold = new HysteresisThreshold(lower + 0.1f, lower);
+            var threshold = new HysteresisThreshold(lower, lower + 0.1f);
             var conversion = new PullToPush(threshold, true);
 
             var push = conversion.Convert(new Pull(lower + 0.1f));
@@ -46,7 +46,7 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.1f)]
         public void ShouldConvertPullToNotPushedWhenStrengthIsLowerThanLowerLimitAfterPushed(float lower)
         {
-            var threshold = new HysteresisThreshold(lower + 0.1f, lower);
+            var threshold = new HysteresisThreshold(lower, lower + 0.1f);
             var conversion = new PullToPush(threshold, true);
 
             var push = conversion.Convert(new Pull(lower - 0.1f));

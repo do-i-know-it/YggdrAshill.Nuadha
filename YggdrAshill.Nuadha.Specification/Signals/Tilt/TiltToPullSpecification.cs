@@ -6,21 +6,6 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(TiltToPull))]
     internal class TiltToPullSpecification
     {
-        [TestCase(0.0f, 1.0f)]
-        [TestCase(0.0f, 0.5f)]
-        [TestCase(1.0f, 0.0f)]
-        [TestCase(0.5f, 0.0f)]
-        [TestCase(0.0f, 0.0f)]
-        public void ShouldConvertPullFromTilted(float horizontal, float vertical)
-        {
-            var expected = (horizontal * horizontal + vertical * vertical) * 0.5f;
-
-            var conversion = TiltToPull.Tilted;
-            var tilted = new Tilt(horizontal, vertical);
-
-            Assert.AreEqual(expected, conversion.Convert(tilted).Strength);
-        }
-
         [TestCase(1.0f)]
         [TestCase(0.5f)]
         [TestCase(0.0f)]

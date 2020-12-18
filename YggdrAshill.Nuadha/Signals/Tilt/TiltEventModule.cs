@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
@@ -8,41 +9,35 @@ namespace YggdrAshill.Nuadha
         ITiltEventOutputHandler,
         IDisconnection
     {
-        private readonly PullEventModule center = new PullEventModule();
+        private readonly PulseEventModule left = new PulseEventModule();
         
-        private readonly PullEventModule left = new PullEventModule();
+        private readonly PulseEventModule right = new PulseEventModule();
         
-        private readonly PullEventModule right = new PullEventModule();
+        private readonly PulseEventModule forward = new PulseEventModule();
         
-        private readonly PullEventModule forward = new PullEventModule();
-        
-        private readonly PullEventModule backward = new PullEventModule();
+        private readonly PulseEventModule backward = new PulseEventModule();
 
         #region ITiltEventInputHandler
 
-        IPullEventInputHandler ITiltEventInputHandler.Center => center;
+        IPulseEventInputHandler ITiltEventInputHandler.Left => left;
 
-        IPullEventInputHandler ITiltEventInputHandler.Left => left;
+        IPulseEventInputHandler ITiltEventInputHandler.Right => right;
 
-        IPullEventInputHandler ITiltEventInputHandler.Right => right;
+        IPulseEventInputHandler ITiltEventInputHandler.Forward => forward;
 
-        IPullEventInputHandler ITiltEventInputHandler.Forward => forward;
-
-        IPullEventInputHandler ITiltEventInputHandler.Backward => backward;
+        IPulseEventInputHandler ITiltEventInputHandler.Backward => backward;
 
         #endregion
 
         #region ITiltEventOutputHandler
 
-        IPullEventOutputHandler ITiltEventOutputHandler.Center => center;
+        IPulseEventOutputHandler ITiltEventOutputHandler.Left => left;
 
-        IPullEventOutputHandler ITiltEventOutputHandler.Left => left;
+        IPulseEventOutputHandler ITiltEventOutputHandler.Right => right;
 
-        IPullEventOutputHandler ITiltEventOutputHandler.Right => right;
+        IPulseEventOutputHandler ITiltEventOutputHandler.Forward => forward;
 
-        IPullEventOutputHandler ITiltEventOutputHandler.Forward => forward;
-
-        IPullEventOutputHandler ITiltEventOutputHandler.Backward => backward;
+        IPulseEventOutputHandler ITiltEventOutputHandler.Backward => backward;
 
         #endregion
 
@@ -50,8 +45,6 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            center.Disconnect();
-
             left.Disconnect();
 
             right.Disconnect();

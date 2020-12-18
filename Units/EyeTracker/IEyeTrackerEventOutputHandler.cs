@@ -1,13 +1,13 @@
 ﻿using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Translation;
 
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IEyeTrackerEventOutputHandler :
         ISoftwareHandler
     {
-        IPupilEventOutputHandler Pupil { get; }
+        IPulseEventOutputHandler Pupil { get; }
 
-        IBlinkEventOutputHandler Blink { get; }
+        IPulseEventOutputHandler Blink { get; }
     }
 }

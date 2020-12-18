@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ThreePointTrackerDevice :
-        IHardware<IThreePointTrackerHardwareHandler>,
-        IDisconnection,
-        IIgnitor
+        IInputDevice<IThreePointTrackerHardwareHandler>
     {
         private readonly IThreePointTrackerConfiguration configuration;
 
