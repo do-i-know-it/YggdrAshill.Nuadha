@@ -36,6 +36,25 @@ namespace YggdrAshill.Nuadha.Translation
             return terminal.Convert(new Corrector<TSignal>(correction));
         }
 
+        public static IOutputTerminal<TSignal> Calibrate<TSignal>(this IOutputTerminal<TSignal> terminal, IReduction<TSignal> reduction, ICalibration<TSignal> calibration)
+            where TSignal : ISignal
+        {
+            if (terminal == null)
+            {
+                throw new ArgumentNullException(nameof(terminal));
+            }
+            if (reduction == null)
+            {
+                throw new ArgumentNullException(nameof(reduction));
+            }
+            if (calibration == null)
+            {
+                throw new ArgumentNullException(nameof(calibration));
+            }
+
+            return terminal.Correct(new Calibrator<TSignal>(reduction, calibration));
+        }
+
         public static IOutputTerminal<Pulse> Detect<TSignal>(this IOutputTerminal<TSignal> terminal, IDetection<TSignal> detection)
             where TSignal : ISignal
         {
