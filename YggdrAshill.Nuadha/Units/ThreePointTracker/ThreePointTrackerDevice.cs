@@ -29,6 +29,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
+            var position = configuration.PoseTracker.Position.Connect(handler.PoseTracker.Position);
+            var rotation = configuration.PoseTracker.Rotation.Connect(handler.PoseTracker.Rotation);
+
             // Head
             var headDirection = configuration.Head.Direction.Connect(handler.Head.Direction);
 
@@ -71,6 +74,9 @@ namespace YggdrAshill.Nuadha
 
             return new Disconnection(() =>
             {
+                position.Disconnect();
+                rotation.Disconnect();
+
                 // Head
                 headDirection.Disconnect();
 
@@ -119,6 +125,9 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
+            configuration.PoseTracker.Position.Disconnect();
+            configuration.PoseTracker.Rotation.Disconnect();
+
             // Head
             configuration.Head.Direction.Disconnect();
             
@@ -166,6 +175,9 @@ namespace YggdrAshill.Nuadha
 
         public IEmission Ignite()
         {
+            var position = configuration.PoseTracker.Position.Ignite();
+            var rotation = configuration.PoseTracker.Rotation.Ignite();
+
             // Head
             var headDirection = configuration.Head.Direction.Ignite();
 
@@ -208,6 +220,9 @@ namespace YggdrAshill.Nuadha
 
             return new Emission(() =>
             {
+                position.Emit();
+                rotation.Emit();
+
                 // Head
                 headDirection.Emit();
 
