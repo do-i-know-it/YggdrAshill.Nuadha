@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IThreePointTrackerCalibrationOutputHandler :
-       ISoftwareHandler
+        ISoftwareHandler
     {
         IPoseTrackerSoftwareHandler Head { get; }
 

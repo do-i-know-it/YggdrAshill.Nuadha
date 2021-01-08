@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IThreePointTrackerEventInputHandler :
-       IHardwareHandler
+        IHardwareHandler
     {
         IHeadsetEventInputHandler Head { get; }
 
