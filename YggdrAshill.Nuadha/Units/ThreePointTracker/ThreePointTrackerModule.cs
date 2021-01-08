@@ -8,6 +8,8 @@ namespace YggdrAshill.Nuadha
         IThreePointTrackerSoftwareHandler,
         IDisconnection
     {
+        private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
+
         private readonly HeadsetModule head = new HeadsetModule();
 
         private readonly HandControllerModule leftHand = new HandControllerModule();
@@ -15,6 +17,8 @@ namespace YggdrAshill.Nuadha
         private readonly HandControllerModule rightHand = new HandControllerModule();
 
         #region IThreePointTrackerHardwareHandler
+
+        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.PoseTracker => poseTracker;
 
         IHeadsetHardwareHandler IThreePointTrackerHardwareHandler.Head => head;
 
@@ -25,6 +29,8 @@ namespace YggdrAshill.Nuadha
         #endregion
 
         #region IThreePointTrackerSoftwareHandler
+
+        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.PoseTracker => poseTracker;
 
         IHeadsetSoftwareHandler IThreePointTrackerSoftwareHandler.Head => head;
 
@@ -38,6 +44,8 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
+            poseTracker.Disconnect();
+
             head.Disconnect();
 
             leftHand.Disconnect();
