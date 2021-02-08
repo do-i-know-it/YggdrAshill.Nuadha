@@ -1,4 +1,6 @@
-﻿namespace YggdrAshill.Nuadha.Signals
+﻿using YggdrAshill.Nuadha.Signals;
+
+namespace YggdrAshill.Nuadha.Units
 {
     public interface ITiltThreshold
     {

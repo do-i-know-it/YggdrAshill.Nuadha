@@ -1,7 +1,7 @@
 ﻿using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Translation;
 
-namespace YggdrAshill.Nuadha.Signals
+namespace YggdrAshill.Nuadha.Units
 {
     public interface ITiltEventInputHandler :
         IHardwareHandler
