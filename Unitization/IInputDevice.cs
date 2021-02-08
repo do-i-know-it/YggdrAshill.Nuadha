@@ -5,7 +5,7 @@ namespace YggdrAshill.Nuadha.Unitization
     public interface IInputDevice<THardwareHandler> :
         IHardware<THardwareHandler>,
         IDisconnection,
-        IIgnitor
+        IIgnition
         where THardwareHandler : IHardwareHandler
     {
 

@@ -3,14 +3,14 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Ignitor))]
-    internal class IgnitorSpecification
+    [TestFixture(TestOf = typeof(Ignition))]
+    internal class IgnitionSpecification
     {
         [Test]
         public void ShouldExecuteFunctionWhenHasIgnited()
         {
             var expected = false;
-            var ignitor = new Ignitor(() =>
+            var ignitor = new Ignition(() =>
             {
                 expected = true;
 
@@ -26,7 +26,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldEmitAfterHasIgnited()
         {
             var expected = false;
-            var ignitor = new Ignitor(() =>
+            var ignitor = new Ignition(() =>
             {
                 return new Emission(() =>
                 {
@@ -46,7 +46,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var ignitor = new Ignitor(null);
+                var ignitor = new Ignition(null);
             });
         }
     }

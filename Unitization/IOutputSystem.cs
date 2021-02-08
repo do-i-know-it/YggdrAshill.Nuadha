@@ -5,7 +5,7 @@ namespace YggdrAshill.Nuadha.Unitization
     public interface IOutputSystem<TSoftwareHandler> :
         ISoftware<TSoftwareHandler>,
         IDisconnection,
-        IIgnitor
+        IIgnition
         where TSoftwareHandler : ISoftwareHandler
     {
 

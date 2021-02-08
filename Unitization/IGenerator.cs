@@ -1,10 +1,10 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha.Unitization
 {
     public interface IGenerator<TSignal> :
         IOutputTerminal<TSignal>,
-        IIgnitor,
+        IIgnition,
         IDisconnection
         where TSignal : ISignal
     {

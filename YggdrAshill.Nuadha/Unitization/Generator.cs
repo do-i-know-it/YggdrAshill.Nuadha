@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -62,7 +63,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IIgnitor
+        #region IIgnition
 
         public IEmission Ignite()
         {

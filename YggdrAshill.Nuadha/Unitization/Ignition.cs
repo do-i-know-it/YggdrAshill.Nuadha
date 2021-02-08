@@ -1,16 +1,17 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class Ignitor :
-        IIgnitor
+    public sealed class Ignition :
+        IIgnition
     {
         private readonly Func<IEmission> onIgnited;
 
         #region Constructor
 
-        public Ignitor(Func<IEmission> onIgnited)
+        public Ignition(Func<IEmission> onIgnited)
         {
             if (onIgnited == null)
             {
@@ -20,7 +21,7 @@ namespace YggdrAshill.Nuadha
             this.onIgnited = onIgnited;
         }
 
-        public Ignitor()
+        public Ignition()
         {
             onIgnited = () =>
             {
@@ -30,7 +31,7 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IIgnitor
+        #region IIgnition
 
         public IEmission Ignite()
         {
