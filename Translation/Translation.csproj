@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Conduction\Conduction.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
-    <ProjectReference Include="..\Unitization\Unitization.csproj" />
   </ItemGroup>
 
 </Project>
