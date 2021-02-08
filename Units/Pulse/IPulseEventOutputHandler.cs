@@ -1,7 +1,8 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Unitization;
 
-namespace YggdrAshill.Nuadha.Translation
+namespace YggdrAshill.Nuadha.Units
 {
     public interface IPulseEventOutputHandler :
         ISoftwareHandler
