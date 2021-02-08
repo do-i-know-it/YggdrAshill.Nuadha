@@ -1,5 +1,4 @@
 ﻿using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Translation;
 
 namespace YggdrAshill.Nuadha.Units
 {
