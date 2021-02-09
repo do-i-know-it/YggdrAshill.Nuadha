@@ -1,36 +1,30 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+﻿using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class ThreePointTrackerEventModule :
-        IThreePointTrackerEventInputHandler,
-        IThreePointTrackerEventOutputHandler,
+        IThreePointTrackerDetectionInputHandler,
+        IThreePointTrackerDetectionOutputHandler,
         IDisconnection
     {
-        private readonly HeadsetEventModule head = new HeadsetEventModule();
+        private readonly HandControllerDetectionModule leftHand = new HandControllerDetectionModule();
 
-        private readonly HandControllerEventModule leftHand = new HandControllerEventModule();
+        private readonly HandControllerDetectionModule rightHand = new HandControllerDetectionModule();
 
-        private readonly HandControllerEventModule rightHand = new HandControllerEventModule();
+        #region IThreePointTrackerDetectionInputHandler
 
-        #region IThreePointTrackerEventInputHandler
+        IHandControllerDetectionInputHandler IThreePointTrackerDetectionInputHandler.LeftHand => leftHand;
 
-        IHeadsetEventInputHandler IThreePointTrackerEventInputHandler.Head => head;
-
-        IHandControllerEventInputHandler IThreePointTrackerEventInputHandler.LeftHand => leftHand;
-
-        IHandControllerEventInputHandler IThreePointTrackerEventInputHandler.RightHand => rightHand;
+        IHandControllerDetectionInputHandler IThreePointTrackerDetectionInputHandler.RightHand => rightHand;
 
         #endregion
 
-        #region IThreePointTrackerEventOutputHandler
+        #region IThreePointTrackerDetectionOutputHandler
 
-        IHeadsetEventOutputHandler IThreePointTrackerEventOutputHandler.Head => head;
+        IHandControllerDetectionOutputHandler IThreePointTrackerDetectionOutputHandler.LeftHand => leftHand;
 
-        IHandControllerEventOutputHandler IThreePointTrackerEventOutputHandler.LeftHand => leftHand;
-
-        IHandControllerEventOutputHandler IThreePointTrackerEventOutputHandler.RightHand => rightHand;
+        IHandControllerDetectionOutputHandler IThreePointTrackerDetectionOutputHandler.RightHand => rightHand;
 
         #endregion
 
@@ -38,8 +32,6 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            head.Disconnect();
-
             leftHand.Disconnect();
 
             rightHand.Disconnect();

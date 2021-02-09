@@ -1,62 +1,63 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha.Translation
 {
     internal sealed class Converter<TInput, TOutput> :
-        IOutputTerminal<TOutput>
+        IConnection<TOutput>
         where TInput : ISignal
         where TOutput : ISignal
     {
-        private readonly IOutputTerminal<TInput> terminal;
+        private readonly IConnection<TInput> connection;
 
         private readonly IConversion<TInput, TOutput> conversion;
 
-        internal Converter(IOutputTerminal<TInput> terminal, IConversion<TInput, TOutput> conversion)
+        internal Converter(IConnection<TInput> connection, IConversion<TInput, TOutput> conversion)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (conversion == null)
             {
                 throw new ArgumentNullException(nameof(conversion));
             }
 
-            this.terminal = terminal;
+            this.connection = connection;
 
             this.conversion = conversion;
         }
 
-        public IDisconnection Connect(IInputTerminal<TOutput> terminal)
+        public Conduction.IDisconnection Connect(IConsumption<TOutput> consumption)
         {
-            if (terminal == null)
+            if (consumption == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(consumption));
             }
 
-            return this.terminal.Connect(new Convert(terminal, conversion));
+            return connection.Connect(new Convert(consumption, conversion));
         }
 
         private sealed class Convert :
-            IInputTerminal<TInput>
+            IConsumption<TInput>
         {
-            private readonly IInputTerminal<TOutput> terminal;
+            private readonly IConsumption<TOutput> consumption;
 
             private readonly IConversion<TInput, TOutput> conversion;
 
-            internal Convert(IInputTerminal<TOutput> terminal, IConversion<TInput, TOutput> conversion)
+            internal Convert(IConsumption<TOutput> consumption, IConversion<TInput, TOutput> conversion)
             {
-                this.terminal = terminal;
+                this.consumption = consumption;
 
                 this.conversion = conversion;
             }
 
-            public void Receive(TInput signal)
+            public void Consume(TInput signal)
             {
                 var converted = conversion.Convert(signal);
 
-                terminal.Receive(converted);
+                consumption.Consume(converted);
             }
         }
     }

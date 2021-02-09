@@ -1,64 +1,65 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha.Translation
 {
     internal sealed class Detector<TSignal> :
-        IOutputTerminal<Pulse>
+        IConnection<Pulse>
         where TSignal : ISignal
     {
-        private readonly IOutputTerminal<TSignal> terminal;
+        private readonly IConnection<TSignal> connection;
 
         private readonly IDetection<TSignal> detection;
 
-        internal Detector(IOutputTerminal<TSignal> terminal, IDetection<TSignal> detection)
+        internal Detector(IConnection<TSignal> connection, IDetection<TSignal> detection)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (detection == null)
             {
                 throw new ArgumentNullException(nameof(detection));
             }
 
-            this.terminal = terminal;
+            this.connection = connection;
 
             this.detection = detection;
         }
 
-        public IDisconnection Connect(IInputTerminal<Pulse> terminal)
+        public Conduction.IDisconnection Connect(IConsumption<Pulse> consumption)
         {
-            if (terminal == null)
+            if (consumption == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(consumption));
             }
 
-            return this.terminal.Connect(new Detect(terminal, detection));
+            return connection.Connect(new Detect(consumption, detection));
         }
 
         private sealed class Detect :
-            IInputTerminal<TSignal>
+            IConsumption<TSignal>
         {
-            private readonly IInputTerminal<Pulse> terminal;
+            private readonly IConsumption<Pulse> consumption;
 
             private readonly IDetection<TSignal> detection;
 
-            internal Detect(IInputTerminal<Pulse> terminal, IDetection<TSignal> detection)
+            internal Detect(IConsumption<Pulse> consumption, IDetection<TSignal> detection)
             {
-                this.terminal = terminal;
+                this.consumption = consumption;
 
                 this.detection = detection;
             }
 
-            public void Receive(TSignal signal)
+            public void Consume(TSignal signal)
             {
                 if (!detection.Detect(signal))
                 {
                     return;
                 }
 
-                terminal.Receive(Pulse.Instance);
+                consumption.Consume(Pulse.Instance);
             }
         }
     }

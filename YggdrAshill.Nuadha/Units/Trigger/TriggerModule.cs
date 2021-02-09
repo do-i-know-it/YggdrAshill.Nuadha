@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -9,23 +10,23 @@ namespace YggdrAshill.Nuadha
         ITriggerHardwareHandler,
         IDisconnection
     {
-        private readonly Connector<Touch> touch = new Connector<Touch>();
+        private readonly Propagation<Touch> touch = new Propagation<Touch>();
 
-        private readonly Connector<Pull> pull = new Connector<Pull>();
+        private readonly Propagation<Pull> pull = new Propagation<Pull>();
 
         #region ITriggerSoftwareHandler
 
-        IOutputTerminal<Touch> ITriggerSoftwareHandler.Touch => touch;
+        IConnection<Touch> ITriggerSoftwareHandler.Touch => touch;
 
-        IOutputTerminal<Pull> ITriggerSoftwareHandler.Pull => pull;
+        IConnection<Pull> ITriggerSoftwareHandler.Pull => pull;
 
         #endregion
 
         #region ITriggerHardwareHandler
         
-        IInputTerminal<Touch> ITriggerHardwareHandler.Touch => touch;
+        IConsumption<Touch> ITriggerHardwareHandler.Touch => touch;
 
-        IInputTerminal<Pull> ITriggerHardwareHandler.Pull => pull;
+        IConsumption<Pull> ITriggerHardwareHandler.Pull => pull;
 
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -9,6 +10,8 @@ namespace YggdrAshill.Nuadha
         IInputDevice<IEyeTrackerHardwareHandler>
     {
         private readonly IEyeTrackerConfiguration configuration;
+
+        private readonly EyeTrackerModule module = new EyeTrackerModule();
 
         public EyeTrackerDevice(IEyeTrackerConfiguration configuration)
         {
@@ -22,6 +25,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
+        private IEyeTrackerSoftwareHandler SoftwareHandler => module;
         public IDisconnection Connect(IEyeTrackerHardwareHandler handler)
         {
             if (handler == null)
@@ -29,9 +33,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var pupil = configuration.Pupil.Connect(handler.Pupil);
+            var pupil = SoftwareHandler.Pupil.Connect(handler.Pupil);
 
-            var blink = configuration.Blink.Connect(handler.Blink);
+            var blink = SoftwareHandler.Blink.Connect(handler.Blink);
 
             return new Disconnection(() =>
             {
@@ -47,20 +51,19 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            configuration.Pupil.Disconnect();
-
-            configuration.Blink.Disconnect();
+            module.Disconnect();
         }
 
         #endregion
 
-        #region Ignitor
+        #region Ignition
 
+        private IEyeTrackerHardwareHandler HardwareHandler => module;
         public IEmission Ignite()
         {
-            var pupil = configuration.Pupil.Ignite();
+            var pupil = configuration.Pupil.Produce(HardwareHandler.Pupil);
 
-            var blink = configuration.Blink.Ignite();
+            var blink = configuration.Blink.Produce(HardwareHandler.Blink);
 
             return new Emission(() =>
             {

@@ -1,7 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Translation;
-using YggdrAshill.Nuadha.Translation.Experimental;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -10,8 +9,8 @@ namespace YggdrAshill.Nuadha
 {
     public abstract class DetectionSystem<TSignal> :
         IConsumption<TSignal>,
-        IHardware<IPulseInputHandler>,
-        Conduction.IDisconnection
+        IHardware<IPulseDetectionInputHandler>,
+        IDisconnection
         where TSignal : ISignal
     {
         protected abstract IPropagation<TSignal> Propagation { get; }
@@ -20,7 +19,7 @@ namespace YggdrAshill.Nuadha
         protected abstract IDetection<TSignal> HasDisabled { get; }
         protected abstract IDetection<TSignal> IsDisabled { get; }
 
-        public Signalization.IDisconnection Connect(IPulseInputHandler handler)
+        public IDisconnection Connect(IPulseDetectionInputHandler handler)
         {
             if (handler == null)
             {

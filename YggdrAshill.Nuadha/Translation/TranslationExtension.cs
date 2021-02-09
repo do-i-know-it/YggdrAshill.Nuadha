@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Translation;
 using System;
 
@@ -6,58 +7,58 @@ namespace YggdrAshill.Nuadha
 {
     public static class TranslationExtension
     {
-        public static IOutputTerminal<TOutput> Convert<TInput, TOutput>(this IOutputTerminal<TInput> terminal, Func<TInput, TOutput> conversion)
+        public static IConnection<TOutput> Convert<TInput, TOutput>(this IConnection<TInput> connection, Func<TInput, TOutput> conversion)
             where TInput : ISignal
             where TOutput : ISignal
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (conversion == null)
             {
                 throw new ArgumentNullException(nameof(conversion));
             }
 
-            return terminal.Convert(new Conversion<TInput, TOutput>(conversion));
+            return connection.Convert(new Conversion<TInput, TOutput>(conversion));
         }
 
-        public static IOutputTerminal<TSignal> Correct<TSignal>(this IOutputTerminal<TSignal> terminal, Func<TSignal, TSignal> correction)
+        public static IConnection<TSignal> Correct<TSignal>(this IConnection<TSignal> connection, Func<TSignal, TSignal> correction)
             where TSignal : ISignal
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (correction == null)
             {
                 throw new ArgumentNullException(nameof(correction));
             }
 
-            return terminal.Correct(new Correction<TSignal>(correction));
+            return connection.Correct(new Correction<TSignal>(correction));
         }
 
-        public static IOutputTerminal<Pulse> Detect<TSignal>(this IOutputTerminal<TSignal> terminal, Func<TSignal, bool> detection)
+        public static IConnection<Pulse> Detect<TSignal>(this IConnection<TSignal> connection, Func<TSignal, bool> detection)
             where TSignal : ISignal
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (detection == null)
             {
                 throw new ArgumentNullException(nameof(detection));
             }
 
-            return terminal.Detect(new Detection<TSignal>(detection));
+            return connection.Detect(new Detection<TSignal>(detection));
         }
 
-        public static IOutputTerminal<TSignal> Calibrate<TSignal>(this IOutputTerminal<TSignal> terminal, Func<TSignal, TSignal, TSignal> reduction, Func<TSignal> calibration)
+        public static IConnection<TSignal> Calibrate<TSignal>(this IConnection<TSignal> connection, Func<TSignal, TSignal, TSignal> reduction, Func<TSignal> calibration)
             where TSignal : ISignal
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (reduction == null)
             {
@@ -68,28 +69,28 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return terminal.Calibrate(new Reduction<TSignal>(reduction), new Calibration<TSignal>(calibration));
+            return connection.Calibrate(new Reduction<TSignal>(reduction), new Calibration<TSignal>(calibration));
         }
 
-        public static IDisconnection Connect(this IOutputTerminal<Pulse> terminal, Action onReceived)
+        public static IDisconnection Connect(this IConnection<Pulse> connection, Action onConsumed)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
-            if (onReceived == null)
+            if (onConsumed == null)
             {
-                throw new ArgumentNullException(nameof(onReceived));
+                throw new ArgumentNullException(nameof(onConsumed));
             }
 
-            return terminal.Connect(signal =>
+            return connection.Connect(signal =>
             {
                 if (signal == null)
                 {
                     throw new ArgumentNullException(nameof(signal));
                 }
 
-                onReceived.Invoke();
+                onConsumed.Invoke();
             });
         }
     }

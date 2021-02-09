@@ -1,4 +1,4 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Unitization
 {

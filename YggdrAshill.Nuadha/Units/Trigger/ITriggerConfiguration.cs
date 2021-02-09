@@ -1,13 +1,12 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
     public interface ITriggerConfiguration
     {
-        IGenerator<Touch> Touch { get; }
+        IProduction<Touch> Touch { get; }
 
-        IGenerator<Pull> Pull { get; }
+        IProduction<Pull> Pull { get; }
     }
 }

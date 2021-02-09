@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -9,6 +10,8 @@ namespace YggdrAshill.Nuadha
         IInputDevice<IPoseTrackerHardwareHandler>
     {
         private readonly IPoseTrackerConfiguration configuration;
+
+        private readonly PoseTrackerModule module = new PoseTrackerModule();
 
         public PoseTrackerDevice(IPoseTrackerConfiguration configuration)
         {
@@ -22,6 +25,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
+        private IPoseTrackerSoftwareHandler SoftwareHandler => module;
         public IDisconnection Connect(IPoseTrackerHardwareHandler handler)
         {
             if (handler == null)
@@ -29,9 +33,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var position = configuration.Position.Connect(handler.Position);
+            var position = SoftwareHandler.Position.Connect(handler.Position);
 
-            var rotation = configuration.Rotation.Connect(handler.Rotation);
+            var rotation = SoftwareHandler.Rotation.Connect(handler.Rotation);
 
             return new Disconnection(() =>
             {
@@ -47,20 +51,19 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            configuration.Position.Disconnect();
-
-            configuration.Rotation.Disconnect();
+            module.Disconnect();
         }
 
         #endregion
 
-        #region Ignitor
+        #region Ignition
 
+        private IPoseTrackerHardwareHandler HardwareHandler => module;
         public IEmission Ignite()
         {
-            var position = configuration.Position.Ignite();
+            var position = configuration.Position.Produce(HardwareHandler.Position);
 
-            var rotation = configuration.Rotation.Ignite();
+            var rotation = configuration.Rotation.Produce(HardwareHandler.Rotation);
 
             return new Emission(() =>
             {

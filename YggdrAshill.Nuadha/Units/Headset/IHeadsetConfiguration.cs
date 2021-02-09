@@ -1,12 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
     public interface IHeadsetConfiguration
     {
-        IGenerator<Direction> Direction { get; }
+        IProduction<Direction> Direction { get; }
 
         IPoseTrackerConfiguration PoseTracker { get; }
 

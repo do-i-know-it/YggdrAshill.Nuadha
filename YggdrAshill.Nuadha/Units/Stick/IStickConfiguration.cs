@@ -1,5 +1,4 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
@@ -7,6 +6,6 @@ namespace YggdrAshill.Nuadha
     public interface IStickConfiguration :
         IButtonConfiguration
     {
-        IGenerator<Tilt> Tilt { get; }
+        IProduction<Tilt> Tilt { get; }
     }
 }

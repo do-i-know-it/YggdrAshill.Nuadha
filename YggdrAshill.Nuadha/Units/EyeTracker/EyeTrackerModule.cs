@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -9,23 +10,23 @@ namespace YggdrAshill.Nuadha
         IEyeTrackerHardwareHandler,
         IDisconnection
     {
-        private readonly Connector<Pupil> pupil = new Connector<Pupil>();
+        private readonly Propagation<Pupil> pupil = new Propagation<Pupil>();
 
-        private readonly Connector<Blink> blink = new Connector<Blink>();
+        private readonly Propagation<Blink> blink = new Propagation<Blink>();
 
         #region IEyeTrackerSoftwareHandler
 
-        IOutputTerminal<Pupil> IEyeTrackerSoftwareHandler.Pupil => pupil;
+        IConnection<Pupil> IEyeTrackerSoftwareHandler.Pupil => pupil;
 
-        IOutputTerminal<Blink> IEyeTrackerSoftwareHandler.Blink => blink;
+        IConnection<Blink> IEyeTrackerSoftwareHandler.Blink => blink;
 
         #endregion
 
         #region IEyeTrackerHardwareHandler
 
-        IInputTerminal<Pupil> IEyeTrackerHardwareHandler.Pupil => pupil;
+        IConsumption<Pupil> IEyeTrackerHardwareHandler.Pupil => pupil;
 
-        IInputTerminal<Blink> IEyeTrackerHardwareHandler.Blink => blink;
+        IConsumption<Blink> IEyeTrackerHardwareHandler.Blink => blink;
         
         #endregion
 

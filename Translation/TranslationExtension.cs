@@ -1,47 +1,48 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha.Translation
 {
     public static class TranslationExtension
     {
-        public static IOutputTerminal<TOutput> Convert<TInput, TOutput>(this IOutputTerminal<TInput> terminal, IConversion<TInput, TOutput> conversion)
+        public static IConnection<TOutput> Convert<TInput, TOutput>(this IConnection<TInput> connection, IConversion<TInput, TOutput> conversion)
             where TInput : ISignal
             where TOutput : ISignal
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (conversion == null)
             {
                 throw new ArgumentNullException(nameof(conversion));
             }
 
-            return new Converter<TInput, TOutput>(terminal, conversion);
+            return new Converter<TInput, TOutput>(connection, conversion);
         }
 
-        public static IOutputTerminal<TSignal> Correct<TSignal>(this IOutputTerminal<TSignal> terminal, ICorrection<TSignal> correction)
+        public static IConnection<TSignal> Correct<TSignal>(this IConnection<TSignal> connection, ICorrection<TSignal> correction)
             where TSignal : ISignal
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (correction == null)
             {
                 throw new ArgumentNullException(nameof(correction));
             }
 
-            return terminal.Convert(new Corrector<TSignal>(correction));
+            return connection.Convert(new Corrector<TSignal>(correction));
         }
 
-        public static IOutputTerminal<TSignal> Calibrate<TSignal>(this IOutputTerminal<TSignal> terminal, IReduction<TSignal> reduction, ICalibration<TSignal> calibration)
+        public static IConnection<TSignal> Calibrate<TSignal>(this IConnection<TSignal> connection, IReduction<TSignal> reduction, ICalibration<TSignal> calibration)
             where TSignal : ISignal
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (reduction == null)
             {
@@ -52,22 +53,22 @@ namespace YggdrAshill.Nuadha.Translation
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return terminal.Correct(new Calibrator<TSignal>(reduction, calibration));
+            return connection.Correct(new Calibrator<TSignal>(reduction, calibration));
         }
 
-        public static IOutputTerminal<Pulse> Detect<TSignal>(this IOutputTerminal<TSignal> terminal, IDetection<TSignal> detection)
+        public static IConnection<Pulse> Detect<TSignal>(this IConnection<TSignal> connection, IDetection<TSignal> detection)
             where TSignal : ISignal
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (detection == null)
             {
                 throw new ArgumentNullException(nameof(detection));
             }
 
-            return new Detector<TSignal>(terminal, detection);
+            return new Detector<TSignal>(connection, detection);
         }
     }
 }

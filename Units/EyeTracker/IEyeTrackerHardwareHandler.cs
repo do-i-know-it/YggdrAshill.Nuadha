@@ -7,8 +7,8 @@ namespace YggdrAshill.Nuadha.Units
     public interface IEyeTrackerHardwareHandler :
         IHardwareHandler
     {
-        IInputTerminal<Pupil> Pupil { get; }
+        IConsumption<Pupil> Pupil { get; }
 
-        IInputTerminal<Blink> Blink { get; }
+        IConsumption<Blink> Blink { get; }
     }
 }

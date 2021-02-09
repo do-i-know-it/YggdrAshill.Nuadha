@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -9,23 +10,23 @@ namespace YggdrAshill.Nuadha
         IPoseTrackerHardwareHandler,
         IDisconnection
     {
-        private readonly Connector<Position> position = new Connector<Position>();
+        private readonly Propagation<Position> position = new Propagation<Position>();
 
-        private readonly Connector<Rotation> rotation = new Connector<Rotation>();
+        private readonly Propagation<Rotation> rotation = new Propagation<Rotation>();
 
         #region IPoseTrackerSoftwareHandler
 
-        IOutputTerminal<Position> IPoseTrackerSoftwareHandler.Position => position;
+        IConnection<Position> IPoseTrackerSoftwareHandler.Position => position;
 
-        IOutputTerminal<Rotation> IPoseTrackerSoftwareHandler.Rotation => rotation;
+        IConnection<Rotation> IPoseTrackerSoftwareHandler.Rotation => rotation;
 
         #endregion
 
         #region IPoseTrackerHardwareHandler
 
-        IInputTerminal<Position> IPoseTrackerHardwareHandler.Position => position;
+        IConsumption<Position> IPoseTrackerHardwareHandler.Position => position;
 
-        IInputTerminal<Rotation> IPoseTrackerHardwareHandler.Rotation => rotation;
+        IConsumption<Rotation> IPoseTrackerHardwareHandler.Rotation => rotation;
 
         #endregion
 

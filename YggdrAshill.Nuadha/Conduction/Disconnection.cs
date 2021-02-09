@@ -1,10 +1,10 @@
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class Disconnection :
-        Signalization.IDisconnection,
-        Conduction.IDisconnection
+        IDisconnection
     {
         private readonly Action onDisconnected;
 

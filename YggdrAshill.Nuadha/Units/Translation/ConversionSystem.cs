@@ -1,8 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Translation;
-using YggdrAshill.Nuadha.Translation.Experimental;
-using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -10,7 +8,7 @@ namespace YggdrAshill.Nuadha
     public abstract class ConversionSystem<TInput, TOutput> :
         IConsumption<TInput>,
         IConnection<TOutput>,
-        Conduction.IDisconnection
+        IDisconnection
         where TInput : ISignal
         where TOutput : ISignal
     {
@@ -29,7 +27,7 @@ namespace YggdrAshill.Nuadha
 
         #region IConnection
 
-        public Conduction.IDisconnection Connect(IConsumption<TOutput> consumption)
+        public IDisconnection Connect(IConsumption<TOutput> consumption)
         {
             if (consumption == null)
             {

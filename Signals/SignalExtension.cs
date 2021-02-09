@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+﻿using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Translation;
 using System;
 
@@ -58,18 +58,18 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Strength;
         }
 
-        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Pull> terminal, IHysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Convert(this IConnection<Pull> connection, IHysteresisThreshold threshold, bool isPushed = false)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return terminal.Convert(new PullToPush(threshold, isPushed));
+            return connection.Convert(new PullToPush(threshold, isPushed));
         }
 
         #endregion
@@ -98,18 +98,18 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Ratio;
         }
 
-        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Pupil> terminal, IHysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Convert(this IConnection<Pupil> connection, IHysteresisThreshold threshold, bool isPushed = false)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return terminal.Convert(new PupilToPush(threshold, isPushed));
+            return connection.Convert(new PupilToPush(threshold, isPushed));
         }
 
         #endregion
@@ -138,18 +138,18 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Ratio;
         }
 
-        public static IOutputTerminal<Push> Convert(this IOutputTerminal<Blink> terminal, IHysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Convert(this IConnection<Blink> connection, IHysteresisThreshold threshold, bool isPushed = false)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return terminal.Convert(new BlinkToPush(threshold, isPushed));
+            return connection.Convert(new BlinkToPush(threshold, isPushed));
         }
 
         #endregion
@@ -182,54 +182,54 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Position
 
-        public static IOutputTerminal<Position> Calibrate(this IOutputTerminal<Position> terminal, ICalibration<Position> calibration)
+        public static IConnection<Position> Calibrate(this IConnection<Position> connection, ICalibration<Position> calibration)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (calibration == null)
             {
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return terminal.Calibrate(Signals.Calibrate.Position, calibration);
+            return connection.Calibrate(Signals.Calibrate.Position, calibration);
         }
 
         #endregion
 
         #region Rotation
 
-        public static IOutputTerminal<Rotation> Calibrate(this IOutputTerminal<Rotation> terminal, ICalibration<Rotation> calibration)
+        public static IConnection<Rotation> Calibrate(this IConnection<Rotation> connection, ICalibration<Rotation> calibration)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (calibration == null)
             {
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return terminal.Calibrate(Signals.Calibrate.Rotation, calibration);
+            return connection.Calibrate(Signals.Calibrate.Rotation, calibration);
         }
 
         #endregion
 
         #region Direction
 
-        public static IOutputTerminal<Direction> Calibrate(this IOutputTerminal<Direction> terminal, ICalibration<Direction> calibration)
+        public static IConnection<Direction> Calibrate(this IConnection<Direction> connection, ICalibration<Direction> calibration)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (calibration == null)
             {
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return terminal.Calibrate(Signals.Calibrate.Direction, calibration);
+            return connection.Calibrate(Signals.Calibrate.Direction, calibration);
         }
 
         #endregion

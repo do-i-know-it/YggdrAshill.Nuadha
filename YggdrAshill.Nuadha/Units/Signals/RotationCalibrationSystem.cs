@@ -1,74 +1,38 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+﻿using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Translation;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class RotationCalibrationSystem :
-        IInputTerminal<Rotation>,
-        IDisconnection
+    public sealed class RotationCalibrationSystem : CalibrationSystem<Rotation>
     {
-        private readonly CalibrationSystem<Rotation> calibrationSystem;
+        protected override IPropagation<Rotation> Propagation { get; } = new Propagation<Rotation>();
+
+        protected override IReduction<Rotation> Reduction { get; } = Calibrate.Rotation;
+
+        protected override ICalibration<Rotation> Calibration { get; }
 
         #region Constructor
 
-        public RotationCalibrationSystem(ICalibration<Rotation> calibration, IInputTerminal<Rotation> terminal)
+        public RotationCalibrationSystem(ICalibration<Rotation> calibration)
         {
             if (calibration == null)
             {
                 throw new ArgumentNullException(nameof(calibration));
             }
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
 
-            calibrationSystem = new CalibrationSystem<Rotation>(Calibrate.Rotation, calibration, terminal);
+            Calibration = calibration;
         }
 
-        public RotationCalibrationSystem(Func<Rotation> calibration, IInputTerminal<Rotation> terminal)
+        public RotationCalibrationSystem(Func<Rotation> calibration)
         {
             if (calibration == null)
             {
                 throw new ArgumentNullException(nameof(calibration));
             }
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
 
-            calibrationSystem = new CalibrationSystem<Rotation>(Calibrate.Rotation, new Calibration<Rotation>(calibration), terminal);
-        }
-
-        public RotationCalibrationSystem(Rotation offset, IInputTerminal<Rotation> terminal)
-        {
-            if (terminal == null)
-            {
-                throw new ArgumentNullException(nameof(terminal));
-            }
-
-            var calibration = new Calibration<Rotation>(offset);
-
-            calibrationSystem = new CalibrationSystem<Rotation>(Calibrate.Rotation, calibration, terminal);
-        }
-
-        #endregion
-
-        #region IInputTerminal
-
-        public void Receive(Rotation signal)
-        {
-            calibrationSystem.Receive(signal);
-        }
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
-        {
-            calibrationSystem.Disconnect();
+            Calibration = new Calibration<Rotation>(calibration);
         }
 
         #endregion
