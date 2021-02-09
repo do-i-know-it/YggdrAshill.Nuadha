@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Translation;
+using YggdrAshill.Nuadha.Conversion;
 using System;
 
 namespace YggdrAshill.Nuadha

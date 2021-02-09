@@ -2,9 +2,9 @@
 using YggdrAshill.Nuadha.Conduction;
 using System;
 
-namespace YggdrAshill.Nuadha.Translation
+namespace YggdrAshill.Nuadha.Conversion
 {
-    public static class TranslationExtension
+    public static class ConversionExtension
     {
         public static IConnection<TOutput> Convert<TInput, TOutput>(this IConnection<TInput> connection, IConversion<TInput, TOutput> conversion)
             where TInput : ISignal

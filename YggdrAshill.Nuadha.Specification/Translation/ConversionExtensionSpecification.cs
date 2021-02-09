@@ -1,12 +1,12 @@
 ﻿using NUnit.Framework;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Translation;
+using YggdrAshill.Nuadha.Conversion;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Translation.TranslationExtension))]
-    internal class TranslationExtensionSpecification :
+    [TestFixture(TestOf = typeof(Conversion.ConversionExtension))]
+    internal class ConversionExtensionSpecification :
         IConversion<InputSignal, OutputSignal>,
         ICorrection<Signal>
     {

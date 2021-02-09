@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Translation;
+﻿using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units

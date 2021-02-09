@@ -1,6 +1,6 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Translation
+namespace YggdrAshill.Nuadha.Conversion
 {
     internal sealed class Detect<TSignal> :
         IConsumption<TSignal>

@@ -2,7 +2,7 @@
 using YggdrAshill.Nuadha.Conduction;
 using System;
 
-namespace YggdrAshill.Nuadha.Translation
+namespace YggdrAshill.Nuadha.Conversion
 {
     internal sealed class Converter<TInput, TOutput> :
         IConnection<TOutput>

@@ -1,7 +1,7 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using System;
 
-namespace YggdrAshill.Nuadha.Translation
+namespace YggdrAshill.Nuadha.Conversion
 {
     public sealed class Pulse :
         ISignal,

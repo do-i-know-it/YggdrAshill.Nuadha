@@ -1,11 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Translation;
+using YggdrAshill.Nuadha.Conversion;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public static class TranslationExtension
+    public static class ConversionExtension
     {
         public static IConnection<TOutput> Convert<TInput, TOutput>(this IConnection<TInput> connection, Func<TInput, TOutput> conversion)
             where TInput : ISignal

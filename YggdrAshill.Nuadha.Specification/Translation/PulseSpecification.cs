@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using YggdrAshill.Nuadha.Translation;
+using YggdrAshill.Nuadha.Conversion;
 
 namespace YggdrAshill.Nuadha.Specification
 {
