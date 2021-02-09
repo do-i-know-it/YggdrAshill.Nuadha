@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha
 {
     public static class ConductionExtension
     {
-        public static Conduction.IDisconnection Connect<TSignal>(this IConnection<TSignal> connection, Action<TSignal> onConsumed)
+        public static IDisconnection Connect<TSignal>(this IConnection<TSignal> connection, Action<TSignal> onConsumed)
             where TSignal : ISignal
         {
             if (connection == null)
