@@ -43,6 +43,8 @@ namespace YggdrAshill.Nuadha
             propagation.Translate(TiltToPull.Down).Connect(backward);
         }
 
+        #region IHardware
+
         public IDisconnection Connect(ITiltDetectionInputHandler handler)
         {
             if (handler == null)
@@ -50,13 +52,35 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            throw new NotImplementedException();
+            var left = this.left.Connect(handler.Left);
+            var right = this.right.Connect(handler.Right);
+            var forward = this.forward.Connect(handler.Forward);
+            var backward = this.backward.Connect(handler.Backward);
+
+            return new Disconnection(() =>
+            {
+                left.Disconnect();
+
+                right.Disconnect();
+
+                forward.Disconnect();
+
+                backward.Disconnect();
+            });
         }
+
+        #endregion
+
+        #region IConsumption
 
         public void Consume(Tilt signal)
         {
             propagation.Consume(signal);
         }
+
+        #endregion
+
+        #region IDisconnection
 
         public void Disconnect()
         {
@@ -70,5 +94,7 @@ namespace YggdrAshill.Nuadha
             
             backward.Disconnect();
         }
+
+        #endregion
     }
 }
