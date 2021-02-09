@@ -1,203 +1,176 @@
-﻿//using NUnit.Framework;
-//using YggdrAshill.Nuadha.Translation;
-//using System;
+﻿using NUnit.Framework;
+using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Translation;
+using System;
 
-//namespace YggdrAshill.Nuadha.Specification
-//{
-//    [TestFixture(TestOf = typeof(Translation.TranslationExtension))]
-//    [TestFixture(TestOf = typeof(Nuadha.TranslationExtension))]
-//    internal class TranslationExtensionSpecification
-//    {
-//        private OutputSignal InputSignalToOutputSignal(InputSignal signal)
-//        {
-//            if (signal == null)
-//            {
-//                throw new ArgumentNullException(nameof(signal));
-//            }
+namespace YggdrAshill.Nuadha.Specification
+{
+    [TestFixture(TestOf = typeof(Translation.TranslationExtension))]
+    internal class TranslationExtensionSpecification :
+        IConversion<InputSignal, OutputSignal>,
+        ICorrection<Signal>
+    {
+        public OutputSignal Convert(InputSignal signal)
+        {
+            if (signal == null)
+            {
+                throw new ArgumentNullException(nameof(signal));
+            }
 
-//            return new OutputSignal();
-//        }
+            return new OutputSignal();
+        }
 
-//        private Signal NotCorrect(Signal signal)
-//        {
-//            if (signal == null)
-//            {
-//                throw new ArgumentNullException(nameof(signal));
-//            }
+        public Signal Correct(Signal signal)
+        {
+            if (signal == null)
+            {
+                throw new ArgumentNullException(nameof(signal));
+            }
 
-//            return signal;
-//        }
+            return signal;
+        }
 
-//        [Test]
-//        public void ShouldConvertSignalWhenHasReceived()
-//        {
-//            var connector = new Connector<InputSignal>();
-//            var converter = connector.Convert(InputSignalToOutputSignal);
+        [Test]
+        public void ShouldConvertSignal()
+        {
+            var propagation = new Propagation<InputSignal>();
+            var conversion = propagation.Convert(this);
 
-//            var expected = false;
-//            var terminal = new InputTerminal<OutputSignal>(_ =>
-//                {
-//                    expected = true;
-//                });
+            var expected = false;
+            var disconnection = conversion.Connect(signal =>
+            {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
 
-//            var disconnection = converter.Connect(terminal);
+                expected = true;
+            });
 
-//            connector.Receive(new InputSignal());
+            propagation.Consume(new InputSignal());
 
-//            Assert.IsTrue(expected);
+            Assert.IsTrue(expected);
 
-//            disconnection.Disconnect();
-//        }
+            disconnection.Disconnect();
+        }
 
-//        [Test]
-//        public void ShouldCorrectSignalWhenReceived()
-//        {
-//            var connector = new Connector<Signal>();
-//            var corrector = connector.Correct(NotCorrect);
+        [Test]
+        public void ShouldCorrectSignal()
+        {
+            var propagation = new Propagation<Signal>();
+            var correction = propagation.Correct(this);
 
-//            var expected = false;
-//            var terminal = new InputTerminal<Signal>(_ =>
-//            {
-//                expected = true;
-//            });
+            var expected = false;
+            var disconnection = correction.Connect(signal =>
+            {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
 
-//            var disconnection = corrector.Connect(terminal);
+                expected = true;
+            });
 
-//            connector.Receive(new Signal());
+            propagation.Consume(new Signal());
 
-//            Assert.IsTrue(expected);
+            Assert.IsTrue(expected);
 
-//            disconnection.Disconnect();
-//        }
+            disconnection.Disconnect();
+        }
 
-//        [TestCase(true)]
-//        [TestCase(false)]
-//        public void ShouldDetectSignalWhenReceived(bool expected)
-//        {
-//            var connector = new Connector<Signal>();
-//            var detector = connector.Detect(signal =>
-//            {
-//                if (signal == null)
-//                {
-//                    throw new ArgumentNullException(nameof(signal));
-//                }
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ShouldDetectSignal(bool expected)
+        {
+            var propagation = new Propagation<Signal>();
+            var detection = propagation.Detect(signal =>
+            {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
 
-//                return expected;
-//            });
+                return expected;
+            });
 
-//            var received = false;
-//            var disconnection = detector.Connect(() =>
-//            {
-//                received = true;
-//            });
+            var received = false;
+            var disconnection = detection.Connect(() =>
+            {
+                received = true;
+            });
 
-//            connector.Receive(new Signal());
+            propagation.Consume(new Signal());
 
-//            Assert.AreEqual(expected, received);
+            Assert.AreEqual(expected, received);
 
-//            disconnection.Disconnect();
-//        }
+            disconnection.Disconnect();
+        }
 
-//        [Test]
-//        public void CannotConvertWithNullOutputTerminal()
-//        {
-//            var terminal = default(IOutputTerminal<InputSignal>);
+        [Test]
+        public void CannotConvertWithNullConnection()
+        {
+            var connection = default(IConnection<InputSignal>);
 
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var converter = terminal.Convert(InputSignalToOutputSignal);
-//            });
-//        }
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var conversion = connection.Convert(this);
+            });
+        }
 
-//        [Test]
-//        public void CannotConvertWithNullConversion()
-//        {
-//            var connector = new Connector<InputSignal>();
+        [Test]
+        public void CannotConvertWithNullConversion()
+        {
+            var propagation = new Propagation<InputSignal>();
 
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var converter = connector.Convert((Func<InputSignal, OutputSignal>)null);
-//            });
-//        }
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var converter = propagation.Convert((IConversion<InputSignal, OutputSignal>)null);
+            });
+        }
 
-//        [Test]
-//        public void ConverterCannotConnectNull()
-//        {
-//            var connector = new Connector<InputSignal>();
-//            var converter = connector.Convert(InputSignalToOutputSignal);
 
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var disconnection = converter.Connect(null);
-//            });
-//        }
+        [Test]
+        public void CannotCorrectWithNullConnection()
+        {
+            var connection = default(IConnection<Signal>);
 
-//        [Test]
-//        public void CannotCorrectWithNullOutputTerminal()
-//        {
-//            var terminal = default(IOutputTerminal<Signal>);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var correction = connection.Correct(this);
+            });
+        }
 
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var converter = terminal.Correct(NotCorrect);
-//            });
-//        }
+        [Test]
+        public void CannotCorrectWithNullCorrection()
+        {
+            var propagation = new Propagation<Signal>();
 
-//        [Test]
-//        public void CannotCorrectWithNullCorrection()
-//        {
-//            var connector = new Connector<Signal>();
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var correction = propagation.Correct((ICorrection<Signal>)null);
+            });
+        }
 
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var corrector = connector.Correct(null);
-//            });
-//        }
+        [Test]
+        public void CannotDetectWithNullConnection()
+        {
+            var terminal = default(IConnection<Signal>);
 
-//        [Test]
-//        public void CorrectorCannotConnectNull()
-//        {
-//            var connector = new Connector<Signal>();
-//            var corrector = connector.Correct(NotCorrect);
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var converter = terminal.Detect(_ => false);
+            });
+        }
 
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var disconnection = corrector.Connect(null);
-//            });
-//        }
+        [Test]
+        public void CannotDetectWithNullDetection()
+        {
+            var propagation = new Propagation<Signal>();
 
-//        [Test]
-//        public void CannotDetectWithNullOutputTerminal()
-//        {
-//            var terminal = default(IOutputTerminal<Signal>);
-
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var converter = terminal.Detect(_ => false);
-//            });
-//        }
-
-//        [Test]
-//        public void CannotDetectWithNullCorrection()
-//        {
-//            var connector = new Connector<Signal>();
-
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var detector = connector.Detect(null);
-//            });
-//        }
-
-//        [Test]
-//        public void DetectorCannotConnectNull()
-//        {
-//            var connector = new Connector<Signal>();
-//            var detector = connector.Detect(_ => false);
-
-//            Assert.Throws<ArgumentNullException>(() =>
-//            {
-//                var disconnection = detector.Connect(null);
-//            });
-//        }
-//    }
-//}
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var detection = propagation.Detect((IDetection<Signal>)null);
+            });
+        }
+    }
+}
