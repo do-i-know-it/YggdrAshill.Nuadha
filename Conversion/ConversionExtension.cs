@@ -56,6 +56,21 @@ namespace YggdrAshill.Nuadha.Conversion
             return connection.Correct(new Calibrate<TSignal>(reduction, calibration));
         }
 
+        public static IConnection<Note> Notate<TSignal>(this IConnection<TSignal> connection, INotation<TSignal> notation)
+            where TSignal : ISignal
+        {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
+            if (notation == null)
+            {
+                throw new ArgumentNullException(nameof(notation));
+            }
+
+            return connection.Translate(new Notate<TSignal>(notation));
+        }
+
         public static IConnection<Pulse> Detect<TSignal>(this IConnection<TSignal> connection, IDetection<TSignal> detection)
             where TSignal : ISignal
         {

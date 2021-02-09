@@ -38,21 +38,6 @@ namespace YggdrAshill.Nuadha
             return connection.Correct(new Correction<TSignal>(correction));
         }
 
-        public static IConnection<Pulse> Detect<TSignal>(this IConnection<TSignal> connection, Func<TSignal, bool> detection)
-            where TSignal : ISignal
-        {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (detection == null)
-            {
-                throw new ArgumentNullException(nameof(detection));
-            }
-
-            return connection.Detect(new Detection<TSignal>(detection));
-        }
-
         public static IConnection<TSignal> Calibrate<TSignal>(this IConnection<TSignal> connection, Func<TSignal, TSignal, TSignal> reduction, Func<TSignal> calibration)
             where TSignal : ISignal
         {
@@ -70,6 +55,36 @@ namespace YggdrAshill.Nuadha
             }
 
             return connection.Calibrate(new Reduction<TSignal>(reduction), new Calibration<TSignal>(calibration));
+        }
+
+        public static IConnection<Note> Notate<TSignal>(this IConnection<TSignal> connection, Func<TSignal, Note> notation)
+            where TSignal : ISignal
+        {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
+            if (notation == null)
+            {
+                throw new ArgumentNullException(nameof(notation));
+            }
+
+            return connection.Notate(new Notation<TSignal>(notation));
+        }
+
+        public static IConnection<Pulse> Detect<TSignal>(this IConnection<TSignal> connection, Func<TSignal, bool> detection)
+            where TSignal : ISignal
+        {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
+            if (detection == null)
+            {
+                throw new ArgumentNullException(nameof(detection));
+            }
+
+            return connection.Detect(new Detection<TSignal>(detection));
         }
 
         public static IDisconnection Connect(this IConnection<Pulse> connection, Action onConsumed)
