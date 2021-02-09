@@ -1,9 +1,8 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
-using System;
 
 namespace YggdrAshill.Nuadha.Translation
 {
-    internal sealed class Calibrator<TSignal> :
+    internal sealed class Calibrate<TSignal> :
         ICorrection<TSignal>
         where TSignal : ISignal
     {
@@ -11,17 +10,8 @@ namespace YggdrAshill.Nuadha.Translation
 
         private readonly ICalibration<TSignal> calibration;
 
-        public Calibrator(IReduction<TSignal> reduction, ICalibration<TSignal> calibration)
+        public Calibrate(IReduction<TSignal> reduction, ICalibration<TSignal> calibration)
         {
-            if (reduction == null)
-            {
-                throw new ArgumentNullException(nameof(reduction));
-            }
-            if (calibration == null)
-            {
-                throw new ArgumentNullException(nameof(calibration));
-            }
-            
             this.reduction = reduction;
             
             this.calibration = calibration;

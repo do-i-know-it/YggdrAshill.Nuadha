@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha.Translation
                 throw new ArgumentNullException(nameof(correction));
             }
 
-            return connection.Convert(new Corrector<TSignal>(correction));
+            return connection.Convert(new Correct<TSignal>(correction));
         }
 
         public static IConnection<TSignal> Calibrate<TSignal>(this IConnection<TSignal> connection, IReduction<TSignal> reduction, ICalibration<TSignal> calibration)
@@ -53,7 +53,7 @@ namespace YggdrAshill.Nuadha.Translation
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return connection.Correct(new Calibrator<TSignal>(reduction, calibration));
+            return connection.Correct(new Calibrate<TSignal>(reduction, calibration));
         }
 
         public static IConnection<Pulse> Detect<TSignal>(this IConnection<TSignal> connection, IDetection<TSignal> detection)
