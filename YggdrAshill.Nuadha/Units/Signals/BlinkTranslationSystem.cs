@@ -5,20 +5,20 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class BlinkConversionSystem : ConversionSystem<Blink, Push>
+    public sealed class BlinkTranslationSystem : TranslationSystem<Blink, Push>
     {
         protected override IPropagation<Blink> Propagation { get; } = new Propagation<Blink>();
 
-        protected override IConversion<Blink, Push> Conversion { get; }
+        protected override ITranslation<Blink, Push> Translation { get; }
 
-        public BlinkConversionSystem(HysteresisThreshold threshold)
+        public BlinkTranslationSystem(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            Conversion = new BlinkToPush(threshold);
+            Translation = new BlinkToPush(threshold);
         }
     }
 }

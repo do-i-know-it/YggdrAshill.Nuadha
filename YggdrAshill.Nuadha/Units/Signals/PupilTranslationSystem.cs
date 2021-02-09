@@ -5,20 +5,20 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PupilConversionSystem : ConversionSystem<Pupil, Push>
+    public sealed class PupilTranslationSystem : TranslationSystem<Pupil, Push>
     {
         protected override IPropagation<Pupil> Propagation { get; } = new Propagation<Pupil>();
 
-        protected override IConversion<Pupil, Push> Conversion { get; }
+        protected override ITranslation<Pupil, Push> Translation { get; }
 
-        public PupilConversionSystem(HysteresisThreshold threshold)
+        public PupilTranslationSystem(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            Conversion = new PupilToPush(threshold);
+            Translation = new PupilToPush(threshold);
         }
     }
 }

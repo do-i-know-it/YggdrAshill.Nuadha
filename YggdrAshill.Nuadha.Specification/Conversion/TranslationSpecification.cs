@@ -3,14 +3,14 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Conversion<,>))]
-    internal class ConversionSpecification
+    [TestFixture(TestOf = typeof(Translation<,>))]
+    internal class TranslationSpecification
     {
         [Test]
-        public void ShouldExecuteFunctionWhenHasConverted()
+        public void ShouldExecuteFunctionWhenHasTranslated()
         {
             var expected = false;
-            var conversion = new Conversion<InputSignal, OutputSignal>(signal =>
+            var translation = new Translation<InputSignal, OutputSignal>(signal =>
             {
                 if (signal == null)
                 {
@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha.Specification
                 return new OutputSignal();
             });
 
-            conversion.Convert(new InputSignal());
+            translation.Translate(new InputSignal());
 
             Assert.IsTrue(expected);
         }
@@ -32,7 +32,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var conversion = new Conversion<InputSignal, OutputSignal>(null);
+                var translation = new Translation<InputSignal, OutputSignal>(null);
             });
         }
     }

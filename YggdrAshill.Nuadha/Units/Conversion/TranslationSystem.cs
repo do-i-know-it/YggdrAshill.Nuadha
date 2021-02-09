@@ -5,7 +5,7 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public abstract class ConversionSystem<TInput, TOutput> :
+    public abstract class TranslationSystem<TInput, TOutput> :
         IConsumption<TInput>,
         IConnection<TOutput>,
         IDisconnection
@@ -14,7 +14,7 @@ namespace YggdrAshill.Nuadha
     {
         protected abstract IPropagation<TInput> Propagation { get; }
 
-        protected abstract IConversion<TInput, TOutput> Conversion { get; }
+        protected abstract ITranslation<TInput, TOutput> Translation { get; }
 
         #region IConsumption
 
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return Propagation.Convert(Conversion).Connect(consumption);
+            return Propagation.Translate(Translation).Connect(consumption);
         }
 
         #endregion

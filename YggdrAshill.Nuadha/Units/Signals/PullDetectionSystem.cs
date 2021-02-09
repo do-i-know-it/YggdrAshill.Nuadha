@@ -12,7 +12,7 @@ namespace YggdrAshill.Nuadha
         IHardware<IPulseDetectionInputHandler>,
         IDisconnection
     {
-        private readonly PullConversionSystem conversion;
+        private readonly PullTranslationSystem translation;
 
         private readonly PushDetectionSystem detection = new PushDetectionSystem();
 
@@ -23,14 +23,14 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            conversion = new PullConversionSystem(threshold);
+            translation = new PullTranslationSystem(threshold);
         }
 
         #region IConsumption
 
         public void Consume(Pull signal)
         {
-            conversion.Consume(signal);
+            translation.Consume(signal);
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            conversion.Disconnect();
+            translation.Disconnect();
 
             detection.Disconnect();
         }

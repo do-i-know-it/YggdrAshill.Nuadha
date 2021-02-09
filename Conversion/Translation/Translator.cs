@@ -4,20 +4,20 @@ using System;
 
 namespace YggdrAshill.Nuadha.Conversion
 {
-    internal sealed class Converter<TInput, TOutput> :
+    internal sealed class Translator<TInput, TOutput> :
         IConnection<TOutput>
         where TInput : ISignal
         where TOutput : ISignal
     {
         private readonly IConnection<TInput> connection;
 
-        private readonly IConversion<TInput, TOutput> conversion;
+        private readonly ITranslation<TInput, TOutput> translation;
 
-        internal Converter(IConnection<TInput> connection, IConversion<TInput, TOutput> conversion)
+        internal Translator(IConnection<TInput> connection, ITranslation<TInput, TOutput> translation)
         {
             this.connection = connection;
 
-            this.conversion = conversion;
+            this.translation = translation;
         }
 
         public IDisconnection Connect(IConsumption<TOutput> consumption)
@@ -27,7 +27,7 @@ namespace YggdrAshill.Nuadha.Conversion
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return connection.Connect(new Convert<TInput, TOutput>(consumption, conversion));
+            return connection.Connect(new Translate<TInput, TOutput>(consumption, translation));
         }
     }
 }

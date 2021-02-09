@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
 {
     public static class ConversionExtension
     {
-        public static IConnection<TOutput> Convert<TInput, TOutput>(this IConnection<TInput> connection, Func<TInput, TOutput> conversion)
+        public static IConnection<TOutput> Translate<TInput, TOutput>(this IConnection<TInput> connection, Func<TInput, TOutput> translation)
             where TInput : ISignal
             where TOutput : ISignal
         {
@@ -15,12 +15,12 @@ namespace YggdrAshill.Nuadha
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (conversion == null)
+            if (translation == null)
             {
-                throw new ArgumentNullException(nameof(conversion));
+                throw new ArgumentNullException(nameof(translation));
             }
 
-            return connection.Convert(new Conversion<TInput, TOutput>(conversion));
+            return connection.Translate(new Translation<TInput, TOutput>(translation));
         }
 
         public static IConnection<TSignal> Correct<TSignal>(this IConnection<TSignal> connection, Func<TSignal, TSignal> correction)

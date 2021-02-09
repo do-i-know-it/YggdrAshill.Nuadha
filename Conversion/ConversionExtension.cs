@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha.Conversion
 {
     public static class ConversionExtension
     {
-        public static IConnection<TOutput> Convert<TInput, TOutput>(this IConnection<TInput> connection, IConversion<TInput, TOutput> conversion)
+        public static IConnection<TOutput> Translate<TInput, TOutput>(this IConnection<TInput> connection, ITranslation<TInput, TOutput> translation)
             where TInput : ISignal
             where TOutput : ISignal
         {
@@ -14,12 +14,12 @@ namespace YggdrAshill.Nuadha.Conversion
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (conversion == null)
+            if (translation == null)
             {
-                throw new ArgumentNullException(nameof(conversion));
+                throw new ArgumentNullException(nameof(translation));
             }
 
-            return new Converter<TInput, TOutput>(connection, conversion);
+            return new Translator<TInput, TOutput>(connection, translation);
         }
 
         public static IConnection<TSignal> Correct<TSignal>(this IConnection<TSignal> connection, ICorrection<TSignal> correction)
@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha.Conversion
                 throw new ArgumentNullException(nameof(correction));
             }
 
-            return connection.Convert(new Correct<TSignal>(correction));
+            return connection.Translate(new Correct<TSignal>(correction));
         }
 
         public static IConnection<TSignal> Calibrate<TSignal>(this IConnection<TSignal> connection, IReduction<TSignal> reduction, ICalibration<TSignal> calibration)

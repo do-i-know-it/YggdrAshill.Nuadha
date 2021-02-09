@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     public sealed class PupilToPush :
-        IConversion<Pupil, Push>
+        ITranslation<Pupil, Push>
     {
         private readonly HysteresisThreshold threshold;
 
@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha.Signals
             this.isPushed = isPushed;
         }
 
-        public Push Convert(Pupil signal)
+        public Push Translate(Pupil signal)
         {
             if (isPushed)
             {

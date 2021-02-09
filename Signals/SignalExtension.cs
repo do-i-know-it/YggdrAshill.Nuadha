@@ -58,7 +58,7 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Strength;
         }
 
-        public static IConnection<Push> Convert(this IConnection<Pull> connection, HysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Translate(this IConnection<Pull> connection, HysteresisThreshold threshold, bool isPushed = false)
         {
             if (connection == null)
             {
@@ -69,7 +69,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return connection.Convert(new PullToPush(threshold, isPushed));
+            return connection.Translate(new PullToPush(threshold, isPushed));
         }
 
         #endregion
@@ -98,7 +98,7 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Ratio;
         }
 
-        public static IConnection<Push> Convert(this IConnection<Pupil> connection, HysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Translate(this IConnection<Pupil> connection, HysteresisThreshold threshold, bool isPushed = false)
         {
             if (connection == null)
             {
@@ -109,7 +109,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return connection.Convert(new PupilToPush(threshold, isPushed));
+            return connection.Translate(new PupilToPush(threshold, isPushed));
         }
 
         #endregion
@@ -138,7 +138,7 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Ratio;
         }
 
-        public static IConnection<Push> Convert(this IConnection<Blink> connection, HysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Translate(this IConnection<Blink> connection, HysteresisThreshold threshold, bool isPushed = false)
         {
             if (connection == null)
             {
@@ -149,7 +149,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return connection.Convert(new BlinkToPush(threshold, isPushed));
+            return connection.Translate(new BlinkToPush(threshold, isPushed));
         }
 
         #endregion

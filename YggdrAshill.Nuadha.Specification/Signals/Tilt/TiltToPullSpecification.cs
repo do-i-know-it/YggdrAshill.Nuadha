@@ -9,59 +9,59 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(1.0f)]
         [TestCase(0.5f)]
         [TestCase(0.0f)]
-        public void ShouldConvertTiltUpToPull(float vertical)
+        public void ShouldTranslateTiltUpToPull(float vertical)
         {
-            var conversion = TiltToPull.Up;
+            var translation = TiltToPull.Up;
 
             var up = new Tilt(0.0f, vertical);
-            Assert.AreEqual(vertical, conversion.Convert(up).Strength);
+            Assert.AreEqual(vertical, translation.Translate(up).Strength);
 
             var down = new Tilt(0.0f, -vertical);
-            Assert.AreEqual(0, conversion.Convert(down).Strength);
+            Assert.AreEqual(0, translation.Translate(down).Strength);
         }
 
         [TestCase(1.0f)]
         [TestCase(0.5f)]
         [TestCase(0.0f)]
-        public void ShouldConvertTiltDownToPull(float vertical)
+        public void ShouldTranslateTiltDownToPull(float vertical)
         {
-            var conversion = TiltToPull.Down;
+            var translation = TiltToPull.Down;
 
 
             var down = new Tilt(0.0f, -vertical);
-            Assert.AreEqual(vertical, conversion.Convert(down).Strength);
+            Assert.AreEqual(vertical, translation.Translate(down).Strength);
 
             var up = new Tilt(0.0f, vertical);
-            Assert.AreEqual(0, conversion.Convert(up).Strength);
+            Assert.AreEqual(0, translation.Translate(up).Strength);
         }
 
         [TestCase(1.0f)]
         [TestCase(0.5f)]
         [TestCase(0.0f)]
-        public void ShouldConvertTiltRightToPull(float horizontal)
+        public void ShouldTranslateTiltRightToPull(float horizontal)
         {
-            var conversion = TiltToPull.Right;
+            var translation = TiltToPull.Right;
 
             var right = new Tilt(horizontal, 0.0f);
-            Assert.AreEqual(horizontal, conversion.Convert(right).Strength);
+            Assert.AreEqual(horizontal, translation.Translate(right).Strength);
 
             var left = new Tilt(-horizontal, 0.0f);
-            Assert.AreEqual(0, conversion.Convert(left).Strength);
+            Assert.AreEqual(0, translation.Translate(left).Strength);
         }
 
         [TestCase(1.0f)]
         [TestCase(0.5f)]
         [TestCase(0.0f)]
-        public void ShouldConvertTiltLeftToPull(float horizontal)
+        public void ShouldTranslateTiltLeftToPull(float horizontal)
         {
-            var conversion = TiltToPull.Left;
+            var translation = TiltToPull.Left;
 
 
             var left = new Tilt(-horizontal, 0.0f);
-            Assert.AreEqual(horizontal, conversion.Convert(left).Strength);
+            Assert.AreEqual(horizontal, translation.Translate(left).Strength);
 
             var right = new Tilt(horizontal, 0.0f);
-            Assert.AreEqual(0, conversion.Convert(right).Strength);
+            Assert.AreEqual(0, translation.Translate(right).Strength);
         }
     }
 }

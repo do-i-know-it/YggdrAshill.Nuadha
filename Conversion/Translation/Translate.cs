@@ -2,27 +2,27 @@
 
 namespace YggdrAshill.Nuadha.Conversion
 {
-    internal sealed class Convert<TInput, TOutput> :
+    internal sealed class Translate<TInput, TOutput> :
         IConsumption<TInput>
         where TInput : ISignal
         where TOutput : ISignal
     {
         private readonly IConsumption<TOutput> consumption;
 
-        private readonly IConversion<TInput, TOutput> conversion;
+        private readonly ITranslation<TInput, TOutput> translation;
 
-        internal Convert(IConsumption<TOutput> consumption, IConversion<TInput, TOutput> conversion)
+        internal Translate(IConsumption<TOutput> consumption, ITranslation<TInput, TOutput> translation)
         {
             this.consumption = consumption;
 
-            this.conversion = conversion;
+            this.translation = translation;
         }
 
         public void Consume(TInput signal)
         {
-            var converted = conversion.Convert(signal);
+            var translated = translation.Translate(signal);
 
-            consumption.Consume(converted);
+            consumption.Consume(translated);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Conversion
 {
     internal sealed class Correct<TSignal> :
-        IConversion<TSignal, TSignal>
+        ITranslation<TSignal, TSignal>
         where TSignal : ISignal
     {
         private readonly ICorrection<TSignal> correction;
@@ -13,7 +13,7 @@ namespace YggdrAshill.Nuadha.Conversion
             this.correction = correction;
         }
 
-        public TSignal Convert(TSignal signal)
+        public TSignal Translate(TSignal signal)
         {
             return correction.Correct(signal);
         }

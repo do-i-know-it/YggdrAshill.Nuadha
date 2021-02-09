@@ -8,48 +8,48 @@ namespace YggdrAshill.Nuadha.Specification
     {
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertPupilToNotPushedWhenRatioIsLowerThanUpperLimitBeforePushed(float upper)
+        public void ShouldTranslatePupilToNotPushedWhenRatioIsLowerThanUpperLimitBeforePushed(float upper)
         {
             var threshold = new HysteresisThreshold(upper - 0.1f, upper);
-            var conversion = new PupilToPush(threshold);
+            var translation = new PupilToPush(threshold);
 
-            var push = conversion.Convert(new Pupil(upper - 0.1f));
+            var push = translation.Translate(new Pupil(upper - 0.1f));
 
             Assert.AreEqual(Push.Disabled, push);
         }
 
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertPupilToPushedWhenRatioIsHigherThanUpperLimitBeforePushed(float upper)
+        public void ShouldTranslatePupilToPushedWhenRatioIsHigherThanUpperLimitBeforePushed(float upper)
         {
             var threshold = new HysteresisThreshold(upper - 0.1f, upper);
-            var conversion = new PupilToPush(threshold);
+            var translation = new PupilToPush(threshold);
 
-            var push = conversion.Convert(new Pupil(upper + 0.1f));
-
-            Assert.AreEqual(Push.Enabled, push);
-        }
-
-        [TestCase(0.2f)]
-        [TestCase(0.1f)]
-        public void ShouldConvertPupilToPushedWhenRatioIsHigherThanLowerLimitAfterPushed(float lower)
-        {
-            var threshold = new HysteresisThreshold(lower, lower + 0.1f);
-            var conversion = new PupilToPush(threshold, true);
-
-            var push = conversion.Convert(new Pupil(lower + 0.1f));
+            var push = translation.Translate(new Pupil(upper + 0.1f));
 
             Assert.AreEqual(Push.Enabled, push);
         }
 
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertPupilToNotPushedWhenRatioIsLowerThanLowerLimitAfterPushed(float lower)
+        public void ShouldTranslatePupilToPushedWhenRatioIsHigherThanLowerLimitAfterPushed(float lower)
         {
             var threshold = new HysteresisThreshold(lower, lower + 0.1f);
-            var conversion = new PupilToPush(threshold, true);
+            var translation = new PupilToPush(threshold, true);
 
-            var push = conversion.Convert(new Pupil(lower - 0.1f));
+            var push = translation.Translate(new Pupil(lower + 0.1f));
+
+            Assert.AreEqual(Push.Enabled, push);
+        }
+
+        [TestCase(0.2f)]
+        [TestCase(0.1f)]
+        public void ShouldTranslatePupilToNotPushedWhenRatioIsLowerThanLowerLimitAfterPushed(float lower)
+        {
+            var threshold = new HysteresisThreshold(lower, lower + 0.1f);
+            var translation = new PupilToPush(threshold, true);
+
+            var push = translation.Translate(new Pupil(lower - 0.1f));
 
             Assert.AreEqual(Push.Disabled, push);
         }

@@ -7,10 +7,11 @@ namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(Conversion.ConversionExtension))]
     internal class ConversionExtensionSpecification :
-        IConversion<InputSignal, OutputSignal>,
-        ICorrection<Signal>
+        ITranslation<InputSignal, OutputSignal>,
+        ICorrection<Signal>,
+        IDetection<Signal>
     {
-        public OutputSignal Convert(InputSignal signal)
+        public OutputSignal Translate(InputSignal signal)
         {
             if (signal == null)
             {
@@ -30,14 +31,26 @@ namespace YggdrAshill.Nuadha.Specification
             return signal;
         }
 
+        private bool expected;
+
+        public bool Detect(Signal signal)
+        {
+            if (signal == null)
+            {
+                throw new ArgumentNullException(nameof(signal));
+            }
+
+            return expected;
+        }
+
         [Test]
-        public void ShouldConvertSignal()
+        public void ShouldTranslateSignal()
         {
             var propagation = new Propagation<InputSignal>();
-            var conversion = propagation.Convert(this);
+            var translation = propagation.Translate(this);
 
             var expected = false;
-            var disconnection = conversion.Connect(signal =>
+            var disconnection = translation.Connect(signal =>
             {
                 if (signal == null)
                 {
@@ -82,16 +95,10 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(false)]
         public void ShouldDetectSignal(bool expected)
         {
-            var propagation = new Propagation<Signal>();
-            var detection = propagation.Detect(signal =>
-            {
-                if (signal == null)
-                {
-                    throw new ArgumentNullException(nameof(signal));
-                }
+            this.expected = expected;
 
-                return expected;
-            });
+            var propagation = new Propagation<Signal>();
+            var detection = propagation.Detect(this);
 
             var received = false;
             var disconnection = detection.Connect(() =>
@@ -107,27 +114,26 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotConvertWithNullConnection()
+        public void CannotTranslateWithNullConnection()
         {
             var connection = default(IConnection<InputSignal>);
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var conversion = connection.Convert(this);
+                var translation = connection.Translate(this);
             });
         }
 
         [Test]
-        public void CannotConvertWithNullConversion()
+        public void CannotTranslateWithNullTranslation()
         {
             var propagation = new Propagation<InputSignal>();
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var converter = propagation.Convert((IConversion<InputSignal, OutputSignal>)null);
+                var translation = propagation.Translate((ITranslation<InputSignal, OutputSignal>)null);
             });
         }
-
 
         [Test]
         public void CannotCorrectWithNullConnection()
@@ -158,7 +164,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var converter = terminal.Detect(_ => false);
+                var detection = terminal.Detect(this);
             });
         }
 
