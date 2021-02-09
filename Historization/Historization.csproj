@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>YggdrAshill.Nuadha.Historization</AssemblyName>
+    <RootNamespace>YggdrAshill.Nuadha.Historization</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Signalization\Signalization.csproj" />
+  </ItemGroup>
+
+</Project>
