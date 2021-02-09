@@ -71,7 +71,8 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldCorrectSignal()
         {
             var propagation = new Propagation<Signal>();
-            var correction = propagation.Correct(this);
+            var connection = propagation as IConnection<Signal>;
+            var correction = connection.Correct(this);
 
             var expected = false;
             var disconnection = correction.Connect(signal =>
@@ -150,10 +151,11 @@ namespace YggdrAshill.Nuadha.Specification
         public void CannotCorrectWithNullCorrection()
         {
             var propagation = new Propagation<Signal>();
+            var connection = propagation as IConnection<Signal>;
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var correction = propagation.Correct((ICorrection<Signal>)null);
+                var correction = connection.Correct((ICorrection<Signal>)null);
             });
         }
 

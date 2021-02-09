@@ -27,14 +27,15 @@ namespace YggdrAshill.Nuadha
 
         #region IConnection
 
-        public Conduction.IDisconnection Connect(IConsumption<TSignal> consumption)
+        private IConnection<TSignal> Connection => Propagation;
+        public IDisconnection Connect(IConsumption<TSignal> consumption)
         {
             if (consumption == null)
             {
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return Propagation.Calibrate(Reduction, Calibration).Connect(consumption);
+            return Connection.Calibrate(Reduction, Calibration).Connect(consumption);
         }
 
         #endregion
