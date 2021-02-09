@@ -6,9 +6,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Conduction\Conduction.csproj" />
+    <ProjectReference Include="..\Conversion\Conversion.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
     <ProjectReference Include="..\Signals\Signals.csproj" />
-    <ProjectReference Include="..\Translation\Translation.csproj" />
     <ProjectReference Include="..\Unitization\Unitization.csproj" />
     <ProjectReference Include="..\Units\Units.csproj" />
   </ItemGroup>
