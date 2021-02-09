@@ -7,8 +7,8 @@ namespace YggdrAshill.Nuadha.Units
     public interface ITriggerHardwareHandler :
         IHardwareHandler
     {
-        IInputTerminal<Touch> Touch { get; }
+        IConsumption<Touch> Touch { get; }
 
-        IInputTerminal<Pull> Pull { get; }
+        IConsumption<Pull> Pull { get; }
     }
 }

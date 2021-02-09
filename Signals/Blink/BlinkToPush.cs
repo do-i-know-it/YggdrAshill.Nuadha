@@ -1,16 +1,16 @@
-﻿using YggdrAshill.Nuadha.Translation;
+﻿using YggdrAshill.Nuadha.Conversion;
 using System;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     public sealed class BlinkToPush :
-        IConversion<Blink, Push>
+        ITranslation<Blink, Push>
     {
-        private readonly IHysteresisThreshold threshold;
+        private readonly HysteresisThreshold threshold;
 
         private bool isPushed;
 
-        public BlinkToPush(IHysteresisThreshold threshold, bool isPushed = false)
+        public BlinkToPush(HysteresisThreshold threshold, bool isPushed = false)
         {
             if (threshold == null)
             {
@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha.Signals
             this.isPushed = isPushed;
         }
 
-        public Push Convert(Blink signal)
+        public Push Translate(Blink signal)
         {
             if (isPushed)
             {

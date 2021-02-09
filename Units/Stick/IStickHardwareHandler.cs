@@ -8,6 +8,6 @@ namespace YggdrAshill.Nuadha.Units
         IHardwareHandler,
         IButtonHardwareHandler
     {
-        IInputTerminal<Tilt> Tilt { get; }
+        IConsumption<Tilt> Tilt { get; }
     }
 }

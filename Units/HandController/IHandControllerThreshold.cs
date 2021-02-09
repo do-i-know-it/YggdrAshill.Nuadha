@@ -6,8 +6,8 @@ namespace YggdrAshill.Nuadha.Units
     {
         ITiltThreshold ThumbStick { get; }
 
-        IHysteresisThreshold FingerTrigger { get; }
+        HysteresisThreshold FingerTrigger { get; }
 
-        IHysteresisThreshold HandTrigger { get; }
+        HysteresisThreshold HandTrigger { get; }
     }
 }

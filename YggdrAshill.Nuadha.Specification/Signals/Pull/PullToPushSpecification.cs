@@ -8,48 +8,48 @@ namespace YggdrAshill.Nuadha.Specification
     {
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertPullToNotPushedWhenStrengthIsLowerThanUpperLimitBeforePushed(float upper)
+        public void ShouldTranslatePullToNotPushedWhenStrengthIsLowerThanUpperLimitBeforePushed(float upper)
         {
             var threshold = new HysteresisThreshold(upper - 0.1f, upper);
-            var conversion = new PullToPush(threshold);
+            var translation = new PullToPush(threshold);
 
-            var push = conversion.Convert(new Pull(upper - 0.1f));
+            var push = translation.Translate(new Pull(upper - 0.1f));
 
             Assert.AreEqual(Push.Disabled, push);
         }
 
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertPullToPushedWhenStrengthIsHigherThanUpperLimitBeforePushed(float upper)
+        public void ShouldTranslatePullToPushedWhenStrengthIsHigherThanUpperLimitBeforePushed(float upper)
         {
             var threshold = new HysteresisThreshold(upper - 0.1f, upper);
-            var conversion = new PullToPush(threshold);
+            var translation = new PullToPush(threshold);
 
-            var push = conversion.Convert(new Pull(upper + 0.1f));
-
-            Assert.AreEqual(Push.Enabled, push);
-        }
-
-        [TestCase(0.2f)]
-        [TestCase(0.1f)]
-        public void ShouldConvertPullToPushedWhenStrengthIsHigherThanLowerLimitAfterPushed(float lower)
-        {
-            var threshold = new HysteresisThreshold(lower, lower + 0.1f);
-            var conversion = new PullToPush(threshold, true);
-
-            var push = conversion.Convert(new Pull(lower + 0.1f));
+            var push = translation.Translate(new Pull(upper + 0.1f));
 
             Assert.AreEqual(Push.Enabled, push);
         }
 
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertPullToNotPushedWhenStrengthIsLowerThanLowerLimitAfterPushed(float lower)
+        public void ShouldTranslatePullToPushedWhenStrengthIsHigherThanLowerLimitAfterPushed(float lower)
         {
             var threshold = new HysteresisThreshold(lower, lower + 0.1f);
-            var conversion = new PullToPush(threshold, true);
+            var translation = new PullToPush(threshold, true);
 
-            var push = conversion.Convert(new Pull(lower - 0.1f));
+            var push = translation.Translate(new Pull(lower + 0.1f));
+
+            Assert.AreEqual(Push.Enabled, push);
+        }
+
+        [TestCase(0.2f)]
+        [TestCase(0.1f)]
+        public void ShouldTranslatePullToNotPushedWhenStrengthIsLowerThanLowerLimitAfterPushed(float lower)
+        {
+            var threshold = new HysteresisThreshold(lower, lower + 0.1f);
+            var translation = new PullToPush(threshold, true);
+
+            var push = translation.Translate(new Pull(lower - 0.1f));
 
             Assert.AreEqual(Push.Disabled, push);
         }

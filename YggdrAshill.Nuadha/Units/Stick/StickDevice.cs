@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -9,6 +10,8 @@ namespace YggdrAshill.Nuadha
         IInputDevice<IStickHardwareHandler>
     {
         private readonly IStickConfiguration configuration;
+
+        private readonly StickModule module = new StickModule();
 
         public StickDevice(IStickConfiguration configuration)
         {
@@ -22,6 +25,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
+        private IStickSoftwareHandler SoftwareHandler => module;
         public IDisconnection Connect(IStickHardwareHandler handler)
         {
             if (handler == null)
@@ -29,11 +33,11 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var touch = configuration.Touch.Connect(handler.Touch);
+            var touch = SoftwareHandler.Touch.Connect(handler.Touch);
 
-            var push = configuration.Push.Connect(handler.Push);
+            var push = SoftwareHandler.Push.Connect(handler.Push);
 
-            var tilt = configuration.Tilt.Connect(handler.Tilt);
+            var tilt = SoftwareHandler.Tilt.Connect(handler.Tilt);
 
             return new Disconnection(() =>
             {
@@ -51,24 +55,21 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            configuration.Touch.Disconnect();
-
-            configuration.Push.Disconnect();
-
-            configuration.Tilt.Disconnect();
+            module.Disconnect();
         }
 
         #endregion
 
-        #region Ignitor
+        #region Ignition
 
+        private IStickHardwareHandler HardwareHandler => module;
         public IEmission Ignite()
         {
-            var touch = configuration.Touch.Ignite();
+            var touch = configuration.Touch.Produce(HardwareHandler.Touch);
 
-            var push = configuration.Push.Ignite();
+            var push = configuration.Push.Produce(HardwareHandler.Push);
 
-            var tilt = configuration.Tilt.Ignite();
+            var tilt = configuration.Tilt.Produce(HardwareHandler.Tilt);
 
             return new Emission(() =>
             {

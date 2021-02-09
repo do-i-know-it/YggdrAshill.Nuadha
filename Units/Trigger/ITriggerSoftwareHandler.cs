@@ -1,4 +1,4 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 
@@ -7,8 +7,8 @@ namespace YggdrAshill.Nuadha.Units
     public interface ITriggerSoftwareHandler :
         ISoftwareHandler
     {
-        IOutputTerminal<Touch> Touch { get; }
+        IConnection<Touch> Touch { get; }
 
-        IOutputTerminal<Pull> Pull { get; }
+        IConnection<Pull> Pull { get; }
     }
 }

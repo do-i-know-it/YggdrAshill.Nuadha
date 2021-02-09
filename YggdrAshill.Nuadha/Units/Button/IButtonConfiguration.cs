@@ -5,8 +5,8 @@ namespace YggdrAshill.Nuadha
 {
     public interface IButtonConfiguration
     {
-        IGenerator<Touch> Touch { get; }
+        IProduction<Touch> Touch { get; }
 
-        IGenerator<Push> Push { get; }
+        IProduction<Push> Push { get; }
     }
 }

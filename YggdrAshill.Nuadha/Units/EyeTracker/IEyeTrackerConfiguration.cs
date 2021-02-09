@@ -5,8 +5,8 @@ namespace YggdrAshill.Nuadha
 {
     public interface IEyeTrackerConfiguration
     {
-        IGenerator<Pupil> Pupil { get; }
+        IProduction<Pupil> Pupil { get; }
 
-        IGenerator<Blink> Blink { get; }
+        IProduction<Blink> Blink { get; }
     }
 }

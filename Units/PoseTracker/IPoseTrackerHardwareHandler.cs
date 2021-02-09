@@ -7,8 +7,8 @@ namespace YggdrAshill.Nuadha.Units
     public interface IPoseTrackerHardwareHandler :
         IHardwareHandler
     {
-        IInputTerminal<Position> Position { get; }
+        IConsumption<Position> Position { get; }
 
-        IInputTerminal<Rotation> Rotation { get; }
+        IConsumption<Rotation> Rotation { get; }
     }
 }

@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -9,7 +10,7 @@ namespace YggdrAshill.Nuadha
         IHeadsetHardwareHandler,
         IDisconnection
     {
-        private readonly Connector<Direction> direction = new Connector<Direction>();
+        private readonly Propagation<Direction> direction = new Propagation<Direction>();
 
         private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
         
@@ -19,7 +20,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHeadsetSoftwareHandler
 
-        IOutputTerminal<Direction> IHeadsetSoftwareHandler.Direction => direction;
+        IConnection<Direction> IHeadsetSoftwareHandler.Direction => direction;
 
         IPoseTrackerSoftwareHandler IHeadsetSoftwareHandler.PoseTracker => poseTracker;
 
@@ -31,7 +32,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHeadsetHardwareHandler
 
-        IInputTerminal<Direction> IHeadsetHardwareHandler.Direction => direction;
+        IConsumption<Direction> IHeadsetHardwareHandler.Direction => direction;
 
         IPoseTrackerHardwareHandler IHeadsetHardwareHandler.PoseTracker => poseTracker;
 

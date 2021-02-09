@@ -5,7 +5,7 @@ namespace YggdrAshill.Nuadha
 {
     public interface IHeadsetConfiguration
     {
-        IGenerator<Direction> Direction { get; }
+        IProduction<Direction> Direction { get; }
 
         IPoseTrackerConfiguration PoseTracker { get; }
 

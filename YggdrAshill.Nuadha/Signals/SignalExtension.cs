@@ -1,5 +1,5 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Translation;
+﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
@@ -9,54 +9,54 @@ namespace YggdrAshill.Nuadha
     {
         #region Position
 
-        public static IOutputTerminal<Position> Calibrate(this IOutputTerminal<Position> terminal, Func<Position> calibration)
+        public static IConnection<Position> Calibrate(this IConnection<Position> connection, Func<Position> calibration)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (calibration == null)
             {
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return terminal.Calibrate(Signals.Calibrate.Position, new Calibration<Position>(calibration));
+            return connection.Calibrate(new Calibration<Position>(calibration));
         }
 
         #endregion
 
         #region Rotation
 
-        public static IOutputTerminal<Rotation> Calibrate(this IOutputTerminal<Rotation> terminal, Func<Rotation> calibration)
+        public static IConnection<Rotation> Calibrate(this IConnection<Rotation> connection, Func<Rotation> calibration)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (calibration == null)
             {
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return terminal.Calibrate(Signals.Calibrate.Rotation, new Calibration<Rotation>(calibration));
+            return connection.Calibrate(new Calibration<Rotation>(calibration));
         }
 
         #endregion
 
         #region Direction
 
-        public static IOutputTerminal<Direction> Calibrate(this IOutputTerminal<Direction> terminal, Func<Direction> calibration)
+        public static IConnection<Direction> Calibrate(this IConnection<Direction> connection, Func<Direction> calibration)
         {
-            if (terminal == null)
+            if (connection == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(connection));
             }
             if (calibration == null)
             {
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return terminal.Calibrate(Signals.Calibrate.Direction, new Calibration<Direction>(calibration));
+            return connection.Calibrate(new Calibration<Direction>(calibration));
         }
 
         #endregion

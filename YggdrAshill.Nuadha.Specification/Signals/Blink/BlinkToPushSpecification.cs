@@ -8,48 +8,48 @@ namespace YggdrAshill.Nuadha.Specification
     {
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertBlinkToNotPushedWhenRatioIsLowerThanUpperLimitBeforePushed(float upper)
+        public void ShouldTranslateBlinkToNotPushedWhenRatioIsLowerThanUpperLimitBeforePushed(float upper)
         {
             var threshold = new HysteresisThreshold(upper - 0.1f, upper);
-            var conversion = new BlinkToPush(threshold);
+            var translation = new BlinkToPush(threshold);
 
-            var push = conversion.Convert(new Blink(upper - 0.1f));
+            var push = translation.Translate(new Blink(upper - 0.1f));
 
             Assert.AreEqual(Push.Disabled, push);
         }
 
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertBlinkToPushedWhenRatioIsHigherThanUpperLimitBeforePushed(float upper)
+        public void ShouldTranslateBlinkToPushedWhenRatioIsHigherThanUpperLimitBeforePushed(float upper)
         {
             var threshold = new HysteresisThreshold(upper - 0.1f, upper);
-            var conversion = new BlinkToPush(threshold);
+            var translation = new BlinkToPush(threshold);
 
-            var push = conversion.Convert(new Blink(upper + 0.1f));
-
-            Assert.AreEqual(Push.Enabled, push);
-        }
-
-        [TestCase(0.2f)]
-        [TestCase(0.1f)]
-        public void ShouldConvertBlinkToPushedWhenRatioIsHigherThanLowerLimitAfterPushed(float lower)
-        {
-            var threshold = new HysteresisThreshold(lower, lower + 0.1f);
-            var conversion = new BlinkToPush(threshold, true);
-
-            var push = conversion.Convert(new Blink(lower + 0.1f));
+            var push = translation.Translate(new Blink(upper + 0.1f));
 
             Assert.AreEqual(Push.Enabled, push);
         }
 
         [TestCase(0.2f)]
         [TestCase(0.1f)]
-        public void ShouldConvertBlinkToNotPushedWhenRatioIsLowerThanLowerLimitAfterPushed(float lower)
+        public void ShouldTranslateBlinkToPushedWhenRatioIsHigherThanLowerLimitAfterPushed(float lower)
         {
             var threshold = new HysteresisThreshold(lower, lower + 0.1f);
-            var conversion = new BlinkToPush(threshold, true);
+            var translation = new BlinkToPush(threshold, true);
 
-            var push = conversion.Convert(new Blink(lower - 0.1f));
+            var push = translation.Translate(new Blink(lower + 0.1f));
+
+            Assert.AreEqual(Push.Enabled, push);
+        }
+
+        [TestCase(0.2f)]
+        [TestCase(0.1f)]
+        public void ShouldTranslateBlinkToNotPushedWhenRatioIsLowerThanLowerLimitAfterPushed(float lower)
+        {
+            var threshold = new HysteresisThreshold(lower, lower + 0.1f);
+            var translation = new BlinkToPush(threshold, true);
+
+            var push = translation.Translate(new Blink(lower - 0.1f));
 
             Assert.AreEqual(Push.Disabled, push);
         }

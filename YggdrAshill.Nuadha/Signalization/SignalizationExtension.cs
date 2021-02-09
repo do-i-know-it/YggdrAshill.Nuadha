@@ -1,23 +1,23 @@
-using YggdrAshill.Nuadha.Signalization;
+﻿using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public static class SignalizationExtension
     {
-        public static IDisconnection Connect<TSignal>(this IOutputTerminal<TSignal> terminal, Action<TSignal> onReceived)
+        public static IEmission Produce<TSignal>(this IProduction<TSignal> production, Action<TSignal> onConsumed)
             where TSignal : ISignal
         {
-            if (terminal == null)
+            if (production == null)
             {
-                throw new ArgumentNullException(nameof(terminal));
+                throw new ArgumentNullException(nameof(production));
             }
-            if (onReceived == null)
+            if (onConsumed == null)
             {
-                throw new ArgumentNullException(nameof(onReceived));
+                throw new ArgumentNullException(nameof(onConsumed));
             }
 
-            return terminal.Connect(new InputTerminal<TSignal>(onReceived));
+            return production.Produce(new Consumption<TSignal>(onConsumed));
         }
     }
 }

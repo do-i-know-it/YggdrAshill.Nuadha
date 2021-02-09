@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha.Units
     public interface IHeadsetHardwareHandler :
         IHardwareHandler
     {
-        IInputTerminal<Direction> Direction { get; }
+        IConsumption<Direction> Direction { get; }
 
         IPoseTrackerHardwareHandler PoseTracker { get; }
 

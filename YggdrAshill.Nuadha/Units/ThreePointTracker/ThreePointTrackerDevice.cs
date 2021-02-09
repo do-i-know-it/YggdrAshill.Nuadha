@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -9,6 +10,8 @@ namespace YggdrAshill.Nuadha
         IInputDevice<IThreePointTrackerHardwareHandler>
     {
         private readonly IThreePointTrackerConfiguration configuration;
+
+        private readonly ThreePointTrackerModule module = new ThreePointTrackerModule();
 
         public ThreePointTrackerDevice(IThreePointTrackerConfiguration configuration)
         {
@@ -22,6 +25,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
+        private IThreePointTrackerSoftwareHandler SoftwareHandler => module;
         public IDisconnection Connect(IThreePointTrackerHardwareHandler handler)
         {
             if (handler == null)
@@ -29,48 +33,48 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var position = configuration.PoseTracker.Position.Connect(handler.PoseTracker.Position);
-            var rotation = configuration.PoseTracker.Rotation.Connect(handler.PoseTracker.Rotation);
+            var position = SoftwareHandler.PoseTracker.Position.Connect(handler.PoseTracker.Position);
+            var rotation = SoftwareHandler.PoseTracker.Rotation.Connect(handler.PoseTracker.Rotation);
 
             // Head
-            var headDirection = configuration.Head.Direction.Connect(handler.Head.Direction);
+            var headDirection = SoftwareHandler.Head.Direction.Connect(handler.Head.Direction);
 
-            var headPosition = configuration.Head.PoseTracker.Position.Connect(handler.Head.PoseTracker.Position);
-            var headRotation = configuration.Head.PoseTracker.Rotation.Connect(handler.Head.PoseTracker.Rotation);
+            var headPosition = SoftwareHandler.Head.PoseTracker.Position.Connect(handler.Head.PoseTracker.Position);
+            var headRotation = SoftwareHandler.Head.PoseTracker.Rotation.Connect(handler.Head.PoseTracker.Rotation);
 
-            var headLeftEyePupil = configuration.Head.LeftEye.Pupil.Connect(handler.Head.LeftEye.Pupil);
-            var headLeftEyeBlink = configuration.Head.LeftEye.Blink.Connect(handler.Head.LeftEye.Blink);
+            var headLeftEyePupil = SoftwareHandler.Head.LeftEye.Pupil.Connect(handler.Head.LeftEye.Pupil);
+            var headLeftEyeBlink = SoftwareHandler.Head.LeftEye.Blink.Connect(handler.Head.LeftEye.Blink);
 
-            var headRightEyePupil = configuration.Head.RightEye.Pupil.Connect(handler.Head.RightEye.Pupil);
-            var headRightEyeBlink = configuration.Head.RightEye.Blink.Connect(handler.Head.RightEye.Blink);
+            var headRightEyePupil = SoftwareHandler.Head.RightEye.Pupil.Connect(handler.Head.RightEye.Pupil);
+            var headRightEyeBlink = SoftwareHandler.Head.RightEye.Blink.Connect(handler.Head.RightEye.Blink);
 
             // Left hand
-            var leftHandPosition = configuration.LeftHand.PoseTracker.Position.Connect(handler.LeftHand.PoseTracker.Position);
-            var leftHandRotation = configuration.LeftHand.PoseTracker.Rotation.Connect(handler.LeftHand.PoseTracker.Rotation);
+            var leftHandPosition = SoftwareHandler.LeftHand.PoseTracker.Position.Connect(handler.LeftHand.PoseTracker.Position);
+            var leftHandRotation = SoftwareHandler.LeftHand.PoseTracker.Rotation.Connect(handler.LeftHand.PoseTracker.Rotation);
 
-            var leftHandThumbStickTouch = configuration.LeftHand.ThumbStick.Touch.Connect(handler.LeftHand.ThumbStick.Touch);
-            var leftHandThumbStickPush = configuration.LeftHand.ThumbStick.Push.Connect(handler.LeftHand.ThumbStick.Push);
-            var leftHandThumbStickTilt = configuration.LeftHand.ThumbStick.Tilt.Connect(handler.LeftHand.ThumbStick.Tilt);
+            var leftHandThumbStickTouch = SoftwareHandler.LeftHand.ThumbStick.Touch.Connect(handler.LeftHand.ThumbStick.Touch);
+            var leftHandThumbStickPush = SoftwareHandler.LeftHand.ThumbStick.Push.Connect(handler.LeftHand.ThumbStick.Push);
+            var leftHandThumbStickTilt = SoftwareHandler.LeftHand.ThumbStick.Tilt.Connect(handler.LeftHand.ThumbStick.Tilt);
 
-            var leftHandFingerTriggerTouch = configuration.LeftHand.FingerTrigger.Touch.Connect(handler.LeftHand.FingerTrigger.Touch);
-            var leftHandFingerTriggerPull = configuration.LeftHand.FingerTrigger.Pull.Connect(handler.LeftHand.FingerTrigger.Pull);
+            var leftHandFingerTriggerTouch = SoftwareHandler.LeftHand.FingerTrigger.Touch.Connect(handler.LeftHand.FingerTrigger.Touch);
+            var leftHandFingerTriggerPull = SoftwareHandler.LeftHand.FingerTrigger.Pull.Connect(handler.LeftHand.FingerTrigger.Pull);
 
-            var leftHandHandTriggerTouch = configuration.LeftHand.HandTrigger.Touch.Connect(handler.LeftHand.HandTrigger.Touch);
-            var leftHandHandTriggerPull = configuration.LeftHand.HandTrigger.Pull.Connect(handler.LeftHand.HandTrigger.Pull);
+            var leftHandHandTriggerTouch = SoftwareHandler.LeftHand.HandTrigger.Touch.Connect(handler.LeftHand.HandTrigger.Touch);
+            var leftHandHandTriggerPull = SoftwareHandler.LeftHand.HandTrigger.Pull.Connect(handler.LeftHand.HandTrigger.Pull);
 
             // Right hand
-            var rightHandPosition = configuration.RightHand.PoseTracker.Position.Connect(handler.RightHand.PoseTracker.Position);
-            var rightHandRotation = configuration.RightHand.PoseTracker.Rotation.Connect(handler.RightHand.PoseTracker.Rotation);
+            var rightHandPosition = SoftwareHandler.RightHand.PoseTracker.Position.Connect(handler.RightHand.PoseTracker.Position);
+            var rightHandRotation = SoftwareHandler.RightHand.PoseTracker.Rotation.Connect(handler.RightHand.PoseTracker.Rotation);
 
-            var rightHandThumbStickTouch = configuration.RightHand.ThumbStick.Touch.Connect(handler.RightHand.ThumbStick.Touch);
-            var rightHandThumbStickPush = configuration.RightHand.ThumbStick.Push.Connect(handler.RightHand.ThumbStick.Push);
-            var rightHandThumbStickTilt = configuration.RightHand.ThumbStick.Tilt.Connect(handler.RightHand.ThumbStick.Tilt);
+            var rightHandThumbStickTouch = SoftwareHandler.RightHand.ThumbStick.Touch.Connect(handler.RightHand.ThumbStick.Touch);
+            var rightHandThumbStickPush = SoftwareHandler.RightHand.ThumbStick.Push.Connect(handler.RightHand.ThumbStick.Push);
+            var rightHandThumbStickTilt = SoftwareHandler.RightHand.ThumbStick.Tilt.Connect(handler.RightHand.ThumbStick.Tilt);
 
-            var rightHandFingerTriggerTouch = configuration.RightHand.FingerTrigger.Touch.Connect(handler.RightHand.FingerTrigger.Touch);
-            var rightHandFingerTriggerPull = configuration.RightHand.FingerTrigger.Pull.Connect(handler.RightHand.FingerTrigger.Pull);
+            var rightHandFingerTriggerTouch = SoftwareHandler.RightHand.FingerTrigger.Touch.Connect(handler.RightHand.FingerTrigger.Touch);
+            var rightHandFingerTriggerPull = SoftwareHandler.RightHand.FingerTrigger.Pull.Connect(handler.RightHand.FingerTrigger.Pull);
 
-            var rightHandHandTriggerTouch = configuration.RightHand.HandTrigger.Touch.Connect(handler.RightHand.HandTrigger.Touch);
-            var rightHandHandTriggerPull = configuration.RightHand.HandTrigger.Pull.Connect(handler.RightHand.HandTrigger.Pull);
+            var rightHandHandTriggerTouch = SoftwareHandler.RightHand.HandTrigger.Touch.Connect(handler.RightHand.HandTrigger.Touch);
+            var rightHandHandTriggerPull = SoftwareHandler.RightHand.HandTrigger.Pull.Connect(handler.RightHand.HandTrigger.Pull);
 
             return new Disconnection(() =>
             {
@@ -125,98 +129,58 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            configuration.PoseTracker.Position.Disconnect();
-            configuration.PoseTracker.Rotation.Disconnect();
-
-            // Head
-            configuration.Head.Direction.Disconnect();
-            
-            configuration.Head.PoseTracker.Position.Disconnect();
-            configuration.Head.PoseTracker.Rotation.Disconnect();
-            
-            configuration.Head.LeftEye.Pupil.Disconnect();
-            configuration.Head.LeftEye.Blink.Disconnect();
-            
-            configuration.Head.RightEye.Pupil.Disconnect();
-            configuration.Head.RightEye.Blink.Disconnect();
-
-            // Left hand
-            configuration.LeftHand.PoseTracker.Position.Disconnect();
-            configuration.LeftHand.PoseTracker.Rotation.Disconnect();
-            
-            configuration.LeftHand.ThumbStick.Touch.Disconnect();
-            configuration.LeftHand.ThumbStick.Push.Disconnect();
-            configuration.LeftHand.ThumbStick.Tilt.Disconnect();
-            
-            configuration.LeftHand.FingerTrigger.Touch.Disconnect();
-            configuration.LeftHand.FingerTrigger.Pull.Disconnect();
-            
-            configuration.LeftHand.HandTrigger.Touch.Disconnect();
-            configuration.LeftHand.HandTrigger.Pull.Disconnect();
-
-            // Right hand
-            configuration.RightHand.PoseTracker.Position.Disconnect();
-            configuration.RightHand.PoseTracker.Rotation.Disconnect();
-            
-            configuration.RightHand.ThumbStick.Touch.Disconnect();
-            configuration.RightHand.ThumbStick.Push.Disconnect();
-            configuration.RightHand.ThumbStick.Tilt.Disconnect();
-
-            configuration.RightHand.FingerTrigger.Touch.Disconnect();
-            configuration.RightHand.FingerTrigger.Pull.Disconnect();
-
-            configuration.RightHand.HandTrigger.Touch.Disconnect();
-            configuration.RightHand.HandTrigger.Pull.Disconnect();
+            module.Disconnect();
         }
 
         #endregion
 
-        #region Ignitor
+        #region Ignition
 
+        private IThreePointTrackerHardwareHandler HardwareHandler => module;
         public IEmission Ignite()
         {
-            var position = configuration.PoseTracker.Position.Ignite();
-            var rotation = configuration.PoseTracker.Rotation.Ignite();
+            var position = configuration.PoseTracker.Position.Produce(HardwareHandler.PoseTracker.Position);
+            var rotation = configuration.PoseTracker.Rotation.Produce(HardwareHandler.PoseTracker.Rotation);
 
             // Head
-            var headDirection = configuration.Head.Direction.Ignite();
+            var headDirection = configuration.Head.Direction.Produce(HardwareHandler.Head.Direction);
 
-            var headPosition = configuration.Head.PoseTracker.Position.Ignite();
-            var headRotation = configuration.Head.PoseTracker.Rotation.Ignite();
+            var headPosition = configuration.Head.PoseTracker.Position.Produce(HardwareHandler.Head.PoseTracker.Position);
+            var headRotation = configuration.Head.PoseTracker.Rotation.Produce(HardwareHandler.Head.PoseTracker.Rotation);
 
-            var headLeftEyePupil = configuration.Head.LeftEye.Pupil.Ignite();
-            var headLeftEyeBlink = configuration.Head.LeftEye.Blink.Ignite();
+            var headLeftEyePupil = configuration.Head.LeftEye.Pupil.Produce(HardwareHandler.Head.LeftEye.Pupil);
+            var headLeftEyeBlink = configuration.Head.LeftEye.Blink.Produce(HardwareHandler.Head.LeftEye.Blink);
 
-            var headRightEyePupil = configuration.Head.RightEye.Pupil.Ignite();
-            var headRightEyeBlink = configuration.Head.RightEye.Blink.Ignite();
+            var headRightEyePupil = configuration.Head.RightEye.Pupil.Produce(HardwareHandler.Head.RightEye.Pupil);
+            var headRightEyeBlink = configuration.Head.RightEye.Blink.Produce(HardwareHandler.Head.RightEye.Blink);
 
             // Left hand
-            var leftHandPosition = configuration.LeftHand.PoseTracker.Position.Ignite();
-            var leftHandRotation = configuration.LeftHand.PoseTracker.Rotation.Ignite();
+            var leftHandPosition = configuration.LeftHand.PoseTracker.Position.Produce(HardwareHandler.LeftHand.PoseTracker.Position);
+            var leftHandRotation = configuration.LeftHand.PoseTracker.Rotation.Produce(HardwareHandler.LeftHand.PoseTracker.Rotation);
 
-            var leftHandThumbStickTouch = configuration.LeftHand.ThumbStick.Touch.Ignite();
-            var leftHandThumbStickPush = configuration.LeftHand.ThumbStick.Push.Ignite();
-            var leftHandThumbStickTilt = configuration.LeftHand.ThumbStick.Tilt.Ignite();
+            var leftHandThumbStickTouch = configuration.LeftHand.ThumbStick.Touch.Produce(HardwareHandler.LeftHand.ThumbStick.Touch);
+            var leftHandThumbStickPush = configuration.LeftHand.ThumbStick.Push.Produce(HardwareHandler.LeftHand.ThumbStick.Push);
+            var leftHandThumbStickTilt = configuration.LeftHand.ThumbStick.Tilt.Produce(HardwareHandler.LeftHand.ThumbStick.Tilt);
 
-            var leftHandFingerTriggerTouch = configuration.LeftHand.FingerTrigger.Touch.Ignite();
-            var leftHandFingerTriggerPull = configuration.LeftHand.FingerTrigger.Pull.Ignite();
+            var leftHandFingerTriggerTouch = configuration.LeftHand.FingerTrigger.Touch.Produce(HardwareHandler.LeftHand.FingerTrigger.Touch);
+            var leftHandFingerTriggerPull = configuration.LeftHand.FingerTrigger.Pull.Produce(HardwareHandler.LeftHand.FingerTrigger.Pull);
 
-            var leftHandHandTriggerTouch = configuration.LeftHand.HandTrigger.Touch.Ignite();
-            var leftHandHandTriggerPull = configuration.LeftHand.HandTrigger.Pull.Ignite();
+            var leftHandHandTriggerTouch = configuration.LeftHand.HandTrigger.Touch.Produce(HardwareHandler.LeftHand.HandTrigger.Touch);
+            var leftHandHandTriggerPull = configuration.LeftHand.HandTrigger.Pull.Produce(HardwareHandler.LeftHand.HandTrigger.Pull);
 
             // Right hand
-            var rightHandPosition = configuration.RightHand.PoseTracker.Position.Ignite();
-            var rightHandRotation = configuration.RightHand.PoseTracker.Rotation.Ignite();
+            var rightHandPosition = configuration.RightHand.PoseTracker.Position.Produce(HardwareHandler.RightHand.PoseTracker.Position);
+            var rightHandRotation = configuration.RightHand.PoseTracker.Rotation.Produce(HardwareHandler.RightHand.PoseTracker.Rotation);
 
-            var rightHandThumbStickTouch = configuration.RightHand.ThumbStick.Touch.Ignite();
-            var rightHandThumbStickPush = configuration.RightHand.ThumbStick.Push.Ignite();
-            var rightHandThumbStickTilt = configuration.RightHand.ThumbStick.Tilt.Ignite();
+            var rightHandThumbStickTouch = configuration.RightHand.ThumbStick.Touch.Produce(HardwareHandler.RightHand.ThumbStick.Touch);
+            var rightHandThumbStickPush = configuration.RightHand.ThumbStick.Push.Produce(HardwareHandler.RightHand.ThumbStick.Push);
+            var rightHandThumbStickTilt = configuration.RightHand.ThumbStick.Tilt.Produce(HardwareHandler.RightHand.ThumbStick.Tilt);
 
-            var rightHandFingerTriggerTouch = configuration.RightHand.FingerTrigger.Touch.Ignite();
-            var rightHandFingerTriggerPull = configuration.RightHand.FingerTrigger.Pull.Ignite();
+            var rightHandFingerTriggerTouch = configuration.RightHand.FingerTrigger.Touch.Produce(HardwareHandler.RightHand.FingerTrigger.Touch);
+            var rightHandFingerTriggerPull = configuration.RightHand.FingerTrigger.Pull.Produce(HardwareHandler.RightHand.FingerTrigger.Pull);
 
-            var rightHandHandTriggerTouch = configuration.RightHand.HandTrigger.Touch.Ignite();
-            var rightHandHandTriggerPull = configuration.RightHand.HandTrigger.Pull.Ignite();
+            var rightHandHandTriggerTouch = configuration.RightHand.HandTrigger.Touch.Produce(HardwareHandler.RightHand.HandTrigger.Touch);
+            var rightHandHandTriggerPull = configuration.RightHand.HandTrigger.Pull.Produce(HardwareHandler.RightHand.HandTrigger.Pull);
 
             return new Emission(() =>
             {

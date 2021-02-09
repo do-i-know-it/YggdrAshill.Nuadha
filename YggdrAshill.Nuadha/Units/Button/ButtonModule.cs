@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -9,23 +10,23 @@ namespace YggdrAshill.Nuadha
         IButtonHardwareHandler,
         IDisconnection
     {
-        private readonly Connector<Touch> touch = new Connector<Touch>();
+        private readonly Propagation<Touch> touch = new Propagation<Touch>();
 
-        private readonly Connector<Push> push = new Connector<Push>();
+        private readonly Propagation<Push> push = new Propagation<Push>();
 
         #region IButtonSoftwareHandler
 
-        IOutputTerminal<Touch> IButtonSoftwareHandler.Touch => touch;
+        IConnection<Touch> IButtonSoftwareHandler.Touch => touch;
 
-        IOutputTerminal<Push> IButtonSoftwareHandler.Push => push;
+        IConnection<Push> IButtonSoftwareHandler.Push => push;
 
         #endregion
 
         #region IButtonHardwareHandler
 
-        IInputTerminal<Touch> IButtonHardwareHandler.Touch => touch;
+        IConsumption<Touch> IButtonHardwareHandler.Touch => touch;
 
-        IInputTerminal<Push> IButtonHardwareHandler.Push => push;
+        IConsumption<Push> IButtonHardwareHandler.Push => push;
 
         #endregion
 

@@ -7,8 +7,8 @@ namespace YggdrAshill.Nuadha.Units
     public interface IButtonHardwareHandler :
         IHardwareHandler
     {
-        IInputTerminal<Touch> Touch { get; }
+        IConsumption<Touch> Touch { get; }
 
-        IInputTerminal<Push> Push { get; }
+        IConsumption<Push> Push { get; }
     }
 }

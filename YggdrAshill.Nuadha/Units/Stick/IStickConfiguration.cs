@@ -6,6 +6,6 @@ namespace YggdrAshill.Nuadha
     public interface IStickConfiguration :
         IButtonConfiguration
     {
-        IGenerator<Tilt> Tilt { get; }
+        IProduction<Tilt> Tilt { get; }
     }
 }

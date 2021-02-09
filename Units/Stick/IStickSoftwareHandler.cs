@@ -1,4 +1,4 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 
@@ -8,6 +8,6 @@ namespace YggdrAshill.Nuadha.Units
         ISoftwareHandler,
         IButtonSoftwareHandler
     {
-        IOutputTerminal<Tilt> Tilt { get; }
+        IConnection<Tilt> Tilt { get; }
     }
 }

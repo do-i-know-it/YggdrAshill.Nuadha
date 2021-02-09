@@ -1,10 +1,10 @@
-using YggdrAshill.Nuadha.Translation;
+using YggdrAshill.Nuadha.Conversion;
 using System;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     public sealed class TouchToPulse :
-           IDetection<Touch>
+        IDetection<Touch>
     {
         public static IDetection<Touch> HasTouched(Touch initial)
         {

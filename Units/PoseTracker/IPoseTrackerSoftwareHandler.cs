@@ -1,4 +1,4 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 
@@ -7,8 +7,8 @@ namespace YggdrAshill.Nuadha.Units
     public interface IPoseTrackerSoftwareHandler :
         ISoftwareHandler
     {
-        IOutputTerminal<Position> Position { get; }
+        IConnection<Position> Position { get; }
 
-        IOutputTerminal<Rotation> Rotation { get; }
+        IConnection<Rotation> Rotation { get; }
     }
 }

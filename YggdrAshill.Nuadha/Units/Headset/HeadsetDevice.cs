@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -9,6 +10,8 @@ namespace YggdrAshill.Nuadha
         IInputDevice<IHeadsetHardwareHandler>
     {
         private readonly IHeadsetConfiguration configuration;
+
+        private readonly HeadsetModule module = new HeadsetModule();
 
         public HeadsetDevice(IHeadsetConfiguration configuration)
         {
@@ -22,6 +25,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
+        private IHeadsetSoftwareHandler SoftwareHandler => module;
         public IDisconnection Connect(IHeadsetHardwareHandler handler)
         {
             if (handler == null)
@@ -29,16 +33,16 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var direction = configuration.Direction.Connect(handler.Direction);
+            var direction = SoftwareHandler.Direction.Connect(handler.Direction);
 
-            var position = configuration.PoseTracker.Position.Connect(handler.PoseTracker.Position);
-            var rotation = configuration.PoseTracker.Rotation.Connect(handler.PoseTracker.Rotation);
+            var position = SoftwareHandler.PoseTracker.Position.Connect(handler.PoseTracker.Position);
+            var rotation = SoftwareHandler.PoseTracker.Rotation.Connect(handler.PoseTracker.Rotation);
 
-            var leftEyePupil = configuration.LeftEye.Pupil.Connect(handler.LeftEye.Pupil);
-            var leftEyeBlink = configuration.LeftEye.Blink.Connect(handler.LeftEye.Blink);
+            var leftEyePupil = SoftwareHandler.LeftEye.Pupil.Connect(handler.LeftEye.Pupil);
+            var leftEyeBlink = SoftwareHandler.LeftEye.Blink.Connect(handler.LeftEye.Blink);
 
-            var rightEyePupil = configuration.RightEye.Pupil.Connect(handler.RightEye.Pupil);
-            var rightEyeBlink = configuration.RightEye.Blink.Connect(handler.RightEye.Blink);
+            var rightEyePupil = SoftwareHandler.RightEye.Pupil.Connect(handler.RightEye.Pupil);
+            var rightEyeBlink = SoftwareHandler.RightEye.Blink.Connect(handler.RightEye.Blink);
 
             return new Disconnection(() =>
             {
@@ -61,34 +65,26 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            configuration.Direction.Disconnect();
-
-            configuration.PoseTracker.Position.Disconnect();
-            configuration.PoseTracker.Rotation.Disconnect();
-
-            configuration.LeftEye.Pupil.Disconnect();
-            configuration.LeftEye.Blink.Disconnect();
-
-            configuration.RightEye.Pupil.Disconnect();
-            configuration.RightEye.Blink.Disconnect();
+            module.Disconnect();
         }
 
         #endregion
 
-        #region Ignitor
+        #region Ignition
 
+        private IHeadsetHardwareHandler HardwareHandler => module;
         public IEmission Ignite()
         {
-            var direction = configuration.Direction.Ignite();
+            var direction = configuration.Direction.Produce(HardwareHandler.Direction);
 
-            var position = configuration.PoseTracker.Position.Ignite();
-            var rotation = configuration.PoseTracker.Rotation.Ignite();
+            var position = configuration.PoseTracker.Position.Produce(HardwareHandler.PoseTracker.Position);
+            var rotation = configuration.PoseTracker.Rotation.Produce(HardwareHandler.PoseTracker.Rotation);
 
-            var leftEyePupil = configuration.LeftEye.Pupil.Ignite();
-            var leftEyeBlink = configuration.LeftEye.Blink.Ignite();
+            var leftEyePupil = configuration.LeftEye.Pupil.Produce(HardwareHandler.LeftEye.Pupil);
+            var leftEyeBlink = configuration.LeftEye.Blink.Produce(HardwareHandler.LeftEye.Blink);
 
-            var rightEyePupil = configuration.RightEye.Pupil.Ignite();
-            var rightEyeBlink = configuration.RightEye.Blink.Ignite();
+            var rightEyePupil = configuration.RightEye.Pupil.Produce(HardwareHandler.RightEye.Pupil);
+            var rightEyeBlink = configuration.RightEye.Blink.Produce(HardwareHandler.RightEye.Blink);
 
             return new Emission(() =>
             {
