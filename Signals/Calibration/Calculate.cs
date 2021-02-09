@@ -2,7 +2,7 @@
 
 namespace YggdrAshill.Nuadha.Signals
 {
-    public sealed class Calibrate :
+    public sealed class Calculate :
         IReduction<Position>,
         IReduction<Rotation>,
         IReduction<Direction>,
@@ -10,9 +10,9 @@ namespace YggdrAshill.Nuadha.Signals
     {
         #region Singleton
 
-        private static Calibrate Instance { get; } = new Calibrate();
+        private static Calculate Instance { get; } = new Calculate();
 
-        private Calibrate()
+        private Calculate()
         {
 
         }
@@ -21,7 +21,7 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Position
 
-        public static IReduction<Position> Position => Instance;
+        public static IReduction<Position> Position { get; } = Instance;
         
         public Position Reduce(Position left, Position right)
         {
@@ -44,7 +44,7 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Rotation
 
-        public static IReduction<Rotation> Rotation => Instance;
+        public static IReduction<Rotation> Rotation { get; } = Instance;
 
         public Rotation Reduce(Rotation left, Rotation right)
         {
@@ -111,7 +111,7 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Direction
 
-        public static IReduction<Direction> Direction => Instance;
+        public static IReduction<Direction> Direction { get; } = Instance;
 
         public Direction Reduce(Direction left, Direction right)
         {
@@ -134,7 +134,7 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Angle
 
-        public static IReduction<Angle> Angle => Instance;
+        public static IReduction<Angle> Angle { get; } = Instance;
 
         public Angle Reduce(Angle left, Angle right)
         {

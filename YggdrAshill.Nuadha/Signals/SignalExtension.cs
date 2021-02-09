@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return connection.Calibrate(Signals.Calibrate.Position, new Calibration<Position>(calibration));
+            return connection.Calibrate(new Calibration<Position>(calibration));
         }
 
         #endregion
@@ -38,7 +38,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return connection.Calibrate(Signals.Calibrate.Rotation, new Calibration<Rotation>(calibration));
+            return connection.Calibrate(new Calibration<Rotation>(calibration));
         }
 
         #endregion
@@ -56,7 +56,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return connection.Calibrate(Signals.Calibrate.Direction, new Calibration<Direction>(calibration));
+            return connection.Calibrate(new Calibration<Direction>(calibration));
         }
 
         #endregion

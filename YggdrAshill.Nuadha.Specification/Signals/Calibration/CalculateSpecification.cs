@@ -4,15 +4,15 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Calibrate))]
-    internal class CalibrateSpecification
+    [TestFixture(TestOf = typeof(Calculate))]
+    internal class CalculateSpecification
     {
         [TestCase(0.0f, 0.0f, 1.0f, 1.0f)]
         [TestCase(0.0f, 1.0f, 0.0f, 1.0f)]
         [TestCase(1.0f, 0.0f, 0.0f, 1.0f)]
         public void ShouldCalibratePosition(float horizontal, float vertical, float frontal, float offset)
         {
-            var reduction = Calibrate.Position;
+            var reduction = Calculate.Position;
 
             var expected = new Position(horizontal + offset, vertical + offset, frontal + offset);
 
@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var rotation = RotationOf(Direction.Up, new Angle(angle));
 
-            var reduction = Calibrate.Rotation;
+            var reduction = Calculate.Rotation;
 
             var expected = RotationOf(Direction.Up, new Angle(angle * 2));
 
@@ -44,7 +44,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var rotation = RotationOf(Direction.Up, new Angle(angle));
 
-            var reduction = Calibrate.Rotation;
+            var reduction = Calculate.Rotation;
 
             Assert.IsTrue(AreEqual(Rotation.None, reduction.Reduce(rotation, rotation.Inversed)));
 
@@ -60,7 +60,7 @@ namespace YggdrAshill.Nuadha.Specification
             var left = RotationOf(Direction.Forward, new Angle(angle));
             var right = RotationOf(Direction.Up, new Angle(angle));
 
-            var reduction = Calibrate.Rotation;
+            var reduction = Calculate.Rotation;
 
             var leftRight = reduction.Reduce(left, right);
             var rightLeft = reduction.Reduce(right, left);
@@ -79,7 +79,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var rotation = RotationOf(Direction.Up, new Angle(angle));
 
-            var reduction = Calibrate.Rotation;
+            var reduction = Calculate.Rotation;
 
             Assert.AreEqual(rotation, reduction.Reduce(rotation, Rotation.None));
          

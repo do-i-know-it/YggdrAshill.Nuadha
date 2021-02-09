@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     {
         protected override IPropagation<Position> Propagation { get; } = new Propagation<Position>();
 
-        protected override IReduction<Position> Reduction { get; } = Calibrate.Position;
+        protected override IReduction<Position> Reduction { get; } = Calculate.Position;
 
         protected override ICalibration<Position> Calibration { get; }
 
