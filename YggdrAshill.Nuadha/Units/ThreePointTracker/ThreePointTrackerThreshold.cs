@@ -1,4 +1,5 @@
-﻿using YggdrAshill.Nuadha.Units;
+﻿using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha

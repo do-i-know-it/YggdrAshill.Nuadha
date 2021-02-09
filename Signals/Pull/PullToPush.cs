@@ -6,11 +6,11 @@ namespace YggdrAshill.Nuadha.Signals
     public sealed class PullToPush :
         IConversion<Pull, Push>
     {
-        private readonly IHysteresisThreshold threshold;
+        private readonly HysteresisThreshold threshold;
 
         private bool isPushed;
 
-        public PullToPush(IHysteresisThreshold threshold, bool isPushed = false)
+        public PullToPush(HysteresisThreshold threshold, bool isPushed = false)
         {
             if (threshold == null)
             {

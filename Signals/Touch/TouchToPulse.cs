@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     public sealed class TouchToPulse :
-           IDetection<Touch>
+        IDetection<Touch>
     {
         public static IDetection<Touch> HasTouched(Touch initial)
         {

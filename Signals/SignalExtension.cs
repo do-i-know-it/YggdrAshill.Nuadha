@@ -58,7 +58,7 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Strength;
         }
 
-        public static IConnection<Push> Convert(this IConnection<Pull> connection, IHysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Convert(this IConnection<Pull> connection, HysteresisThreshold threshold, bool isPushed = false)
         {
             if (connection == null)
             {
@@ -98,7 +98,7 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Ratio;
         }
 
-        public static IConnection<Push> Convert(this IConnection<Pupil> connection, IHysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Convert(this IConnection<Pupil> connection, HysteresisThreshold threshold, bool isPushed = false)
         {
             if (connection == null)
             {
@@ -138,7 +138,7 @@ namespace YggdrAshill.Nuadha.Signals
             return signal.Ratio;
         }
 
-        public static IConnection<Push> Convert(this IConnection<Blink> connection, IHysteresisThreshold threshold, bool isPushed = false)
+        public static IConnection<Push> Convert(this IConnection<Blink> connection, HysteresisThreshold threshold, bool isPushed = false)
         {
             if (connection == null)
             {
@@ -193,7 +193,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return connection.Calibrate(Signals.Calibrate.Position, calibration);
+            return connection.Calibrate(Calculate.Position, calibration);
         }
 
         #endregion
@@ -211,7 +211,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return connection.Calibrate(Signals.Calibrate.Rotation, calibration);
+            return connection.Calibrate(Calculate.Rotation, calibration);
         }
 
         #endregion
@@ -229,7 +229,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(calibration));
             }
 
-            return connection.Calibrate(Signals.Calibrate.Direction, calibration);
+            return connection.Calibrate(Calculate.Direction, calibration);
         }
 
         #endregion

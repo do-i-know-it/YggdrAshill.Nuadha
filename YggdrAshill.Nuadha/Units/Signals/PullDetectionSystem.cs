@@ -16,7 +16,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly PushDetectionSystem detection = new PushDetectionSystem();
 
-        public PullDetectionSystem(IHysteresisThreshold threshold)
+        public PullDetectionSystem(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {

@@ -4,13 +4,13 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     public sealed class PupilToPush :
-       IConversion<Pupil, Push>
+        IConversion<Pupil, Push>
     {
-        private readonly IHysteresisThreshold threshold;
+        private readonly HysteresisThreshold threshold;
 
         private bool isPushed;
 
-        public PupilToPush(IHysteresisThreshold threshold, bool isPushed = false)
+        public PupilToPush(HysteresisThreshold threshold, bool isPushed = false)
         {
             if (threshold == null)
             {

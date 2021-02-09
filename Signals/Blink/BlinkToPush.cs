@@ -6,11 +6,11 @@ namespace YggdrAshill.Nuadha.Signals
     public sealed class BlinkToPush :
         IConversion<Blink, Push>
     {
-        private readonly IHysteresisThreshold threshold;
+        private readonly HysteresisThreshold threshold;
 
         private bool isPushed;
 
-        public BlinkToPush(IHysteresisThreshold threshold, bool isPushed = false)
+        public BlinkToPush(HysteresisThreshold threshold, bool isPushed = false)
         {
             if (threshold == null)
             {

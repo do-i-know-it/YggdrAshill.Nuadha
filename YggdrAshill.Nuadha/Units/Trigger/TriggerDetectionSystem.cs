@@ -15,7 +15,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly PullDetectionSystem pull;
 
-        public TriggerDetectionSystem(IHysteresisThreshold threshold)
+        public TriggerDetectionSystem(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {

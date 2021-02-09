@@ -9,9 +9,9 @@ namespace YggdrAshill.Nuadha
     {
         public ITiltThreshold ThumbStick { get; }
 
-        public IHysteresisThreshold FingerTrigger { get; }
+        public HysteresisThreshold FingerTrigger { get; }
 
-        public IHysteresisThreshold HandTrigger { get; }
+        public HysteresisThreshold HandTrigger { get; }
 
         public HandControllerThreshold(HysteresisThreshold thumbStick, HysteresisThreshold fingerTrigger, HysteresisThreshold handTrigger)
         {

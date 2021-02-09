@@ -11,7 +11,7 @@ namespace YggdrAshill.Nuadha
 
         protected override IConversion<Pupil, Push> Conversion { get; }
 
-        public PupilConversionSystem(IHysteresisThreshold threshold)
+        public PupilConversionSystem(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {

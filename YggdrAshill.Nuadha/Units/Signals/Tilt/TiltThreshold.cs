@@ -7,13 +7,13 @@ namespace YggdrAshill.Nuadha
     public sealed class TiltThreshold :
         ITiltThreshold
     {
-        public IHysteresisThreshold Left { get; }
+        public HysteresisThreshold Left { get; }
 
-        public IHysteresisThreshold Right { get; }
+        public HysteresisThreshold Right { get; }
 
-        public IHysteresisThreshold Forward { get; }
+        public HysteresisThreshold Forward { get; }
 
-        public IHysteresisThreshold Backward { get; }
+        public HysteresisThreshold Backward { get; }
 
         public TiltThreshold(HysteresisThreshold threshold)
         {

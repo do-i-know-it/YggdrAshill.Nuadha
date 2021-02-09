@@ -4,12 +4,12 @@ namespace YggdrAshill.Nuadha.Units
 {
     public interface ITiltThreshold
     {
-        IHysteresisThreshold Left { get; }
+        HysteresisThreshold Left { get; }
 
-        IHysteresisThreshold Right { get; }
+        HysteresisThreshold Right { get; }
 
-        IHysteresisThreshold Forward { get; }
+        HysteresisThreshold Forward { get; }
 
-        IHysteresisThreshold Backward { get; }
+        HysteresisThreshold Backward { get; }
     }
 }

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification

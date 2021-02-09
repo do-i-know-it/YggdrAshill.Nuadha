@@ -11,7 +11,7 @@ namespace YggdrAshill.Nuadha
 
         protected override IConversion<Blink, Push> Conversion { get; }
 
-        public BlinkConversionSystem(IHysteresisThreshold threshold)
+        public BlinkConversionSystem(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
