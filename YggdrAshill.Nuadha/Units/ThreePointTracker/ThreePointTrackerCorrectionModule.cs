@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class ThreePointTrackerCalibrationModule :
+    public sealed class ThreePointTrackerCorrectionModule :
         IThreePointTrackerCalibrationInputHandler,
         IThreePointTrackerCalibrationOutputHandler,
         IDisconnection

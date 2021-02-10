@@ -182,54 +182,54 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Position
 
-        public static IConnection<Position> Calibrate(this IConnection<Position> connection, ICalibration<Position> calibration)
+        public static IConnection<Position> Correct(this IConnection<Position> connection, IGeneration<Position> generation)
         {
             if (connection == null)
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (calibration == null)
+            if (generation == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return connection.Calibrate(Calculate.Position, calibration);
+            return connection.Correct(Calculation.Position, generation);
         }
 
         #endregion
 
         #region Rotation
 
-        public static IConnection<Rotation> Calibrate(this IConnection<Rotation> connection, ICalibration<Rotation> calibration)
+        public static IConnection<Rotation> Correct(this IConnection<Rotation> connection, IGeneration<Rotation> generation)
         {
             if (connection == null)
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (calibration == null)
+            if (generation == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return connection.Calibrate(Calculate.Rotation, calibration);
+            return connection.Correct(Calculation.Rotation, generation);
         }
 
         #endregion
 
         #region Direction
 
-        public static IConnection<Direction> Calibrate(this IConnection<Direction> connection, ICalibration<Direction> calibration)
+        public static IConnection<Direction> Correct(this IConnection<Direction> connection, IGeneration<Direction> generation)
         {
             if (connection == null)
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (calibration == null)
+            if (generation == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return connection.Calibrate(Calculate.Direction, calibration);
+            return connection.Correct(Calculation.Direction, generation);
         }
 
         #endregion

@@ -5,29 +5,29 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class ThreePointTrackerCalibrationSystem :
+    public sealed class ThreePointTrackerCorrectionSystem :
         ISoftware<IThreePointTrackerSoftwareHandler>,
         IHardware<IThreePointTrackerCalibrationInputHandler>,
         IDisconnection
     {
-        private readonly PoseTrackerCalibrationSystem head;
+        private readonly PoseTrackerCorrectionSystem head;
         
-        private readonly PoseTrackerCalibrationSystem leftHand;
+        private readonly PoseTrackerCorrectionSystem leftHand;
         
-        private readonly PoseTrackerCalibrationSystem rightHand;
+        private readonly PoseTrackerCorrectionSystem rightHand;
 
-        public ThreePointTrackerCalibrationSystem(IThreePointTrackerCalibration calibration)
+        public ThreePointTrackerCorrectionSystem(IThreePointTrackerConfiguration configuration)
         {
-            if (calibration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            head = new PoseTrackerCalibrationSystem(calibration.Head);
+            head = new PoseTrackerCorrectionSystem(configuration.Head.PoseTracker);
 
-            leftHand = new PoseTrackerCalibrationSystem(calibration.LeftHand);
+            leftHand = new PoseTrackerCorrectionSystem(configuration.LeftHand.PoseTracker);
 
-            rightHand = new PoseTrackerCalibrationSystem(calibration.RightHand);
+            rightHand = new PoseTrackerCorrectionSystem(configuration.RightHand.PoseTracker);
         }
 
         #region ISoftware

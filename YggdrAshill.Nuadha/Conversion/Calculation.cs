@@ -5,37 +5,37 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IReduction{TSignal}"/>.
+    /// Implementation of <see cref="ICalculation{TSignal}"/>.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to calculate.
     /// </typeparam>
-    public sealed class Reduction<TSignal> :
-        IReduction<TSignal>
+    public sealed class Calculation<TSignal> :
+        ICalculation<TSignal>
         where TSignal : ISignal
     {
-        private readonly Func<TSignal, TSignal, TSignal> onReduced;
+        private readonly Func<TSignal, TSignal, TSignal> onCalculated;
 
         /// <summary>
         /// Constructs an instance.
         /// </summary>
-        /// <param name="onReduced">
+        /// <param name="onCalculated">
         /// <see cref="Func{TSignal, TSignal, TSignal}"/> to execute when this has calculated.
         /// </param>
-        public Reduction(Func<TSignal, TSignal, TSignal> onReduced)
+        public Calculation(Func<TSignal, TSignal, TSignal> onCalculated)
         {
-            if (onReduced == null)
+            if (onCalculated == null)
             {
-                throw new ArgumentNullException(nameof(onReduced));
+                throw new ArgumentNullException(nameof(onCalculated));
             }
 
-            this.onReduced = onReduced;
+            this.onCalculated = onCalculated;
         }
 
         /// <inheritdoc/>
-        public TSignal Reduce(TSignal left, TSignal right)
+        public TSignal Calculate(TSignal left, TSignal right)
         {
-            return onReduced.Invoke(left, right);
+            return onCalculated.Invoke(left, right);
         }
     }
 }

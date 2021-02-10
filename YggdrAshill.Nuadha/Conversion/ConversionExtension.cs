@@ -97,7 +97,7 @@ namespace YggdrAshill.Nuadha
         #region Correction
 
         /// <summary>
-        /// Corrects <typeparamref name="TSignal"/> with <see cref="Func{TSignal, TSignal}"/>.
+        /// Corrects <typeparamref name="TSignal"/> with <see cref="Func{TSignal, TSignal, TSignal}"/> and <see cref="Func{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> for correction.
@@ -105,8 +105,11 @@ namespace YggdrAshill.Nuadha
         /// <param name="connection">
         /// <see cref="IConnection{TSignal}"/> to correct.
         /// </param>
-        /// <param name="correction">
-        /// <see cref="Func{TSignal, TSignal}"/> to correct.
+        /// <param name="calculation">
+        /// <see cref="Func{TSignal, TSignal, TSignal}"/> to correct.
+        /// </param>
+        /// <param name="generation">
+        /// <see cref="Func{TSignal}"/> to correct.
         /// </param>
         /// <returns>
         /// <see cref="IConnection{TSignal}"/> corrected.
@@ -115,25 +118,32 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="connection"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="correction"/> is null.
+        /// Thrown if <paramref name="calculation"/> is null.
         /// </exception>
-        public static IConnection<TSignal> Correct<TSignal>(this IConnection<TSignal> connection, Func<TSignal, TSignal> correction)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="generation"/> is null.
+        /// </exception>
+        public static IConnection<TSignal> Correct<TSignal>(this IConnection<TSignal> connection, Func<TSignal, TSignal, TSignal> calculation, Func<TSignal> generation)
             where TSignal : ISignal
         {
             if (connection == null)
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (correction == null)
+            if (calculation == null)
             {
-                throw new ArgumentNullException(nameof(correction));
+                throw new ArgumentNullException(nameof(calculation));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return connection.Correct(new Correction<TSignal>(correction));
+            return connection.Correct(new Calculation<TSignal>(calculation), new Generation<TSignal>(generation));
         }
 
         /// <summary>
-        /// Corrects <typeparamref name="TSignal"/> with <see cref="Func{TSignal, TSignal}"/>.
+        /// Corrects <typeparamref name="TSignal"/> with <see cref="Func{TSignal, TSignal, TSignal}"/> and <see cref="Func{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> for correction.
@@ -141,8 +151,11 @@ namespace YggdrAshill.Nuadha
         /// <param name="consumption">
         /// <see cref="IConsumption{TSignal}"/> corrected.
         /// </param>
-        /// <param name="correction">
-        /// <see cref="Func{TSignal, TSignal}"/> to correct.
+        /// <param name="calculation">
+        /// <see cref="Func{TSignal, TSignal, TSignal}"/> to correct.
+        /// </param>
+        /// <param name="generation">
+        /// <see cref="Func{TSignal}"/> to correct.
         /// </param>
         /// <returns>
         /// <see cref="IConsumption{TSignal}"/> to correct.
@@ -151,63 +164,28 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="consumption"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="correction"/> is null.
+        /// Thrown if <paramref name="calculation"/> is null.
         /// </exception>
-        public static IConsumption<TSignal> Correct<TSignal>(this IConsumption<TSignal> consumption, Func<TSignal, TSignal> correction)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="generation"/> is null.
+        /// </exception>
+        public static IConsumption<TSignal> Correct<TSignal>(this IConsumption<TSignal> consumption, Func<TSignal, TSignal, TSignal> calculation, Func<TSignal> generation)
             where TSignal : ISignal
         {
             if (consumption == null)
             {
                 throw new ArgumentNullException(nameof(consumption));
             }
-            if (correction == null)
+            if (calculation == null)
             {
-                throw new ArgumentNullException(nameof(correction));
+                throw new ArgumentNullException(nameof(calculation));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return consumption.Correct(new Correction<TSignal>(correction));
-        }
-
-        #endregion
-
-        #region Calibration
-
-        public static IConnection<TSignal> Calibrate<TSignal>(this IConnection<TSignal> connection, Func<TSignal, TSignal, TSignal> reduction, Func<TSignal> calibration)
-            where TSignal : ISignal
-        {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (reduction == null)
-            {
-                throw new ArgumentNullException(nameof(reduction));
-            }
-            if (calibration == null)
-            {
-                throw new ArgumentNullException(nameof(calibration));
-            }
-
-            return connection.Calibrate(new Reduction<TSignal>(reduction), new Calibration<TSignal>(calibration));
-        }
-
-        public static IConsumption<TSignal> Calibrate<TSignal>(this IConsumption<TSignal> consumption, Func<TSignal, TSignal, TSignal> reduction, Func<TSignal> calibration)
-            where TSignal : ISignal
-        {
-            if (consumption == null)
-            {
-                throw new ArgumentNullException(nameof(consumption));
-            }
-            if (reduction == null)
-            {
-                throw new ArgumentNullException(nameof(reduction));
-            }
-            if (calibration == null)
-            {
-                throw new ArgumentNullException(nameof(calibration));
-            }
-
-            return consumption.Calibrate(new Reduction<TSignal>(reduction), new Calibration<TSignal>(calibration));
+            return consumption.Correct(new Calculation<TSignal>(calculation), new Generation<TSignal>(generation));
         }
 
         #endregion

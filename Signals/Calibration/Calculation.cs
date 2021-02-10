@@ -2,17 +2,17 @@
 
 namespace YggdrAshill.Nuadha.Signals
 {
-    public sealed class Calculate :
-        IReduction<Position>,
-        IReduction<Rotation>,
-        IReduction<Direction>,
-        IReduction<Angle>
+    public sealed class Calculation :
+        ICalculation<Position>,
+        ICalculation<Rotation>,
+        ICalculation<Direction>,
+        ICalculation<Angle>
     {
         #region Singleton
 
-        private static Calculate Instance { get; } = new Calculate();
+        private static Calculation Instance { get; } = new Calculation();
 
-        private Calculate()
+        private Calculation()
         {
 
         }
@@ -21,9 +21,9 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Position
 
-        public static IReduction<Position> Position { get; } = Instance;
+        public static ICalculation<Position> Position { get; } = Instance;
         
-        public Position Reduce(Position left, Position right)
+        public Position Calculate(Position left, Position right)
         {
             var horizontal
                 = left.Horizontal
@@ -44,9 +44,9 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Rotation
 
-        public static IReduction<Rotation> Rotation { get; } = Instance;
+        public static ICalculation<Rotation> Rotation { get; } = Instance;
 
-        public Rotation Reduce(Rotation left, Rotation right)
+        public Rotation Calculate(Rotation left, Rotation right)
         {
             var leftW = left.Angle;
             var leftX = left.Horizontal;
@@ -111,9 +111,9 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Direction
 
-        public static IReduction<Direction> Direction { get; } = Instance;
+        public static ICalculation<Direction> Direction { get; } = Instance;
 
-        public Direction Reduce(Direction left, Direction right)
+        public Direction Calculate(Direction left, Direction right)
         {
             var horizontal
                 = left.Horizontal
@@ -134,9 +134,9 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Angle
 
-        public static IReduction<Angle> Angle { get; } = Instance;
+        public static ICalculation<Angle> Angle { get; } = Instance;
 
-        public Angle Reduce(Angle left, Angle right)
+        public Angle Calculate(Angle left, Angle right)
         {
             throw new System.NotImplementedException();
         }

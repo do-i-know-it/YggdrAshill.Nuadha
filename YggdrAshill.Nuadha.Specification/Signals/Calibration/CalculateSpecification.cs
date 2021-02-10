@@ -4,19 +4,19 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Calculate))]
+    [TestFixture(TestOf = typeof(Calculation))]
     internal class CalculateSpecification
     {
         [TestCase(0.0f, 0.0f, 1.0f, 1.0f)]
         [TestCase(0.0f, 1.0f, 0.0f, 1.0f)]
         [TestCase(1.0f, 0.0f, 0.0f, 1.0f)]
-        public void ShouldCalibratePosition(float horizontal, float vertical, float frontal, float offset)
+        public void ShouldCalculatePosition(float horizontal, float vertical, float frontal, float offset)
         {
-            var reduction = Calculate.Position;
+            var calculation = Calculation.Position;
 
             var expected = new Position(horizontal + offset, vertical + offset, frontal + offset);
 
-            Assert.AreEqual(expected, reduction.Reduce(new Position(horizontal, vertical, frontal), new Position(offset, offset, offset)));
+            Assert.AreEqual(expected, calculation.Calculate(new Position(horizontal, vertical, frontal), new Position(offset, offset, offset)));
         }
 
         [TestCase(-90.0f)]
@@ -24,15 +24,15 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(90.0f)]
         [TestCase(45.0f)]
         [TestCase(0.0f)]
-        public void ShouldCalibrateRotation(float angle)
+        public void ShouldCalculateRotation(float angle)
         {
             var rotation = RotationOf(Direction.Up, new Angle(angle));
 
-            var reduction = Calculate.Rotation;
+            var calculation = Calculation.Rotation;
 
             var expected = RotationOf(Direction.Up, new Angle(angle * 2));
 
-            Assert.IsTrue(AreEqual(expected, reduction.Reduce(rotation, rotation)));
+            Assert.IsTrue(AreEqual(expected, calculation.Calculate(rotation, rotation)));
         }
 
         [TestCase(-90.0f)]
@@ -44,11 +44,11 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var rotation = RotationOf(Direction.Up, new Angle(angle));
 
-            var reduction = Calculate.Rotation;
+            var calculation = Calculation.Rotation;
 
-            Assert.IsTrue(AreEqual(Rotation.None, reduction.Reduce(rotation, rotation.Inversed)));
+            Assert.IsTrue(AreEqual(Rotation.None, calculation.Calculate(rotation, rotation.Inversed)));
 
-            Assert.IsTrue(AreEqual(Rotation.None, reduction.Reduce(rotation.Inversed, rotation)));
+            Assert.IsTrue(AreEqual(Rotation.None, calculation.Calculate(rotation.Inversed, rotation)));
         }
 
         [TestCase(-90.0f)]
@@ -60,10 +60,10 @@ namespace YggdrAshill.Nuadha.Specification
             var left = RotationOf(Direction.Forward, new Angle(angle));
             var right = RotationOf(Direction.Up, new Angle(angle));
 
-            var reduction = Calculate.Rotation;
+            var calculation = Calculation.Rotation;
 
-            var leftRight = reduction.Reduce(left, right);
-            var rightLeft = reduction.Reduce(right, left);
+            var leftRight = calculation.Calculate(left, right);
+            var rightLeft = calculation.Calculate(right, left);
 
             Assert.IsFalse(AreEqual(leftRight, rightLeft));
         }
@@ -79,11 +79,11 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var rotation = RotationOf(Direction.Up, new Angle(angle));
 
-            var reduction = Calculate.Rotation;
+            var calculation = Calculation.Rotation;
 
-            Assert.AreEqual(rotation, reduction.Reduce(rotation, Rotation.None));
+            Assert.AreEqual(rotation, calculation.Calculate(rotation, Rotation.None));
          
-            Assert.AreEqual(rotation, reduction.Reduce(Rotation.None, rotation));
+            Assert.AreEqual(rotation, calculation.Calculate(Rotation.None, rotation));
         }
 
         private static Rotation RotationOf(Direction axis, Angle angle)

@@ -1,20 +1,19 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Conversion;
-using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public abstract class CalibrationSystem<TSignal> :
+    public abstract class CorrectionSystem<TSignal> :
         IPropagation<TSignal>
         where TSignal : ISignal
     {
         protected abstract IPropagation<TSignal> Propagation { get; }
 
-        protected abstract IReduction<TSignal> Reduction { get; }
+        protected abstract ICalculation<TSignal> Calculation { get; }
 
-        protected abstract ICalibration<TSignal> Calibration { get; }
+        protected abstract IGeneration<TSignal> Generation { get; }
         
         #region IConsumption
 
@@ -27,7 +26,6 @@ namespace YggdrAshill.Nuadha
 
         #region IConnection
 
-        private IConnection<TSignal> Connection => Propagation;
         public IDisconnection Connect(IConsumption<TSignal> consumption)
         {
             if (consumption == null)
@@ -35,7 +33,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return Connection.Calibrate(Reduction, Calibration).Connect(consumption);
+            return Propagation.Connect(consumption.Correct(Calculation, Generation));
         }
 
         #endregion

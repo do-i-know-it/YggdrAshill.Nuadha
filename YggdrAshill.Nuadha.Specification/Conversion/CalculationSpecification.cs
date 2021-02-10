@@ -3,14 +3,14 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Reduction<>))]
-    internal class ReductionSpecification
+    [TestFixture(TestOf = typeof(Calculation<>))]
+    internal class CalculationSpecification
     {
         [Test]
-        public void ShouldExecuteFunctionWhenHasReduced()
+        public void ShouldExecuteFunctionWhenHasCalculated()
         {
             var expected = false;
-            var reduction = new Reduction<Signal>((left, right) =>
+            var calculation = new Calculation<Signal>((left, right) =>
             {
                 if (left == null)
                 {
@@ -26,7 +26,7 @@ namespace YggdrAshill.Nuadha.Specification
                 return new Signal();
             });
 
-            var signal = reduction.Reduce(new Signal(), new Signal());
+            var signal = calculation.Calculate(new Signal(), new Signal());
 
             Assert.IsTrue(expected);
         }
@@ -36,7 +36,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var reduction = new Reduction<Signal>(null);
+                var calculation = new Calculation<Signal>(null);
             });
         }
     }

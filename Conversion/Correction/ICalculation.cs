@@ -8,7 +8,7 @@ namespace YggdrAshill.Nuadha.Conversion
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to calculate.
     /// </typeparam>
-    public interface IReduction<TSignal>
+    public interface ICalculation<TSignal>
         where TSignal : ISignal
     {
         /// <summary>
@@ -23,6 +23,6 @@ namespace YggdrAshill.Nuadha.Conversion
         /// <returns>
         /// <typeparamref name="TSignal"/> calculated.
         /// </returns>
-        TSignal Reduce(TSignal left, TSignal right);
+        TSignal Calculate(TSignal left, TSignal right);
     }
 }

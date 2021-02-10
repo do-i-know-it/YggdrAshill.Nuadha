@@ -5,25 +5,25 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PoseTrackerCalibrationSystem :
+    public sealed class PoseTrackerCorrectionSystem :
         ISoftware<IPoseTrackerSoftwareHandler>,
         IHardware<IPoseTrackerHardwareHandler>,
         IDisconnection
     {
-        private readonly PositionCalibrationSystem position;
+        private readonly PositionCorrectionSystem position;
 
-        private readonly RotationCalibrationSystem rotation;
+        private readonly RotationCorrectionSystem rotation;
 
-        public PoseTrackerCalibrationSystem(IPoseTrackerCalibration calibration)
+        public PoseTrackerCorrectionSystem(IPoseTrackerConfiguration configuration)
         {
-            if (calibration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            position = new PositionCalibrationSystem(calibration.Position);
+            position = new PositionCorrectionSystem(configuration.Position);
 
-            rotation = new RotationCalibrationSystem(calibration.Rotation);
+            rotation = new RotationCorrectionSystem(configuration.Rotation);
         }
 
         #region ISoftware
