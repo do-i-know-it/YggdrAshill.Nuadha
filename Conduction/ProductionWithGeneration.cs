@@ -3,13 +3,13 @@ using YggdrAshill.Nuadha.Signalization;
 
 namespace YggdrAshill.Nuadha.Conduction
 {
-    internal sealed class Production<TSignal> :
+    internal sealed class ProductionWithGeneration<TSignal> :
         IProduction<TSignal>
         where TSignal : ISignal
     {
         private readonly IGeneration<TSignal> generation;
 
-        public Production(IGeneration<TSignal> generation)
+        public ProductionWithGeneration(IGeneration<TSignal> generation)
         {
             this.generation = generation;
         }
@@ -21,7 +21,7 @@ namespace YggdrAshill.Nuadha.Conduction
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return new Emission<TSignal>(generation, consumption);
+            return new EmissionWithGeneration<TSignal>(generation, consumption);
         }
     }
 }
