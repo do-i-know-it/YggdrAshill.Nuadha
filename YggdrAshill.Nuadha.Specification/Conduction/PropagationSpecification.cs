@@ -1,11 +1,12 @@
 ﻿using NUnit.Framework;
-using System;
 using YggdrAshill.Nuadha.Signalization;
+using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(Propagation<>))]
-    internal class PropagationSpecification : IConsumption<Signal>
+    internal class PropagationSpecification :
+        IConsumption<Signal>
     {
         #region IConsumption
 
