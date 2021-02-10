@@ -3,6 +3,9 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Implementation of <see cref="IDisconnection"/>.
+    /// </summary>
     public sealed class Disconnection :
         IDisconnection
     {
@@ -10,6 +13,15 @@ namespace YggdrAshill.Nuadha
 
         #region Constructor
 
+        /// <summary>
+        /// Constructs an instance.
+        /// </summary>
+        /// <param name="onDisconnected">
+        /// <see cref="Action"/> to execute when this has disconnected.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="onDisconnected"/> is null.
+        /// </exception>
         public Disconnection(Action onDisconnected)
         {
             if (onDisconnected == null)
@@ -20,6 +32,9 @@ namespace YggdrAshill.Nuadha
             this.onDisconnected = onDisconnected;
         }
 
+        /// <summary>
+        /// Constructs an instance to do nothing when this has disconnected.
+        /// </summary>
         public Disconnection()
         {
             onDisconnected = () =>
@@ -32,6 +47,7 @@ namespace YggdrAshill.Nuadha
 
         #region IDisconnection
 
+        /// <inheritdoc/>
         public void Disconnect()
         {
             onDisconnected.Invoke();
