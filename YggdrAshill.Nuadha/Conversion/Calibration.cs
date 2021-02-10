@@ -4,6 +4,12 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Implementation of <see cref="ICalibration{TSignal}"/>.
+    /// </summary>
+    /// <typeparam name="TSignal">
+    /// Type of <see cref="ISignal"/> to calibrate.
+    /// </typeparam>
     public sealed class Calibration<TSignal> :
         ICalibration<TSignal>
         where TSignal : ISignal
@@ -12,6 +18,15 @@ namespace YggdrAshill.Nuadha
 
         #region Constructor
 
+        /// <summary>
+        /// Constructs an instance.
+        /// </summary>
+        /// <param name="onCalibrated">
+        /// <see cref="Func{TSignal}"/> to execute when this has calibrated.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="onCalibrated"/> is null.
+        /// </exception>
         public Calibration(Func<TSignal> onCalibrated)
         {
             if (onCalibrated == null)
@@ -22,6 +37,10 @@ namespace YggdrAshill.Nuadha
             this.onCalibrated = onCalibrated;
         }
 
+        /// <summary>
+        /// Constructs an instance.
+        /// </summary>
+        /// <param name="offset"></param>
         public Calibration(TSignal offset)
         {
             onCalibrated = () =>
@@ -34,6 +53,7 @@ namespace YggdrAshill.Nuadha
 
         #region ICalibration
 
+        /// <inheritdoc/>
         public TSignal Calibrate()
         {
             return onCalibrated.Invoke();

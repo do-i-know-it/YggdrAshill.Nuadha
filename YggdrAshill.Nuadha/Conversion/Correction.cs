@@ -4,6 +4,12 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Implementation of <see cref="ICorrection{TSignal}"/>.
+    /// </summary>
+    /// <typeparam name="TSignal">
+    /// Type of <see cref="ISignal"/> to correct.
+    /// </typeparam>
     public sealed class Correction<TSignal> :
         ICorrection<TSignal>
         where TSignal : ISignal
@@ -12,6 +18,15 @@ namespace YggdrAshill.Nuadha
 
         #region Constructor
 
+        /// <summary>
+        /// Constructs an instance.
+        /// </summary>
+        /// <param name="onCorrected">
+        /// <see cref="Func{TSignal, TSignal}"/> to execute when this has corrected.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="onCorrected"/> is null.
+        /// </exception>
         public Correction(Func<TSignal, TSignal> onCorrected)
         {
             if (onCorrected == null)
@@ -22,6 +37,9 @@ namespace YggdrAshill.Nuadha
             this.onCorrected = onCorrected;
         }
 
+        /// <summary>
+        /// Constructs an instance not to correct.
+        /// </summary>
         public Correction()
         {
             onCorrected = (signal) =>
@@ -34,6 +52,7 @@ namespace YggdrAshill.Nuadha
 
         #region ICorrection
 
+        /// <inheritdoc/>
         public TSignal Correct(TSignal signal)
         {
             return onCorrected.Invoke(signal);
