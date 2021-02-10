@@ -10,9 +10,5 @@ namespace YggdrAshill.Nuadha.Units
         IConnection<Direction> Direction { get; }
         
         IPoseTrackerSoftwareHandler PoseTracker { get; }
-
-        IEyeTrackerSoftwareHandler LeftEye { get; }
-
-        IEyeTrackerSoftwareHandler RightEye { get; }
     }
 }
