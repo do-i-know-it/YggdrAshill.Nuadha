@@ -4,7 +4,7 @@ using YggdrAshill.Nuadha.Unitization;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IPulseDetectionOutputHandler :
+    public interface IDetectionSoftwareHandler :
         ISoftwareHandler
     {
         IConnection<Pulse> HasEnabled { get; }

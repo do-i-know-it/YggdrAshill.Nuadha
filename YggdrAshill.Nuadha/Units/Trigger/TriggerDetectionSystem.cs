@@ -8,7 +8,7 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDetectionSystem :
         ISoftware<ITriggerSoftwareHandler>,
-        IHardware<ITriggerDetectionInputHandler>,
+        IHardware<ITriggerDetectionHardwareHandler>,
         IDisconnection
     {
         private readonly TouchDetectionSystem touch = new TouchDetectionSystem();
@@ -50,7 +50,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        public IDisconnection Connect(ITriggerDetectionInputHandler handler)
+        public IDisconnection Connect(ITriggerDetectionHardwareHandler handler)
         {
             if (handler == null)
             {

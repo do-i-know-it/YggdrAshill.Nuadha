@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
 {
     public abstract class DetectionSystem<TSignal> :
         IConsumption<TSignal>,
-        IHardware<IPulseDetectionInputHandler>,
+        IHardware<IDetectionHardwareHandler>,
         IDisconnection
         where TSignal : ISignal
     {
@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         protected abstract IDetection<TSignal> HasDisabled { get; }
         protected abstract IDetection<TSignal> IsDisabled { get; }
 
-        public IDisconnection Connect(IPulseDetectionInputHandler handler)
+        public IDisconnection Connect(IDetectionHardwareHandler handler)
         {
             if (handler == null)
             {

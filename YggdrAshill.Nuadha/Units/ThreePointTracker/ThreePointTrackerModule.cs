@@ -8,35 +8,35 @@ namespace YggdrAshill.Nuadha
         IThreePointTrackerSoftwareHandler,
         IDisconnection
     {
-        private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
+        private readonly PoseTrackerModule origin = new PoseTrackerModule();
 
-        private readonly HeadsetModule head = new HeadsetModule();
-
-        private readonly HandControllerModule leftHand = new HandControllerModule();
-
-        private readonly HandControllerModule rightHand = new HandControllerModule();
+        private readonly PoseTrackerModule head = new PoseTrackerModule();
+        
+        private readonly PoseTrackerModule leftHand = new PoseTrackerModule();
+        
+        private readonly PoseTrackerModule rightHand = new PoseTrackerModule();
 
         #region IThreePointTrackerHardwareHandler
 
-        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.PoseTracker => poseTracker;
+        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.Origin => origin;
 
-        IHeadsetHardwareHandler IThreePointTrackerHardwareHandler.Head => head;
+        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.Head => head;
 
-        IHandControllerHardwareHandler IThreePointTrackerHardwareHandler.LeftHand => leftHand;
+        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.LeftHand => leftHand;
 
-        IHandControllerHardwareHandler IThreePointTrackerHardwareHandler.RightHand => rightHand;
+        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.RightHand => rightHand;
 
         #endregion
 
         #region IThreePointTrackerSoftwareHandler
 
-        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.PoseTracker => poseTracker;
+        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.Origin => origin;
 
-        IHeadsetSoftwareHandler IThreePointTrackerSoftwareHandler.Head => head;
+        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.Head => head;
 
-        IHandControllerSoftwareHandler IThreePointTrackerSoftwareHandler.LeftHand => leftHand;
+        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.LeftHand => leftHand;
 
-        IHandControllerSoftwareHandler IThreePointTrackerSoftwareHandler.RightHand => rightHand;
+        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.RightHand => rightHand;
 
         #endregion
 
@@ -44,12 +44,12 @@ namespace YggdrAshill.Nuadha
 
         public void Disconnect()
         {
-            poseTracker.Disconnect();
+            origin.Disconnect();
 
             head.Disconnect();
-
+            
             leftHand.Disconnect();
-
+            
             rightHand.Disconnect();
         }
 

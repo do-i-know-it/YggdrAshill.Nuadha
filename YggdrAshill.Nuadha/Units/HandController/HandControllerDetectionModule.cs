@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerDetectionModule :
-        IHandControllerDetectionInputHandler,
-        IHandControllerDetectionOutputHandler,
+        IHandControllerDetectionHardwareHandler,
+        IHandControllerDetectionSoftwareHandler,
         IDisconnection
     {
         private readonly StickDetectionModule thumbStick = new StickDetectionModule();
@@ -14,23 +14,23 @@ namespace YggdrAshill.Nuadha
 
         private readonly TriggerDetectionModule handTrigger = new TriggerDetectionModule();
 
-        #region IHandControllerDetectionInputHandler
+        #region IHandControllerDetectionHardwareHandler
 
-        IStickDetectionInputHandler IHandControllerDetectionInputHandler.ThumbStick => thumbStick;
+        IStickDetectionHardwareHandler IHandControllerDetectionHardwareHandler.ThumbStick => thumbStick;
 
-        ITriggerDetectionInputHandler IHandControllerDetectionInputHandler.FingerTrigger => fingerTrigger;
+        ITriggerDetectionHardwareHandler IHandControllerDetectionHardwareHandler.FingerTrigger => fingerTrigger;
 
-        ITriggerDetectionInputHandler IHandControllerDetectionInputHandler.HandTrigger => handTrigger;
+        ITriggerDetectionHardwareHandler IHandControllerDetectionHardwareHandler.HandTrigger => handTrigger;
 
         #endregion
 
-        #region IHandControllerDetectionOutputHandler
+        #region IHandControllerDetectionSoftwareHandler
 
-        IStickDetectionOutputHandler IHandControllerDetectionOutputHandler.ThumbStick => thumbStick;
+        IStickDetectionSoftwareHandler IHandControllerDetectionSoftwareHandler.ThumbStick => thumbStick;
 
-        ITriggerDetectionOutputHandler IHandControllerDetectionOutputHandler.FingerTrigger => fingerTrigger;
+        ITriggerDetectionSoftwareHandler IHandControllerDetectionSoftwareHandler.FingerTrigger => fingerTrigger;
 
-        ITriggerDetectionOutputHandler IHandControllerDetectionOutputHandler.HandTrigger => handTrigger;
+        ITriggerDetectionSoftwareHandler IHandControllerDetectionSoftwareHandler.HandTrigger => handTrigger;
 
         #endregion
 

@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonDetectionSystem :
         ISoftware<IButtonSoftwareHandler>,
-        IHardware<IButtonDetectionInputHandler>,
+        IHardware<IButtonDetectionHardwareHandler>,
         IDisconnection
     {
         private readonly TouchDetectionSystem touch = new TouchDetectionSystem();
@@ -39,7 +39,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        public IDisconnection Connect(IButtonDetectionInputHandler handler)
+        public IDisconnection Connect(IButtonDetectionHardwareHandler handler)
         {
             if (handler == null)
             {

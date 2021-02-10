@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerDetectionSystem :
         ISoftware<IHandControllerSoftwareHandler>,
-        IHardware<IHandControllerDetectionInputHandler>,
+        IHardware<IHandControllerDetectionHardwareHandler>,
         IDisconnection
     {
         private readonly StickDetectionSystem thumbStick;
@@ -59,7 +59,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        public IDisconnection Connect(IHandControllerDetectionInputHandler handler)
+        public IDisconnection Connect(IHandControllerDetectionHardwareHandler handler)
         {
             if (handler == null)
             {

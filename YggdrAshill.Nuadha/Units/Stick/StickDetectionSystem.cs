@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class StickDetectionSystem :
         ISoftware<IStickSoftwareHandler>,
-        IHardware<IStickDetectionInputHandler>,
+        IHardware<IStickDetectionHardwareHandler>,
         IDisconnection
     {
         private readonly TouchDetectionSystem touch = new TouchDetectionSystem();
@@ -55,7 +55,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        public IDisconnection Connect(IStickDetectionInputHandler handler)
+        public IDisconnection Connect(IStickDetectionHardwareHandler handler)
         {
             if (handler == null)
             {

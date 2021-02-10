@@ -2,12 +2,12 @@
 {
     public interface IThreePointTrackerConfiguration
     {
-        IPoseTrackerConfiguration PoseTracker { get; }
+        IPoseTrackerConfiguration Origin { get; }
+        
+        IPoseTrackerConfiguration Head { get; }
 
-        IHeadsetConfiguration Head { get; }
-
-        IHandControllerConfiguration LeftHand { get; }
-
-        IHandControllerConfiguration RightHand { get; }
+        IPoseTrackerConfiguration LeftHand { get; }
+        
+        IPoseTrackerConfiguration RightHand { get; }
     }
 }

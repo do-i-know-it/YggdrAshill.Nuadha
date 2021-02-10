@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class PullDetectionSystem :
         IConsumption<Pull>,
-        IHardware<IPulseDetectionInputHandler>,
+        IHardware<IDetectionHardwareHandler>,
         IDisconnection
     {
         private readonly PullTranslationSystem translation;
@@ -37,7 +37,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        public IDisconnection Connect(IPulseDetectionInputHandler handler)
+        public IDisconnection Connect(IDetectionHardwareHandler handler)
         {
             if (handler == null)
             {

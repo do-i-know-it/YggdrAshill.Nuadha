@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltDetectionModule :
-        ITiltDetectionInputHandler,
-        ITiltDetectionOutputHandler,
+        ITiltDetectionHardwareHandler,
+        ITiltDetectionSoftwareHandler,
         IDisconnection
     {
         private readonly PulseDetectionModule left = new PulseDetectionModule();
@@ -18,25 +18,25 @@ namespace YggdrAshill.Nuadha
 
         #region ITiltDetectionInputHandler
 
-        IPulseDetectionInputHandler ITiltDetectionInputHandler.Left => left;
+        IDetectionHardwareHandler ITiltDetectionHardwareHandler.Left => left;
 
-        IPulseDetectionInputHandler ITiltDetectionInputHandler.Right => right;
+        IDetectionHardwareHandler ITiltDetectionHardwareHandler.Right => right;
 
-        IPulseDetectionInputHandler ITiltDetectionInputHandler.Forward => forward;
+        IDetectionHardwareHandler ITiltDetectionHardwareHandler.Forward => forward;
 
-        IPulseDetectionInputHandler ITiltDetectionInputHandler.Backward => backward;
+        IDetectionHardwareHandler ITiltDetectionHardwareHandler.Backward => backward;
 
         #endregion
 
         #region ITiltDetectionOutputHandler
 
-        IPulseDetectionOutputHandler ITiltDetectionOutputHandler.Left => left;
+        IDetectionSoftwareHandler ITiltDetectionSoftwareHandler.Left => left;
 
-        IPulseDetectionOutputHandler ITiltDetectionOutputHandler.Right => right;
+        IDetectionSoftwareHandler ITiltDetectionSoftwareHandler.Right => right;
 
-        IPulseDetectionOutputHandler ITiltDetectionOutputHandler.Forward => forward;
+        IDetectionSoftwareHandler ITiltDetectionSoftwareHandler.Forward => forward;
 
-        IPulseDetectionOutputHandler ITiltDetectionOutputHandler.Backward => backward;
+        IDetectionSoftwareHandler ITiltDetectionSoftwareHandler.Backward => backward;
 
         #endregion
 

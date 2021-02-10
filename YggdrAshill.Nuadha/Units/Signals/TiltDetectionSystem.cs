@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class TiltDetectionSystem :
         IConsumption<Tilt>,
-        IHardware<ITiltDetectionInputHandler>,
+        IHardware<ITiltDetectionHardwareHandler>,
         IDisconnection
     {
         private readonly Propagation<Tilt> propagation;
@@ -45,7 +45,7 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        public IDisconnection Connect(ITiltDetectionInputHandler handler)
+        public IDisconnection Connect(ITiltDetectionHardwareHandler handler)
         {
             if (handler == null)
             {
