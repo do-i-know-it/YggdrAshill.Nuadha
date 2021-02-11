@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickDetectionModule :
-        IStickDetectionInputHandler,
-        IStickDetectionOutputHandler,
+        IStickDetectionHardwareHandler,
+        IStickDetectionSoftwareHandler,
         IDisconnection
     {
         private readonly PulseDetectionModule touch = new PulseDetectionModule();
@@ -14,23 +14,23 @@ namespace YggdrAshill.Nuadha
 
         private readonly TiltDetectionModule tilt = new TiltDetectionModule();
 
-        #region IStickDetectionInputHandler
+        #region IStickDetectionHardwareHandler
 
-        IPulseDetectionInputHandler IButtonDetectionInputHandler.Touch => touch;
+        IDetectionHardwareHandler IButtonDetectionHardwareHandler.Touch => touch;
 
-        IPulseDetectionInputHandler IButtonDetectionInputHandler.Push => push;
+        IDetectionHardwareHandler IButtonDetectionHardwareHandler.Push => push;
 
-        ITiltDetectionInputHandler IStickDetectionInputHandler.Tilt => tilt;
+        ITiltDetectionHardwareHandler IStickDetectionHardwareHandler.Tilt => tilt;
 
         #endregion
 
-        #region IStickDetectionOutputHandler
+        #region IStickDetectionSoftwareHandler
 
-        IPulseDetectionOutputHandler IButtonDetectionOutputHandler.Touch => touch;
+        IDetectionSoftwareHandler IButtonDetectionSoftwareHandler.Touch => touch;
 
-        IPulseDetectionOutputHandler IButtonDetectionOutputHandler.Push => push;
+        IDetectionSoftwareHandler IButtonDetectionSoftwareHandler.Push => push;
 
-        ITiltDetectionOutputHandler IStickDetectionOutputHandler.Tilt => tilt;
+        ITiltDetectionSoftwareHandler IStickDetectionSoftwareHandler.Tilt => tilt;
 
         #endregion
 

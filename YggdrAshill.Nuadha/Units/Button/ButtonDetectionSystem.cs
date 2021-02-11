@@ -6,40 +6,25 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonDetectionSystem :
-        ISoftware<IButtonSoftwareHandler>,
-        IHardware<IButtonDetectionInputHandler>,
-        IDisconnection
+        IHardware<IButtonDetectionHardwareHandler>
     {
-        private readonly TouchDetectionSystem touch = new TouchDetectionSystem();
+        private readonly TouchDetectionSystem touch;
 
-        private readonly PushDetectionSystem push = new PushDetectionSystem();
+        private readonly PushDetectionSystem push;
 
-        #region ISoftware
-
-        public IDisconnection Connect(IButtonSoftwareHandler handler)
+        public ButtonDetectionSystem(IButtonSoftwareHandler handler)
         {
             if (handler == null)
             {
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var touch = handler.Touch.Connect(this.touch);
+            touch = new TouchDetectionSystem(handler.Touch);
 
-            var push = handler.Push.Connect(this.push);
-
-            return new Disconnection(() =>
-            {
-                touch.Disconnect();
-
-                push.Disconnect();
-            });
+            push = new PushDetectionSystem(handler.Push);
         }
 
-        #endregion
-
-        #region IHardware
-
-        public IDisconnection Connect(IButtonDetectionInputHandler handler)
+        public IDisconnection Connect(IButtonDetectionHardwareHandler handler)
         {
             if (handler == null)
             {
@@ -57,18 +42,5 @@ namespace YggdrAshill.Nuadha
                 push.Disconnect();
             });
         }
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
-        {
-            touch.Disconnect();
-
-            push.Disconnect();
-        }
-
-        #endregion
     }
 }

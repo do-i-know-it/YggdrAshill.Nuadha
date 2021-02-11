@@ -9,30 +9,29 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(1.0f)]
         [TestCase(0.5f)]
         [TestCase(0.0f)]
-        public void ShouldTranslateTiltUpToPull(float vertical)
+        public void ShouldTranslateTiltForwardToPull(float vertical)
         {
-            var translation = TiltToPull.Up;
+            var translation = TiltToPull.Forward;
 
-            var up = new Tilt(0.0f, vertical);
-            Assert.AreEqual(vertical, translation.Translate(up).Strength);
+            var forward = new Tilt(0.0f, vertical);
+            Assert.AreEqual(vertical, translation.Translate(forward).Strength);
 
-            var down = new Tilt(0.0f, -vertical);
-            Assert.AreEqual(0, translation.Translate(down).Strength);
+            var backward = new Tilt(0.0f, -vertical);
+            Assert.AreEqual(0, translation.Translate(backward).Strength);
         }
 
         [TestCase(1.0f)]
         [TestCase(0.5f)]
         [TestCase(0.0f)]
-        public void ShouldTranslateTiltDownToPull(float vertical)
+        public void ShouldTranslateTiltBackwardToPull(float vertical)
         {
-            var translation = TiltToPull.Down;
+            var translation = TiltToPull.Backward;
 
+            var backward = new Tilt(0.0f, -vertical);
+            Assert.AreEqual(vertical, translation.Translate(backward).Strength);
 
-            var down = new Tilt(0.0f, -vertical);
-            Assert.AreEqual(vertical, translation.Translate(down).Strength);
-
-            var up = new Tilt(0.0f, vertical);
-            Assert.AreEqual(0, translation.Translate(up).Strength);
+            var forward = new Tilt(0.0f, vertical);
+            Assert.AreEqual(0, translation.Translate(forward).Strength);
         }
 
         [TestCase(1.0f)]
@@ -55,7 +54,6 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldTranslateTiltLeftToPull(float horizontal)
         {
             var translation = TiltToPull.Left;
-
 
             var left = new Tilt(-horizontal, 0.0f);
             Assert.AreEqual(horizontal, translation.Translate(left).Strength);

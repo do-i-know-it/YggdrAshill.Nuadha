@@ -14,19 +14,11 @@ namespace YggdrAshill.Nuadha
 
         private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
         
-        private readonly EyeTrackerModule leftEye = new EyeTrackerModule();
-
-        private readonly EyeTrackerModule rightEye = new EyeTrackerModule();
-
         #region IHeadsetSoftwareHandler
 
         IConnection<Direction> IHeadsetSoftwareHandler.Direction => direction;
 
         IPoseTrackerSoftwareHandler IHeadsetSoftwareHandler.PoseTracker => poseTracker;
-
-        IEyeTrackerSoftwareHandler IHeadsetSoftwareHandler.LeftEye => leftEye;
-
-        IEyeTrackerSoftwareHandler IHeadsetSoftwareHandler.RightEye => rightEye;
 
         #endregion
 
@@ -35,10 +27,6 @@ namespace YggdrAshill.Nuadha
         IConsumption<Direction> IHeadsetHardwareHandler.Direction => direction;
 
         IPoseTrackerHardwareHandler IHeadsetHardwareHandler.PoseTracker => poseTracker;
-
-        IEyeTrackerHardwareHandler IHeadsetHardwareHandler.LeftEye => leftEye;
-
-        IEyeTrackerHardwareHandler IHeadsetHardwareHandler.RightEye => rightEye;
 
         #endregion
 
@@ -49,10 +37,6 @@ namespace YggdrAshill.Nuadha
             direction.Disconnect();
             
             poseTracker.Disconnect();
-
-            leftEye.Disconnect();
-
-            rightEye.Disconnect();
         }
 
         #endregion

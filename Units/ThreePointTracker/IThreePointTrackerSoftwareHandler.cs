@@ -5,12 +5,10 @@ namespace YggdrAshill.Nuadha.Units
     public interface IThreePointTrackerSoftwareHandler :
         ISoftwareHandler
     {
-        IPoseTrackerSoftwareHandler PoseTracker { get; }
+        IPoseTrackerSoftwareHandler Head { get; }
 
-        IHeadsetSoftwareHandler Head { get; }
+        IPoseTrackerSoftwareHandler LeftHand { get; }
 
-        IHandControllerSoftwareHandler LeftHand { get; }
-
-        IHandControllerSoftwareHandler RightHand { get; }
+        IPoseTrackerSoftwareHandler RightHand { get; }
     }
 }

@@ -1,12 +1,23 @@
 ﻿using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class PushDetectionSystem : DetectionSystem<Push>
     {
-        protected override IPropagation<Push> Propagation { get; } = new Propagation<Push>();
+        public PushDetectionSystem(IConnection<Push> connection)
+        {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
+
+            Connection = connection;
+        }
+
+        protected override IConnection<Push> Connection { get; }
 
         protected override IDetection<Push> HasEnabled { get; } = PushToPulse.HasEnabled();
 

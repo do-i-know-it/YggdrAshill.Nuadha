@@ -74,86 +74,6 @@ namespace YggdrAshill.Nuadha.Signals
 
         #endregion
 
-        #region Pupil
-
-        public static Pupil ToPupil(this float signal)
-        {
-            if (float.IsNaN(signal))
-            {
-                throw new ArgumentException($"{nameof(signal)} is NaN.");
-            }
-
-            const float Min = 0.0f;
-            const float Max = 1.0f;
-            if (signal < Min || Max < signal)
-            {
-                throw new ArgumentOutOfRangeException(nameof(signal));
-            }
-
-            return new Pupil(signal);
-        }
-
-        public static float ToSingle(this Pupil signal)
-        {
-            return signal.Ratio;
-        }
-
-        public static IConnection<Push> Translate(this IConnection<Pupil> connection, HysteresisThreshold threshold, bool isPushed = false)
-        {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            return connection.Translate(new PupilToPush(threshold, isPushed));
-        }
-
-        #endregion
-
-        #region Blink
-
-        public static Blink ToBlink(this float signal)
-        {
-            if (float.IsNaN(signal))
-            {
-                throw new ArgumentException($"{nameof(signal)} is NaN.");
-            }
-
-            const float Min = 0.0f;
-            const float Max = 1.0f;
-            if (signal < Min || Max < signal)
-            {
-                throw new ArgumentOutOfRangeException(nameof(signal));
-            }
-
-            return new Blink(signal);
-        }
-
-        public static float ToSingle(this Blink signal)
-        {
-            return signal.Ratio;
-        }
-
-        public static IConnection<Push> Translate(this IConnection<Blink> connection, HysteresisThreshold threshold, bool isPushed = false)
-        {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            return connection.Translate(new BlinkToPush(threshold, isPushed));
-        }
-
-        #endregion
-
         #region Angle
 
         public static Angle ToAngle(this float signal)
@@ -182,54 +102,54 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Position
 
-        public static IConnection<Position> Calibrate(this IConnection<Position> connection, ICalibration<Position> calibration)
+        public static IConnection<Position> Correct(this IConnection<Position> connection, IGeneration<Position> generation)
         {
             if (connection == null)
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (calibration == null)
+            if (generation == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return connection.Calibrate(Calculate.Position, calibration);
+            return connection.Correct(Calculation.Position, generation);
         }
 
         #endregion
 
         #region Rotation
 
-        public static IConnection<Rotation> Calibrate(this IConnection<Rotation> connection, ICalibration<Rotation> calibration)
+        public static IConnection<Rotation> Correct(this IConnection<Rotation> connection, IGeneration<Rotation> generation)
         {
             if (connection == null)
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (calibration == null)
+            if (generation == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return connection.Calibrate(Calculate.Rotation, calibration);
+            return connection.Correct(Calculation.Rotation, generation);
         }
 
         #endregion
 
         #region Direction
 
-        public static IConnection<Direction> Calibrate(this IConnection<Direction> connection, ICalibration<Direction> calibration)
+        public static IConnection<Direction> Correct(this IConnection<Direction> connection, IGeneration<Direction> generation)
         {
             if (connection == null)
             {
                 throw new ArgumentNullException(nameof(connection));
             }
-            if (calibration == null)
+            if (generation == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return connection.Calibrate(Calculate.Direction, calibration);
+            return connection.Correct(Calculation.Direction, generation);
         }
 
         #endregion

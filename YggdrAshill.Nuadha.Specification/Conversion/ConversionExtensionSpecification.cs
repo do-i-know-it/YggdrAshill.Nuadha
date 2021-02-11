@@ -5,12 +5,15 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Conversion.ConversionExtension))]
+    [TestFixture(TestOf = typeof(ConversionExtension))]
     internal class ConversionExtensionSpecification :
         ITranslation<InputSignal, OutputSignal>,
-        ICorrection<Signal>,
+        ICalculation<Signal>,
+        IGeneration<Signal>,
         IDetection<Signal>
     {
+        #region ITranslation
+
         public OutputSignal Translate(InputSignal signal)
         {
             if (signal == null)
@@ -21,15 +24,38 @@ namespace YggdrAshill.Nuadha.Specification
             return new OutputSignal();
         }
 
-        public Signal Correct(Signal signal)
+        #endregion
+
+        #region ICalculation
+
+        public Signal Calculate(Signal left, Signal right)
         {
-            if (signal == null)
+            if (left == null)
             {
-                throw new ArgumentNullException(nameof(signal));
+                throw new ArgumentNullException(nameof(left));
+            }
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
             }
 
+            return new Signal();
+        }
+
+        #endregion
+
+        #region IGeneration
+
+        private readonly Signal signal = new Signal();
+
+        public Signal Generate()
+        {
             return signal;
         }
+
+        #endregion
+
+        #region IDetection
 
         private bool expected;
 
@@ -42,6 +68,8 @@ namespace YggdrAshill.Nuadha.Specification
 
             return expected;
         }
+
+        #endregion
 
         [Test]
         public void ShouldTranslateSignal()
@@ -72,7 +100,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var propagation = new Propagation<Signal>();
             var connection = propagation as IConnection<Signal>;
-            var correction = connection.Correct(this);
+            var correction = connection.Correct(this, this);
 
             var expected = false;
             var disconnection = correction.Connect(signal =>
@@ -143,19 +171,31 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var correction = connection.Correct(this);
+                var correction = connection.Correct(this, this);
             });
         }
 
         [Test]
-        public void CannotCorrectWithNullCorrection()
+        public void CannotCorrectWithNullCalculation()
         {
             var propagation = new Propagation<Signal>();
             var connection = propagation as IConnection<Signal>;
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var correction = connection.Correct((ICorrection<Signal>)null);
+                var correction = connection.Correct(null, this);
+            });
+        }
+
+        [Test]
+        public void CannotCorrectWithNullGeneration()
+        {
+            var propagation = new Propagation<Signal>();
+            var connection = propagation as IConnection<Signal>;
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var correction = connection.Correct(this, null);
             });
         }
 
@@ -180,5 +220,7 @@ namespace YggdrAshill.Nuadha.Specification
                 var detection = propagation.Detect((IDetection<Signal>)null);
             });
         }
+
+        
     }
 }

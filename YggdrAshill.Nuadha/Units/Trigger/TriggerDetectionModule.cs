@@ -4,27 +4,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDetectionModule :
-        ITriggerDetectionInputHandler,
-        ITriggerDetectionOutputHandler,
+        ITriggerDetectionHardwareHandler,
+        ITriggerDetectionSoftwareHandler,
         IDisconnection
     {
         private readonly PulseDetectionModule touch = new PulseDetectionModule();
 
         private readonly PulseDetectionModule pull = new PulseDetectionModule();
 
-        #region ITriggerDetectionInputHandler
+        #region ITriggerDetectionHardwareHandler
 
-        IPulseDetectionInputHandler ITriggerDetectionInputHandler.Touch => touch;
+        IDetectionHardwareHandler ITriggerDetectionHardwareHandler.Touch => touch;
 
-        IPulseDetectionInputHandler ITriggerDetectionInputHandler.Pull => pull;
+        IDetectionHardwareHandler ITriggerDetectionHardwareHandler.Pull => pull;
 
         #endregion
 
-        #region ITriggerDetectionOutputHandler
+        #region ITriggerDetectionSoftwareHandler
 
-        IPulseDetectionOutputHandler ITriggerDetectionOutputHandler.Touch => touch;
+        IDetectionSoftwareHandler ITriggerDetectionSoftwareHandler.Touch => touch;
 
-        IPulseDetectionOutputHandler ITriggerDetectionOutputHandler.Pull => pull;
+        IDetectionSoftwareHandler ITriggerDetectionSoftwareHandler.Pull => pull;
 
         #endregion
 

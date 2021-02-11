@@ -10,9 +10,5 @@ namespace YggdrAshill.Nuadha.Units
         IConsumption<Direction> Direction { get; }
 
         IPoseTrackerHardwareHandler PoseTracker { get; }
-
-        IEyeTrackerHardwareHandler LeftEye { get; }
-
-        IEyeTrackerHardwareHandler RightEye { get; }
     }
 }

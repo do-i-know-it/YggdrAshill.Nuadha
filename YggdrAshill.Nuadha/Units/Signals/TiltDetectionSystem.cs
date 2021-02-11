@@ -1,5 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
+﻿using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
@@ -9,12 +8,8 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltDetectionSystem :
-        IConsumption<Tilt>,
-        IHardware<ITiltDetectionInputHandler>,
-        IDisconnection
+        IHardware<ITiltDetectionHardwareHandler>
     {
-        private readonly Propagation<Tilt> propagation;
-
         private readonly PullDetectionSystem left;
         
         private readonly PullDetectionSystem right;
@@ -23,29 +18,24 @@ namespace YggdrAshill.Nuadha
         
         private readonly PullDetectionSystem backward;
 
-        public TiltDetectionSystem(ITiltThreshold threshold)
+        public TiltDetectionSystem(IConnection<Tilt> connection, ITiltThreshold threshold)
         {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            propagation = new Propagation<Tilt>();
-
-            left = new PullDetectionSystem(threshold.Left);
-            right = new PullDetectionSystem(threshold.Right);
-            forward = new PullDetectionSystem(threshold.Forward);
-            backward = new PullDetectionSystem(threshold.Backward);
-
-            propagation.Translate(TiltToPull.Left).Connect(left);
-            propagation.Translate(TiltToPull.Right).Connect(right);
-            propagation.Translate(TiltToPull.Up).Connect(forward);
-            propagation.Translate(TiltToPull.Down).Connect(backward);
+            left = new PullDetectionSystem(connection.Translate(TiltToPull.Left), threshold.Left);
+            right = new PullDetectionSystem(connection.Translate(TiltToPull.Right), threshold.Right);
+            forward = new PullDetectionSystem(connection.Translate(TiltToPull.Forward), threshold.Forward);
+            backward = new PullDetectionSystem(connection.Translate(TiltToPull.Backward), threshold.Backward);
         }
 
-        #region IHardware
-
-        public IDisconnection Connect(ITiltDetectionInputHandler handler)
+        public IDisconnection Connect(ITiltDetectionHardwareHandler handler)
         {
             if (handler == null)
             {
@@ -68,33 +58,5 @@ namespace YggdrAshill.Nuadha
                 backward.Disconnect();
             });
         }
-
-        #endregion
-
-        #region IConsumption
-
-        public void Consume(Tilt signal)
-        {
-            propagation.Consume(signal);
-        }
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
-        {
-            propagation.Disconnect();
-
-            left.Disconnect();
-
-            right.Disconnect();
-
-            forward.Disconnect();
-            
-            backward.Disconnect();
-        }
-
-        #endregion
     }
 }

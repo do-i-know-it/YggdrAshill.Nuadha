@@ -1,5 +1,5 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
+﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -8,36 +8,27 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PullDetectionSystem :
-        IConsumption<Pull>,
-        IHardware<IPulseDetectionInputHandler>,
-        IDisconnection
+        IHardware<IDetectionHardwareHandler>
     {
-        private readonly PullTranslationSystem translation;
+        private readonly PushDetectionSystem detection;
 
-        private readonly PushDetectionSystem detection = new PushDetectionSystem();
-
-        public PullDetectionSystem(HysteresisThreshold threshold)
+        public PullDetectionSystem(IConnection<Pull> connection, HysteresisThreshold threshold)
         {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            translation = new PullTranslationSystem(threshold);
+            var translation = new PullToPush(threshold);
+
+            detection = new PushDetectionSystem(connection.Translate(translation));
         }
 
-        #region IConsumption
-
-        public void Consume(Pull signal)
-        {
-            translation.Consume(signal);
-        }
-
-        #endregion
-
-        #region IHardware
-
-        public IDisconnection Connect(IPulseDetectionInputHandler handler)
+        public IDisconnection Connect(IDetectionHardwareHandler handler)
         {
             if (handler == null)
             {
@@ -46,18 +37,5 @@ namespace YggdrAshill.Nuadha
 
             return detection.Connect(handler);
         }
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
-        {
-            translation.Disconnect();
-
-            detection.Disconnect();
-        }
-
-        #endregion
     }
 }

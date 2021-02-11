@@ -6,56 +6,33 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickDetectionSystem :
-        ISoftware<IStickSoftwareHandler>,
-        IHardware<IStickDetectionInputHandler>,
-        IDisconnection
+        IHardware<IStickDetectionHardwareHandler>
     {
-        private readonly TouchDetectionSystem touch = new TouchDetectionSystem();
-        
-        private readonly PushDetectionSystem push = new PushDetectionSystem();
+        private readonly TouchDetectionSystem touch;
+
+        private readonly PushDetectionSystem push;
 
         private readonly TiltDetectionSystem tilt;
 
-        public StickDetectionSystem(ITiltThreshold threshold)
-        {
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            tilt = new TiltDetectionSystem(threshold);
-        }
-
-        #region ISoftware
-
-        public IDisconnection Connect(IStickSoftwareHandler handler)
+        public StickDetectionSystem(IStickSoftwareHandler handler, ITiltThreshold threshold)
         {
             if (handler == null)
             {
                 throw new ArgumentNullException(nameof(handler));
             }
-
-            var touch = handler.Touch.Connect(this.touch);
-
-            var push = handler.Push.Connect(this.push);
-            
-            var tilt = handler.Tilt.Connect(this.tilt);
-
-            return new Disconnection(() =>
+            if (threshold == null)
             {
-                touch.Disconnect();
+                throw new ArgumentNullException(nameof(threshold));
+            }
 
-                push.Disconnect();
+            touch = new TouchDetectionSystem(handler.Touch);
 
-                tilt.Disconnect();
-            });
+            push = new PushDetectionSystem(handler.Push);
+
+            tilt = new TiltDetectionSystem(handler.Tilt, threshold);
         }
 
-        #endregion
-
-        #region IHardware
-
-        public IDisconnection Connect(IStickDetectionInputHandler handler)
+        public IDisconnection Connect(IStickDetectionHardwareHandler handler)
         {
             if (handler == null)
             {
@@ -73,20 +50,5 @@ namespace YggdrAshill.Nuadha
                 push.Disconnect();
             });
         }
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
-        {
-            touch.Disconnect();
-
-            push.Disconnect();
-
-            tilt.Disconnect();
-        }
-
-        #endregion
     }
 }

@@ -1,12 +1,23 @@
 ﻿using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class TouchDetectionSystem : DetectionSystem<Touch>
     {
-        protected override IPropagation<Touch> Propagation { get; } = new Propagation<Touch>();
+        public TouchDetectionSystem(IConnection<Touch> connection)
+        {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
+
+            Connection = connection;
+        }
+
+        protected override IConnection<Touch> Connection { get; }
 
         protected override IDetection<Touch> HasEnabled { get; } = TouchToPulse.HasEnabled();
 

@@ -6,13 +6,13 @@ namespace YggdrAshill.Nuadha.Signals
     public sealed class TiltToPull :
         ITranslation<Tilt, Pull>
     {
-        public static ITranslation<Tilt, Pull> Up { get; }
+        public static ITranslation<Tilt, Pull> Forward { get; }
             = new TiltToPull(signal =>
             {
                 return new Pull(Math.Max(signal.Vertical, 0));
             });
 
-        public static ITranslation<Tilt, Pull> Down { get; }
+        public static ITranslation<Tilt, Pull> Backward { get; }
             = new TiltToPull(signal =>
             {
                 return new Pull(Math.Max(-signal.Vertical, 0));

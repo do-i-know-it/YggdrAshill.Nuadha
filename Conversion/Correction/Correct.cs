@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Conversion
 {
@@ -6,16 +7,22 @@ namespace YggdrAshill.Nuadha.Conversion
         ITranslation<TSignal, TSignal>
         where TSignal : ISignal
     {
-        private readonly ICorrection<TSignal> correction;
+        private readonly ICalculation<TSignal> calculation;
 
-        internal Correct(ICorrection<TSignal> correction)
+        private readonly IGeneration<TSignal> generation;
+
+        public Correct(ICalculation<TSignal> calculation, IGeneration<TSignal> generation)
         {
-            this.correction = correction;
+            this.calculation = calculation;
+
+            this.generation = generation;
         }
 
         public TSignal Translate(TSignal signal)
         {
-            return correction.Correct(signal);
+            var offset = generation.Generate();
+
+            return calculation.Calculate(signal, offset);
         }
     }
 }

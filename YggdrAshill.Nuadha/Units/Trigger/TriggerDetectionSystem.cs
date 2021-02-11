@@ -7,50 +7,29 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDetectionSystem :
-        ISoftware<ITriggerSoftwareHandler>,
-        IHardware<ITriggerDetectionInputHandler>,
-        IDisconnection
+        IHardware<ITriggerDetectionHardwareHandler>
     {
-        private readonly TouchDetectionSystem touch = new TouchDetectionSystem();
+        private readonly TouchDetectionSystem touch;
 
         private readonly PullDetectionSystem pull;
 
-        public TriggerDetectionSystem(HysteresisThreshold threshold)
-        {
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            pull = new PullDetectionSystem(threshold);
-        }
-
-        #region ISoftware
-
-        public IDisconnection Connect(ITriggerSoftwareHandler handler)
+        public TriggerDetectionSystem(ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
         {
             if (handler == null)
             {
                 throw new ArgumentNullException(nameof(handler));
             }
-
-            var touch = handler.Touch.Connect(this.touch);
-
-            var pull = handler.Pull.Connect(this.pull);
-
-            return new Disconnection(() =>
+            if (threshold == null)
             {
-                touch.Disconnect();
+                throw new ArgumentNullException(nameof(threshold));
+            }
 
-                pull.Disconnect();
-            });
+            touch = new TouchDetectionSystem(handler.Touch);
+
+            pull = new PullDetectionSystem(handler.Pull, threshold);
         }
 
-        #endregion
-
-        #region IHardware
-
-        public IDisconnection Connect(ITriggerDetectionInputHandler handler)
+        public IDisconnection Connect(ITriggerDetectionHardwareHandler handler)
         {
             if (handler == null)
             {
@@ -68,18 +47,5 @@ namespace YggdrAshill.Nuadha
                 pull.Disconnect();
             });
         }
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
-        {
-            touch.Disconnect();
-
-            pull.Disconnect();
-        }
-
-        #endregion
     }
 }
