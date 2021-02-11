@@ -12,11 +12,11 @@ This module depends on [Signalization](./Signalization.md).
 
 | Word | Abstraction |
 |:-----------|:------------|
-| Connection | Collector of Consumption. |
+| Connection | Collector of `Consumption`. |
 | Disconnection | Token to disconnection. |
-| Propagation | Distributer of Signal. |
-| Generation | provider of Signal. |
-| Ignition | Token to provide Emission. |
+| Propagation | Distributer of `Signal`. |
+| Generation | Provider of `Signal`. |
+| Ignition | Token to provide `Emission`. |
 
 `Connection` collects `Consumption` to distribute `Signal` sent when `Emission` is executed.  
 When `Connection` connects to `Consumption`, `Connection` provides `Disconnection` token to disconnect `Consumption` from `Connection`.  
