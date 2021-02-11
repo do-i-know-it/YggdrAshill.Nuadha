@@ -17,9 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Units", "Units\Units.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conduction", "Conduction\Conduction.csproj", "{3C21507D-4D48-49B7-87CE-7C64936301EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conversion", "Conversion\Conversion.csproj", "{59010F0A-8F19-440C-9555-F0976A42C593}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conversion", "Conversion\Conversion.csproj", "{59010F0A-8F19-440C-9555-F0976A42C593}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Historization", "Historization\Historization.csproj", "{CF2AE5BE-771C-4839-8CEA-F0E6C460C18F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Historization", "Historization\Historization.csproj", "{CF2AE5BE-771C-4839-8CEA-F0E6C460C18F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F07AE3C0-2E3C-4B43-BDBD-941548BA4252}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
