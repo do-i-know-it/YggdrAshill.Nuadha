@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -22,9 +23,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            var translation = new TranslationSystem<Pull, Push>(connection, new PullToPush(threshold));
+            var translation = new PullToPush(threshold);
 
-            detection = new PushDetectionSystem(translation);
+            detection = new PushDetectionSystem(connection.Translate(translation));
         }
 
         public IDisconnection Connect(IDetectionHardwareHandler handler)

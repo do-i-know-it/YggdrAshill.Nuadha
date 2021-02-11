@@ -1,4 +1,5 @@
 ﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -9,9 +10,9 @@ namespace YggdrAshill.Nuadha
     public sealed class PoseTrackerCorrectionSystem :
         IHardware<IPoseTrackerHardwareHandler>
     {
-        private readonly CorrectionSystem<Position> position;
+        private readonly IConnection<Position> position;
 
-        private readonly CorrectionSystem<Rotation> rotation;
+        private readonly IConnection<Rotation> rotation;
 
         public PoseTrackerCorrectionSystem(IPoseTrackerSoftwareHandler handler, IPoseTrackerCalculation calculation, IPoseTrackerConfiguration configuration)
         {
@@ -28,12 +29,10 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            position = new CorrectionSystem<Position>(handler.Position, calculation.Position, configuration.Position);
+            position = handler.Position.Correct(calculation.Position, configuration.Position);
 
-            rotation = new CorrectionSystem<Rotation>(handler.Rotation, calculation.Rotation, configuration.Rotation);
+            rotation = handler.Rotation.Correct(calculation.Rotation, configuration.Rotation);
         }
-
-        #region IHardware
 
         public IDisconnection Connect(IPoseTrackerHardwareHandler handler)
         {
@@ -53,7 +52,5 @@ namespace YggdrAshill.Nuadha
                 rotation.Disconnect();
             });
         }
-
-        #endregion
     }
 }
