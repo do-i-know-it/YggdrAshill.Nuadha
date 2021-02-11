@@ -15,12 +15,12 @@ This module depends on
 
 | Word | Abstraction |
 |:-----------|:------------|
-| Hardware | now writing... |
-| HardwareHandler | now writing... |
-| Software | now writing... |
-| SoftwareHandler | now writing... |
+| Hardware | Now writing... |
+| HardwareHandler | Now writing... |
+| Software | Now writing... |
+| SoftwareHandler | Now writing... |
 
-now writing...
+Now writing...
 
 ## Implementation
 
