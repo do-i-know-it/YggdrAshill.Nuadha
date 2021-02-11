@@ -33,12 +33,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            // Origin
-            var originPosition = SoftwareHandler.Origin.Position.Connect(handler.Origin.Position);
-            var originRotation = SoftwareHandler.Origin.Rotation.Connect(handler.Origin.Rotation);
-
             // Head
-
             var headPosition = SoftwareHandler.Head.Position.Connect(handler.Head.Position);
             var headRotation = SoftwareHandler.Head.Rotation.Connect(handler.Head.Rotation);
 
@@ -52,10 +47,6 @@ namespace YggdrAshill.Nuadha
 
             return new Disconnection(() =>
             {
-                // Origin
-                originPosition.Disconnect();
-                originRotation.Disconnect();
-
                 // Head
                 headPosition.Disconnect();
                 headRotation.Disconnect();
@@ -86,11 +77,6 @@ namespace YggdrAshill.Nuadha
         private IThreePointTrackerHardwareHandler HardwareHandler => module;
         public IEmission Ignite()
         {
-
-            // Origin
-            var originPosition = configuration.Origin.Position.Produce(HardwareHandler.Origin.Position);
-            var originRotation = configuration.Origin.Rotation.Produce(HardwareHandler.Origin.Rotation);
-
             // Head
             var headPosition = configuration.Head.Position.Produce(HardwareHandler.Head.Position);
             var headRotation = configuration.Head.Rotation.Produce(HardwareHandler.Head.Rotation);
@@ -105,10 +91,6 @@ namespace YggdrAshill.Nuadha
 
             return new Emission(() =>
             {
-                // Origin
-                originPosition.Emit();
-                originRotation.Emit();
-
                 // Head
                 headPosition.Emit();
                 headRotation.Emit();
