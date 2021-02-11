@@ -13,14 +13,14 @@ Nothing.
 | Word | Abstraction |
 |:-----------|:------------|
 | Signal | Data to send. |
-| Emission | Token to send Signal. |
-| Consumption | Receiver of Signal. |
-| Production | Sender of Signal. |
+| Emission | Token to send `Signal`. |
+| Consumption | Receiver of `Signal`. |
+| Production | Sender of `Signal`. |
 
-In this module, `Consumption` consumes `Signal` for interaction between your system and users of your system.  
+`Consumption` consumes `Signal` for interaction between your system and users of your system.  
 `Production` produces `Emission` token to send `Signal` to `Consumption`.  
 Every time `Emission` token is executed, generated `Signal` is sent to `Consumption`.
 
 ## Implementation
 
-Nothing because this module defines only interfaces how you send and receive `Signal`.
+Nothing because this module only defines how you send and receive `Signal`.
