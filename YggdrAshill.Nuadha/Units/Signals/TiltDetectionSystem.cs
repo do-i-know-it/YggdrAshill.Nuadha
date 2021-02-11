@@ -31,8 +31,8 @@ namespace YggdrAshill.Nuadha
 
             left = new PullDetectionSystem(connection.Translate(TiltToPull.Left), threshold.Left);
             right = new PullDetectionSystem(connection.Translate(TiltToPull.Right), threshold.Right);
-            forward = new PullDetectionSystem(connection.Translate(TiltToPull.Up), threshold.Forward);
-            backward = new PullDetectionSystem(connection.Translate(TiltToPull.Down), threshold.Backward);
+            forward = new PullDetectionSystem(connection.Translate(TiltToPull.Forward), threshold.Forward);
+            backward = new PullDetectionSystem(connection.Translate(TiltToPull.Backward), threshold.Backward);
         }
 
         public IDisconnection Connect(ITiltDetectionHardwareHandler handler)
