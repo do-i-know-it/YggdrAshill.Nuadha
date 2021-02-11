@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerDetectionSystem :
-        ISoftware<IHandControllerSoftwareHandler>,
-        IHardware<IHandControllerDetectionHardwareHandler>,
-        IDisconnection
+        IHardware<IHandControllerDetectionHardwareHandler>
     {
         private readonly StickDetectionSystem thumbStick;
 
@@ -16,48 +14,23 @@ namespace YggdrAshill.Nuadha
         
         private readonly TriggerDetectionSystem handTrigger;
 
-        public HandControllerDetectionSystem(IHandControllerThreshold threshold)
-        {
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            thumbStick = new StickDetectionSystem(threshold.ThumbStick);
-            
-            fingerTrigger = new TriggerDetectionSystem(threshold.FingerTrigger);
-            
-            handTrigger = new TriggerDetectionSystem(threshold.HandTrigger);
-        }
-
-        #region ISoftware
-
-        public IDisconnection Connect(IHandControllerSoftwareHandler handler)
+        public HandControllerDetectionSystem(IHandControllerSoftwareHandler handler, IHandControllerThreshold threshold)
         {
             if (handler == null)
             {
                 throw new ArgumentNullException(nameof(handler));
             }
-
-            var thumbStick = this.thumbStick.Connect(handler.ThumbStick);
-            
-            var fingerTrigger = this.fingerTrigger.Connect(handler.FingerTrigger);
-
-            var handTrigger = this.handTrigger.Connect(handler.HandTrigger);
-
-            return new Disconnection(() =>
+            if (threshold == null)
             {
-                thumbStick.Disconnect();
+                throw new ArgumentNullException(nameof(threshold));
+            }
 
-                fingerTrigger.Disconnect();
-
-                handTrigger.Disconnect();
-            });
+            thumbStick = new StickDetectionSystem(handler.ThumbStick, threshold.ThumbStick);
+            
+            fingerTrigger = new TriggerDetectionSystem(handler.FingerTrigger, threshold.FingerTrigger);
+            
+            handTrigger = new TriggerDetectionSystem(handler.HandTrigger, threshold.HandTrigger);
         }
-
-        #endregion
-
-        #region IHardware
 
         public IDisconnection Connect(IHandControllerDetectionHardwareHandler handler)
         {
@@ -81,20 +54,5 @@ namespace YggdrAshill.Nuadha
                 handTrigger.Disconnect();
             });
         }
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
-        {
-            thumbStick.Disconnect();
-
-            fingerTrigger.Disconnect();
-
-            handTrigger.Disconnect();
-        }
-
-        #endregion
     }
 }

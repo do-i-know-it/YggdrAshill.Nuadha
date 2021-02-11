@@ -1,53 +1,37 @@
 ﻿using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTrackerCorrectionSystem :
-        ISoftware<IPoseTrackerSoftwareHandler>,
-        IHardware<IPoseTrackerHardwareHandler>,
-        IDisconnection
+        IHardware<IPoseTrackerHardwareHandler>
     {
-        private readonly PositionCorrectionSystem position;
+        private readonly CorrectionSystem<Position> position;
 
-        private readonly RotationCorrectionSystem rotation;
+        private readonly CorrectionSystem<Rotation> rotation;
 
-        public PoseTrackerCorrectionSystem(IPoseTrackerConfiguration configuration)
-        {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            position = new PositionCorrectionSystem(configuration.Position);
-
-            rotation = new RotationCorrectionSystem(configuration.Rotation);
-        }
-
-        #region ISoftware
-
-        public IDisconnection Connect(IPoseTrackerSoftwareHandler handler)
+        public PoseTrackerCorrectionSystem(IPoseTrackerSoftwareHandler handler, IPoseTrackerCalculation calculation, IPoseTrackerConfiguration configuration)
         {
             if (handler == null)
             {
                 throw new ArgumentNullException(nameof(handler));
             }
-
-            var position = handler.Position.Connect(this.position);
-
-            var rotation = handler.Rotation.Connect(this.rotation);
-
-            return new Disconnection(() =>
+            if (calculation == null)
             {
-                position.Disconnect();
+                throw new ArgumentNullException(nameof(calculation));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
 
-                rotation.Disconnect();
-            });
+            position = new CorrectionSystem<Position>(handler.Position, calculation.Position, configuration.Position);
+
+            rotation = new CorrectionSystem<Rotation>(handler.Rotation, calculation.Rotation, configuration.Rotation);
         }
-
-        #endregion
 
         #region IHardware
 
@@ -68,17 +52,6 @@ namespace YggdrAshill.Nuadha
 
                 rotation.Disconnect();
             });
-        }
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
-        {
-            position.Disconnect();
-
-            rotation.Disconnect();
         }
 
         #endregion

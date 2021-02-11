@@ -8,12 +8,10 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public abstract class DetectionSystem<TSignal> :
-        IConsumption<TSignal>,
-        IHardware<IDetectionHardwareHandler>,
-        IDisconnection
+        IHardware<IDetectionHardwareHandler>
         where TSignal : ISignal
     {
-        protected abstract IPropagation<TSignal> Propagation { get; }
+        protected abstract IConnection<TSignal> Connection { get; }
         protected abstract IDetection<TSignal> HasEnabled { get; }
         protected abstract IDetection<TSignal> IsEnabled { get; }
         protected abstract IDetection<TSignal> HasDisabled { get; }
@@ -26,10 +24,10 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var hasEnabled = Propagation.Detect(HasEnabled).Connect(handler.HasEnabled);
-            var isEnabled = Propagation.Detect(IsEnabled).Connect(handler.IsEnabled);
-            var hasDisabled = Propagation.Detect(HasDisabled).Connect(handler.HasDisabled);
-            var isDisabled = Propagation.Detect(IsDisabled).Connect(handler.IsDisabled);
+            var hasEnabled = Connection.Detect(HasEnabled).Connect(handler.HasEnabled);
+            var isEnabled = Connection.Detect(IsEnabled).Connect(handler.IsEnabled);
+            var hasDisabled = Connection.Detect(HasDisabled).Connect(handler.HasDisabled);
+            var isDisabled = Connection.Detect(IsDisabled).Connect(handler.IsDisabled);
 
             return new Disconnection(() =>
             {
@@ -41,16 +39,6 @@ namespace YggdrAshill.Nuadha
 
                 isDisabled.Disconnect();
             });
-        }
-
-        public void Consume(TSignal signal)
-        {
-            Propagation.Consume(signal);
-        }
-
-        public void Disconnect()
-        {
-            Propagation.Disconnect();
         }
     }
 }
