@@ -1,6 +1,6 @@
 # Conversion
 
-This module expands feature of [Signalization](./Signalization.md) and [Conduction](./Conduction.md) to define how to convert `Signal`.
+Conversion expands [Signalization](./Signalization.md) and [Conduction](./Conduction.md) to define how to convert `Signal`.
 
 ## Dependencies
 

@@ -1,6 +1,6 @@
 # Signals
 
-This module defines some types of `Signal`.
+Signals defines some types of `Signal`.
 
 ## Dependencies
 

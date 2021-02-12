@@ -1,6 +1,6 @@
 # Signalization
 
-This module defines how you send and receive data for I/O.
+Signalization defines how to send and receive data for I/O in an application.
 
 ## Dependencies
 
@@ -12,7 +12,7 @@ Nothing.
 
 | Word | Abstraction |
 |:-----------|:------------|
-| Signal | Data to send. |
+| Signal | Data for I/O. |
 | Emission | Token to send `Signal`. |
 | Consumption | Receiver of `Signal`. |
 | Production | Sender of `Signal`. |
@@ -23,4 +23,4 @@ Every time `Emission` token is executed, generated `Signal` is sent to `Consumpt
 
 ## Implementation
 
-Nothing because this module only defines how you send and receive `Signal`.
+Nothing because this module only defines how to send and receive `Signal`.

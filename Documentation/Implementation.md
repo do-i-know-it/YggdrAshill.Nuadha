@@ -6,8 +6,8 @@ This module implements interfaces defined in all modules in this component.
 - [Conduction](./Conduction.md).
 - [Conversion](./Conversion.md).
 - [Unitization](./Unitization.md).
-- [Signals](./Unitization.md).
-- [Units](./Unitization.md).
+- [Signals](./Signals.md).
+- [Units](./Units.md).
 
 ## Dependencies
 
@@ -17,8 +17,8 @@ This module depends on
 - [Conduction](./Conduction.md).
 - [Conversion](./Conversion.md).
 - [Unitization](./Unitization.md).
-- [Signals](./Unitization.md).
-- [Units](./Unitization.md).
+- [Signals](./Signals.md).
+- [Units](./Units.md).
 
 ## Architecture
 
@@ -26,4 +26,4 @@ No architecture because this module implements interfaces defined in all modules
 
 ## Implementation
 
-Nothing except internal implementation for some interfaces of [Signalization](./Signalization.md) and [Conduction](./Conduction.md), because this module only defines how to convert `Signal`.
+Now writing...

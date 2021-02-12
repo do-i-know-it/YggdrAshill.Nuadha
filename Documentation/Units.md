@@ -1,6 +1,6 @@
 # Units
 
-This module defines some types of `HardwareHandler` and `SoftwareHandler`.
+Units defines some types of `HardwareHandler` and `SoftwareHandler`.
 
 ## Dependencies
 

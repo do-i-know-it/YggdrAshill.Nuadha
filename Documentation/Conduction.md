@@ -1,6 +1,6 @@
 # Conduction
 
-This module expands feature of [Signalization](./Signalization.md) to define how you generate and distribute `Signal`.
+Conduction expands [Signalization](./Signalization.md) to define how to create and distribute `Signal`.
 
 ## Dependencies
 
@@ -15,7 +15,7 @@ This module depends on [Signalization](./Signalization.md).
 | Connection | Collector of `Consumption`. |
 | Disconnection | Token to disconnection. |
 | Propagation | Distributer of `Signal`. |
-| Generation | Provider of `Signal`. |
+| Generation | Creator of `Signal`. |
 | Ignition | Token to provide `Emission`. |
 
 `Connection` collects `Consumption` to distribute `Signal` sent when `Emission` is executed.  
@@ -31,4 +31,4 @@ In order to send `Signal` to `Consumption`, `Generation` can provide `Emission` 
 
 ## Implementation
 
-Nothing except internal implementation for some interfaces of [Signalization](./Signalization.md), because this module only defines how you generate and distribute `Signal`.
+Nothing except internal implementations for some interfaces of [Signalization](./Signalization.md), because this module only defines how to create and distribute `Signal`.

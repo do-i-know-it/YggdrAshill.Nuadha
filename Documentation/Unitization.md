@@ -1,6 +1,6 @@
 # Unitization
 
-This module defines how you connect device and system to send and receive `Signal`.
+Unitization defines how to connect device to system in order to send and receive `Signal`.
 
 ## Dependencies
 
@@ -24,4 +24,4 @@ Now writing...
 
 ## Implementation
 
-Nothing because this module only defines how you connect device and system.
+Nothing because this module only defines how to connect device to system.
