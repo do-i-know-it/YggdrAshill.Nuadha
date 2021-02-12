@@ -1,8 +1,8 @@
-# YggdrAshill.Nuadha: A device system framework
+# YggdrAshill.Nuadha: a device system framework
 
- Nuadha provides isolation of devices from system.  
- This framework enables your application to isolate definitions and implementation for device system, so it supports your XR (VR/AR/MR) application to be convertible in any platforms or devices.  
- You can develop your application for
+Nuadha provides how to isolate definitions and implementations for device system.  
+This framework supports your XR (VR/AR/MR) application to be convertible in any platforms or devices.  
+You can develop your application for
 
 - Oculus store
 - Steam VR
@@ -58,7 +58,13 @@ This framework also includes sub modules below.
 
 ### Implementation
 
-Nuadha provides no implementations for specific devices, runtimes, or game engines, because it only defines how to isolate device from system.
+Nuadha provides no implementations for specific
+
+- devices
+- runtimes
+- game engines
+
+because it only defines how to isolate device from system.
 
 ## Known issues
 
@@ -68,10 +74,10 @@ Nothing now.
 
 ### ~ Version 1.0.0
 
-- Sets up build pipeline
+- Sets up build pipeline.
   - auto testing
   - auto building
-- Writes documents completely
+- Writes documents completely.
   - [Conversion](./Conversion.md)
   - [Unitization](./Unitization.md)
   - [Signals](./Signals.md)
@@ -79,25 +85,30 @@ Nothing now.
   - [Implementation](./Implementation.md)
   - samples
   - templates for Pull requests, issue, and contributing guidelines.
-- Writes test codes for specification completely
+- Writes document comments in codes completely.
+  - [Unitization](./Unitization.md)
+  - [Signals](./Signals.md)
   - [Units](./Units.md)
   - [Implementation](./Implementation.md)
-- Renames definitions for [Unitization](./Unitization.md)
+- Writes test codes for specification completely.
+  - [Units](./Units.md)
+  - [Implementation](./Implementation.md)
+- Renames definitions for [Unitization](./Unitization.md).
   - ex) HardwareHandler -> System
   - ex) SoftwareHandler -> Device
   - ex) InputDevice -> ???
   - ex) OutputSystem -> ???
-- Renames definitions for [Units](./Units.md)
+- Renames definitions for [Units](./Units.md).
   - ex) IXXXXDetectionHardwareHandler -> ???
   - ex) IXXXXDetectionSoftwareHandler -> ???
 
 ### Version 1.0.0 ~
 
-- Adds definitions for Signals
+- Adds definitions for Signals.
   - ex) Blink
   - ex) Pupil
   - ex) Vibration
-- Adds definitions for Units
+- Adds definitions for Units.
   - ex) Tablet
   - ex) Gamepad
   - ex) Eye tracker
@@ -106,6 +117,7 @@ Nothing now.
   - ex) Treadmill
 
 ## License
+
 Nuadha is under the MIT License, see [LICENSE](./LICENSE.txt).
 
 ## Remarks
