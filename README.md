@@ -78,27 +78,27 @@ Nothing now.
   - auto testing
   - auto building
 - Writes documents completely.
-  - [Conversion](./Conversion.md)
-  - [Unitization](./Unitization.md)
-  - [Signals](./Signals.md)
-  - [Units](./Units.md)
-  - [Implementation](./Implementation.md)
+  - [Conversion](./Documentation/Conversion.md)
+  - [Unitization](./Documentation/Unitization.md)
+  - [Signals](./Documentation/Signals.md)
+  - [Units](./Documentation/Units.md)
+  - [Implementation](./Documentation/Implementation.md)
   - samples
   - templates for Pull requests, issue, and contributing guidelines.
 - Writes document comments in codes completely.
-  - [Unitization](./Unitization.md)
-  - [Signals](./Signals.md)
-  - [Units](./Units.md)
-  - [Implementation](./Implementation.md)
+  - [Unitization](./Documentation/Unitization.md)
+  - [Signals](./Documentation/Signals.md)
+  - [Units](./Documentation/Units.md)
+  - [Implementation](./Documentation/Implementation.md)
 - Writes test codes for specification completely.
-  - [Units](./Units.md)
-  - [Implementation](./Implementation.md)
-- Renames definitions for [Unitization](./Unitization.md).
+  - [Units](./Documentation/Units.md)
+  - [Implementation](./Documentation/Implementation.md)
+- Renames definitions for [Unitization](./Documentation/Unitization.md).
   - ex) HardwareHandler -> System
   - ex) SoftwareHandler -> Device
   - ex) InputDevice -> ???
   - ex) OutputSystem -> ???
-- Renames definitions for [Units](./Units.md).
+- Renames definitions for [Units](./Documentation/Units.md).
   - ex) IXXXXDetectionHardwareHandler -> ???
   - ex) IXXXXDetectionSoftwareHandler -> ???
 
