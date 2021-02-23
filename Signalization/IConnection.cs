@@ -1,6 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-
-namespace YggdrAshill.Nuadha.Conduction
+namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
     /// Collects <see cref="IConsumption{TSignal}"/> to send <typeparamref name="TSignal"/>.

@@ -1,6 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-
-namespace YggdrAshill.Nuadha.Conduction
+namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
     /// Propagates <typeparamref name="TSignal"/> to each connected <see cref="IConsumption{TSignal}"/>.
