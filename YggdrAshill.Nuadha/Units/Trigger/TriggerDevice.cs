@@ -1,13 +1,12 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDevice :
-        IInputHardware<ITriggerHardwareHandler>
+        IInputHardware<ITriggerSystem>
     {
         private readonly ITriggerConfiguration configuration;
 
@@ -25,17 +24,17 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private ITriggerSoftwareHandler SoftwareHandler => module;
-        public IDisconnection Connect(ITriggerHardwareHandler handler)
+        private ITriggerDevice Device => module;
+        public IDisconnection Connect(ITriggerSystem system)
         {
-            if (handler == null)
+            if (system == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(system));
             }
 
-            var touch = SoftwareHandler.Touch.Connect(handler.Touch);
+            var touch = Device.Touch.Connect(system.Touch);
 
-            var pull = SoftwareHandler.Pull.Connect(handler.Pull);
+            var pull = Device.Pull.Connect(system.Pull);
 
             return new Disconnection(() =>
             {
@@ -58,12 +57,12 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private ITriggerHardwareHandler HardwareHandler => module;
+        private ITriggerSystem System => module;
         public IEmission Ignite()
         {
-            var touch = configuration.Touch.Produce(HardwareHandler.Touch);
+            var touch = configuration.Touch.Produce(System.Touch);
 
-            var pull = configuration.Pull.Produce(HardwareHandler.Pull);
+            var pull = configuration.Pull.Produce(System.Pull);
 
             return new Emission(() =>
             {

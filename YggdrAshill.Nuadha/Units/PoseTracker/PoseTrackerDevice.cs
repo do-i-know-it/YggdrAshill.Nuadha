@@ -1,13 +1,12 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTrackerDevice :
-        IInputHardware<IPoseTrackerHardwareHandler>
+        IInputHardware<IPoseTrackerSystem>
     {
         private readonly IPoseTrackerConfiguration configuration;
 
@@ -25,17 +24,17 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private IPoseTrackerSoftwareHandler SoftwareHandler => module;
-        public IDisconnection Connect(IPoseTrackerHardwareHandler handler)
+        private IPoseTrackerDevice Device => module;
+        public IDisconnection Connect(IPoseTrackerSystem system)
         {
-            if (handler == null)
+            if (system == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(system));
             }
 
-            var position = SoftwareHandler.Position.Connect(handler.Position);
+            var position = Device.Position.Connect(system.Position);
 
-            var rotation = SoftwareHandler.Rotation.Connect(handler.Rotation);
+            var rotation = Device.Rotation.Connect(system.Rotation);
 
             return new Disconnection(() =>
             {
@@ -58,12 +57,12 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IPoseTrackerHardwareHandler HardwareHandler => module;
+        private IPoseTrackerSystem System => module;
         public IEmission Ignite()
         {
-            var position = configuration.Position.Produce(HardwareHandler.Position);
+            var position = configuration.Position.Produce(System.Position);
 
-            var rotation = configuration.Rotation.Produce(HardwareHandler.Rotation);
+            var rotation = configuration.Rotation.Produce(System.Rotation);
 
             return new Emission(() =>
             {

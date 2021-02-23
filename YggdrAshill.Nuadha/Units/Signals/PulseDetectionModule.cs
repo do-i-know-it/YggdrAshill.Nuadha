@@ -5,8 +5,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PulseDetectionModule :
-        IDetectionHardwareHandler,
-        IDetectionSoftwareHandler,
+        IDetectionSystem,
+        IDetectionDevice,
         IDisconnection
     {
         private readonly Propagation<Pulse> hasEnabled = new Propagation<Pulse>();
@@ -17,27 +17,27 @@ namespace YggdrAshill.Nuadha
 
         private readonly Propagation<Pulse> isDisabled = new Propagation<Pulse>();
 
-        #region IPulseDetectionInputHandler
+        #region IDetectionSystem
 
-        IConsumption<Pulse> IDetectionHardwareHandler.HasEnabled => hasEnabled;
+        IConsumption<Pulse> IDetectionSystem.HasEnabled => hasEnabled;
 
-        IConsumption<Pulse> IDetectionHardwareHandler.IsEnabled => isEnabled;
+        IConsumption<Pulse> IDetectionSystem.IsEnabled => isEnabled;
 
-        IConsumption<Pulse> IDetectionHardwareHandler.HasDisabled => hasDisabled;
+        IConsumption<Pulse> IDetectionSystem.HasDisabled => hasDisabled;
 
-        IConsumption<Pulse> IDetectionHardwareHandler.IsDisabled => isDisabled;
+        IConsumption<Pulse> IDetectionSystem.IsDisabled => isDisabled;
 
         #endregion
 
-        #region IPulseDetectionOutputHandler
+        #region IDetectionDevice
 
-        IConnection<Pulse> IDetectionSoftwareHandler.HasEnabled => hasEnabled;
+        IConnection<Pulse> IDetectionDevice.HasEnabled => hasEnabled;
 
-        IConnection<Pulse> IDetectionSoftwareHandler.IsEnabled => isEnabled;
+        IConnection<Pulse> IDetectionDevice.IsEnabled => isEnabled;
 
-        IConnection<Pulse> IDetectionSoftwareHandler.HasDisabled => hasDisabled;
+        IConnection<Pulse> IDetectionDevice.HasDisabled => hasDisabled;
 
-        IConnection<Pulse> IDetectionSoftwareHandler.IsDisabled => isDisabled;
+        IConnection<Pulse> IDetectionDevice.IsDisabled => isDisabled;
 
         #endregion
 

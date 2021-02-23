@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerDetectionModule :
-        IHandControllerDetectionHardwareHandler,
-        IHandControllerDetectionSoftwareHandler,
+        IHandControllerDetectionSystem,
+        IHandControllerDetectionDevice,
         IDisconnection
     {
         private readonly StickDetectionModule thumbStick = new StickDetectionModule();
@@ -14,23 +14,23 @@ namespace YggdrAshill.Nuadha
 
         private readonly TriggerDetectionModule handTrigger = new TriggerDetectionModule();
 
-        #region IHandControllerDetectionHardwareHandler
+        #region IHandControllerDetectionSystem
 
-        IStickDetectionHardwareHandler IHandControllerDetectionHardwareHandler.ThumbStick => thumbStick;
+        IStickDetectionSystem IHandControllerDetectionSystem.ThumbStick => thumbStick;
 
-        ITriggerDetectionHardwareHandler IHandControllerDetectionHardwareHandler.FingerTrigger => fingerTrigger;
+        ITriggerDetectionSystem IHandControllerDetectionSystem.FingerTrigger => fingerTrigger;
 
-        ITriggerDetectionHardwareHandler IHandControllerDetectionHardwareHandler.HandTrigger => handTrigger;
+        ITriggerDetectionSystem IHandControllerDetectionSystem.HandTrigger => handTrigger;
 
         #endregion
 
-        #region IHandControllerDetectionSoftwareHandler
+        #region IHandControllerDetectionDevice
 
-        IStickDetectionSoftwareHandler IHandControllerDetectionSoftwareHandler.ThumbStick => thumbStick;
+        IStickDetectionDevice IHandControllerDetectionDevice.ThumbStick => thumbStick;
 
-        ITriggerDetectionSoftwareHandler IHandControllerDetectionSoftwareHandler.FingerTrigger => fingerTrigger;
+        ITriggerDetectionDevice IHandControllerDetectionDevice.FingerTrigger => fingerTrigger;
 
-        ITriggerDetectionSoftwareHandler IHandControllerDetectionSoftwareHandler.HandTrigger => handTrigger;
+        ITriggerDetectionDevice IHandControllerDetectionDevice.HandTrigger => handTrigger;
 
         #endregion
 

@@ -4,33 +4,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickDetectionModule :
-        IStickDetectionHardwareHandler,
-        IStickDetectionSoftwareHandler,
+        IStickDetectionSystem,
+        IStickDetectionDevice,
         IDisconnection
     {
         private readonly PulseDetectionModule touch = new PulseDetectionModule();
 
-        private readonly PulseDetectionModule push = new PulseDetectionModule();
-
         private readonly TiltDetectionModule tilt = new TiltDetectionModule();
 
-        #region IStickDetectionHardwareHandler
+        #region IStickDetectionSystem
 
-        IDetectionHardwareHandler IButtonDetectionHardwareHandler.Touch => touch;
+        IDetectionSystem IStickDetectionSystem.Touch => touch;
 
-        IDetectionHardwareHandler IButtonDetectionHardwareHandler.Push => push;
-
-        ITiltDetectionHardwareHandler IStickDetectionHardwareHandler.Tilt => tilt;
+        ITiltDetectionSystem IStickDetectionSystem.Tilt => tilt;
 
         #endregion
 
-        #region IStickDetectionSoftwareHandler
+        #region IStickDetectionDevice
 
-        IDetectionSoftwareHandler IButtonDetectionSoftwareHandler.Touch => touch;
+        IDetectionDevice IStickDetectionDevice.Touch => touch;
 
-        IDetectionSoftwareHandler IButtonDetectionSoftwareHandler.Push => push;
-
-        ITiltDetectionSoftwareHandler IStickDetectionSoftwareHandler.Tilt => tilt;
+        ITiltDetectionDevice IStickDetectionDevice.Tilt => tilt;
 
         #endregion
 
@@ -39,8 +33,6 @@ namespace YggdrAshill.Nuadha
         public void Disconnect()
         {
             touch.Disconnect();
-
-            push.Disconnect();
 
             tilt.Disconnect();
         }

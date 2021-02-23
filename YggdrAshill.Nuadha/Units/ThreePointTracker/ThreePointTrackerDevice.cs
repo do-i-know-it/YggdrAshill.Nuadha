@@ -1,13 +1,12 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class ThreePointTrackerDevice :
-        IInputHardware<IThreePointTrackerHardwareHandler>
+        IInputHardware<IThreePointTrackerSystem>
     {
         private readonly IThreePointTrackerConfiguration configuration;
 
@@ -25,25 +24,25 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private IThreePointTrackerSoftwareHandler SoftwareHandler => module;
-        public IDisconnection Connect(IThreePointTrackerHardwareHandler handler)
+        private IThreePointTrackerDevice Device => module;
+        public IDisconnection Connect(IThreePointTrackerSystem system)
         {
-            if (handler == null)
+            if (system == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(system));
             }
 
             // Head
-            var headPosition = SoftwareHandler.Head.Position.Connect(handler.Head.Position);
-            var headRotation = SoftwareHandler.Head.Rotation.Connect(handler.Head.Rotation);
+            var headPosition = Device.Head.Position.Connect(system.Head.Position);
+            var headRotation = Device.Head.Rotation.Connect(system.Head.Rotation);
 
             // Left hand
-            var leftHandPosition = SoftwareHandler.LeftHand.Position.Connect(handler.LeftHand.Position);
-            var leftHandRotation = SoftwareHandler.LeftHand.Rotation.Connect(handler.LeftHand.Rotation);
+            var leftHandPosition = Device.LeftHand.Position.Connect(system.LeftHand.Position);
+            var leftHandRotation = Device.LeftHand.Rotation.Connect(system.LeftHand.Rotation);
 
             // Right hand
-            var rightHandPosition = SoftwareHandler.RightHand.Position.Connect(handler.RightHand.Position);
-            var rightHandRotation = SoftwareHandler.RightHand.Rotation.Connect(handler.RightHand.Rotation);
+            var rightHandPosition = Device.RightHand.Position.Connect(system.RightHand.Position);
+            var rightHandRotation = Device.RightHand.Rotation.Connect(system.RightHand.Rotation);
 
             return new Disconnection(() =>
             {
@@ -74,20 +73,20 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IThreePointTrackerHardwareHandler HardwareHandler => module;
+        private IThreePointTrackerSystem System => module;
         public IEmission Ignite()
         {
             // Head
-            var headPosition = configuration.Head.Position.Produce(HardwareHandler.Head.Position);
-            var headRotation = configuration.Head.Rotation.Produce(HardwareHandler.Head.Rotation);
+            var headPosition = configuration.Head.Position.Produce(System.Head.Position);
+            var headRotation = configuration.Head.Rotation.Produce(System.Head.Rotation);
 
             // Left hand
-            var leftHandPosition = configuration.LeftHand.Position.Produce(HardwareHandler.LeftHand.Position);
-            var leftHandRotation = configuration.LeftHand.Rotation.Produce(HardwareHandler.LeftHand.Rotation);
+            var leftHandPosition = configuration.LeftHand.Position.Produce(System.LeftHand.Position);
+            var leftHandRotation = configuration.LeftHand.Rotation.Produce(System.LeftHand.Rotation);
 
             // Right hand
-            var rightHandPosition = configuration.RightHand.Position.Produce(HardwareHandler.RightHand.Position);
-            var rightHandRotation = configuration.RightHand.Rotation.Produce(HardwareHandler.RightHand.Rotation);
+            var rightHandPosition = configuration.RightHand.Position.Produce(System.RightHand.Position);
+            var rightHandRotation = configuration.RightHand.Rotation.Produce(System.RightHand.Rotation);
 
             return new Emission(() =>
             {

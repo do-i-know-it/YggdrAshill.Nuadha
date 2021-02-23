@@ -5,33 +5,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickModule :
-        IStickSoftwareHandler,
-        IStickHardwareHandler,
+        IStickDevice,
+        IStickSystem,
         IDisconnection
     {
         private readonly Propagation<Touch> touch = new Propagation<Touch>();
 
-        private readonly Propagation<Push> push = new Propagation<Push>();
-
         private readonly Propagation<Tilt> tilt = new Propagation<Tilt>();
 
-        #region IStickSoftwareHandler
+        #region IStickDevice
 
-        IConnection<Touch> IButtonSoftwareHandler.Touch => touch;
+        IConnection<Touch> IStickDevice.Touch => touch;
 
-        IConnection<Push> IButtonSoftwareHandler.Push => push;
-
-        IConnection<Tilt> IStickSoftwareHandler.Tilt => tilt;
+        IConnection<Tilt> IStickDevice.Tilt => tilt;
 
         #endregion
 
-        #region IStickHardwareHandler
+        #region IStickSystem
 
-        IConsumption<Touch> IButtonHardwareHandler.Touch => touch;
+        IConsumption<Touch> IStickSystem.Touch => touch;
 
-        IConsumption<Push> IButtonHardwareHandler.Push => push;
-
-        IConsumption<Tilt> IStickHardwareHandler.Tilt => tilt;
+        IConsumption<Tilt> IStickSystem.Tilt => tilt;
 
         #endregion
 
@@ -40,8 +34,6 @@ namespace YggdrAshill.Nuadha
         public void Disconnect()
         {
             touch.Disconnect();
-
-            push.Disconnect();
 
             tilt.Disconnect();
         }

@@ -5,27 +5,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonModule :
-        IButtonSoftwareHandler,
-        IButtonHardwareHandler,
+        IButtonSystem,
+        IButtonDevice,
         IDisconnection
     {
         private readonly Propagation<Touch> touch = new Propagation<Touch>();
 
         private readonly Propagation<Push> push = new Propagation<Push>();
 
-        #region IButtonSoftwareHandler
+        #region IButtonSystem
 
-        IConnection<Touch> IButtonSoftwareHandler.Touch => touch;
+        IConsumption<Touch> IButtonSystem.Touch => touch;
 
-        IConnection<Push> IButtonSoftwareHandler.Push => push;
+        IConsumption<Push> IButtonSystem.Push => push;
 
         #endregion
 
-        #region IButtonHardwareHandler
+        #region IButtonDevice
 
-        IConsumption<Touch> IButtonHardwareHandler.Touch => touch;
+        IConnection<Touch> IButtonDevice.Touch => touch;
 
-        IConsumption<Push> IButtonHardwareHandler.Push => push;
+        IConnection<Push> IButtonDevice.Push => push;
 
         #endregion
 

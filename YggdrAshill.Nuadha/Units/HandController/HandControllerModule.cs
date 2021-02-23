@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerModule :
-        IHandControllerSoftwareHandler,
-        IHandControllerHardwareHandler,
+        IHandControllerDevice,
+        IHandControllerSystem,
         IDisconnection
     {
         private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
@@ -16,27 +16,27 @@ namespace YggdrAshill.Nuadha
 
         private readonly TriggerModule handTrigger = new TriggerModule();
 
-        #region IHandControllerSoftwareHandler
+        #region IHandControllerDevice
 
-        IPoseTrackerSoftwareHandler IHandControllerSoftwareHandler.PoseTracker => poseTracker;
+        IPoseTrackerDevice IHandControllerDevice.PoseTracker => poseTracker;
 
-        IStickSoftwareHandler IHandControllerSoftwareHandler.ThumbStick => thumbStick;
+        IStickDevice IHandControllerDevice.ThumbStick => thumbStick;
 
-        ITriggerSoftwareHandler IHandControllerSoftwareHandler.FingerTrigger => fingerTrigger;
+        ITriggerDevice IHandControllerDevice.FingerTrigger => fingerTrigger;
 
-        ITriggerSoftwareHandler IHandControllerSoftwareHandler.HandTrigger => handTrigger;
+        ITriggerDevice IHandControllerDevice.HandTrigger => handTrigger;
 
         #endregion
 
-        #region IHandControllerHardwareHandler
-        
-        IPoseTrackerHardwareHandler IHandControllerHardwareHandler.PoseTracker => poseTracker;
+        #region IHandControllerSystem
 
-        IStickHardwareHandler IHandControllerHardwareHandler.ThumbStick => thumbStick;
+        IPoseTrackerSystem IHandControllerSystem.PoseTracker => poseTracker;
 
-        ITriggerHardwareHandler IHandControllerHardwareHandler.FingerTrigger => fingerTrigger;
+        IStickSystem IHandControllerSystem.ThumbStick => thumbStick;
 
-        ITriggerHardwareHandler IHandControllerHardwareHandler.HandTrigger => handTrigger;
+        ITriggerSystem IHandControllerSystem.FingerTrigger => fingerTrigger;
+
+        ITriggerSystem IHandControllerSystem.HandTrigger => handTrigger;
 
         #endregion
 

@@ -1,13 +1,12 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class HeadsetDevice :
-        IInputHardware<IHeadsetHardwareHandler>
+        IInputHardware<IHeadsetSystem>
     {
         private readonly IHeadsetConfiguration configuration;
 
@@ -25,18 +24,18 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private IHeadsetSoftwareHandler SoftwareHandler => module;
-        public IDisconnection Connect(IHeadsetHardwareHandler handler)
+        private IHeadsetDevice Device => module;
+        public IDisconnection Connect(IHeadsetSystem system)
         {
-            if (handler == null)
+            if (system == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(system));
             }
 
-            var direction = SoftwareHandler.Direction.Connect(handler.Direction);
+            var direction = Device.Direction.Connect(system.Direction);
 
-            var position = SoftwareHandler.PoseTracker.Position.Connect(handler.PoseTracker.Position);
-            var rotation = SoftwareHandler.PoseTracker.Rotation.Connect(handler.PoseTracker.Rotation);
+            var position = Device.PoseTracker.Position.Connect(system.PoseTracker.Position);
+            var rotation = Device.PoseTracker.Rotation.Connect(system.PoseTracker.Rotation);
 
             return new Disconnection(() =>
             {
@@ -60,13 +59,13 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IHeadsetHardwareHandler HardwareHandler => module;
+        private IHeadsetSystem System => module;
         public IEmission Ignite()
         {
-            var direction = configuration.Direction.Produce(HardwareHandler.Direction);
+            var direction = configuration.Direction.Produce(System.Direction);
 
-            var position = configuration.PoseTracker.Position.Produce(HardwareHandler.PoseTracker.Position);
-            var rotation = configuration.PoseTracker.Rotation.Produce(HardwareHandler.PoseTracker.Rotation);
+            var position = configuration.PoseTracker.Position.Produce(System.PoseTracker.Position);
+            var rotation = configuration.PoseTracker.Rotation.Produce(System.PoseTracker.Rotation);
 
             return new Emission(() =>
             {

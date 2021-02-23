@@ -5,27 +5,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerModule :
-        ITriggerSoftwareHandler,
-        ITriggerHardwareHandler,
+        ITriggerDevice,
+        ITriggerSystem,
         IDisconnection
     {
         private readonly Propagation<Touch> touch = new Propagation<Touch>();
 
         private readonly Propagation<Pull> pull = new Propagation<Pull>();
 
-        #region ITriggerSoftwareHandler
+        #region ITriggerDevice
 
-        IConnection<Touch> ITriggerSoftwareHandler.Touch => touch;
+        IConnection<Touch> ITriggerDevice.Touch => touch;
 
-        IConnection<Pull> ITriggerSoftwareHandler.Pull => pull;
+        IConnection<Pull> ITriggerDevice.Pull => pull;
 
         #endregion
 
-        #region ITriggerHardwareHandler
-        
-        IConsumption<Touch> ITriggerHardwareHandler.Touch => touch;
+        #region ITriggerSystem
 
-        IConsumption<Pull> ITriggerHardwareHandler.Pull => pull;
+        IConsumption<Touch> ITriggerSystem.Touch => touch;
+
+        IConsumption<Pull> ITriggerSystem.Pull => pull;
 
         #endregion
 
