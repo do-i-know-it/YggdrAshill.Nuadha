@@ -1,6 +1,6 @@
 namespace YggdrAshill.Nuadha.Unitization
 {
-    public interface IHardwareHandler
+    public interface IDevice
     {
 
     }

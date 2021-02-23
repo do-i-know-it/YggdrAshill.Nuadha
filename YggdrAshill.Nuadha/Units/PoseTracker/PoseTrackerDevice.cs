@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTrackerDevice :
-        IInputDevice<IPoseTrackerHardwareHandler>
+        IInputHardware<IPoseTrackerHardwareHandler>
     {
         private readonly IPoseTrackerConfiguration configuration;
 

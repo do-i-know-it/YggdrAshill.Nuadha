@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Units
 {
     public interface ITiltDetectionHardwareHandler :
-        IHardwareHandler
+        ISystem
     {
         IDetectionHardwareHandler Left { get; }
 

@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IButtonDetectionHardwareHandler :
-        IHardwareHandler
+        ISystem
     {
         IDetectionHardwareHandler Touch { get; }
 

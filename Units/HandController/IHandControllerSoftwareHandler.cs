@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Unitization;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IHandControllerSoftwareHandler :
-        ISoftwareHandler
+        IDevice
     {
         IPoseTrackerSoftwareHandler PoseTracker { get; }
 

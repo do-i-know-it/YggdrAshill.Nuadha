@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Unitization;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IThreePointTrackerSoftwareHandler :
-        ISoftwareHandler
+        IDevice
     {
         IPoseTrackerSoftwareHandler Head { get; }
 

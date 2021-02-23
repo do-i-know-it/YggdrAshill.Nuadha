@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickDevice :
-        IInputDevice<IStickHardwareHandler>
+        IInputHardware<IStickHardwareHandler>
     {
         private readonly IStickConfiguration configuration;
 

@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Units
 {
     public interface ITriggerDetectionSoftwareHandler :
-        ISoftwareHandler
+        IDevice
     {
         IDetectionSoftwareHandler Touch { get; }
 

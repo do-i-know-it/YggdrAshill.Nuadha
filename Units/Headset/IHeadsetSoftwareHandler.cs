@@ -5,7 +5,7 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IHeadsetSoftwareHandler :
-        ISoftwareHandler
+        IDevice
     {
         IConnection<Direction> Direction { get; }
         

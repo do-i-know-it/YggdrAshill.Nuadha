@@ -2,9 +2,9 @@ using YggdrAshill.Nuadha.Signalization;
 
 namespace YggdrAshill.Nuadha.Unitization
 {
-    public interface ISoftware<TSoftwareHandler>
-        where TSoftwareHandler : ISoftwareHandler
+    public interface ISoftware<TDevice>
+        where TDevice : IDevice
     {
-        IDisconnection Connect(TSoftwareHandler handler);
+        IDisconnection Connect(TDevice device);
     }
 }

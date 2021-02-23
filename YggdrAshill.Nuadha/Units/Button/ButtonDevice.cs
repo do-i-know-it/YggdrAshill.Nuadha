@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonDevice :
-        IInputDevice<IButtonHardwareHandler>
+        IInputHardware<IButtonHardwareHandler>
     {
         private readonly IButtonConfiguration configuration;
 

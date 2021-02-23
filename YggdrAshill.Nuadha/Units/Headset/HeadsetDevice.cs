@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HeadsetDevice :
-        IInputDevice<IHeadsetHardwareHandler>
+        IInputHardware<IHeadsetHardwareHandler>
     {
         private readonly IHeadsetConfiguration configuration;
 

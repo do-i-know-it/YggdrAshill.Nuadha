@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IHandControllerDetectionHardwareHandler :
-        IHardwareHandler
+        ISystem
     {
         IStickDetectionHardwareHandler ThumbStick { get; }
 

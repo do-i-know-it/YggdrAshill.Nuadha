@@ -3,11 +3,11 @@ using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Unitization
 {
-    public interface IOutputSystem<TSoftwareHandler> :
-        ISoftware<TSoftwareHandler>,
+    public interface IOutputSoftware<TDevice> :
+        ISoftware<TDevice>,
         IDisconnection,
         IIgnition
-        where TSoftwareHandler : ISoftwareHandler
+        where TDevice : IDevice
     {
 
     }

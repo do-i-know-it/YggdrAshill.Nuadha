@@ -5,7 +5,7 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IStickSoftwareHandler :
-        ISoftwareHandler,
+        IDevice,
         IButtonSoftwareHandler
     {
         IConnection<Tilt> Tilt { get; }

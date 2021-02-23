@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IStickDetectionSoftwareHandler :
-        ISoftwareHandler,
+        IDevice,
         IButtonDetectionSoftwareHandler
     {
         ITiltDetectionSoftwareHandler Tilt { get; }

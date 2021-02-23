@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDevice :
-        IInputDevice<ITriggerHardwareHandler>
+        IInputHardware<ITriggerHardwareHandler>
     {
         private readonly ITriggerConfiguration configuration;
 

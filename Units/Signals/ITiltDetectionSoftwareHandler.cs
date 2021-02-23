@@ -3,7 +3,7 @@
 namespace YggdrAshill.Nuadha.Units
 {
     public interface ITiltDetectionSoftwareHandler :
-        ISoftwareHandler
+        IDevice
     {
         IDetectionSoftwareHandler Left { get; }
 

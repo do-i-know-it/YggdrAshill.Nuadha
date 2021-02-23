@@ -5,7 +5,7 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IPoseTrackerHardwareHandler :
-        IHardwareHandler
+        ISystem
     {
         IConsumption<Position> Position { get; }
 
