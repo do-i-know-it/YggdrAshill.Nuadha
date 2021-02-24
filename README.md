@@ -76,7 +76,6 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 - Adds contributing guidelines.
 - Adds samples.
 - Writes document comments in codes completely.
-  - [Unitization](./Documentation/Unitization.md)
   - [Signals](./Documentation/Signals.md)
   - [Units](./Documentation/Units.md)
   - [Implementation](./Documentation/Implementation.md)
