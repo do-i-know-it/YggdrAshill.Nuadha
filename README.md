@@ -79,7 +79,6 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
   - [Conversion](./Documentation/Conversion.md)
   - [Signals](./Documentation/Signals.md)
   - [Units](./Documentation/Units.md)
-  - [Implementation](./Documentation/Implementation.md)
 - Writes document comments in codes completely.
   - [Unitization](./Documentation/Unitization.md)
   - [Signals](./Documentation/Signals.md)
