@@ -77,7 +77,6 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 - Adds samples.
 - Writes documents completely.
   - [Conversion](./Documentation/Conversion.md)
-  - [Unitization](./Documentation/Unitization.md)
   - [Signals](./Documentation/Signals.md)
   - [Units](./Documentation/Units.md)
   - [Implementation](./Documentation/Implementation.md)
