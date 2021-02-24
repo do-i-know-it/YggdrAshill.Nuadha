@@ -75,9 +75,6 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 
 - Adds contributing guidelines.
 - Adds samples.
-- Writes documents completely.
-  - [Signals](./Documentation/Signals.md)
-  - [Units](./Documentation/Units.md)
 - Writes document comments in codes completely.
   - [Unitization](./Documentation/Unitization.md)
   - [Signals](./Documentation/Signals.md)
@@ -86,14 +83,6 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 - Writes test codes for specification completely.
   - [Units](./Documentation/Units.md)
   - [Implementation](./Documentation/Implementation.md)
-- Renames definitions for [Unitization](./Documentation/Unitization.md).
-  - ex) HardwareHandler -> System
-  - ex) SoftwareHandler -> Device
-  - ex) InputDevice -> ???
-  - ex) OutputSystem -> ???
-- Renames definitions for [Units](./Documentation/Units.md).
-  - ex) IXXXXDetectionHardwareHandler -> ???
-  - ex) IXXXXDetectionSoftwareHandler -> ???
 
 ### Version 1.0.0 ~
 

@@ -1,6 +1,6 @@
 # Units
 
-Units defines some types of `HardwareHandler` and `SoftwareHandler`.
+Units defines some types of `Hardware` and `Software`.
 
 ## Dependencies
 
@@ -12,8 +12,18 @@ This module depends on
 
 ## Architecture
 
-No architecture because this module defines some types of `HardwareHandler` and `SoftwareHandler`.
+No architecture because this module defines some types of `Hardware` and `Software`.
 
 ## Implementation
 
-Now writing...
+This module defines
+
+- `Button`
+- `Trigger`
+- `Stick`
+- `PoseTracker`
+- `HandController`
+- `Headset`
+- `ThreePointTracker`
+
+as `Hardware` and `Software`, and events for above.
