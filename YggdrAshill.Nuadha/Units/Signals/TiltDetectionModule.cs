@@ -1,11 +1,11 @@
-﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltDetectionModule :
-        ITiltDetectionHardwareHandler,
-        ITiltDetectionSoftwareHandler,
+        ITiltDetectionSoftware,
+        ITiltDetectionHardware,
         IDisconnection
     {
         private readonly PulseDetectionModule left = new PulseDetectionModule();
@@ -16,27 +16,27 @@ namespace YggdrAshill.Nuadha
         
         private readonly PulseDetectionModule backward = new PulseDetectionModule();
 
-        #region ITiltDetectionInputHandler
+        #region ITiltDetectionSoftware
 
-        IDetectionHardwareHandler ITiltDetectionHardwareHandler.Left => left;
+        IDetectionSoftware ITiltDetectionSoftware.Left => left;
 
-        IDetectionHardwareHandler ITiltDetectionHardwareHandler.Right => right;
+        IDetectionSoftware ITiltDetectionSoftware.Right => right;
 
-        IDetectionHardwareHandler ITiltDetectionHardwareHandler.Forward => forward;
+        IDetectionSoftware ITiltDetectionSoftware.Forward => forward;
 
-        IDetectionHardwareHandler ITiltDetectionHardwareHandler.Backward => backward;
+        IDetectionSoftware ITiltDetectionSoftware.Backward => backward;
 
         #endregion
 
-        #region ITiltDetectionOutputHandler
+        #region ITiltDetectionHardware
 
-        IDetectionSoftwareHandler ITiltDetectionSoftwareHandler.Left => left;
+        IDetectionHardware ITiltDetectionHardware.Left => left;
 
-        IDetectionSoftwareHandler ITiltDetectionSoftwareHandler.Right => right;
+        IDetectionHardware ITiltDetectionHardware.Right => right;
 
-        IDetectionSoftwareHandler ITiltDetectionSoftwareHandler.Forward => forward;
+        IDetectionHardware ITiltDetectionHardware.Forward => forward;
 
-        IDetectionSoftwareHandler ITiltDetectionSoftwareHandler.Backward => backward;
+        IDetectionHardware ITiltDetectionHardware.Backward => backward;
 
         #endregion
 

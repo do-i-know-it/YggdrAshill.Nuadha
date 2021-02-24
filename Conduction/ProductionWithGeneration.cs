@@ -1,5 +1,5 @@
-﻿using System;
 using YggdrAshill.Nuadha.Signalization;
+using System;
 
 namespace YggdrAshill.Nuadha.Conduction
 {

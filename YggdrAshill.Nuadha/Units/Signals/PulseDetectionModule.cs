@@ -1,13 +1,12 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conversion;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class PulseDetectionModule :
-        IDetectionHardwareHandler,
-        IDetectionSoftwareHandler,
+        IDetectionSoftware,
+        IDetectionHardware,
         IDisconnection
     {
         private readonly Propagation<Pulse> hasEnabled = new Propagation<Pulse>();
@@ -18,27 +17,27 @@ namespace YggdrAshill.Nuadha
 
         private readonly Propagation<Pulse> isDisabled = new Propagation<Pulse>();
 
-        #region IPulseDetectionInputHandler
+        #region IDetectionSoftware
 
-        IConsumption<Pulse> IDetectionHardwareHandler.HasEnabled => hasEnabled;
+        IConsumption<Pulse> IDetectionSoftware.HasEnabled => hasEnabled;
 
-        IConsumption<Pulse> IDetectionHardwareHandler.IsEnabled => isEnabled;
+        IConsumption<Pulse> IDetectionSoftware.IsEnabled => isEnabled;
 
-        IConsumption<Pulse> IDetectionHardwareHandler.HasDisabled => hasDisabled;
+        IConsumption<Pulse> IDetectionSoftware.HasDisabled => hasDisabled;
 
-        IConsumption<Pulse> IDetectionHardwareHandler.IsDisabled => isDisabled;
+        IConsumption<Pulse> IDetectionSoftware.IsDisabled => isDisabled;
 
         #endregion
 
-        #region IPulseDetectionOutputHandler
+        #region IDetectionHardware
 
-        IConnection<Pulse> IDetectionSoftwareHandler.HasEnabled => hasEnabled;
+        IConnection<Pulse> IDetectionHardware.HasEnabled => hasEnabled;
 
-        IConnection<Pulse> IDetectionSoftwareHandler.IsEnabled => isEnabled;
+        IConnection<Pulse> IDetectionHardware.IsEnabled => isEnabled;
 
-        IConnection<Pulse> IDetectionSoftwareHandler.HasDisabled => hasDisabled;
+        IConnection<Pulse> IDetectionHardware.HasDisabled => hasDisabled;
 
-        IConnection<Pulse> IDetectionSoftwareHandler.IsDisabled => isDisabled;
+        IConnection<Pulse> IDetectionHardware.IsDisabled => isDisabled;
 
         #endregion
 

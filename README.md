@@ -1,14 +1,22 @@
-# YggdrAshill.Nuadha: A device system framework
+# YggdrAshill.Nuadha: a device system framework
 
- Nuadha provides isolation of devices from system.  
- This framework enables your application to isolate definitions and implementation for device system, so it supports your XR (VR/AR/MR) application to be convertible in any platforms or devices.  
- You can develop your application for
+Nuadha defines how to
 
-- Oculus store
-- Steam VR
-- anything else
+- send
+- receive
+- convert
 
-by implementing interfaces included in this framework for above.  
+data for I/O of applications for mainly XR (VR/AR/MR).  
+This framework is able to isolate definitions from implementations for specific platforms like below,
+
+- ex) [Unity](https://unity.com/ja)
+- ex) [Xamarin](https://docs.microsoft.com/ja-jp/xamarin/get-started/what-is-xamarin)
+- ex) [Windows Presentation Foundation (WPF)](https://docs.microsoft.com/ja-jp/visualstudio/designers/getting-started-with-wpf?view=vs-2019)
+
+or devices like below.
+
+- ex) [Oculus store](https://www.oculus.com/)
+- ex) [Steam VR](https://store.steampowered.com/steamvr)
 
 <!-- ## Specifications
 
@@ -24,18 +32,16 @@ Now writing... -->
 
 ## Dependencies
 
-Nuadha depends on
-
-- Now writing...
+Nuadha depends on .NET Standard 2.0.
 
 ## Installation
 
-In future, we will deploy dlls built to this repository, but now you should
+Developers should
 
-1. Clone this repository.
-1. Open cloned directory with Visual Studio.
-1. Build for any CPU as Debug or Release.
-1. Include built dlls to your project.
+1. Go to [Release pages](https://github.com/do-i-know-it/YggdrAshill.Nuadha/releases).
+1. Download the latest version.
+
+to use this framework.
 
 ## Usage
 
@@ -54,50 +60,36 @@ This framework also includes sub modules below.
 
 - [Signals](./Documentation/Signals.md)
 - [Units](./Documentation/Units.md)
-- [Implementation](./Documentation/Implementation.md)
 
 ### Implementation
 
-Nuadha provides no implementations for specific devices, runtimes, or game engines, because it only defines how to isolate device from system.
+Nuadha includes [Implementation](./Documentation/Implementation.md) to provide implementations and extensions for above.
 
 ## Known issues
 
-Nothing now.
+Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 
 ## Future works
 
 ### ~ Version 1.0.0
 
-- Sets up build pipeline
-  - auto testing
-  - auto building
-- Writes documents completely
-  - [Conversion](./Conversion.md)
-  - [Unitization](./Unitization.md)
-  - [Signals](./Signals.md)
-  - [Units](./Units.md)
-  - [Implementation](./Implementation.md)
-  - samples
-  - templates for Pull requests, issue, and contributing guidelines.
-- Writes test codes for specification completely
-  - [Units](./Units.md)
-  - [Implementation](./Implementation.md)
-- Renames definitions for [Unitization](./Unitization.md)
-  - ex) HardwareHandler -> System
-  - ex) SoftwareHandler -> Device
-  - ex) InputDevice -> ???
-  - ex) OutputSystem -> ???
-- Renames definitions for [Units](./Units.md)
-  - ex) IXXXXDetectionHardwareHandler -> ???
-  - ex) IXXXXDetectionSoftwareHandler -> ???
+- Adds contributing guidelines.
+- Adds samples.
+- Writes document comments in codes completely.
+  - [Signals](./Documentation/Signals.md)
+  - [Units](./Documentation/Units.md)
+  - [Implementation](./Documentation/Implementation.md)
+- Writes test codes for specification completely.
+  - [Units](./Documentation/Units.md)
+  - [Implementation](./Documentation/Implementation.md)
 
 ### Version 1.0.0 ~
 
-- Adds definitions for Signals
+- Adds definitions for Signals.
   - ex) Blink
   - ex) Pupil
   - ex) Vibration
-- Adds definitions for Units
+- Adds definitions for Units.
   - ex) Tablet
   - ex) Gamepad
   - ex) Eye tracker
@@ -106,9 +98,10 @@ Nothing now.
   - ex) Treadmill
 
 ## License
+
 Nuadha is under the MIT License, see [LICENSE](./LICENSE.txt).
 
 ## Remarks
 
-Nuadha is a part of the framework of YggdrAshill.  
-We will produce other frameworks for YggdrAshill.
+Nuadha is a part of YggdrAshill framework.
+Other frameworks will be produced soon for YggdrAshill.

@@ -1,32 +1,31 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerModule :
-        ITriggerSoftwareHandler,
-        ITriggerHardwareHandler,
+        ITriggerHardware,
+        ITriggerSoftware,
         IDisconnection
     {
         private readonly Propagation<Touch> touch = new Propagation<Touch>();
 
         private readonly Propagation<Pull> pull = new Propagation<Pull>();
 
-        #region ITriggerSoftwareHandler
+        #region ITriggerSoftware
 
-        IConnection<Touch> ITriggerSoftwareHandler.Touch => touch;
+        IConsumption<Touch> ITriggerSoftware.Touch => touch;
 
-        IConnection<Pull> ITriggerSoftwareHandler.Pull => pull;
+        IConsumption<Pull> ITriggerSoftware.Pull => pull;
 
         #endregion
 
-        #region ITriggerHardwareHandler
-        
-        IConsumption<Touch> ITriggerHardwareHandler.Touch => touch;
+        #region ITriggerHardware
 
-        IConsumption<Pull> ITriggerHardwareHandler.Pull => pull;
+        IConnection<Touch> ITriggerHardware.Touch => touch;
+
+        IConnection<Pull> ITriggerHardware.Pull => pull;
 
         #endregion
 

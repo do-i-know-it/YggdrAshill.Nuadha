@@ -1,10 +1,10 @@
-using YggdrAshill.Nuadha.Conduction;
-
 namespace YggdrAshill.Nuadha.Unitization
 {
-    public interface IHardware<THardwareHandler>
-        where THardwareHandler : IHardwareHandler
+    /// <summary>
+    /// Defines a role of device viewed from systems.
+    /// </summary>
+    public interface IHardware
     {
-        IDisconnection Connect(THardwareHandler handler);
+
     }
 }

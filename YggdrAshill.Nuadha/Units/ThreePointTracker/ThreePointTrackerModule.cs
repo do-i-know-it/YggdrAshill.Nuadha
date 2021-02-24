@@ -1,11 +1,11 @@
-﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class ThreePointTrackerModule :
-        IThreePointTrackerHardwareHandler,
-        IThreePointTrackerSoftwareHandler,
+        IThreePointTrackerSoftware,
+        IThreePointTrackerHardware,
         IDisconnection
     {
         private readonly PoseTrackerModule head = new PoseTrackerModule();
@@ -14,23 +14,23 @@ namespace YggdrAshill.Nuadha
         
         private readonly PoseTrackerModule rightHand = new PoseTrackerModule();
 
-        #region IThreePointTrackerHardwareHandler
+        #region IThreePointTrackerSoftware
 
-        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.Head => head;
+        IPoseTrackerSoftware IThreePointTrackerSoftware.Head => head;
 
-        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.LeftHand => leftHand;
+        IPoseTrackerSoftware IThreePointTrackerSoftware.LeftHand => leftHand;
 
-        IPoseTrackerHardwareHandler IThreePointTrackerHardwareHandler.RightHand => rightHand;
+        IPoseTrackerSoftware IThreePointTrackerSoftware.RightHand => rightHand;
 
         #endregion
 
-        #region IThreePointTrackerSoftwareHandler
+        #region IThreePointTrackerHardware
 
-        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.Head => head;
+        IPoseTrackerHardware IThreePointTrackerHardware.Head => head;
 
-        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.LeftHand => leftHand;
+        IPoseTrackerHardware IThreePointTrackerHardware.LeftHand => leftHand;
 
-        IPoseTrackerSoftwareHandler IThreePointTrackerSoftwareHandler.RightHand => rightHand;
+        IPoseTrackerHardware IThreePointTrackerHardware.RightHand => rightHand;
 
         #endregion
 

@@ -1,30 +1,30 @@
-﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDetectionModule :
-        ITriggerDetectionHardwareHandler,
-        ITriggerDetectionSoftwareHandler,
+        ITriggerDetectionSoftware,
+        ITriggerDetectionHardware,
         IDisconnection
     {
         private readonly PulseDetectionModule touch = new PulseDetectionModule();
 
         private readonly PulseDetectionModule pull = new PulseDetectionModule();
 
-        #region ITriggerDetectionHardwareHandler
+        #region ITriggerDetectionSoftware
 
-        IDetectionHardwareHandler ITriggerDetectionHardwareHandler.Touch => touch;
+        IDetectionSoftware ITriggerDetectionSoftware.Touch => touch;
 
-        IDetectionHardwareHandler ITriggerDetectionHardwareHandler.Pull => pull;
+        IDetectionSoftware ITriggerDetectionSoftware.Pull => pull;
 
         #endregion
 
-        #region ITriggerDetectionSoftwareHandler
+        #region ITriggerDetectionHardware
 
-        IDetectionSoftwareHandler ITriggerDetectionSoftwareHandler.Touch => touch;
+        IDetectionHardware ITriggerDetectionHardware.Touch => touch;
 
-        IDetectionSoftwareHandler ITriggerDetectionSoftwareHandler.Pull => pull;
+        IDetectionHardware ITriggerDetectionHardware.Pull => pull;
 
         #endregion
 

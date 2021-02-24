@@ -1,11 +1,12 @@
-using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
-    public interface IStickConfiguration :
-        IButtonConfiguration
+    public interface IStickConfiguration
     {
-        IGeneration<Tilt> Tilt { get; }
+        IProduction<Touch> Touch { get; }
+
+        IProduction<Tilt> Tilt { get; }
     }
 }

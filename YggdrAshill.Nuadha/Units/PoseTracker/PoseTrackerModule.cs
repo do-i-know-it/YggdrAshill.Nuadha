@@ -1,32 +1,31 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTrackerModule :
-        IPoseTrackerSoftwareHandler,
-        IPoseTrackerHardwareHandler,
+        IPoseTrackerSoftware,
+        IPoseTrackerHardware,
         IDisconnection
     {
         private readonly Propagation<Position> position = new Propagation<Position>();
 
         private readonly Propagation<Rotation> rotation = new Propagation<Rotation>();
 
-        #region IPoseTrackerSoftwareHandler
+        #region IPoseTrackerSoftware
 
-        IConnection<Position> IPoseTrackerSoftwareHandler.Position => position;
+        IConsumption<Position> IPoseTrackerSoftware.Position => position;
 
-        IConnection<Rotation> IPoseTrackerSoftwareHandler.Rotation => rotation;
+        IConsumption<Rotation> IPoseTrackerSoftware.Rotation => rotation;
 
         #endregion
 
-        #region IPoseTrackerHardwareHandler
+        #region IPoseTrackerHardware
 
-        IConsumption<Position> IPoseTrackerHardwareHandler.Position => position;
+        IConnection<Position> IPoseTrackerHardware.Position => position;
 
-        IConsumption<Rotation> IPoseTrackerHardwareHandler.Rotation => rotation;
+        IConnection<Rotation> IPoseTrackerHardware.Rotation => rotation;
 
         #endregion
 

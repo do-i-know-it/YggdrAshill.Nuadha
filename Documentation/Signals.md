@@ -1,13 +1,13 @@
 # Signals
 
-This module defines some types of `Signal`.
+Signals defines some types of `Signal`.
 
 ## Dependencies
 
 This module depends on
 
 - [Signalization](./Signalization.md).
-- [Conduction](./Conduction.md).
+- [Conversion](./Conversion.md).
 
 ## Architecture
 
@@ -15,4 +15,15 @@ No architecture because this module defines some types of `Signal`.
 
 ## Implementation
 
-Now writing...
+This module defines
+
+- `Touch`
+- `Push`
+- `Pull`
+- `Tilt`
+- `Position`
+- `Rotation`
+- `Direction`
+- `Angle`
+
+as `Signal` and conversions for above.

@@ -1,32 +1,31 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonModule :
-        IButtonSoftwareHandler,
-        IButtonHardwareHandler,
+        IButtonSoftware,
+        IButtonHardware,
         IDisconnection
     {
         private readonly Propagation<Touch> touch = new Propagation<Touch>();
 
         private readonly Propagation<Push> push = new Propagation<Push>();
 
-        #region IButtonSoftwareHandler
+        #region IButtonSoftware
 
-        IConnection<Touch> IButtonSoftwareHandler.Touch => touch;
+        IConsumption<Touch> IButtonSoftware.Touch => touch;
 
-        IConnection<Push> IButtonSoftwareHandler.Push => push;
+        IConsumption<Push> IButtonSoftware.Push => push;
 
         #endregion
 
-        #region IButtonHardwareHandler
+        #region IButtonHardware
 
-        IConsumption<Touch> IButtonHardwareHandler.Touch => touch;
+        IConnection<Touch> IButtonHardware.Touch => touch;
 
-        IConsumption<Push> IButtonHardwareHandler.Push => push;
+        IConnection<Push> IButtonHardware.Push => push;
 
         #endregion
 

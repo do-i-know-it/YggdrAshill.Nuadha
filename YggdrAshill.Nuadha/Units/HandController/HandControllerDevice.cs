@@ -1,13 +1,11 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerDevice :
-        IInputDevice<IHandControllerHardwareHandler>
+        IInputDevice<IHandControllerSoftware>
     {
         private readonly IHandControllerConfiguration configuration;
 
@@ -23,28 +21,27 @@ namespace YggdrAshill.Nuadha
             this.configuration = configuration;
         }
 
-        #region IHardware
+        #region IDevice
 
-        private IHandControllerSoftwareHandler SoftwareHandler => module;
-        public IDisconnection Connect(IHandControllerHardwareHandler handler)
+        private IHandControllerHardware Hardware => module;
+        public IDisconnection Connect(IHandControllerSoftware software)
         {
-            if (handler == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var position = SoftwareHandler.PoseTracker.Position.Connect(handler.PoseTracker.Position);
-            var rotation = SoftwareHandler.PoseTracker.Rotation.Connect(handler.PoseTracker.Rotation);
+            var position = Hardware.PoseTracker.Position.Connect(software.PoseTracker.Position);
+            var rotation = Hardware.PoseTracker.Rotation.Connect(software.PoseTracker.Rotation);
 
-            var thumbStickTouch = SoftwareHandler.ThumbStick.Touch.Connect(handler.ThumbStick.Touch);
-            var thumbStickPush = SoftwareHandler.ThumbStick.Push.Connect(handler.ThumbStick.Push);
-            var thumbStickTilt = SoftwareHandler.ThumbStick.Tilt.Connect(handler.ThumbStick.Tilt);
+            var thumbStickTouch = Hardware.ThumbStick.Touch.Connect(software.ThumbStick.Touch);
+            var thumbStickTilt = Hardware.ThumbStick.Tilt.Connect(software.ThumbStick.Tilt);
 
-            var fingerTriggerTouch = SoftwareHandler.FingerTrigger.Touch.Connect(handler.FingerTrigger.Touch);
-            var fingerTriggerPull = SoftwareHandler.FingerTrigger.Pull.Connect(handler.FingerTrigger.Pull);
+            var fingerTriggerTouch = Hardware.FingerTrigger.Touch.Connect(software.FingerTrigger.Touch);
+            var fingerTriggerPull = Hardware.FingerTrigger.Pull.Connect(software.FingerTrigger.Pull);
 
-            var handTriggerTouch = SoftwareHandler.HandTrigger.Touch.Connect(handler.HandTrigger.Touch);
-            var handTriggerPull = SoftwareHandler.HandTrigger.Pull.Connect(handler.HandTrigger.Pull);
+            var handTriggerTouch = Hardware.HandTrigger.Touch.Connect(software.HandTrigger.Touch);
+            var handTriggerPull = Hardware.HandTrigger.Pull.Connect(software.HandTrigger.Pull);
 
             return new Disconnection(() =>
             {
@@ -52,7 +49,6 @@ namespace YggdrAshill.Nuadha
                 rotation.Disconnect();
 
                 thumbStickTouch.Disconnect();
-                thumbStickPush.Disconnect();
                 thumbStickTilt.Disconnect();
 
                 fingerTriggerTouch.Disconnect();
@@ -76,21 +72,20 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IHandControllerHardwareHandler HardwareHandler => module;
+        private IHandControllerSoftware Software => module;
         public IEmission Ignite()
         {
-            var position = configuration.PoseTracker.Position.Produce(HardwareHandler.PoseTracker.Position);
-            var rotation = configuration.PoseTracker.Rotation.Produce(HardwareHandler.PoseTracker.Rotation);
+            var position = configuration.PoseTracker.Position.Produce(Software.PoseTracker.Position);
+            var rotation = configuration.PoseTracker.Rotation.Produce(Software.PoseTracker.Rotation);
 
-            var thumbStickTouch = configuration.ThumbStick.Touch.Produce(HardwareHandler.ThumbStick.Touch);
-            var thumbStickPush = configuration.ThumbStick.Push.Produce(HardwareHandler.ThumbStick.Push);
-            var thumbStickTilt = configuration.ThumbStick.Tilt.Produce(HardwareHandler.ThumbStick.Tilt);
+            var thumbStickTouch = configuration.ThumbStick.Touch.Produce(Software.ThumbStick.Touch);
+            var thumbStickTilt = configuration.ThumbStick.Tilt.Produce(Software.ThumbStick.Tilt);
 
-            var fingerTriggerTouch = configuration.FingerTrigger.Touch.Produce(HardwareHandler.FingerTrigger.Touch);
-            var fingerTriggerPull = configuration.FingerTrigger.Pull.Produce(HardwareHandler.FingerTrigger.Pull);
+            var fingerTriggerTouch = configuration.FingerTrigger.Touch.Produce(Software.FingerTrigger.Touch);
+            var fingerTriggerPull = configuration.FingerTrigger.Pull.Produce(Software.FingerTrigger.Pull);
 
-            var handTriggerTouch = configuration.HandTrigger.Touch.Produce(HardwareHandler.HandTrigger.Touch);
-            var handTriggerPull = configuration.HandTrigger.Pull.Produce(HardwareHandler.HandTrigger.Pull);
+            var handTriggerTouch = configuration.HandTrigger.Touch.Produce(Software.HandTrigger.Touch);
+            var handTriggerPull = configuration.HandTrigger.Pull.Produce(Software.HandTrigger.Pull);
 
             return new Emission(() =>
             {
@@ -98,7 +93,6 @@ namespace YggdrAshill.Nuadha
                 rotation.Emit();
 
                 thumbStickTouch.Emit();
-                thumbStickPush.Emit();
                 thumbStickTilt.Emit();
 
                 fingerTriggerTouch.Emit();

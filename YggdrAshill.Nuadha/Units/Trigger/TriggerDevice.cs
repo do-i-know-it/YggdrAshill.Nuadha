@@ -1,13 +1,11 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDevice :
-        IInputDevice<ITriggerHardwareHandler>
+        IInputDevice<ITriggerSoftware>
     {
         private readonly ITriggerConfiguration configuration;
 
@@ -23,19 +21,19 @@ namespace YggdrAshill.Nuadha
             this.configuration = configuration;
         }
 
-        #region IHardware
+        #region IDevice
 
-        private ITriggerSoftwareHandler SoftwareHandler => module;
-        public IDisconnection Connect(ITriggerHardwareHandler handler)
+        private ITriggerHardware Hardware => module;
+        public IDisconnection Connect(ITriggerSoftware software)
         {
-            if (handler == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var touch = SoftwareHandler.Touch.Connect(handler.Touch);
+            var touch = Hardware.Touch.Connect(software.Touch);
 
-            var pull = SoftwareHandler.Pull.Connect(handler.Pull);
+            var pull = Hardware.Pull.Connect(software.Pull);
 
             return new Disconnection(() =>
             {
@@ -58,12 +56,12 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private ITriggerHardwareHandler HardwareHandler => module;
+        private ITriggerSoftware Software => module;
         public IEmission Ignite()
         {
-            var touch = configuration.Touch.Produce(HardwareHandler.Touch);
+            var touch = configuration.Touch.Produce(Software.Touch);
 
-            var pull = configuration.Pull.Produce(HardwareHandler.Pull);
+            var pull = configuration.Pull.Produce(Software.Pull);
 
             return new Emission(() =>
             {

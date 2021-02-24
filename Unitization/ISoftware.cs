@@ -1,10 +1,10 @@
-using YggdrAshill.Nuadha.Conduction;
-
 namespace YggdrAshill.Nuadha.Unitization
 {
-    public interface ISoftware<TSoftwareHandler>
-        where TSoftwareHandler : ISoftwareHandler
+    /// <summary>
+    /// Defines a role of system viewed from devices.
+    /// </summary>
+    public interface ISoftware
     {
-        IDisconnection Connect(TSoftwareHandler handler);
+
     }
 }

@@ -1,6 +1,11 @@
 # Signalization
 
-This module defines how you send and receive data for I/O.
+Signalization defines how to
+
+- send
+- receive
+
+data for I/O in applications.
 
 ## Dependencies
 
@@ -12,15 +17,28 @@ Nothing.
 
 | Word | Abstraction |
 |:-----------|:------------|
-| Signal | Data to send. |
+| Signal | Data for I/O. |
+| Consumption | Receives `Signal`. |
+| Production | Sends `Signal` to `Consumption`. |
 | Emission | Token to send `Signal`. |
-| Consumption | Receiver of `Signal`. |
-| Production | Sender of `Signal`. |
+| Connection | Collects `Consumption`. |
+| Disconnection | Token to disconnect. |
+| Propagation | Distributes `Signal`. |
 
-`Consumption` consumes `Signal` for interaction between your system and users of your system.  
-`Production` produces `Emission` token to send `Signal` to `Consumption`.  
+`Consumption` receives `Signal` for interaction between devices and systems.
+`Production` produces `Emission` token that sends `Signal` to `Consumption`.
 Every time `Emission` token is executed, generated `Signal` is sent to `Consumption`.
+
+`Connection` collects `Consumption` to distribute `Signal` sent when `Emission` is executed.
+When `Connection` connects to `Consumption`, it provides `Disconnection` token to disconnect `Consumption` from `Connection`.
+`Propagation` is `Consumption` and `Connection`.
+When `Propagation` consumes `Signal`, it distributes `Signal` to each connected `Consumption`.
 
 ## Implementation
 
-Nothing because this module only defines how you send and receive `Signal`.
+Nothing because this module only defines how to
+
+- send
+- receive
+
+`Signal`.

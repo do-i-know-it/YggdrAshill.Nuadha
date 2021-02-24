@@ -1,11 +1,11 @@
-using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerModule :
-        IHandControllerSoftwareHandler,
-        IHandControllerHardwareHandler,
+        IHandControllerSoftware,
+        IHandControllerHardware,
         IDisconnection
     {
         private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
@@ -16,27 +16,27 @@ namespace YggdrAshill.Nuadha
 
         private readonly TriggerModule handTrigger = new TriggerModule();
 
-        #region IHandControllerSoftwareHandler
+        #region IHandControllerSoftware
 
-        IPoseTrackerSoftwareHandler IHandControllerSoftwareHandler.PoseTracker => poseTracker;
+        IPoseTrackerSoftware IHandControllerSoftware.PoseTracker => poseTracker;
 
-        IStickSoftwareHandler IHandControllerSoftwareHandler.ThumbStick => thumbStick;
+        IStickSoftware IHandControllerSoftware.ThumbStick => thumbStick;
 
-        ITriggerSoftwareHandler IHandControllerSoftwareHandler.FingerTrigger => fingerTrigger;
+        ITriggerSoftware IHandControllerSoftware.FingerTrigger => fingerTrigger;
 
-        ITriggerSoftwareHandler IHandControllerSoftwareHandler.HandTrigger => handTrigger;
+        ITriggerSoftware IHandControllerSoftware.HandTrigger => handTrigger;
 
         #endregion
 
-        #region IHandControllerHardwareHandler
-        
-        IPoseTrackerHardwareHandler IHandControllerHardwareHandler.PoseTracker => poseTracker;
+        #region IHandControllerHardware
 
-        IStickHardwareHandler IHandControllerHardwareHandler.ThumbStick => thumbStick;
+        IPoseTrackerHardware IHandControllerHardware.PoseTracker => poseTracker;
 
-        ITriggerHardwareHandler IHandControllerHardwareHandler.FingerTrigger => fingerTrigger;
+        IStickHardware IHandControllerHardware.ThumbStick => thumbStick;
 
-        ITriggerHardwareHandler IHandControllerHardwareHandler.HandTrigger => handTrigger;
+        ITriggerHardware IHandControllerHardware.FingerTrigger => fingerTrigger;
+
+        ITriggerHardware IHandControllerHardware.HandTrigger => handTrigger;
 
         #endregion
 

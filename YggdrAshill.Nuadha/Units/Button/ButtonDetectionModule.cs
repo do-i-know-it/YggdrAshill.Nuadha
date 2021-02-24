@@ -1,30 +1,30 @@
-﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonDetectionModule :
-        IButtonDetectionHardwareHandler,
-        IButtonDetectionSoftwareHandler,
+        IButtonDetectionSoftware,
+        IButtonDetectionHardware,
         IDisconnection
     {
         private readonly PulseDetectionModule touch = new PulseDetectionModule();
 
         private readonly PulseDetectionModule push = new PulseDetectionModule();
 
-        #region IButtonDetectionHardwareHandler
+        #region IButtonDetectionSoftware
 
-        IDetectionHardwareHandler IButtonDetectionHardwareHandler.Touch => touch;
+        IDetectionSoftware IButtonDetectionSoftware.Touch => touch;
 
-        IDetectionHardwareHandler IButtonDetectionHardwareHandler.Push => push;
+        IDetectionSoftware IButtonDetectionSoftware.Push => push;
 
         #endregion
 
-        #region IButtonDetectionSoftwareHandler
+        #region IButtonDetectionHardware
 
-        IDetectionSoftwareHandler IButtonDetectionSoftwareHandler.Touch => touch;
+        IDetectionHardware IButtonDetectionHardware.Touch => touch;
 
-        IDetectionSoftwareHandler IButtonDetectionSoftwareHandler.Push => push;
+        IDetectionHardware IButtonDetectionHardware.Push => push;
 
         #endregion
 

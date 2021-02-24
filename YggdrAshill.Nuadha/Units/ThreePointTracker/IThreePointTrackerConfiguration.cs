@@ -1,4 +1,4 @@
-﻿namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha
 {
     public interface IThreePointTrackerConfiguration
     {

@@ -1,13 +1,11 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTrackerDevice :
-        IInputDevice<IPoseTrackerHardwareHandler>
+        IInputDevice<IPoseTrackerSoftware>
     {
         private readonly IPoseTrackerConfiguration configuration;
 
@@ -23,19 +21,19 @@ namespace YggdrAshill.Nuadha
             this.configuration = configuration;
         }
 
-        #region IHardware
+        #region IDevice
 
-        private IPoseTrackerSoftwareHandler SoftwareHandler => module;
-        public IDisconnection Connect(IPoseTrackerHardwareHandler handler)
+        private IPoseTrackerHardware Hardware => module;
+        public IDisconnection Connect(IPoseTrackerSoftware software)
         {
-            if (handler == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var position = SoftwareHandler.Position.Connect(handler.Position);
+            var position = Hardware.Position.Connect(software.Position);
 
-            var rotation = SoftwareHandler.Rotation.Connect(handler.Rotation);
+            var rotation = Hardware.Rotation.Connect(software.Rotation);
 
             return new Disconnection(() =>
             {
@@ -58,12 +56,12 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IPoseTrackerHardwareHandler HardwareHandler => module;
+        private IPoseTrackerSoftware Software => module;
         public IEmission Ignite()
         {
-            var position = configuration.Position.Produce(HardwareHandler.Position);
+            var position = configuration.Position.Produce(Software.Position);
 
-            var rotation = configuration.Rotation.Produce(HardwareHandler.Rotation);
+            var rotation = configuration.Rotation.Produce(Software.Rotation);
 
             return new Emission(() =>
             {
