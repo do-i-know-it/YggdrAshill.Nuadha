@@ -1,10 +1,7 @@
-using YggdrAshill.Nuadha.Signalization;
-
 namespace YggdrAshill.Nuadha.Unitization
 {
-    public interface ISoftware<TDevice>
-        where TDevice : IDevice
+    public interface ISoftware
     {
-        IDisconnection Connect(TDevice device);
+
     }
 }

@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltDetectionModule :
-        ITiltDetectionSystem,
-        ITiltDetectionDevice,
+        ITiltDetectionSoftware,
+        ITiltDetectionHardware,
         IDisconnection
     {
         private readonly PulseDetectionModule left = new PulseDetectionModule();
@@ -16,27 +16,27 @@ namespace YggdrAshill.Nuadha
         
         private readonly PulseDetectionModule backward = new PulseDetectionModule();
 
-        #region ITiltDetectionSystem
+        #region ITiltDetectionSoftware
 
-        IDetectionSystem ITiltDetectionSystem.Left => left;
+        IDetectionSoftware ITiltDetectionSoftware.Left => left;
 
-        IDetectionSystem ITiltDetectionSystem.Right => right;
+        IDetectionSoftware ITiltDetectionSoftware.Right => right;
 
-        IDetectionSystem ITiltDetectionSystem.Forward => forward;
+        IDetectionSoftware ITiltDetectionSoftware.Forward => forward;
 
-        IDetectionSystem ITiltDetectionSystem.Backward => backward;
+        IDetectionSoftware ITiltDetectionSoftware.Backward => backward;
 
         #endregion
 
-        #region ITiltDetectionDevice
+        #region ITiltDetectionHardware
 
-        IDetectionDevice ITiltDetectionDevice.Left => left;
+        IDetectionHardware ITiltDetectionHardware.Left => left;
 
-        IDetectionDevice ITiltDetectionDevice.Right => right;
+        IDetectionHardware ITiltDetectionHardware.Right => right;
 
-        IDetectionDevice ITiltDetectionDevice.Forward => forward;
+        IDetectionHardware ITiltDetectionHardware.Forward => forward;
 
-        IDetectionDevice ITiltDetectionDevice.Backward => backward;
+        IDetectionHardware ITiltDetectionHardware.Backward => backward;
 
         #endregion
 

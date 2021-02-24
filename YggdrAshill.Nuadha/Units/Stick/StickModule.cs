@@ -5,27 +5,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickModule :
-        IStickDevice,
-        IStickSystem,
+        IStickSoftware,
+        IStickHardware,
         IDisconnection
     {
         private readonly Propagation<Touch> touch = new Propagation<Touch>();
 
         private readonly Propagation<Tilt> tilt = new Propagation<Tilt>();
 
-        #region IStickDevice
+        #region IStickSoftware
 
-        IConnection<Touch> IStickDevice.Touch => touch;
+        IConsumption<Touch> IStickSoftware.Touch => touch;
 
-        IConnection<Tilt> IStickDevice.Tilt => tilt;
+        IConsumption<Tilt> IStickSoftware.Tilt => tilt;
 
         #endregion
 
-        #region IStickSystem
+        #region IStickHardware
 
-        IConsumption<Touch> IStickSystem.Touch => touch;
+        IConnection<Touch> IStickHardware.Touch => touch;
 
-        IConsumption<Tilt> IStickSystem.Tilt => tilt;
+        IConnection<Tilt> IStickHardware.Tilt => tilt;
 
         #endregion
 

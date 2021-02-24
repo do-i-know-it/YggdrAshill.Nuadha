@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ThreePointTrackerCorrectionDevice :
-        IHardware<IThreePointTrackerSystem>
+        IDevice<IThreePointTrackerSoftware>
     {
         private readonly PoseTrackerCorrectionDevice head;
 
@@ -15,42 +15,42 @@ namespace YggdrAshill.Nuadha
         private readonly PoseTrackerCorrectionDevice rightHand;
 
         public ThreePointTrackerCorrectionDevice(
-            IThreePointTrackerDevice device, 
+            IThreePointTrackerHardware hardware, 
             IPoseTrackerCalculation calculation, 
-            IThreePointTrackerConfiguration configuration)
+            IThreePointTrackerCalibration calibration)
         {
-            if (device == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(device));
+                throw new ArgumentNullException(nameof(hardware));
             }
             if (calculation == null)
             {
                 throw new ArgumentNullException(nameof(calculation));
             }
-            if (configuration == null)
+            if (calibration == null)
             {
-                throw new ArgumentNullException(nameof(configuration));
+                throw new ArgumentNullException(nameof(calibration));
             }
 
-            head = new PoseTrackerCorrectionDevice(device.Head, calculation, configuration.Head);
+            head = new PoseTrackerCorrectionDevice(hardware.Head, calculation, calibration.Head);
 
-            leftHand = new PoseTrackerCorrectionDevice(device.LeftHand, calculation, configuration.LeftHand);
+            leftHand = new PoseTrackerCorrectionDevice(hardware.LeftHand, calculation, calibration.LeftHand);
             
-            rightHand = new PoseTrackerCorrectionDevice(device.RightHand, calculation, configuration.RightHand);
+            rightHand = new PoseTrackerCorrectionDevice(hardware.RightHand, calculation, calibration.RightHand);
         }
 
-        public IDisconnection Connect(IThreePointTrackerSystem system)
+        public IDisconnection Connect(IThreePointTrackerSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var head = this.head.Connect(system.Head);
+            var head = this.head.Connect(software.Head);
 
-            var leftHand = this.leftHand.Connect(system.LeftHand);
+            var leftHand = this.leftHand.Connect(software.LeftHand);
             
-            var rightHand = this.rightHand.Connect(system.RightHand);
+            var rightHand = this.rightHand.Connect(software.RightHand);
 
             return new Disconnection(() =>
             {

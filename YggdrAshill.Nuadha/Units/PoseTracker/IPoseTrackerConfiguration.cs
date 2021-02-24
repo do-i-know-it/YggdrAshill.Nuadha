@@ -1,12 +1,12 @@
-using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
     public interface IPoseTrackerConfiguration
     {
-        IGeneration<Position> Position { get; }
+        IProduction<Position> Position { get; }
 
-        IGeneration<Rotation> Rotation { get; }
+        IProduction<Rotation> Rotation { get; }
     }
 }

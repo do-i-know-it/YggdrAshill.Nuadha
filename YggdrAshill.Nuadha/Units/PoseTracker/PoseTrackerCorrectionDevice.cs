@@ -8,33 +8,33 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTrackerCorrectionDevice :
-        IHardware<IPoseTrackerSystem>
+        IDevice<IPoseTrackerSoftware>
     {
         private readonly IConnection<Position> position;
 
         private readonly IConnection<Rotation> rotation;
 
-        public PoseTrackerCorrectionDevice(IPoseTrackerDevice device, IPoseTrackerCalculation calculation, IPoseTrackerConfiguration configuration)
+        public PoseTrackerCorrectionDevice(IPoseTrackerHardware hardware, IPoseTrackerCalculation calculation, IPoseTrackerCalibration calibration)
         {
-            if (device == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(device));
+                throw new ArgumentNullException(nameof(hardware));
             }
             if (calculation == null)
             {
                 throw new ArgumentNullException(nameof(calculation));
             }
-            if (configuration == null)
+            if (calibration == null)
             {
-                throw new ArgumentNullException(nameof(configuration));
+                throw new ArgumentNullException(nameof(calibration));
             }
 
-            position = device.Position.Correct(calculation.Position, configuration.Position);
+            position = hardware.Position.Correct(calculation.Position, calibration.Position);
 
-            rotation = device.Rotation.Correct(calculation.Rotation, configuration.Rotation);
+            rotation = hardware.Rotation.Correct(calculation.Rotation, calibration.Rotation);
         }
 
-        public IDisconnection Connect(IPoseTrackerSystem system)
+        public IDisconnection Connect(IPoseTrackerSoftware system)
         {
             if (system == null)
             {

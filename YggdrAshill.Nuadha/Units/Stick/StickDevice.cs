@@ -1,12 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickDevice :
-        IInputHardware<IStickSystem>
+        IInputDevice<IStickSoftware>
     {
         private readonly IStickConfiguration configuration;
 
@@ -24,17 +23,17 @@ namespace YggdrAshill.Nuadha
 
         #region IHardware
 
-        private IStickDevice Device => module;
-        public IDisconnection Connect(IStickSystem system)
+        private IStickHardware Hardware => module;
+        public IDisconnection Connect(IStickSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var touch = Device.Touch.Connect(system.Touch);
+            var touch = Hardware.Touch.Connect(software.Touch);
 
-            var tilt = Device.Tilt.Connect(system.Tilt);
+            var tilt = Hardware.Tilt.Connect(software.Tilt);
 
             return new Disconnection(() =>
             {
@@ -57,12 +56,12 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IStickSystem System => module;
+        private IStickSoftware Software => module;
         public IEmission Ignite()
         {
-            var touch = configuration.Touch.Produce(System.Touch);
+            var touch = configuration.Touch.Produce(Software.Touch);
 
-            var tilt = configuration.Tilt.Produce(System.Tilt);
+            var tilt = configuration.Tilt.Produce(Software.Tilt);
 
             return new Emission(() =>
             {

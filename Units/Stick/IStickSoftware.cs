@@ -4,11 +4,11 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IHeadsetDevice :
-        IDevice
+    public interface IStickSoftware :
+        ISoftware
     {
-        IConnection<Direction> Direction { get; }
-        
-        IPoseTrackerDevice PoseTracker { get; }
+        IConsumption<Touch> Touch { get; }
+
+        IConsumption<Tilt> Tilt { get; }
     }
 }

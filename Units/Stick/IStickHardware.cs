@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IStickDevice :
-        IDevice
+    public interface IStickHardware :
+        IHardware
     {
         IConnection<Touch> Touch { get; }
 

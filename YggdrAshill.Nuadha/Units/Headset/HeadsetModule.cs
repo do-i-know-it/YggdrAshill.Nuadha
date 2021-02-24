@@ -5,27 +5,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HeadsetModule :
-        IHeadsetDevice,
-        IHeadsetSystem,
+        IHeadsetSoftware,
+        IHeadsetHardware,
         IDisconnection
     {
         private readonly Propagation<Direction> direction = new Propagation<Direction>();
 
         private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
 
-        #region IHeadsetSystem
+        #region IHeadsetSoftware
 
-        IConsumption<Direction> IHeadsetSystem.Direction => direction;
+        IConsumption<Direction> IHeadsetSoftware.Direction => direction;
 
-        IPoseTrackerSystem IHeadsetSystem.PoseTracker => poseTracker;
+        IPoseTrackerSoftware IHeadsetSoftware.PoseTracker => poseTracker;
 
         #endregion
 
-        #region IHeadsetDevice
+        #region IHeadsetHardware
 
-        IConnection<Direction> IHeadsetDevice.Direction => direction;
+        IConnection<Direction> IHeadsetHardware.Direction => direction;
 
-        IPoseTrackerDevice IHeadsetDevice.PoseTracker => poseTracker;
+        IPoseTrackerHardware IHeadsetHardware.PoseTracker => poseTracker;
 
         #endregion
 

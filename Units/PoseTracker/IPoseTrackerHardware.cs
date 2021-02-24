@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IPoseTrackerDevice :
-        IDevice
+    public interface IPoseTrackerHardware :
+        IHardware
     {
         IConnection<Position> Position { get; }
 

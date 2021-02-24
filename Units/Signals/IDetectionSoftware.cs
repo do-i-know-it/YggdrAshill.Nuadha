@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Unitization;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IDetectionSystem :
-        ISystem
+    public interface IDetectionSoftware :
+        ISoftware
     {
         IConsumption<Pulse> HasEnabled { get; }
 

@@ -7,38 +7,38 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerDetectionDevice :
-        IHardware<ITriggerDetectionSystem>
+        IDevice<ITriggerDetectionSoftware>
     {
         private readonly TouchDetectionDevice touch;
 
         private readonly PullDetectionDevice pull;
 
-        public TriggerDetectionDevice(ITriggerDevice device, HysteresisThreshold threshold)
+        public TriggerDetectionDevice(ITriggerHardware hardware, HysteresisThreshold threshold)
         {
-            if (device == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(device));
+                throw new ArgumentNullException(nameof(hardware));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            touch = new TouchDetectionDevice(device.Touch);
+            touch = new TouchDetectionDevice(hardware.Touch);
 
-            pull = new PullDetectionDevice(device.Pull, threshold);
+            pull = new PullDetectionDevice(hardware.Pull, threshold);
         }
 
-        public IDisconnection Connect(ITriggerDetectionSystem system)
+        public IDisconnection Connect(ITriggerDetectionSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var touch = this.touch.Connect(system.Touch);
+            var touch = this.touch.Connect(software.Touch);
 
-            var pull = this.pull.Connect(system.Pull);
+            var pull = this.pull.Connect(software.Pull);
 
             return new Disconnection(() =>
             {

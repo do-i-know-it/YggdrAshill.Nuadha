@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerDetectionModule :
-        IHandControllerDetectionSystem,
-        IHandControllerDetectionDevice,
+        IHandControllerDetectionSoftware,
+        IHandControllerDetectionHardware,
         IDisconnection
     {
         private readonly StickDetectionModule thumbStick = new StickDetectionModule();
@@ -14,23 +14,23 @@ namespace YggdrAshill.Nuadha
 
         private readonly TriggerDetectionModule handTrigger = new TriggerDetectionModule();
 
-        #region IHandControllerDetectionSystem
+        #region IHandControllerDetectionSoftware
 
-        IStickDetectionSystem IHandControllerDetectionSystem.ThumbStick => thumbStick;
+        IStickDetectionSoftware IHandControllerDetectionSoftware.ThumbStick => thumbStick;
 
-        ITriggerDetectionSystem IHandControllerDetectionSystem.FingerTrigger => fingerTrigger;
+        ITriggerDetectionSoftware IHandControllerDetectionSoftware.FingerTrigger => fingerTrigger;
 
-        ITriggerDetectionSystem IHandControllerDetectionSystem.HandTrigger => handTrigger;
+        ITriggerDetectionSoftware IHandControllerDetectionSoftware.HandTrigger => handTrigger;
 
         #endregion
 
-        #region IHandControllerDetectionDevice
+        #region IHandControllerDetectionHardware
 
-        IStickDetectionDevice IHandControllerDetectionDevice.ThumbStick => thumbStick;
+        IStickDetectionHardware IHandControllerDetectionHardware.ThumbStick => thumbStick;
 
-        ITriggerDetectionDevice IHandControllerDetectionDevice.FingerTrigger => fingerTrigger;
+        ITriggerDetectionHardware IHandControllerDetectionHardware.FingerTrigger => fingerTrigger;
 
-        ITriggerDetectionDevice IHandControllerDetectionDevice.HandTrigger => handTrigger;
+        ITriggerDetectionHardware IHandControllerDetectionHardware.HandTrigger => handTrigger;
 
         #endregion
 

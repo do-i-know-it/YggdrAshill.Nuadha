@@ -1,12 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class HeadsetDevice :
-        IInputHardware<IHeadsetSystem>
+        IInputDevice<IHeadsetSoftware>
     {
         private readonly IHeadsetConfiguration configuration;
 
@@ -22,20 +21,20 @@ namespace YggdrAshill.Nuadha
             this.configuration = configuration;
         }
 
-        #region IHardware
+        #region IDevice
 
-        private IHeadsetDevice Device => module;
-        public IDisconnection Connect(IHeadsetSystem system)
+        private IHeadsetHardware Hardware => module;
+        public IDisconnection Connect(IHeadsetSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var direction = Device.Direction.Connect(system.Direction);
+            var direction = Hardware.Direction.Connect(software.Direction);
 
-            var position = Device.PoseTracker.Position.Connect(system.PoseTracker.Position);
-            var rotation = Device.PoseTracker.Rotation.Connect(system.PoseTracker.Rotation);
+            var position = Hardware.PoseTracker.Position.Connect(software.PoseTracker.Position);
+            var rotation = Hardware.PoseTracker.Rotation.Connect(software.PoseTracker.Rotation);
 
             return new Disconnection(() =>
             {
@@ -59,13 +58,13 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IHeadsetSystem System => module;
+        private IHeadsetSoftware Software => module;
         public IEmission Ignite()
         {
-            var direction = configuration.Direction.Produce(System.Direction);
+            var direction = configuration.Direction.Produce(Software.Direction);
 
-            var position = configuration.PoseTracker.Position.Produce(System.PoseTracker.Position);
-            var rotation = configuration.PoseTracker.Rotation.Produce(System.PoseTracker.Rotation);
+            var position = configuration.PoseTracker.Position.Produce(Software.PoseTracker.Position);
+            var rotation = configuration.PoseTracker.Rotation.Produce(Software.PoseTracker.Rotation);
 
             return new Emission(() =>
             {

@@ -5,27 +5,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTrackerModule :
-        IPoseTrackerDevice,
-        IPoseTrackerSystem,
+        IPoseTrackerSoftware,
+        IPoseTrackerHardware,
         IDisconnection
     {
         private readonly Propagation<Position> position = new Propagation<Position>();
 
         private readonly Propagation<Rotation> rotation = new Propagation<Rotation>();
 
-        #region IPoseTrackerSystem
+        #region IPoseTrackerSoftware
 
-        IConsumption<Position> IPoseTrackerSystem.Position => position;
+        IConsumption<Position> IPoseTrackerSoftware.Position => position;
 
-        IConsumption<Rotation> IPoseTrackerSystem.Rotation => rotation;
+        IConsumption<Rotation> IPoseTrackerSoftware.Rotation => rotation;
 
         #endregion
 
-        #region IPoseTrackerDevice
+        #region IPoseTrackerHardware
 
-        IConnection<Position> IPoseTrackerDevice.Position => position;
+        IConnection<Position> IPoseTrackerHardware.Position => position;
 
-        IConnection<Rotation> IPoseTrackerDevice.Rotation => rotation;
+        IConnection<Rotation> IPoseTrackerHardware.Rotation => rotation;
 
         #endregion
 

@@ -6,34 +6,34 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonDetectionDevice :
-        IHardware<IButtonDetectionSystem>
+        IDevice<IButtonDetectionSoftware>
     {
         private readonly TouchDetectionDevice touch;
 
         private readonly PushDetectionDevice push;
 
-        public ButtonDetectionDevice(IButtonDevice device)
+        public ButtonDetectionDevice(IButtonHardware hardware)
         {
-            if (device == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(device));
+                throw new ArgumentNullException(nameof(hardware));
             }
 
-            touch = new TouchDetectionDevice(device.Touch);
+            touch = new TouchDetectionDevice(hardware.Touch);
 
-            push = new PushDetectionDevice(device.Push);
+            push = new PushDetectionDevice(hardware.Push);
         }
 
-        public IDisconnection Connect(IButtonDetectionSystem system)
+        public IDisconnection Connect(IButtonDetectionSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var touch = this.touch.Connect(system.Touch);
+            var touch = this.touch.Connect(software.Touch);
 
-            var push = this.push.Connect(system.Push);
+            var push = this.push.Connect(software.Push);
 
             return new Disconnection(() =>
             {

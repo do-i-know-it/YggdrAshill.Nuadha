@@ -4,11 +4,11 @@ using YggdrAshill.Nuadha.Unitization;
 
 namespace YggdrAshill.Nuadha
 {
-    public interface IOutputSoftware<TDevice> :
-        ISoftware<TDevice>,
+    public interface IInputDevice<TSoftware> :
+        IDevice<TSoftware>,
         IDisconnection,
         IIgnition
-        where TDevice : IDevice
+        where TSoftware : ISoftware
     {
 
     }

@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerModule :
-        IHandControllerDevice,
-        IHandControllerSystem,
+        IHandControllerSoftware,
+        IHandControllerHardware,
         IDisconnection
     {
         private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
@@ -16,27 +16,27 @@ namespace YggdrAshill.Nuadha
 
         private readonly TriggerModule handTrigger = new TriggerModule();
 
-        #region IHandControllerDevice
+        #region IHandControllerSoftware
 
-        IPoseTrackerDevice IHandControllerDevice.PoseTracker => poseTracker;
+        IPoseTrackerSoftware IHandControllerSoftware.PoseTracker => poseTracker;
 
-        IStickDevice IHandControllerDevice.ThumbStick => thumbStick;
+        IStickSoftware IHandControllerSoftware.ThumbStick => thumbStick;
 
-        ITriggerDevice IHandControllerDevice.FingerTrigger => fingerTrigger;
+        ITriggerSoftware IHandControllerSoftware.FingerTrigger => fingerTrigger;
 
-        ITriggerDevice IHandControllerDevice.HandTrigger => handTrigger;
+        ITriggerSoftware IHandControllerSoftware.HandTrigger => handTrigger;
 
         #endregion
 
-        #region IHandControllerSystem
+        #region IHandControllerHardware
 
-        IPoseTrackerSystem IHandControllerSystem.PoseTracker => poseTracker;
+        IPoseTrackerHardware IHandControllerHardware.PoseTracker => poseTracker;
 
-        IStickSystem IHandControllerSystem.ThumbStick => thumbStick;
+        IStickHardware IHandControllerHardware.ThumbStick => thumbStick;
 
-        ITriggerSystem IHandControllerSystem.FingerTrigger => fingerTrigger;
+        ITriggerHardware IHandControllerHardware.FingerTrigger => fingerTrigger;
 
-        ITriggerSystem IHandControllerSystem.HandTrigger => handTrigger;
+        ITriggerHardware IHandControllerHardware.HandTrigger => handTrigger;
 
         #endregion
 

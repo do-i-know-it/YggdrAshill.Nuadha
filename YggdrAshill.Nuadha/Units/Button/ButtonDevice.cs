@@ -1,12 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonDevice :
-        IInputHardware<IButtonSystem>
+        IInputDevice<IButtonSoftware>
     {
         private readonly IButtonConfiguration configuration;
 
@@ -22,19 +21,19 @@ namespace YggdrAshill.Nuadha
             this.configuration = configuration;
         }
 
-        #region IHardware
+        #region IDevice
 
-        private IButtonDevice Device => module;
-        public IDisconnection Connect(IButtonSystem system)
+        private IButtonHardware Hardware => module;
+        public IDisconnection Connect(IButtonSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var touch = Device.Touch.Connect(system.Touch);
+            var touch = Hardware.Touch.Connect(software.Touch);
 
-            var push = Device.Push.Connect(system.Push);
+            var push = Hardware.Push.Connect(software.Push);
 
             return new Disconnection(() =>
             {
@@ -57,12 +56,12 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IButtonSystem System => module;
+        private IButtonSoftware Software => module;
         public IEmission Ignite()
         {
-            var touch = configuration.Touch.Produce(System.Touch);
+            var touch = configuration.Touch.Produce(Software.Touch);
 
-            var push = configuration.Push.Produce(System.Push);
+            var push = configuration.Push.Produce(Software.Push);
 
             return new Emission(() =>
             {

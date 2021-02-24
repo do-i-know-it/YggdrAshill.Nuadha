@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public abstract class DetectionDevice<TSignal> :
-        IHardware<IDetectionSystem>
+        IDevice<IDetectionSoftware>
         where TSignal : ISignal
     {
         protected abstract IConnection<TSignal> Connection { get; }
@@ -16,17 +16,17 @@ namespace YggdrAshill.Nuadha
         protected abstract IDetection<TSignal> HasDisabled { get; }
         protected abstract IDetection<TSignal> IsDisabled { get; }
 
-        public IDisconnection Connect(IDetectionSystem system)
+        public IDisconnection Connect(IDetectionSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var hasEnabled = Connection.Detect(HasEnabled).Connect(system.HasEnabled);
-            var isEnabled = Connection.Detect(IsEnabled).Connect(system.IsEnabled);
-            var hasDisabled = Connection.Detect(HasDisabled).Connect(system.HasDisabled);
-            var isDisabled = Connection.Detect(IsDisabled).Connect(system.IsDisabled);
+            var hasEnabled = Connection.Detect(HasEnabled).Connect(software.HasEnabled);
+            var isEnabled = Connection.Detect(IsEnabled).Connect(software.IsEnabled);
+            var hasDisabled = Connection.Detect(HasDisabled).Connect(software.HasDisabled);
+            var isDisabled = Connection.Detect(IsDisabled).Connect(software.IsDisabled);
 
             return new Disconnection(() =>
             {

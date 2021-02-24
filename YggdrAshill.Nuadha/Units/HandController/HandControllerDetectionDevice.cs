@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerDetectionDevice :
-        IHardware<IHandControllerDetectionSystem>
+        IDevice<IHandControllerDetectionSoftware>
     {
         private readonly StickDetectionDevice thumbStick;
 
@@ -14,36 +14,36 @@ namespace YggdrAshill.Nuadha
         
         private readonly TriggerDetectionDevice handTrigger;
 
-        public HandControllerDetectionDevice(IHandControllerDevice device, IHandControllerThreshold threshold)
+        public HandControllerDetectionDevice(IHandControllerHardware hardware, IHandControllerThreshold threshold)
         {
-            if (device == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(device));
+                throw new ArgumentNullException(nameof(hardware));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            thumbStick = new StickDetectionDevice(device.ThumbStick, threshold.ThumbStick);
+            thumbStick = new StickDetectionDevice(hardware.ThumbStick, threshold.ThumbStick);
             
-            fingerTrigger = new TriggerDetectionDevice(device.FingerTrigger, threshold.FingerTrigger);
+            fingerTrigger = new TriggerDetectionDevice(hardware.FingerTrigger, threshold.FingerTrigger);
             
-            handTrigger = new TriggerDetectionDevice(device.HandTrigger, threshold.HandTrigger);
+            handTrigger = new TriggerDetectionDevice(hardware.HandTrigger, threshold.HandTrigger);
         }
 
-        public IDisconnection Connect(IHandControllerDetectionSystem system)
+        public IDisconnection Connect(IHandControllerDetectionSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var thumbStick = this.thumbStick.Connect(system.ThumbStick);
+            var thumbStick = this.thumbStick.Connect(software.ThumbStick);
 
-            var fingerTrigger = this.fingerTrigger.Connect(system.FingerTrigger);
+            var fingerTrigger = this.fingerTrigger.Connect(software.FingerTrigger);
 
-            var handTrigger = this.handTrigger.Connect(system.HandTrigger);
+            var handTrigger = this.handTrigger.Connect(software.HandTrigger);
 
             return new Disconnection(() =>
             {

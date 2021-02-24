@@ -1,12 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTrackerDevice :
-        IInputHardware<IPoseTrackerSystem>
+        IInputDevice<IPoseTrackerSoftware>
     {
         private readonly IPoseTrackerConfiguration configuration;
 
@@ -22,19 +21,19 @@ namespace YggdrAshill.Nuadha
             this.configuration = configuration;
         }
 
-        #region IHardware
+        #region IDevice
 
-        private IPoseTrackerDevice Device => module;
-        public IDisconnection Connect(IPoseTrackerSystem system)
+        private IPoseTrackerHardware Hardware => module;
+        public IDisconnection Connect(IPoseTrackerSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var position = Device.Position.Connect(system.Position);
+            var position = Hardware.Position.Connect(software.Position);
 
-            var rotation = Device.Rotation.Connect(system.Rotation);
+            var rotation = Hardware.Rotation.Connect(software.Rotation);
 
             return new Disconnection(() =>
             {
@@ -57,12 +56,12 @@ namespace YggdrAshill.Nuadha
 
         #region Ignition
 
-        private IPoseTrackerSystem System => module;
+        private IPoseTrackerSoftware Software => module;
         public IEmission Ignite()
         {
-            var position = configuration.Position.Produce(System.Position);
+            var position = configuration.Position.Produce(Software.Position);
 
-            var rotation = configuration.Rotation.Produce(System.Rotation);
+            var rotation = configuration.Rotation.Produce(Software.Rotation);
 
             return new Emission(() =>
             {

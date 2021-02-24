@@ -1,10 +1,7 @@
-using YggdrAshill.Nuadha.Signalization;
-
 namespace YggdrAshill.Nuadha.Unitization
 {
-    public interface IHardware<TSystem>
-        where TSystem : ISystem
+    public interface IHardware
     {
-        IDisconnection Connect(TSystem system);
+
     }
 }

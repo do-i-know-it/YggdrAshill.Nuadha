@@ -4,27 +4,27 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonDetectionModule :
-        IButtonDetectionSystem,
-        IButtonDetectionDevice,
+        IButtonDetectionSoftware,
+        IButtonDetectionHardware,
         IDisconnection
     {
         private readonly PulseDetectionModule touch = new PulseDetectionModule();
 
         private readonly PulseDetectionModule push = new PulseDetectionModule();
 
-        #region IButtonDetectionSystem
+        #region IButtonDetectionSoftware
 
-        IDetectionSystem IButtonDetectionSystem.Touch => touch;
+        IDetectionSoftware IButtonDetectionSoftware.Touch => touch;
 
-        IDetectionSystem IButtonDetectionSystem.Push => push;
+        IDetectionSoftware IButtonDetectionSoftware.Push => push;
 
         #endregion
 
-        #region IButtonDetectionDevice
+        #region IButtonDetectionHardware
 
-        IDetectionDevice IButtonDetectionDevice.Touch => touch;
+        IDetectionHardware IButtonDetectionHardware.Touch => touch;
 
-        IDetectionDevice IButtonDetectionDevice.Push => push;
+        IDetectionHardware IButtonDetectionHardware.Push => push;
 
         #endregion
 

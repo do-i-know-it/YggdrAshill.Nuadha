@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface ITriggerSystem :
-        ISystem
+    public interface ITriggerSoftware :
+        ISoftware
     {
         IConsumption<Touch> Touch { get; }
 

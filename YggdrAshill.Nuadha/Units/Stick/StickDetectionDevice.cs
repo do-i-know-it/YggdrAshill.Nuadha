@@ -6,38 +6,38 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class StickDetectionDevice :
-        IHardware<IStickDetectionSystem>
+        IDevice<IStickDetectionSoftware>
     {
         private readonly TouchDetectionDevice touch;
 
         private readonly TiltDetectionDevice tilt;
 
-        public StickDetectionDevice(IStickDevice device, ITiltThreshold threshold)
+        public StickDetectionDevice(IStickHardware hardware, ITiltThreshold threshold)
         {
-            if (device == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(device));
+                throw new ArgumentNullException(nameof(hardware));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            touch = new TouchDetectionDevice(device.Touch);
+            touch = new TouchDetectionDevice(hardware.Touch);
 
-            tilt = new TiltDetectionDevice(device.Tilt, threshold);
+            tilt = new TiltDetectionDevice(hardware.Tilt, threshold);
         }
 
-        public IDisconnection Connect(IStickDetectionSystem system)
+        public IDisconnection Connect(IStickDetectionSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var touch = this.touch.Connect(system.Touch);
+            var touch = this.touch.Connect(software.Touch);
 
-            var tilt = this.tilt.Connect(system.Tilt);
+            var tilt = this.tilt.Connect(software.Tilt);
 
             return new Disconnection(() =>
             {

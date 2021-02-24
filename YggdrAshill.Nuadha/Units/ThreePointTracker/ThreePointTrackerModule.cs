@@ -4,8 +4,8 @@ using YggdrAshill.Nuadha.Units;
 namespace YggdrAshill.Nuadha
 {
     public sealed class ThreePointTrackerModule :
-        IThreePointTrackerSystem,
-        IThreePointTrackerDevice,
+        IThreePointTrackerSoftware,
+        IThreePointTrackerHardware,
         IDisconnection
     {
         private readonly PoseTrackerModule head = new PoseTrackerModule();
@@ -14,23 +14,23 @@ namespace YggdrAshill.Nuadha
         
         private readonly PoseTrackerModule rightHand = new PoseTrackerModule();
 
-        #region IThreePointTrackerSystem
+        #region IThreePointTrackerSoftware
 
-        IPoseTrackerSystem IThreePointTrackerSystem.Head => head;
+        IPoseTrackerSoftware IThreePointTrackerSoftware.Head => head;
 
-        IPoseTrackerSystem IThreePointTrackerSystem.LeftHand => leftHand;
+        IPoseTrackerSoftware IThreePointTrackerSoftware.LeftHand => leftHand;
 
-        IPoseTrackerSystem IThreePointTrackerSystem.RightHand => rightHand;
+        IPoseTrackerSoftware IThreePointTrackerSoftware.RightHand => rightHand;
 
         #endregion
 
-        #region IThreePointTrackerDevice
+        #region IThreePointTrackerHardware
 
-        IPoseTrackerDevice IThreePointTrackerDevice.Head => head;
+        IPoseTrackerHardware IThreePointTrackerHardware.Head => head;
 
-        IPoseTrackerDevice IThreePointTrackerDevice.LeftHand => leftHand;
+        IPoseTrackerHardware IThreePointTrackerHardware.LeftHand => leftHand;
 
-        IPoseTrackerDevice IThreePointTrackerDevice.RightHand => rightHand;
+        IPoseTrackerHardware IThreePointTrackerHardware.RightHand => rightHand;
 
         #endregion
 

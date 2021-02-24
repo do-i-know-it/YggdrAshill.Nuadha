@@ -8,7 +8,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class TiltDetectionDevice :
-        IHardware<ITiltDetectionSystem>
+        IDevice<ITiltDetectionSoftware>
     {
         private readonly PullDetectionDevice left;
         
@@ -35,17 +35,17 @@ namespace YggdrAshill.Nuadha
             backward = new PullDetectionDevice(connection.Translate(TiltToPull.Backward), threshold.Backward);
         }
 
-        public IDisconnection Connect(ITiltDetectionSystem system)
+        public IDisconnection Connect(ITiltDetectionSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            var left = this.left.Connect(system.Left);
-            var right = this.right.Connect(system.Right);
-            var forward = this.forward.Connect(system.Forward);
-            var backward = this.backward.Connect(system.Backward);
+            var left = this.left.Connect(software.Left);
+            var right = this.right.Connect(software.Right);
+            var forward = this.forward.Connect(software.Forward);
+            var backward = this.backward.Connect(software.Backward);
 
             return new Disconnection(() =>
             {

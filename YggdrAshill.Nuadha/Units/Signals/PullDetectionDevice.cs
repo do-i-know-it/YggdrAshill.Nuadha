@@ -8,7 +8,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     public sealed class PullDetectionDevice :
-        IHardware<IDetectionSystem>
+        IDevice<IDetectionSoftware>
     {
         private readonly PushDetectionDevice detection;
 
@@ -28,14 +28,14 @@ namespace YggdrAshill.Nuadha
             detection = new PushDetectionDevice(connection.Translate(translation));
         }
 
-        public IDisconnection Connect(IDetectionSystem system)
+        public IDisconnection Connect(IDetectionSoftware software)
         {
-            if (system == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(system));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            return detection.Connect(system);
+            return detection.Connect(software);
         }
     }
 }
