@@ -1,13 +1,10 @@
 # Conversion
 
-Conversion expands [Signalization](./Signalization.md) and [Conduction](./Conduction.md) to define how to convert `Signal`.
+Conversion extends [Signalization](./Signalization.md) to define how to operate `Signal`.
 
 ## Dependencies
 
-This module depends on
-
-- [Signalization](./Signalization.md).
-- [Conduction](./Conduction.md).
+This module depends on [Signalization](./Signalization.md).
 
 ## Architecture
 
@@ -15,11 +12,11 @@ This module depends on
 |:-----------|:------------|
 | Translation | Converts one `Signal` to another `Signal`. |
 | Correction | Calculates `Signal` to correct. |
-| Calculation | Reducer of `Signal`. |
-| Detection | Decides `Signal`. |
+| Calculation | Reduces `Signal`. |
+| Detection | Detects `Signal`. |
 | Pulse | `Signal` to send when `Signal` is detected. |
 
-this module provides operations on `Signal` below.
+This module provides operations on `Signal` below.
 
 - `Translation`
 - `Correction`
@@ -27,4 +24,4 @@ this module provides operations on `Signal` below.
 
 ## Implementation
 
-Nothing except internal implementation for some interfaces of [Signalization](./Signalization.md) and [Conduction](./Conduction.md), because this module only defines how to convert `Signal`.
+Nothing except internal implementation for some interfaces of [Signalization](./Signalization.md), because this module only defines how to operate `Signal`.
