@@ -22,6 +22,9 @@ namespace YggdrAshill.Nuadha.Transformation.Experimental
         /// <returns>
         /// <see cref="WhenPulseOf{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
         public static WhenPulseOf<TSignal> IsDisabled(IPulsation<TSignal> pulsation)
         {
             if (pulsation == null)
@@ -40,6 +43,9 @@ namespace YggdrAshill.Nuadha.Transformation.Experimental
         /// <returns>
         /// <see cref="WhenPulseOf{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
         public static WhenPulseOf<TSignal> HasDisabled(IPulsation<TSignal> pulsation)
         {
             if (pulsation == null)
@@ -58,6 +64,9 @@ namespace YggdrAshill.Nuadha.Transformation.Experimental
         /// <returns>
         /// <see cref="WhenPulseOf{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
         public static WhenPulseOf<TSignal> IsEnabled(IPulsation<TSignal> pulsation)
         {
             if (pulsation == null)
@@ -76,6 +85,9 @@ namespace YggdrAshill.Nuadha.Transformation.Experimental
         /// <returns>
         /// <see cref="WhenPulseOf{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
         public static WhenPulseOf<TSignal> HasEnabled(IPulsation<TSignal> pulsation)
         {
             if (pulsation == null)
