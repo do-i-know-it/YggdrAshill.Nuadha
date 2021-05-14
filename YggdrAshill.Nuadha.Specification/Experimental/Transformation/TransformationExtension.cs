@@ -50,20 +50,5 @@ namespace YggdrAshill.Nuadha.Transformation.Experimental
 
             return production.Convert(new Pulsate<TSignal>(pulsation));
         }
-
-        public static IProduction<Notice> Detect<TSignal>(this IProduction<TSignal> production, IDetection<TSignal> detection)
-            where TSignal : ISignal
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (detection == null)
-            {
-                throw new ArgumentNullException(nameof(detection));
-            }
-
-            return new Detector<TSignal>(production, detection);
-        }
     }
 }
