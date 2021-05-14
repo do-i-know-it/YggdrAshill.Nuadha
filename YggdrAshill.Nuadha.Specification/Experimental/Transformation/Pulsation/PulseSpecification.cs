@@ -18,8 +18,8 @@ namespace YggdrAshill.Nuadha.Experimental.Specification
         [Test]
         public void ShouldBeEqualWhenPulseHasDisabled()
         {
-            Assert.IsTrue(Pulse.HasDisabled == Pulse.HasDisabled);
             Assert.IsTrue(Pulse.HasDisabled != Pulse.IsDisabled);
+            Assert.IsTrue(Pulse.HasDisabled == Pulse.HasDisabled);
             Assert.IsTrue(Pulse.HasDisabled != Pulse.IsEnabled);
             Assert.IsTrue(Pulse.HasDisabled != Pulse.HasEnabled);
         }
@@ -27,19 +27,19 @@ namespace YggdrAshill.Nuadha.Experimental.Specification
         [Test]
         public void ShouldBeEqualWhenPulseIsEnabled()
         {
-            Assert.IsTrue(Pulse.IsEnabled == Pulse.IsEnabled);
-            Assert.IsTrue(Pulse.IsEnabled != Pulse.HasDisabled);
             Assert.IsTrue(Pulse.IsEnabled != Pulse.IsDisabled);
+            Assert.IsTrue(Pulse.IsEnabled != Pulse.HasDisabled);
+            Assert.IsTrue(Pulse.IsEnabled == Pulse.IsEnabled);
             Assert.IsTrue(Pulse.IsEnabled != Pulse.HasEnabled);
         }
 
         [Test]
         public void ShouldBeEqualWhenPulseHasEnabled()
         {
-            Assert.IsTrue(Pulse.HasEnabled == Pulse.HasEnabled);
+            Assert.IsTrue(Pulse.HasEnabled != Pulse.IsDisabled);
             Assert.IsTrue(Pulse.HasEnabled != Pulse.HasDisabled);
             Assert.IsTrue(Pulse.HasEnabled != Pulse.IsEnabled);
-            Assert.IsTrue(Pulse.HasEnabled != Pulse.IsDisabled);
+            Assert.IsTrue(Pulse.HasEnabled == Pulse.HasEnabled);
         }
 
         [Test]
