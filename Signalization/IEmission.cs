@@ -1,12 +1,12 @@
 namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Token to send <see cref="ISignal"/>.
+    /// Token to emit.
     /// </summary>
     public interface IEmission
     {
         /// <summary>
-        /// Sends <see cref="ISignal"/>.
+        /// Emits.
         /// </summary>
         void Emit();
     }

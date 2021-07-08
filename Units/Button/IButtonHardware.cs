@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IButtonHardware :
-        IHardware
+        IHandler
     {
-        IConnection<Touch> Touch { get; }
+        IProduction<Touch> Touch { get; }
 
-        IConnection<Push> Push { get; }
+        IProduction<Push> Push { get; }
     }
 }

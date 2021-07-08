@@ -5,7 +5,7 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface ITriggerSoftware :
-        ISoftware
+        IHandler
     {
         IConsumption<Touch> Touch { get; }
 

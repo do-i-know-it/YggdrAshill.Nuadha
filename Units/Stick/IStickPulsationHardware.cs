@@ -1,0 +1,22 @@
+using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Unitization;
+
+namespace YggdrAshill.Nuadha.Units
+{
+    public interface IStickPulsationHardware :
+        IHandler
+    {
+        IProduction<Pulse> Touch { get; }
+
+        IProduction<Pulse> Distance { get; }
+
+        IProduction<Pulse> Left { get; }
+
+        IProduction<Pulse> Right { get; }
+
+        IProduction<Pulse> Upward { get; }
+
+        IProduction<Pulse> Downward { get; }
+    }
+}

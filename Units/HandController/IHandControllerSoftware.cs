@@ -3,14 +3,14 @@ using YggdrAshill.Nuadha.Unitization;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IHandControllerSoftware :
-        ISoftware
+        IHandler
     {
-        IPoseTrackerSoftware PoseTracker { get; }
+        IPoseTrackerSoftware Pose { get; }
 
-        IStickSoftware ThumbStick { get; }
+        IStickSoftware Thumb { get; }
 
-        ITriggerSoftware FingerTrigger { get; }
+        ITriggerSoftware IndexFinger { get; }
 
-        ITriggerSoftware HandTrigger { get; }
+        ITriggerSoftware HandGrip { get; }
     }
 }

@@ -16,10 +16,10 @@ namespace YggdrAshill.Nuadha
     {
         private readonly List<IConsumption<TSignal>> consumptionList = new List<IConsumption<TSignal>>();
 
-        #region IConnection
+        #region IProduction
 
         /// <inheritdoc/>
-        public IDisconnection Connect(IConsumption<TSignal> consumption)
+        public ICancellation Produce(IConsumption<TSignal> consumption)
         {
             if (consumption == null)
             {
@@ -31,7 +31,7 @@ namespace YggdrAshill.Nuadha
                 consumptionList.Add(consumption);
             }
 
-            return new Disconnection(() =>
+            return new Cancellation(() =>
             {
                 if (consumptionList.Contains(consumption))
                 {
@@ -44,12 +44,7 @@ namespace YggdrAshill.Nuadha
 
         #region IConsumption
 
-        /// <summary>
-        /// Propagates <typeparamref name="TSignal"/> to each connected <see cref="IConsumption{TSignal}"/>.
-        /// </summary>
-        /// <param name="signal">
-        /// <see cref="ISignal"/> to propagate.
-        /// </param>
+        /// <inheritdoc/>
         public void Consume(TSignal signal)
         {
             foreach (var consumption in consumptionList)
@@ -60,10 +55,10 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region IDisconnection
+        #region IDisposable
 
         /// <inheritdoc/>
-        public void Disconnect()
+        public void Dispose()
         {
             consumptionList.Clear();
         }

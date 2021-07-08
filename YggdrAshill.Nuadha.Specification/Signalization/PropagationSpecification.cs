@@ -1,30 +1,16 @@
-﻿using NUnit.Framework;
-using YggdrAshill.Nuadha.Signalization;
+using NUnit.Framework;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(Propagation<>))]
-    internal class PropagationSpecification :
-        IConsumption<Signal>
+    internal class PropagationSpecification
     {
-        #region IConsumption
-
-        private Signal consumed;
-
-        public void Consume(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            consumed = signal;
-        }
-
-        #endregion
-
         private Propagation<Signal> propagation;
+        private Consumption<Signal> consumption;
+
+        private Signal expected;
+        private Signal consumed;
 
         [SetUp]
         public void SetUp()
@@ -32,39 +18,43 @@ namespace YggdrAshill.Nuadha.Specification
             propagation = new Propagation<Signal>();
 
             consumed = default;
+            consumption = new Consumption<Signal>(signal =>
+            {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
+
+                consumed = signal;
+            });
+
+            expected = new Signal();
         }
 
         [TearDown]
         public void TearDown()
         {
-            consumed = default;
-
-            propagation.Disconnect();
-            propagation = default;
+            propagation.Dispose();
         }
 
         [Test]
-        public void ShouldSendSignalToConnectedWhenHasConsumed()
+        public void ShouldSendSignalToProducedWhenHasConsumed()
         {
-            var disconnection = propagation.Connect(this);
-
-            var expected = new Signal();
+            var cancellation = propagation.Produce(consumption);
 
             propagation.Consume(expected);
 
             Assert.AreEqual(expected, consumed);
 
-            disconnection.Disconnect();
+            cancellation.Cancel();
         }
 
         [Test]
-        public void ShouldNotSendSignalToDisconnectedWhenHasConsumed()
+        public void ShouldNotSendSignalToNotProducedWhenHasConsumed()
         {
-            var disconnection = propagation.Connect(this);
+            var cancellation = propagation.Produce(consumption);
 
-            disconnection.Disconnect();
-
-            var expected = new Signal();
+            cancellation.Cancel();
 
             propagation.Consume(expected);
 
@@ -72,25 +62,25 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldNotSendSignalAfterHasDisconnected()
+        public void ShouldNotSendSignalAfterHasDisposed()
         {
-            var disconnection = propagation.Connect(this);
+            var cancellation = propagation.Produce(consumption);
 
-            propagation.Disconnect();
-
-            var expected = new Signal();
+            propagation.Dispose();
 
             propagation.Consume(expected);
 
             Assert.AreNotEqual(expected, consumed);
+
+            cancellation.Cancel();
         }
 
         [Test]
-        public void CannotConnectNull()
+        public void CannotProduceNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                propagation.Connect(null);
+                var cancellation = propagation.Produce(null);
             });
         }
     }

@@ -4,39 +4,46 @@ namespace YggdrAshill.Nuadha.Signals
 {
     public sealed class HysteresisThreshold
     {
-        public float LowerLimit { get; }
+        public static float Minimum { get; } = 0.0f;
 
-        public float UpperLimit { get; }
+        public static float Maximum { get; } = 1.0f;
 
-        public HysteresisThreshold(float lowerLimit, float upperLimit)
+        public float Lower { get; }
+
+        public float Upper { get; }
+
+        public HysteresisThreshold(float lower, float upper)
         {
-            if (float.IsNaN(upperLimit))
+            if (float.IsNaN(upper))
             {
-                throw new ArgumentException($"{nameof(upperLimit)} is NaN.");
+                throw new ArgumentException($"{nameof(upper)} is NaN.");
             }
-            if (float.IsNaN(lowerLimit))
+            if (float.IsNaN(lower))
             {
-                throw new ArgumentException($"{nameof(lowerLimit)} is NaN.");
-            }
-
-            const float Min = 0.0f;
-            const float Max = 1.0f;
-            if (lowerLimit < Min || Max < lowerLimit)
-            {
-                throw new ArgumentOutOfRangeException(nameof(lowerLimit));
-            }
-            if (upperLimit < Min || Max < upperLimit)
-            {
-                throw new ArgumentOutOfRangeException(nameof(upperLimit));
-            }
-            if (upperLimit < lowerLimit)
-            {
-                throw new ArgumentException($"{nameof(upperLimit)} < {nameof(lowerLimit)}");
+                throw new ArgumentException($"{nameof(lower)} is NaN.");
             }
 
-            LowerLimit = lowerLimit;
+            if (lower < Minimum || Maximum < lower)
+            {
+                throw new ArgumentOutOfRangeException(nameof(lower));
+            }
+            if (upper < Minimum || Maximum < upper)
+            {
+                throw new ArgumentOutOfRangeException(nameof(upper));
+            }
+            if (upper < lower)
+            {
+                throw new ArgumentException($"{nameof(upper)} < {nameof(lower)}");
+            }
 
-            UpperLimit = upperLimit;
+            Lower = lower;
+
+            Upper = upper;
+        }
+
+        public HysteresisThreshold(float threshold = 0.5f) : this(threshold, threshold)
+        {
+
         }
     }
 }

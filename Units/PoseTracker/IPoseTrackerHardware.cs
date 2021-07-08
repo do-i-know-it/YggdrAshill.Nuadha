@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IPoseTrackerHardware :
-        IHardware
+        IHandler
     {
-        IConnection<Position> Position { get; }
+        IProduction<Space3D.Position> Position { get; }
 
-        IConnection<Rotation> Rotation { get; }
+        IProduction<Space3D.Rotation> Rotation { get; }
     }
 }

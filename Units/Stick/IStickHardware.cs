@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     public interface IStickHardware :
-        IHardware
+        IHandler
     {
-        IConnection<Touch> Touch { get; }
+        IProduction<Touch> Touch { get; }
 
-        IConnection<Tilt> Tilt { get; }
+        IProduction<Tilt> Tilt { get; }
     }
 }
