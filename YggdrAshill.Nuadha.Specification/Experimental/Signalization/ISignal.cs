@@ -1,7 +1,7 @@
-﻿namespace YggdrAshill.Nuadha.Signalization.Experimental
+namespace YggdrAshill.Nuadha.Signalization.Experimental
 {
     /// <summary>
-    /// Token to define signal.
+    /// Defines signal to send or receive.
     /// </summary>
     public interface ISignal
     {
