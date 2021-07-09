@@ -6,8 +6,8 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class PulsatedHandControllerModule :
         IModule<IPulsatedHandControllerHardwareHandler, IPulsatedHandControllerSoftwareHandler>,
-        IPulsatedHandControllerSoftwareHandler,
-        IPulsatedHandControllerHardwareHandler
+        IPulsatedHandControllerHardwareHandler,
+        IPulsatedHandControllerSoftwareHandler
     {
         private readonly PulsatedStickModule thumb;
 

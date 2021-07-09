@@ -8,8 +8,8 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class TriggerModule :
         IModule<ITriggerHardwareHandler, ITriggerSoftwareHandler>,
-        ITriggerSoftwareHandler,
-        ITriggerHardwareHandler
+        ITriggerHardwareHandler,
+        ITriggerSoftwareHandler
     {
         private readonly IPropagation<Touch> touch;
 

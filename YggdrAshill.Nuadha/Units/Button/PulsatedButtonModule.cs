@@ -8,8 +8,8 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class PulsatedButtonModule :
         IModule<IPulsatedButtonHardwareHandler, IPulsatedButtonSoftwareHandler>,
-        IPulsatedButtonSoftwareHandler,
-        IPulsatedButtonHardwareHandler
+        IPulsatedButtonHardwareHandler,
+        IPulsatedButtonSoftwareHandler
     {
         private readonly IPropagation<Pulse> touch;
 

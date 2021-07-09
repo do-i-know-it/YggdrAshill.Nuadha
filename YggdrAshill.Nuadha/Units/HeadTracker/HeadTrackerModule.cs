@@ -8,8 +8,8 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class HeadTrackerModule :
         IModule<IHeadTrackerHardwareHandler, IHeadTrackerSoftwareHandler>,
-        IHeadTrackerSoftwareHandler,
-        IHeadTrackerHardwareHandler
+        IHeadTrackerHardwareHandler,
+        IHeadTrackerSoftwareHandler
     {
         private readonly PoseTrackerModule pose;
 

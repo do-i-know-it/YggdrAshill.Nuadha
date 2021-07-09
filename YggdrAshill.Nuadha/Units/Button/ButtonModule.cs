@@ -8,8 +8,8 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class ButtonModule :
         IModule<IButtonHardwareHandler, IButtonSoftwareHandler>,
-        IButtonSoftwareHandler,
-        IButtonHardwareHandler
+        IButtonHardwareHandler,
+        IButtonSoftwareHandler
     {
         private readonly IPropagation<Touch> touch;
 

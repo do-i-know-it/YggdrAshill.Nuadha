@@ -8,8 +8,8 @@ namespace YggdrAshill.Nuadha
 {
     public abstract class PoseTrackerModule :
         IModule<IPoseTrackerHardwareHandler, IPoseTrackerSoftwareHandler>,
-        IPoseTrackerSoftwareHandler,
-        IPoseTrackerHardwareHandler
+        IPoseTrackerHardwareHandler,
+        IPoseTrackerSoftwareHandler
     {
         private readonly IPropagation<Space3D.Position> position;
 

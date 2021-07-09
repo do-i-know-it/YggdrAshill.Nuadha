@@ -8,8 +8,8 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class StickModule :
         IModule<IStickHardwareHandler, IStickSoftwareHandler>,
-        IStickSoftwareHandler,
-        IStickHardwareHandler
+        IStickHardwareHandler,
+        IStickSoftwareHandler
     {
         private readonly IPropagation<Touch> touch;
 

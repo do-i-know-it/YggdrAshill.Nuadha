@@ -6,8 +6,8 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class HandControllerModule :
         IModule<IHandControllerHardwareHandler, IHandControllerSoftwareHandler>,
-        IHandControllerSoftwareHandler,
-        IHandControllerHardwareHandler
+        IHandControllerHardwareHandler,
+        IHandControllerSoftwareHandler
     {
         private readonly PoseTrackerModule pose;
 

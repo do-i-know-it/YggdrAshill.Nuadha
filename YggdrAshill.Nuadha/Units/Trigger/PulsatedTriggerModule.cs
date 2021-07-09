@@ -8,8 +8,8 @@ namespace YggdrAshill.Nuadha
 {
     public sealed class PulsatedTriggerModule :
         IModule<IPulsatedTriggerHardwareHandler, IPulsatedTriggerSoftwareHandler>,
-        IPulsatedTriggerSoftwareHandler,
-        IPulsatedTriggerHardwareHandler
+        IPulsatedTriggerHardwareHandler,
+        IPulsatedTriggerSoftwareHandler
     {
         private readonly IPropagation<Pulse> touch;
 
