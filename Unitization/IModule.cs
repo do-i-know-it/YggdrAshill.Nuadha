@@ -5,25 +5,25 @@ namespace YggdrAshill.Nuadha.Unitization
     /// <summary>
     /// Defines <see cref="IHandler"/> for hardware and software.
     /// </summary>
-    /// <typeparam name="THardware">
+    /// <typeparam name="THardwareHandler">
     /// Type of <see cref="IHandler"/> for hardware.
     /// </typeparam>
-    /// <typeparam name="TSoftware">
+    /// <typeparam name="TSoftwareHandler">
     /// Type of <see cref="IHandler"/> for software.
     /// </typeparam>
-    public interface IModule<THardware, TSoftware> :
+    public interface IModule<THardwareHandler, TSoftwareHandler> :
         IDisposable
-        where THardware : IHandler
-        where TSoftware : IHandler
+        where THardwareHandler : IHandler
+        where TSoftwareHandler : IHandler
     {
         /// <summary>
         /// <see cref="IHandler"/> for hardware.
         /// </summary>
-        THardware Hardware { get; }
+        THardwareHandler HardwareHandler { get; }
 
         /// <summary>
         /// <see cref="IHandler"/> for software.
         /// </summary>
-        TSoftware Software { get; }
+        TSoftwareHandler SoftwareHandler { get; }
     }
 }

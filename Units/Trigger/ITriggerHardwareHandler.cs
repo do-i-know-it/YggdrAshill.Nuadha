@@ -4,11 +4,11 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IPoseTrackerHardware :
+    public interface ITriggerHardwareHandler :
         IHandler
     {
-        IProduction<Space3D.Position> Position { get; }
+        IConsumption<Touch> Touch { get; }
 
-        IProduction<Space3D.Rotation> Rotation { get; }
+        IConsumption<Pull> Pull { get; }
     }
 }

@@ -4,7 +4,7 @@ using YggdrAshill.Nuadha.Unitization;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IStickPulsationSoftware :
+    public interface IPulsatedStickHardwareHandler :
         IHandler
     {
         IConsumption<Pulse> Touch { get; }

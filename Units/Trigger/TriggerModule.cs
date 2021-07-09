@@ -6,9 +6,9 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class TriggerModule :
-        IModule<ITriggerHardware, ITriggerSoftware>,
-        ITriggerHardware,
-        ITriggerSoftware
+        IModule<ITriggerHardwareHandler, ITriggerSoftwareHandler>,
+        ITriggerSoftwareHandler,
+        ITriggerHardwareHandler
     {
         private readonly IPropagation<Touch> touch;
 
@@ -30,15 +30,9 @@ namespace YggdrAshill.Nuadha.Units
             this.pull = pull;
         }
 
-        #region IModule
+        public ITriggerHardwareHandler HardwareHandler => this;
 
-        public ITriggerHardware Hardware => this;
-
-        public ITriggerSoftware Software => this;
-
-        #endregion
-
-        #region IDisposable
+        public ITriggerSoftwareHandler SoftwareHandler => this;
 
         public void Dispose()
         {
@@ -47,22 +41,12 @@ namespace YggdrAshill.Nuadha.Units
             pull.Dispose();
         }
 
-        #endregion
+        IConsumption<Touch> ITriggerHardwareHandler.Touch => touch;
 
-        #region ITriggerHardware
+        IConsumption<Pull> ITriggerHardwareHandler.Pull => pull;
 
-        IProduction<Touch> ITriggerHardware.Touch => touch;
+        IProduction<Touch> ITriggerSoftwareHandler.Touch => touch;
 
-        IProduction<Pull> ITriggerHardware.Pull => pull;
-
-        #endregion
-
-        #region ITriggerSoftware
-
-        IConsumption<Touch> ITriggerSoftware.Touch => touch;
-
-        IConsumption<Pull> ITriggerSoftware.Pull => pull;
-
-        #endregion
+        IProduction<Pull> ITriggerSoftwareHandler.Pull => pull;
     }
 }

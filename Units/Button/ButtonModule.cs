@@ -6,9 +6,9 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class ButtonModule :
-        IModule<IButtonHardware, IButtonSoftware>,
-        IButtonHardware,
-        IButtonSoftware
+        IModule<IButtonHardwareHandler, IButtonSoftwareHandler>,
+        IButtonSoftwareHandler,
+        IButtonHardwareHandler
     {
         private readonly IPropagation<Touch> touch;
 
@@ -30,15 +30,9 @@ namespace YggdrAshill.Nuadha.Units
             this.push = push;
         }
 
-        #region IModule
+        public IButtonHardwareHandler HardwareHandler => this;
 
-        public IButtonHardware Hardware => this;
-
-        public IButtonSoftware Software => this;
-
-        #endregion
-
-        #region IDisposable
+        public IButtonSoftwareHandler SoftwareHandler => this;
 
         public void Dispose()
         {
@@ -47,22 +41,12 @@ namespace YggdrAshill.Nuadha.Units
             push.Dispose();
         }
 
-        #endregion
+        IConsumption<Touch> IButtonHardwareHandler.Touch => touch;
 
-        #region IButtonHardware
+        IConsumption<Push> IButtonHardwareHandler.Push => push;
 
-        IProduction<Touch> IButtonHardware.Touch => touch;
+        IProduction<Touch> IButtonSoftwareHandler.Touch => touch;
 
-        IProduction<Push> IButtonHardware.Push => push;
-
-        #endregion
-
-        #region IButtonSoftware
-
-        IConsumption<Touch> IButtonSoftware.Touch => touch;
-
-        IConsumption<Push> IButtonSoftware.Push => push;
-
-        #endregion
+        IProduction<Push> IButtonSoftwareHandler.Push => push;
     }
 }

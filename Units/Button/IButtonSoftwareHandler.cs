@@ -4,11 +4,11 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface ITriggerHardware :
+    public interface IButtonSoftwareHandler :
         IHandler
     {
         IProduction<Touch> Touch { get; }
 
-        IProduction<Pull> Pull { get; }
+        IProduction<Push> Push { get; }
     }
 }

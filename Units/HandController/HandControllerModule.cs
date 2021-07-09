@@ -4,9 +4,9 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class HandControllerModule :
-        IModule<IHandControllerHardware, IHandControllerSoftware>,
-        IHandControllerHardware,
-        IHandControllerSoftware
+        IModule<IHandControllerHardwareHandler, IHandControllerSoftwareHandler>,
+        IHandControllerSoftwareHandler,
+        IHandControllerHardwareHandler
     {
         private readonly PoseTrackerModule pose;
 
@@ -44,15 +44,9 @@ namespace YggdrAshill.Nuadha.Units
             this.handGrip = handGrip;
         }
 
-        #region IModule
+        public IHandControllerHardwareHandler HardwareHandler => this;
 
-        public IHandControllerHardware Hardware => this;
-
-        public IHandControllerSoftware Software => this;
-
-        #endregion
-
-        #region IDisposable
+        public IHandControllerSoftwareHandler SoftwareHandler => this;
 
         public void Dispose()
         {
@@ -65,30 +59,20 @@ namespace YggdrAshill.Nuadha.Units
             handGrip.Dispose();
         }
 
-        #endregion
+        IPoseTrackerHardwareHandler IHandControllerHardwareHandler.Pose => pose;
 
-        #region IHandControllerHardware
+        IStickHardwareHandler IHandControllerHardwareHandler.Thumb => thumb;
 
-        IPoseTrackerHardware IHandControllerHardware.Pose => pose;
+        ITriggerHardwareHandler IHandControllerHardwareHandler.IndexFinger => indexFinger;
 
-        IStickHardware IHandControllerHardware.Thumb => thumb;
+        ITriggerHardwareHandler IHandControllerHardwareHandler.HandGrip => handGrip;
 
-        ITriggerHardware IHandControllerHardware.IndexFinger => indexFinger;
+        IPoseTrackerSoftwareHandler IHandControllerSoftwareHandler.Pose => pose;
 
-        ITriggerHardware IHandControllerHardware.HandGrip => handGrip;
+        IStickSoftwareHandler IHandControllerSoftwareHandler.Thumb => thumb;
 
-        #endregion
+        ITriggerSoftwareHandler IHandControllerSoftwareHandler.IndexFinger => indexFinger;
 
-        #region IHandControllerSoftware
-
-        IPoseTrackerSoftware IHandControllerSoftware.Pose => pose;
-
-        IStickSoftware IHandControllerSoftware.Thumb => thumb;
-
-        ITriggerSoftware IHandControllerSoftware.IndexFinger => indexFinger;
-
-        ITriggerSoftware IHandControllerSoftware.HandGrip => handGrip;
-
-        #endregion
+        ITriggerSoftwareHandler IHandControllerSoftwareHandler.HandGrip => handGrip;
     }
 }

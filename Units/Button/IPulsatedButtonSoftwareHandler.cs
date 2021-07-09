@@ -4,11 +4,11 @@ using YggdrAshill.Nuadha.Unitization;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface ITriggerPulsationSoftware :
+    public interface IPulsatedButtonSoftwareHandler :
         IHandler
     {
-        IConsumption<Pulse> Touch { get; }
+        IProduction<Pulse> Touch { get; }
 
-        IConsumption<Pulse> Pull { get; }
+        IProduction<Pulse> Push { get; }
     }
 }

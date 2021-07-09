@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class Button :
-       IIgnition<IButtonSoftware>
+       IIgnition<IButtonHardwareHandler>
     {
         private readonly IConduction<Touch> touch;
 
@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha.Units
             this.push = push;
         }
 
-        public ICancellation Connect(IButtonSoftware handler)
+        public ICancellation Connect(IButtonHardwareHandler handler)
         {
             if (handler == null)
             {

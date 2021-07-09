@@ -7,13 +7,13 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class PulsatedTrigger :
-        IConnection<ITriggerPulsationSoftware>
+        IConnection<IPulsatedTriggerHardwareHandler>
     {
         private readonly IProduction<Pulse> touch;
 
         private readonly IProduction<Pulse> pull;
 
-        public PulsatedTrigger(ITriggerHardware handler, HysteresisThreshold threshold)
+        public PulsatedTrigger(ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
         {
             if (handler == null)
             {
@@ -29,7 +29,7 @@ namespace YggdrAshill.Nuadha.Units
             pull = handler.Pull.Convert(new PullToPulse(threshold));
         }
 
-        public ICancellation Connect(ITriggerPulsationSoftware handler)
+        public ICancellation Connect(IPulsatedTriggerHardwareHandler handler)
         {
             if (handler == null)
             {

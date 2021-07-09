@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class HeadTracker :
-        IIgnition<IHeadTrackerSoftware>
+        IIgnition<IHeadTrackerHardwareHandler>
     {
         private readonly PoseTracker pose;
 
@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha.Units
             this.direction = direction;
         }
 
-        public ICancellation Connect(IHeadTrackerSoftware handler)
+        public ICancellation Connect(IHeadTrackerHardwareHandler handler)
         {
             if (handler == null)
             {

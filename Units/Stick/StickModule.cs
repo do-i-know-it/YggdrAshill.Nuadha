@@ -6,9 +6,9 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class StickModule :
-        IModule<IStickHardware, IStickSoftware>,
-        IStickHardware,
-        IStickSoftware
+        IModule<IStickHardwareHandler, IStickSoftwareHandler>,
+        IStickSoftwareHandler,
+        IStickHardwareHandler
     {
         private readonly IPropagation<Touch> touch;
 
@@ -30,15 +30,9 @@ namespace YggdrAshill.Nuadha.Units
             this.tilt = tilt;
         }
 
-        #region IModule
+        public IStickHardwareHandler HardwareHandler => this;
 
-        public IStickHardware Hardware => this;
-
-        public IStickSoftware Software => this;
-
-        #endregion
-
-        #region IDisposable
+        public IStickSoftwareHandler SoftwareHandler => this;
 
         public void Dispose()
         {
@@ -47,22 +41,12 @@ namespace YggdrAshill.Nuadha.Units
             tilt.Dispose();
         }
 
-        #endregion
+        IConsumption<Touch> IStickHardwareHandler.Touch => touch;
 
-        #region IStickHardware
+        IConsumption<Tilt> IStickHardwareHandler.Tilt => tilt;
 
-        IProduction<Touch> IStickHardware.Touch => touch;
+        IProduction<Touch> IStickSoftwareHandler.Touch => touch;
 
-        IProduction<Tilt> IStickHardware.Tilt => tilt;
-
-        #endregion
-
-        #region IStickSoftware
-
-        IConsumption<Touch> IStickSoftware.Touch => touch;
-
-        IConsumption<Tilt> IStickSoftware.Tilt => tilt;
-
-        #endregion
+        IProduction<Tilt> IStickSoftwareHandler.Tilt => tilt;
     }
 }

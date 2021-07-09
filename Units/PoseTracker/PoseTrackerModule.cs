@@ -6,9 +6,9 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public abstract class PoseTrackerModule :
-        IModule<IPoseTrackerHardware, IPoseTrackerSoftware>,
-        IPoseTrackerHardware,
-        IPoseTrackerSoftware
+        IModule<IPoseTrackerHardwareHandler, IPoseTrackerSoftwareHandler>,
+        IPoseTrackerSoftwareHandler,
+        IPoseTrackerHardwareHandler
     {
         private readonly IPropagation<Space3D.Position> position;
 
@@ -30,15 +30,9 @@ namespace YggdrAshill.Nuadha.Units
             this.rotation = rotation;
         }
 
-        #region IModule
+        public IPoseTrackerHardwareHandler HardwareHandler => this;
 
-        public IPoseTrackerHardware Hardware => this;
-
-        public IPoseTrackerSoftware Software => this;
-
-        #endregion
-
-        #region IDisposable
+        public IPoseTrackerSoftwareHandler SoftwareHandler => this;
 
         public virtual void Dispose()
         {
@@ -47,22 +41,12 @@ namespace YggdrAshill.Nuadha.Units
             rotation.Dispose();
         }
 
-        #endregion
+        IConsumption<Space3D.Position> IPoseTrackerHardwareHandler.Position => position;
 
-        #region IPoseTrackerHardware
+        IConsumption<Space3D.Rotation> IPoseTrackerHardwareHandler.Rotation => rotation;
 
-        IProduction<Space3D.Position> IPoseTrackerHardware.Position => position;
+        IProduction<Space3D.Position> IPoseTrackerSoftwareHandler.Position => position;
 
-        IProduction<Space3D.Rotation> IPoseTrackerHardware.Rotation => rotation;
-
-        #endregion
-
-        #region IPoseTrackerSoftware
-
-        IConsumption<Space3D.Position> IPoseTrackerSoftware.Position => position;
-
-        IConsumption<Space3D.Rotation> IPoseTrackerSoftware.Rotation => rotation;
-
-        #endregion
+        IProduction<Space3D.Rotation> IPoseTrackerSoftwareHandler.Rotation => rotation;
     }
 }

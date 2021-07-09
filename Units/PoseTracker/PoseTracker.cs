@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class PoseTracker :
-        IIgnition<IPoseTrackerSoftware>
+        IIgnition<IPoseTrackerHardwareHandler>
     {
         private readonly IConduction<Space3D.Position> position;
 
@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha.Units
             this.rotation = rotation;
         }
 
-        public ICancellation Connect(IPoseTrackerSoftware handler)
+        public ICancellation Connect(IPoseTrackerHardwareHandler handler)
         {
             if (handler == null)
             {

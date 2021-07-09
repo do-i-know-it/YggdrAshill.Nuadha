@@ -4,7 +4,7 @@ using YggdrAshill.Nuadha.Unitization;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public interface IButtonPulsationSoftware :
+    public interface IPulsatedButtonHardwareHandler :
         IHandler
     {
         IConsumption<Pulse> Touch { get; }

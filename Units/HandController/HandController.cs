@@ -5,7 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class HandController :
-        IIgnition<IHandControllerSoftware>
+        IIgnition<IHandControllerHardwareHandler>
     {
         private readonly PoseTracker pose;
 
@@ -43,7 +43,7 @@ namespace YggdrAshill.Nuadha.Units
             this.handGrip = handGrip;
         }
 
-        public ICancellation Connect(IHandControllerSoftware handler)
+        public ICancellation Connect(IHandControllerHardwareHandler handler)
         {
             if (handler == null)
             {

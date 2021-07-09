@@ -5,10 +5,10 @@ using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    public sealed class StickPulsationModule :
-        IModule<IStickPulsationHardware, IStickPulsationSoftware>,
-        IStickPulsationHardware,
-        IStickPulsationSoftware
+    public sealed class PulsatedStickModule :
+        IModule<IPulsatedStickHardwareHandler, IPulsatedStickSoftwareHandler>,
+        IPulsatedStickSoftwareHandler,
+        IPulsatedStickHardwareHandler
     {
         private readonly IPropagation<Pulse> touch;
 
@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly IPropagation<Pulse> downward;
 
-        public StickPulsationModule(
+        public PulsatedStickModule(
             IPropagation<Pulse> touch,
             IPropagation<Pulse> distance,
             IPropagation<Pulse> left,
@@ -63,15 +63,9 @@ namespace YggdrAshill.Nuadha.Units
             this.downward = downward;
         }
 
-        #region IModule
+        public IPulsatedStickHardwareHandler HardwareHandler => this;
 
-        public IStickPulsationHardware Hardware => this;
-
-        public IStickPulsationSoftware Software => this;
-
-        #endregion
-
-        #region IDisposable
+        public IPulsatedStickSoftwareHandler SoftwareHandler => this;
 
         public void Dispose()
         {
@@ -88,38 +82,28 @@ namespace YggdrAshill.Nuadha.Units
             downward.Dispose();
         }
 
-        #endregion
+        IConsumption<Pulse> IPulsatedStickHardwareHandler.Touch => touch;
 
-        #region IStickPulsationHardware
+        IConsumption<Pulse> IPulsatedStickHardwareHandler.Distance => distance;
 
-        IProduction<Pulse> IStickPulsationHardware.Touch => touch;
+        IConsumption<Pulse> IPulsatedStickHardwareHandler.Left => left;
 
-        IProduction<Pulse> IStickPulsationHardware.Distance => distance;
+        IConsumption<Pulse> IPulsatedStickHardwareHandler.Right => right;
 
-        IProduction<Pulse> IStickPulsationHardware.Left => left;
+        IConsumption<Pulse> IPulsatedStickHardwareHandler.Forward => upward;
 
-        IProduction<Pulse> IStickPulsationHardware.Right => right;
+        IConsumption<Pulse> IPulsatedStickHardwareHandler.Backward => downward;
 
-        IProduction<Pulse> IStickPulsationHardware.Forward => upward;
+        IProduction<Pulse> IPulsatedStickSoftwareHandler.Touch => touch;
 
-        IProduction<Pulse> IStickPulsationHardware.Backward => downward;
+        IProduction<Pulse> IPulsatedStickSoftwareHandler.Distance => distance;
 
-        #endregion
+        IProduction<Pulse> IPulsatedStickSoftwareHandler.Left => left;
 
-        #region IStickPulsationSoftware
+        IProduction<Pulse> IPulsatedStickSoftwareHandler.Right => right;
 
-        IConsumption<Pulse> IStickPulsationSoftware.Touch => touch;
+        IProduction<Pulse> IPulsatedStickSoftwareHandler.Forward => upward;
 
-        IConsumption<Pulse> IStickPulsationSoftware.Distance => distance;
-
-        IConsumption<Pulse> IStickPulsationSoftware.Left => left;
-
-        IConsumption<Pulse> IStickPulsationSoftware.Right => right;
-
-        IConsumption<Pulse> IStickPulsationSoftware.Forward => upward;
-
-        IConsumption<Pulse> IStickPulsationSoftware.Backward => downward;
-
-        #endregion
+        IProduction<Pulse> IPulsatedStickSoftwareHandler.Backward => downward;
     }
 }

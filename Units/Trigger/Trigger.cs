@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class Trigger :
-        IIgnition<ITriggerSoftware>
+        IIgnition<ITriggerHardwareHandler>
     {
         private readonly IConduction<Touch> touch;
 
@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha.Units
             this.pull = pull;
         }
 
-        public ICancellation Connect(ITriggerSoftware handler)
+        public ICancellation Connect(ITriggerHardwareHandler handler)
         {
             if (handler == null)
             {

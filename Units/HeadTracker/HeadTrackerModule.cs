@@ -6,9 +6,9 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class HeadTrackerModule :
-        IModule<IHeadTrackerHardware, IHeadTrackerSoftware>,
-        IHeadTrackerHardware,
-        IHeadTrackerSoftware
+        IModule<IHeadTrackerHardwareHandler, IHeadTrackerSoftwareHandler>,
+        IHeadTrackerSoftwareHandler,
+        IHeadTrackerHardwareHandler
     {
         private readonly PoseTrackerModule pose;
 
@@ -30,15 +30,9 @@ namespace YggdrAshill.Nuadha.Units
             this.direction = direction;
         }
 
-        #region IModule
+        public IHeadTrackerHardwareHandler HardwareHandler => this;
 
-        public IHeadTrackerHardware Hardware => this;
-
-        public IHeadTrackerSoftware Software => this;
-
-        #endregion
-
-        #region IDisposable
+        public IHeadTrackerSoftwareHandler SoftwareHandler => this;
 
         public void Dispose()
         {
@@ -47,22 +41,12 @@ namespace YggdrAshill.Nuadha.Units
             direction.Dispose();
         }
 
-        #endregion
+        IPoseTrackerHardwareHandler IHeadTrackerHardwareHandler.Pose => pose;
 
-        #region IHeadsetHardware
+        IConsumption<Space3D.Direction> IHeadTrackerHardwareHandler.Direction => direction;
 
-        IPoseTrackerHardware IHeadTrackerHardware.Pose => pose;
+        IPoseTrackerSoftwareHandler IHeadTrackerSoftwareHandler.Pose => pose;
 
-        IProduction<Space3D.Direction> IHeadTrackerHardware.Direction => direction;
-
-        #endregion
-
-        #region IHeadsetSoftware
-
-        IPoseTrackerSoftware IHeadTrackerSoftware.Pose => pose;
-
-        IConsumption<Space3D.Direction> IHeadTrackerSoftware.Direction => direction;
-
-        #endregion
+        IProduction<Space3D.Direction> IHeadTrackerSoftwareHandler.Direction => direction;
     }
 }

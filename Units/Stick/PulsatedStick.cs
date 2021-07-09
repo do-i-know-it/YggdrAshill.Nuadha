@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class PulsatedStick :
-        IConnection<IStickPulsationSoftware>
+        IConnection<IPulsatedStickHardwareHandler>
     {
         private readonly IProduction<Pulse> touch;
 
@@ -21,7 +21,7 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly IProduction<Pulse> backward;
 
-        public PulsatedStick(IStickHardware handler, ITiltThreshold threshold)
+        public PulsatedStick(IStickSoftwareHandler handler, ITiltThreshold threshold)
         {
             if (handler == null)
             {
@@ -42,7 +42,7 @@ namespace YggdrAshill.Nuadha.Units
             backward = handler.Tilt.Convert(TiltToPulse.Backward(threshold.Backward));
         }
 
-        public ICancellation Connect(IStickPulsationSoftware handler)
+        public ICancellation Connect(IPulsatedStickHardwareHandler handler)
         {
             if (handler == null)
             {

@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     public sealed class Stick :
-        IIgnition<IStickSoftware>
+        IIgnition<IStickHardwareHandler>
     {
         private readonly IConduction<Touch> touch;
 
@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha.Units
             this.tilt = tilt;
         }
 
-        public ICancellation Connect(IStickSoftware handler)
+        public ICancellation Connect(IStickHardwareHandler handler)
         {
             if (handler == null)
             {
