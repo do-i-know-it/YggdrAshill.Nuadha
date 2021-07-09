@@ -1,3 +1,7 @@
+using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Transformation;
+using System;
+
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
@@ -35,6 +39,16 @@ namespace YggdrAshill.Nuadha.Signals
             return (bool)signal;
         }
 
+        public static IProduction<Pulse> Convert(this IProduction<Touch> production)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+
+            return production.Convert(IntoPulseFrom<Touch>.With(DetectionOf.Touch));
+        }
+
         #endregion
 
         #region Push
@@ -67,6 +81,16 @@ namespace YggdrAshill.Nuadha.Signals
             return (bool)signal;
         }
 
+        public static IProduction<Pulse> Convert(this IProduction<Push> production)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+
+            return production.Convert(IntoPulseFrom<Push>.With(DetectionOf.Push));
+        }
+
         #endregion
 
         #region Pull
@@ -97,6 +121,22 @@ namespace YggdrAshill.Nuadha.Signals
         public static float ToSingle(this Pull signal)
         {
             return (float)signal;
+        }
+
+        public static IProduction<Pulse> Convert(this IProduction<Pull> production, HysteresisThreshold threshold)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
+
+            return production
+                .Convert(PullToPush.With(threshold))
+                .Convert();
         }
 
         #endregion

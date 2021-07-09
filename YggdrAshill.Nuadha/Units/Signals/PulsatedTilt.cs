@@ -31,11 +31,11 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            distance = production.Convert(TiltToPull.Distance, threshold.Distance);
-            left = production.Convert(TiltToPull.Left, threshold.Left);
-            right = production.Convert(TiltToPull.Right, threshold.Right);
-            forward = production.Convert(TiltToPull.Forward, threshold.Forward);
-            backward = production.Convert(TiltToPull.Backward, threshold.Backward);
+            distance = production.Convert(TiltToPull.Distance).Convert(threshold.Distance);
+            left = production.Convert(TiltToPull.Left).Convert(threshold.Left);
+            right = production.Convert(TiltToPull.Right).Convert(threshold.Right);
+            forward = production.Convert(TiltToPull.Forward).Convert(threshold.Forward);
+            backward = production.Convert(TiltToPull.Backward).Convert(threshold.Backward);
         }
 
         public ICancellation Connect(IPulsatedTiltHardwareHandler handler)
