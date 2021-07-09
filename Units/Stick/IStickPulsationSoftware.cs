@@ -15,8 +15,8 @@ namespace YggdrAshill.Nuadha.Units
 
         IConsumption<Pulse> Right { get; }
 
-        IConsumption<Pulse> Upward { get; }
+        IConsumption<Pulse> Forward { get; }
 
-        IConsumption<Pulse> Downward { get; }
+        IConsumption<Pulse> Backward { get; }
     }
 }

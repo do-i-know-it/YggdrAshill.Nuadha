@@ -100,9 +100,9 @@ namespace YggdrAshill.Nuadha.Units
 
         IProduction<Pulse> IStickPulsationHardware.Right => right;
 
-        IProduction<Pulse> IStickPulsationHardware.Upward => upward;
+        IProduction<Pulse> IStickPulsationHardware.Forward => upward;
 
-        IProduction<Pulse> IStickPulsationHardware.Downward => downward;
+        IProduction<Pulse> IStickPulsationHardware.Backward => downward;
 
         #endregion
 
@@ -116,9 +116,9 @@ namespace YggdrAshill.Nuadha.Units
 
         IConsumption<Pulse> IStickPulsationSoftware.Right => right;
 
-        IConsumption<Pulse> IStickPulsationSoftware.Upward => upward;
+        IConsumption<Pulse> IStickPulsationSoftware.Forward => upward;
 
-        IConsumption<Pulse> IStickPulsationSoftware.Downward => downward;
+        IConsumption<Pulse> IStickPulsationSoftware.Backward => downward;
 
         #endregion
     }

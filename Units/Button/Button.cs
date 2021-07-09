@@ -1,13 +1,12 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public sealed class Button :
-        IIgnition<IButtonSoftware>
+       IIgnition<IButtonSoftware>
     {
         private readonly IConduction<Touch> touch;
 
@@ -36,16 +35,8 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var cancelTouch = touch.Produce(handler.Touch);
-
-            var cancelPush = push.Produce(handler.Push);
-
-            return new Cancellation(() =>
-            {
-                cancelTouch.Cancel();
-
-                cancelPush.Cancel();
-            });
+            return touch.Produce(handler.Touch)
+                .Synthesize(push.Produce(handler.Push));
         }
 
         public void Emit()

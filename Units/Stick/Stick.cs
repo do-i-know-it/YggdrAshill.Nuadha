@@ -1,10 +1,9 @@
 ﻿using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public sealed class Stick :
         IIgnition<IStickSoftware>
@@ -36,16 +35,8 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var cancelTouch = touch.Produce(handler.Touch);
-
-            var cancelTilt = tilt.Produce(handler.Tilt);
-
-            return new Cancellation(() =>
-            {
-                cancelTouch.Cancel();
-
-                cancelTilt.Cancel();
-            });
+            return touch.Produce(handler.Touch)
+                .Synthesize(tilt.Produce(handler.Tilt));
         }
 
         public void Emit()

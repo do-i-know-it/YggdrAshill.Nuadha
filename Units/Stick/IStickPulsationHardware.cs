@@ -15,8 +15,8 @@ namespace YggdrAshill.Nuadha.Units
 
         IProduction<Pulse> Right { get; }
 
-        IProduction<Pulse> Upward { get; }
+        IProduction<Pulse> Forward { get; }
 
-        IProduction<Pulse> Downward { get; }
+        IProduction<Pulse> Backward { get; }
     }
 }
