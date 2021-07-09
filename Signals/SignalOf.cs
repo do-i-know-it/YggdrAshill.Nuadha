@@ -6,15 +6,15 @@ namespace YggdrAshill.Nuadha.Signals
     /// <summary>
     /// Defines <see cref="IDetection{TSignal}"/> for Signals.
     /// </summary>
-    public sealed class DetectionOf :
+    public sealed class SignalOf :
         IDetection<Touch>,
         IDetection<Push>
     {
         #region Singleton
 
-        private static DetectionOf Instance { get; } = new DetectionOf();
+        private static SignalOf Instance { get; } = new SignalOf();
 
-        private DetectionOf()
+        private SignalOf()
         {
 
         }
