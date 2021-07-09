@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha.Transformation
     /// <summary>
     /// Defines implementation of <see cref="IDetection{TSignal}"/>.
     /// </summary>
-    public static class WhenPulseOf
+    public static class WhenSignal
     {
         /// <summary>
         /// Detects when <see cref="Pulse"/> converted from <typeparamref name="TSignal"/> is <see cref="Pulse.IsDisabled"/>.

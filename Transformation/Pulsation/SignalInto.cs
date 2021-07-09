@@ -6,13 +6,13 @@ namespace YggdrAshill.Nuadha.Transformation
     /// <summary>
     /// Defines implementation of <see cref="IPulsation{TSignal}"/>.
     /// </summary>
-    public static class IntoPulse
+    public static class SignalInto
     {
         /// <summary>
         /// Constructs <see cref="IPulsation{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to be converted into <see cref="Pulse"/>.
+        /// Type of <see cref="ISignal"/> to be converted into <see cref="Transformation.Pulse"/>.
         /// </typeparam>
         /// <param name="detection">
         /// <see cref="IDetection{TSignal}"/> to detect.
@@ -23,7 +23,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="detection"/> is null.
         /// </exception>
-        public static IPulsation<TSignal> From<TSignal>(IDetection<TSignal> detection)
+        public static IPulsation<TSignal> Pulse<TSignal>(IDetection<TSignal> detection)
             where TSignal : ISignal
         {
             if (detection == null)
@@ -39,7 +39,7 @@ namespace YggdrAshill.Nuadha.Transformation
         {
             private readonly IDetection<TSignal> detection;
 
-            private Pulse previous = Pulse.IsDisabled;
+            private Pulse previous = Transformation.Pulse.IsDisabled;
 
             internal Pulsation(IDetection<TSignal> detection)
             {
@@ -49,13 +49,13 @@ namespace YggdrAshill.Nuadha.Transformation
             /// <inheritdoc/>
             public Pulse Pulsate(TSignal signal)
             {
-                if (previous == Pulse.IsDisabled || previous == Pulse.HasDisabled)
+                if (previous == Transformation.Pulse.IsDisabled || previous == Transformation.Pulse.HasDisabled)
                 {
-                    previous = detection.Detect(signal) ? Pulse.HasEnabled : Pulse.IsDisabled;
+                    previous = detection.Detect(signal) ? Transformation.Pulse.HasEnabled : Transformation.Pulse.IsDisabled;
                 }
-                else if (previous == Pulse.IsEnabled || previous == Pulse.HasEnabled)
+                else if (previous == Transformation.Pulse.IsEnabled || previous == Transformation.Pulse.HasEnabled)
                 {
-                    previous = detection.Detect(signal) ? Pulse.IsEnabled : Pulse.HasDisabled;
+                    previous = detection.Detect(signal) ? Transformation.Pulse.IsEnabled : Transformation.Pulse.HasDisabled;
                 }
 
                 return previous;
