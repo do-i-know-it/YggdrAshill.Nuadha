@@ -24,13 +24,13 @@ namespace YggdrAshill.Nuadha.Signals
                 return (Pull)(Math.Max(-signal.Horizontal, 0));
             });
 
-        public static TiltToPull Upward { get; }
+        public static TiltToPull Forward { get; }
             = new TiltToPull(signal =>
             {
                 return (Pull)Math.Max(signal.Vertical, 0);
             });
 
-        public static TiltToPull Downward { get; }
+        public static TiltToPull Backward { get; }
             = new TiltToPull(signal =>
             {
                 return (Pull)Math.Max(-signal.Vertical, 0);

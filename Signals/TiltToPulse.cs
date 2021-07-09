@@ -16,23 +16,23 @@ namespace YggdrAshill.Nuadha.Signals
             return new TiltToPulse(TiltToPull.Distance, new PullToPulse(threshold));
         }
 
-        public static TiltToPulse Upward(HysteresisThreshold threshold)
+        public static TiltToPulse Forward(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new TiltToPulse(TiltToPull.Upward, new PullToPulse(threshold));
+            return new TiltToPulse(TiltToPull.Forward, new PullToPulse(threshold));
         }
-        public static TiltToPulse Downward(HysteresisThreshold threshold)
+        public static TiltToPulse Backward(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new TiltToPulse(TiltToPull.Downward, new PullToPulse(threshold));
+            return new TiltToPulse(TiltToPull.Backward, new PullToPulse(threshold));
         }
         public static TiltToPulse Right(HysteresisThreshold threshold)
         {
