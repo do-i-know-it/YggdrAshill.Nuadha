@@ -3,7 +3,7 @@ namespace YggdrAshill.Nuadha.Signals.Experimental
     /// <summary>
     /// Extensions for Signals.
     /// </summary>
-    public static class SingalExtension
+    public static class SignalExtension
     {
         #region Touch
 

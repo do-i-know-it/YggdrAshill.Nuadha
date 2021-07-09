@@ -24,7 +24,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldPulsateAccordingPreviousPulse()
         {
             // initial pulse is disabled when pulsation is generated.
-            var pulsation = new IntoPulseFrom<Signal>(this);
+            var pulsation = IntoPulseFrom<Signal>.With(this);
 
             // when previous pulse is disabled and detection doesn't detect, current pulse is disabled.
             expected = false;

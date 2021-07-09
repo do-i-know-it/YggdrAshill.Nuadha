@@ -25,9 +25,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            touch = handler.Touch.Convert(new TouchToPulse());
+            touch = handler.Touch.Convert();
 
-            pull = handler.Pull.Convert(new PullToPulse(threshold));
+            pull = handler.Pull.Convert(threshold);
         }
 
         public ICancellation Connect(IPulsatedTriggerHardwareHandler handler)

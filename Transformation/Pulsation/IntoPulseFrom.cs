@@ -13,12 +13,8 @@ namespace YggdrAshill.Nuadha.Transformation
         IPulsation<TSignal>
         where TSignal : ISignal
     {
-        private readonly IDetection<TSignal> detection;
-
-        private Pulse previous = Pulse.IsDisabled;
-
         /// <summary>
-        /// Constructs an instance.
+        /// Constructs <see cref="IntoPulseFrom{TSignal}"/> with <see cref="IDetection{TSignal}"/>.
         /// </summary>
         /// <param name="detection">
         /// <see cref="IDetection{TSignal}"/> to detect.
@@ -26,13 +22,22 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="detection"/> is null.
         /// </exception>
-        public IntoPulseFrom(IDetection<TSignal> detection)
+        public static IntoPulseFrom<TSignal> With(IDetection<TSignal> detection)
         {
             if (detection == null)
             {
                 throw new ArgumentNullException(nameof(detection));
             }
 
+            return new IntoPulseFrom<TSignal>(detection);
+        }
+
+        private readonly IDetection<TSignal> detection;
+
+        private Pulse previous = Pulse.IsDisabled;
+
+        private IntoPulseFrom(IDetection<TSignal> detection)
+        {
             this.detection = detection;
         }
 

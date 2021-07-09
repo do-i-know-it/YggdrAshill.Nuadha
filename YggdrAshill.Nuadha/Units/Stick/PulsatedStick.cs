@@ -1,7 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
 
@@ -25,7 +24,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            touch = handler.Touch.Convert(new TouchToPulse());
+            touch = handler.Touch.Convert();
 
             tilt = new PulsatedTilt(handler.Tilt, threshold);
         }

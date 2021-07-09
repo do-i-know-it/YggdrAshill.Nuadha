@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
@@ -31,12 +31,11 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            distance = production.Convert(TiltToPulse.Distance(threshold.Distance));
-
-            left = production.Convert(TiltToPulse.Left(threshold.Left));
-            right = production.Convert(TiltToPulse.Right(threshold.Right));
-            forward = production.Convert(TiltToPulse.Forward(threshold.Forward));
-            backward = production.Convert(TiltToPulse.Backward(threshold.Backward));
+            distance = production.Convert(TiltToPull.Distance, threshold.Distance);
+            left = production.Convert(TiltToPull.Left, threshold.Left);
+            right = production.Convert(TiltToPull.Right, threshold.Right);
+            forward = production.Convert(TiltToPull.Forward, threshold.Forward);
+            backward = production.Convert(TiltToPull.Backward, threshold.Backward);
         }
 
         public ICancellation Connect(IPulsatedTiltHardwareHandler handler)

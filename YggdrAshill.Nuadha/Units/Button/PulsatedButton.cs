@@ -1,7 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
 
@@ -21,9 +20,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            touch = handler.Touch.Convert(new TouchToPulse());
+            touch = handler.Touch.Convert();
 
-            push = handler.Push.Convert(new PushToPulse());
+            push = handler.Push.Convert();
         }
 
         public ICancellation Connect(IPulsatedButtonHardwareHandler handler)
