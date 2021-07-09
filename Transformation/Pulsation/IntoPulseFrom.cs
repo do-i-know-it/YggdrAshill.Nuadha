@@ -4,56 +4,62 @@ using System;
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Implementation of <see cref="IPulsation{TSignal}"/>.
+    /// Defines implementation of <see cref="IPulsation{TSignal}"/>.
     /// </summary>
-    /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to convert.
-    /// </typeparam>
-    public sealed class IntoPulseFrom<TSignal> :
-        IPulsation<TSignal>
-        where TSignal : ISignal
+    public static class IntoPulseFrom
     {
         /// <summary>
-        /// Constructs <see cref="IntoPulseFrom{TSignal}"/> with <see cref="IDetection{TSignal}"/>.
+        /// Constructs <see cref="IPulsation{TSignal}"/>.
         /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to be converted into <see cref="Pulse"/>.
+        /// </typeparam>
         /// <param name="detection">
         /// <see cref="IDetection{TSignal}"/> to detect.
         /// </param>
+        /// <returns>
+        /// <see cref="IPulsation{TSignal}"/> to convert.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="detection"/> is null.
         /// </exception>
-        public static IntoPulseFrom<TSignal> With(IDetection<TSignal> detection)
+        public static IPulsation<TSignal> With<TSignal>(IDetection<TSignal> detection)
+            where TSignal : ISignal
         {
             if (detection == null)
             {
                 throw new ArgumentNullException(nameof(detection));
             }
 
-            return new IntoPulseFrom<TSignal>(detection);
+            return new Pulsation<TSignal>(detection);
         }
-
-        private readonly IDetection<TSignal> detection;
-
-        private Pulse previous = Pulse.IsDisabled;
-
-        private IntoPulseFrom(IDetection<TSignal> detection)
+        private sealed class Pulsation<TSignal> :
+            IPulsation<TSignal>
+            where TSignal : ISignal
         {
-            this.detection = detection;
-        }
+            private readonly IDetection<TSignal> detection;
 
-        /// <inheritdoc/>
-        public Pulse Pulsate(TSignal signal)
-        {
-            if (previous == Pulse.IsDisabled || previous == Pulse.HasDisabled)
+            private Pulse previous = Pulse.IsDisabled;
+
+            internal Pulsation(IDetection<TSignal> detection)
             {
-                previous = detection.Detect(signal) ? Pulse.HasEnabled : Pulse.IsDisabled;
-            }
-            else if (previous == Pulse.IsEnabled || previous == Pulse.HasEnabled)
-            {
-                previous = detection.Detect(signal) ? Pulse.IsEnabled : Pulse.HasDisabled;
+                this.detection = detection;
             }
 
-            return previous;
+            /// <inheritdoc/>
+            public Pulse Pulsate(TSignal signal)
+            {
+                if (previous == Pulse.IsDisabled || previous == Pulse.HasDisabled)
+                {
+                    previous = detection.Detect(signal) ? Pulse.HasEnabled : Pulse.IsDisabled;
+                }
+                else if (previous == Pulse.IsEnabled || previous == Pulse.HasEnabled)
+                {
+                    previous = detection.Detect(signal) ? Pulse.IsEnabled : Pulse.HasDisabled;
+                }
+
+                return previous;
+            }
         }
     }
 }

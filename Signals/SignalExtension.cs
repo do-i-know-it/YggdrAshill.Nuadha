@@ -58,7 +58,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(production));
             }
 
-            return production.Convert(IntoPulseFrom<Touch>.With(SignalOf.Touch));
+            return production.Convert(IntoPulseFrom.With(SignalOf.Touch));
         }
 
         #endregion
@@ -112,7 +112,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(production));
             }
 
-            return production.Convert(IntoPulseFrom<Push>.With(SignalOf.Push));
+            return production.Convert(IntoPulseFrom.With(SignalOf.Push));
         }
 
         #endregion

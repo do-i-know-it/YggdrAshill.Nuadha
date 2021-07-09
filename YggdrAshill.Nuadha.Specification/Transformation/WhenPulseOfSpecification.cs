@@ -4,7 +4,7 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(WhenPulseOf<>))]
+    [TestFixture(TestOf = typeof(WhenPulseOf))]
     internal class WhenPulseOfSpecification :
         IPulsation<Signal>
     {
@@ -25,10 +25,10 @@ namespace YggdrAshill.Nuadha.Specification
         {
             expected = Pulse.IsDisabled;
 
-            Assert.IsTrue(WhenPulseOf<Signal>.IsDisabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.HasDisabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.IsEnabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.HasEnabled(this).Detect(new Signal()));
+            Assert.IsTrue(WhenPulseOf.IsDisabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.HasDisabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.IsEnabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.HasEnabled(this).Detect(new Signal()));
         }
 
         [Test]
@@ -36,10 +36,10 @@ namespace YggdrAshill.Nuadha.Specification
         {
             expected = Pulse.HasDisabled;
 
-            Assert.IsFalse(WhenPulseOf<Signal>.IsDisabled(this).Detect(new Signal()));
-            Assert.IsTrue(WhenPulseOf<Signal>.HasDisabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.IsEnabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.HasEnabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.IsDisabled(this).Detect(new Signal()));
+            Assert.IsTrue(WhenPulseOf.HasDisabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.IsEnabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.HasEnabled(this).Detect(new Signal()));
         }
 
         [Test]
@@ -47,10 +47,10 @@ namespace YggdrAshill.Nuadha.Specification
         {
             expected = Pulse.IsEnabled;
 
-            Assert.IsFalse(WhenPulseOf<Signal>.IsDisabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.HasDisabled(this).Detect(new Signal()));
-            Assert.IsTrue(WhenPulseOf<Signal>.IsEnabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.HasEnabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.IsDisabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.HasDisabled(this).Detect(new Signal()));
+            Assert.IsTrue(WhenPulseOf.IsEnabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.HasEnabled(this).Detect(new Signal()));
         }
 
         [Test]
@@ -58,10 +58,10 @@ namespace YggdrAshill.Nuadha.Specification
         {
             expected = Pulse.HasEnabled;
 
-            Assert.IsFalse(WhenPulseOf<Signal>.IsDisabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.HasDisabled(this).Detect(new Signal()));
-            Assert.IsFalse(WhenPulseOf<Signal>.IsEnabled(this).Detect(new Signal()));
-            Assert.IsTrue(WhenPulseOf<Signal>.HasEnabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.IsDisabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.HasDisabled(this).Detect(new Signal()));
+            Assert.IsFalse(WhenPulseOf.IsEnabled(this).Detect(new Signal()));
+            Assert.IsTrue(WhenPulseOf.HasEnabled(this).Detect(new Signal()));
         }
 
         [Test]
@@ -69,19 +69,19 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detection = WhenPulseOf<Signal>.IsDisabled(null);
+                var detection = WhenPulseOf.IsDisabled<Signal>(null);
             });
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detection = WhenPulseOf<Signal>.HasDisabled(null);
+                var detection = WhenPulseOf.HasDisabled<Signal>(null);
             });
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detection = WhenPulseOf<Signal>.IsEnabled(null);
+                var detection = WhenPulseOf.IsEnabled<Signal>(null);
             });
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detection = WhenPulseOf<Signal>.HasEnabled(null);
+                var detection = WhenPulseOf.HasEnabled<Signal>(null);
             });
         }
     }

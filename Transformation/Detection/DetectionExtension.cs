@@ -9,16 +9,16 @@ namespace YggdrAshill.Nuadha.Transformation
     public static class DetectionExtension
     {
         /// <summary>
-        /// Negate <see cref="IDetection{TSignal}"/>.
+        /// Inverts <see cref="IDetection{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
         /// <param name="detection">
-        /// <see cref="IDetection{TSignal}"/> to negate.
+        /// <see cref="IDetection{TSignal}"/> to invert.
         /// </param>
         /// <returns>
-        /// <see cref="IDetection{TSignal}"/> negated.
+        /// <see cref="IDetection{TSignal}"/> inverted.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="detection"/> is null.
@@ -51,12 +51,16 @@ namespace YggdrAshill.Nuadha.Transformation
         }
 
         /// <summary>
-        /// 
+        /// Multiplies two instances of <see cref="IDetection{TSignal}"/>.
         /// </summary>
-        /// <typeparam name="TSignal"></typeparam>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to detect.
+        /// </typeparam>
         /// <param name="left"></param>
         /// <param name="right"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// <see cref="IDetection{TSignal}"/> multiplied.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="left"/> is null.
         /// </exception>
@@ -99,12 +103,16 @@ namespace YggdrAshill.Nuadha.Transformation
         }
 
         /// <summary>
-        /// 
+        /// Adds two instances of <see cref="IDetection{TSignal}"/>.
         /// </summary>
-        /// <typeparam name="TSignal"></typeparam>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to detect.
+        /// </typeparam>
         /// <param name="left"></param>
         /// <param name="right"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// <see cref="IDetection{TSignal}"/> added.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="left"/> is null.
         /// </exception>
