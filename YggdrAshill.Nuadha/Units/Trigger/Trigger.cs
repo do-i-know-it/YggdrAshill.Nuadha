@@ -1,9 +1,10 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public sealed class Trigger :
         IIgnition<ITriggerHardwareHandler>
@@ -35,8 +36,12 @@ namespace YggdrAshill.Nuadha.Units
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            return touch.Produce(handler.Touch)
-                .Synthesize(pull.Produce(handler.Pull));
+            var synthesized = new SynthesizedCancellation();
+
+            touch.Produce(handler.Touch).Synthesize(synthesized);
+            pull.Produce(handler.Pull).Synthesize(synthesized);
+
+            return synthesized;
         }
 
         public void Emit()

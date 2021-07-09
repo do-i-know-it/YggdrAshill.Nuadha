@@ -1,6 +1,6 @@
-﻿using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Signals;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public interface IHandControllerThreshold
     {

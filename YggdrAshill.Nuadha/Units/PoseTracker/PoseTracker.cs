@@ -1,9 +1,10 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public sealed class PoseTracker :
         IIgnition<IPoseTrackerHardwareHandler>
@@ -35,8 +36,12 @@ namespace YggdrAshill.Nuadha.Units
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            return position.Produce(handler.Position)
-                .Synthesize(rotation.Produce(handler.Rotation));
+            var synthesized = new SynthesizedCancellation();
+
+            position.Produce(handler.Position).Synthesize(synthesized);
+            rotation.Produce(handler.Rotation).Synthesize(synthesized);
+
+            return synthesized;
         }
 
         public void Emit()

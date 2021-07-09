@@ -1,10 +1,11 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public sealed class PulsatedButton :
         IConnection<IPulsatedButtonHardwareHandler>
@@ -32,8 +33,12 @@ namespace YggdrAshill.Nuadha.Units
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            return touch.Produce(handler.Touch)
-                .Synthesize(push.Produce(handler.Push));
+            var synthesized = new SynthesizedCancellation();
+
+            touch.Produce(handler.Touch).Synthesize(synthesized);
+            push.Produce(handler.Push).Synthesize(synthesized);
+
+            return synthesized;
         }
     }
 }

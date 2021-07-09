@@ -1,8 +1,9 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public sealed class HandController :
         IIgnition<IHandControllerHardwareHandler>
@@ -50,10 +51,14 @@ namespace YggdrAshill.Nuadha.Units
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            return pose.Connect(handler.Pose)
-                .Synthesize(thumb.Connect(handler.Thumb))
-                .Synthesize(indexFinger.Connect(handler.IndexFinger))
-                .Synthesize(handGrip.Connect(handler.HandGrip));
+            var synthesized = new SynthesizedCancellation();
+
+            pose.Connect(handler.Pose).Synthesize(synthesized);
+            thumb.Connect(handler.Thumb).Synthesize(synthesized);
+            indexFinger.Connect(handler.IndexFinger).Synthesize(synthesized);
+            handGrip.Connect(handler.HandGrip).Synthesize(synthesized);
+
+            return synthesized;
         }
 
         public void Emit()

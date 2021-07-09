@@ -1,8 +1,9 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public sealed class PulsatedHandController :
         IConnection<IPulsatedHandControllerHardwareHandler>
@@ -38,9 +39,13 @@ namespace YggdrAshill.Nuadha.Units
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            return thumb.Connect(handler.Thumb)
-                .Synthesize(indexFinger.Connect(handler.IndexFinger))
-                .Synthesize(handGrip.Connect(handler.HandGrip));
+            var synthesized = new SynthesizedCancellation();
+
+            thumb.Connect(handler.Thumb).Synthesize(synthesized);
+            indexFinger.Connect(handler.IndexFinger).Synthesize(synthesized);
+            handGrip.Connect(handler.HandGrip).Synthesize(synthesized);
+
+            return synthesized;
         }
     }
 }

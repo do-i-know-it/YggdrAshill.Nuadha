@@ -37,5 +37,20 @@ namespace YggdrAshill.Nuadha
 
             return production.Produce(new Consumption<TSignal>(onConsumed));
         }
+
+        public static void Synthesize(this ICancellation cancellation, SynthesizedCancellation synthesized)
+        {
+            if (cancellation == null)
+            {
+                throw new ArgumentNullException(nameof(cancellation));
+            }
+            if (synthesized == null)
+            {
+                throw new ArgumentNullException(nameof(synthesized));
+            }
+
+            synthesized.cancellations.Add(cancellation);
+            synthesized.cancellations.Add(synthesized);
+        }
     }
 }

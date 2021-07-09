@@ -1,9 +1,10 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public sealed class HeadTracker :
         IIgnition<IHeadTrackerHardwareHandler>
@@ -35,8 +36,12 @@ namespace YggdrAshill.Nuadha.Units
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            return pose.Connect(handler.Pose)
-                .Synthesize(direction.Produce(handler.Direction));
+            var synthesized = new SynthesizedCancellation();
+
+            pose.Connect(handler.Pose).Synthesize(synthesized);
+            direction.Produce(handler.Direction).Synthesize(synthesized);
+
+            return synthesized;
         }
 
         public void Emit()

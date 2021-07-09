@@ -1,10 +1,11 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public sealed class PulsatedStick :
         IConnection<IPulsatedStickHardwareHandler>
@@ -49,12 +50,16 @@ namespace YggdrAshill.Nuadha.Units
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            return touch.Produce(handler.Touch)
-                .Synthesize(distance.Produce(handler.Distance))
-                .Synthesize(left.Produce(handler.Left))
-                .Synthesize(right.Produce(handler.Right))
-                .Synthesize(forward.Produce(handler.Forward))
-                .Synthesize(backward.Produce(handler.Backward));
+            var synthesized = new SynthesizedCancellation();
+
+            touch.Produce(handler.Touch).Synthesize(synthesized);
+            distance.Produce(handler.Distance).Synthesize(synthesized);
+            left.Produce(handler.Left).Synthesize(synthesized);
+            right.Produce(handler.Right).Synthesize(synthesized);
+            forward.Produce(handler.Forward).Synthesize(synthesized);
+            backward.Produce(handler.Backward).Synthesize(synthesized);
+
+            return synthesized;
         }
     }
 }
