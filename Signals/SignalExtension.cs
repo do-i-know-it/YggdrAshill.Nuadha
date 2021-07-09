@@ -5,7 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Extensions for Signals.
+    /// Defines extensions for Signals.
     /// </summary>
     public static class SignalExtension
     {
@@ -39,6 +39,18 @@ namespace YggdrAshill.Nuadha.Signals
             return (bool)signal;
         }
 
+        /// <summary>
+        /// Converts <see cref="Touch"/> into <see cref="Pulse"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{Touch}"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{Pulse}"/> converted.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
         public static IProduction<Pulse> Convert(this IProduction<Touch> production)
         {
             if (production == null)
@@ -81,6 +93,18 @@ namespace YggdrAshill.Nuadha.Signals
             return (bool)signal;
         }
 
+        /// <summary>
+        /// Converts <see cref="Push"/> into <see cref="Pulse"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{Push}"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{Pulse}"/> converted.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
         public static IProduction<Pulse> Convert(this IProduction<Push> production)
         {
             if (production == null)
@@ -123,6 +147,24 @@ namespace YggdrAshill.Nuadha.Signals
             return (float)signal;
         }
 
+        /// <summary>
+        /// Converts <see cref="Pull"/> into <see cref="Pulse"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{Pull}"/> to convert.
+        /// </param>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{Pulse}"/> converted.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static IProduction<Pulse> Convert(this IProduction<Pull> production, HysteresisThreshold threshold)
         {
             if (production == null)

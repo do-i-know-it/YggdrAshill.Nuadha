@@ -3,6 +3,9 @@ using System;
 
 namespace YggdrAshill.Nuadha.Signals
 {
+    /// <summary>
+    /// Defines <see cref="IDetection{TSignal}"/> for Signals.
+    /// </summary>
     public sealed class DetectionOf :
         IDetection<Touch>,
         IDetection<Push>
@@ -20,6 +23,9 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Touch
 
+        /// <summary>
+        /// <see cref="IDetection{Touch}"/>.
+        /// </summary>
         public static IDetection<Touch> Touch => Instance;
 
         bool IDetection<Touch>.Detect(Touch signal)
@@ -41,6 +47,9 @@ namespace YggdrAshill.Nuadha.Signals
 
         #region Push
 
+        /// <summary>
+        /// <see cref="IDetection{Push}"/>.
+        /// </summary>
         public static IDetection<Push> Push => Instance;
 
         bool IDetection<Push>.Detect(Push signal)
