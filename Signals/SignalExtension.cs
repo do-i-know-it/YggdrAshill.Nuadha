@@ -39,28 +39,6 @@ namespace YggdrAshill.Nuadha.Signals
             return (bool)signal;
         }
 
-        /// <summary>
-        /// Converts <see cref="Touch"/> into <see cref="Pulse"/>.
-        /// </summary>
-        /// <param name="production">
-        /// <see cref="IProduction{Touch}"/> to convert.
-        /// </param>
-        /// <returns>
-        /// <see cref="IProduction{Pulse}"/> converted.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
-        /// </exception>
-        public static IProduction<Pulse> Convert(this IProduction<Touch> production)
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-
-            return production.Convert(SignalInto.Pulse(WhenSignalOf.TouchIs.Enabled));
-        }
-
         #endregion
 
         #region Push
@@ -91,28 +69,6 @@ namespace YggdrAshill.Nuadha.Signals
         public static bool ToBoolean(this Push signal)
         {
             return (bool)signal;
-        }
-
-        /// <summary>
-        /// Converts <see cref="Push"/> into <see cref="Pulse"/>.
-        /// </summary>
-        /// <param name="production">
-        /// <see cref="IProduction{Push}"/> to convert.
-        /// </param>
-        /// <returns>
-        /// <see cref="IProduction{Pulse}"/> converted.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
-        /// </exception>
-        public static IProduction<Pulse> Convert(this IProduction<Push> production)
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-
-            return production.Convert(SignalInto.Pulse(WhenSignalOf.PushIs.Enabled));
         }
 
         #endregion
@@ -178,7 +134,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             return production
                 .Convert(PullToPush.With(threshold))
-                .Convert();
+                .Convert(SignalInto.Pulse(WhenSignalOf.PushIs.Enabled));
         }
 
         #endregion
