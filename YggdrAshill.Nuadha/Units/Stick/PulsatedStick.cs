@@ -7,14 +7,14 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PulsatedStick :
+    internal sealed class PulsatedStick :
         IConnection<IPulsatedStickHardwareHandler>
     {
         private readonly IProduction<Pulse> touch;
 
         private readonly PulsatedTilt tilt;
 
-        public PulsatedStick(IStickSoftwareHandler handler, TiltThreshold threshold)
+        internal PulsatedStick(IStickSoftwareHandler handler, TiltThreshold threshold)
         {
             if (handler == null)
             {
@@ -30,6 +30,7 @@ namespace YggdrAshill.Nuadha
             tilt = new PulsatedTilt(handler.Tilt, threshold);
         }
 
+        /// <inheritdoc/>
         public ICancellation Connect(IPulsatedStickHardwareHandler handler)
         {
             if (handler == null)

@@ -7,25 +7,21 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PulsatedButton :
+    internal sealed class PulsatedButton :
         IConnection<IPulsatedButtonHardwareHandler>
     {
         private readonly IProduction<Pulse> touch;
 
         private readonly IProduction<Pulse> push;
 
-        public PulsatedButton(IButtonSoftwareHandler handler)
+        internal PulsatedButton(IButtonSoftwareHandler handler)
         {
-            if (handler == null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
-
             touch = handler.Touch.Convert();
 
             push = handler.Push.Convert();
         }
 
+        /// <inheritdoc/>
         public ICancellation Connect(IPulsatedButtonHardwareHandler handler)
         {
             if (handler == null)

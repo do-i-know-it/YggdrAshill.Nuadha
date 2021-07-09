@@ -7,29 +7,21 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PulsatedTrigger :
+    internal sealed class PulsatedTrigger :
         IConnection<IPulsatedTriggerHardwareHandler>
     {
         private readonly IProduction<Pulse> touch;
 
         private readonly IProduction<Pulse> pull;
 
-        public PulsatedTrigger(ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
+        internal PulsatedTrigger(ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
         {
-            if (handler == null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
             touch = handler.Touch.Convert();
 
             pull = handler.Pull.Convert(threshold);
         }
 
+        /// <inheritdoc/>
         public ICancellation Connect(IPulsatedTriggerHardwareHandler handler)
         {
             if (handler == null)

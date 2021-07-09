@@ -5,7 +5,7 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PulsatedHandController :
+    internal sealed class PulsatedHandController :
         IConnection<IPulsatedHandControllerHardwareHandler>
     {
         private readonly PulsatedStick thumb;
@@ -14,7 +14,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly PulsatedTrigger handGrip;
 
-        public PulsatedHandController(IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
+        internal PulsatedHandController(IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
         {
             if (handler == null)
             {
@@ -32,6 +32,7 @@ namespace YggdrAshill.Nuadha
             handGrip = new PulsatedTrigger(handler.HandGrip, threshold.HandGrip);
         }
 
+        /// <inheritdoc/>
         public ICancellation Connect(IPulsatedHandControllerHardwareHandler handler)
         {
             if (handler == null)

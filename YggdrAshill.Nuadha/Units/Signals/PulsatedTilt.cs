@@ -7,7 +7,7 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class PulsatedTilt :
+    internal sealed class PulsatedTilt :
         IConnection<IPulsatedTiltHardwareHandler>
     {
         private readonly IProduction<Pulse> distance;
@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly IProduction<Pulse> backward;
 
-        public PulsatedTilt(IProduction<Tilt> production, TiltThreshold threshold)
+        internal PulsatedTilt(IProduction<Tilt> production, TiltThreshold threshold)
         {
             if (production == null)
             {
@@ -38,6 +38,7 @@ namespace YggdrAshill.Nuadha
             backward = production.Convert(TiltToPull.Backward).Convert(threshold.Backward);
         }
 
+        /// <inheritdoc/>
         public ICancellation Connect(IPulsatedTiltHardwareHandler handler)
         {
             if (handler == null)
