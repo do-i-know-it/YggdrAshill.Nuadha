@@ -1,26 +1,50 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
+using System;
 using System.Collections.Generic;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Collects <see cref="ICancellation"/> to cancel simultaneously.
+    /// </summary>
     public sealed class SynthesizedCancellation :
         ICancellation
     {
-        internal readonly List<ICancellation> cancellations;
+        private readonly List<ICancellation> cancellationList = new List<ICancellation>();
 
-        public SynthesizedCancellation()
-        {
-            cancellations = new List<ICancellation>();
-        }
-
+        /// <inheritdoc/>
         public void Cancel()
         {
-            foreach (var cancellation in cancellations)
+            foreach (var cancellation in cancellationList)
             {
                 cancellation.Cancel();
             }
 
-            cancellations.Clear();
+            cancellationList.Clear();
+        }
+
+        /// <summary>
+        /// Collects <see cref="ICancellation"/>.
+        /// </summary>
+        /// <param name="cancellation">
+        /// <see cref="ICancellation"/> to collect.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="cancellation"/> is null.
+        /// </exception>
+        public void Synthesize(ICancellation cancellation)
+        {
+            if (cancellation == null)
+            {
+                throw new ArgumentNullException(nameof(cancellation));
+            }
+
+            if (cancellationList.Contains(cancellation))
+            {
+                return;
+            }
+
+            cancellationList.Add(cancellation);
         }
     }
 }
