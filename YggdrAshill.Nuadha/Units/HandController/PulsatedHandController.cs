@@ -14,7 +14,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly PulsatedTrigger handGrip;
 
-        public PulsatedHandController(IHandControllerSoftwareHandler handler, IHandControllerThreshold threshold)
+        public PulsatedHandController(IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
         {
             if (handler == null)
             {

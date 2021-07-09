@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly IProduction<Pulse> backward;
 
-        public PulsatedTilt(IProduction<Tilt> production, ITiltThreshold threshold)
+        public PulsatedTilt(IProduction<Tilt> production, TiltThreshold threshold)
         {
             if (production == null)
             {

@@ -14,7 +14,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly PulsatedTilt tilt;
 
-        public PulsatedStick(IStickSoftwareHandler handler, ITiltThreshold threshold)
+        public PulsatedStick(IStickSoftwareHandler handler, TiltThreshold threshold)
         {
             if (handler == null)
             {
