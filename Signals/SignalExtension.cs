@@ -1,7 +1,3 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
-using System;
-
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
@@ -101,40 +97,6 @@ namespace YggdrAshill.Nuadha.Signals
         public static float ToSingle(this Pull signal)
         {
             return (float)signal;
-        }
-
-        /// <summary>
-        /// Converts <see cref="Pull"/> into <see cref="Pulse"/>.
-        /// </summary>
-        /// <param name="production">
-        /// <see cref="IProduction{Pull}"/> to convert.
-        /// </param>
-        /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to convert.
-        /// </param>
-        /// <returns>
-        /// <see cref="IProduction{Pulse}"/> converted.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
-        /// </exception>
-        public static IProduction<Pulse> Convert(this IProduction<Pull> production, HysteresisThreshold threshold)
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            return production
-                .Convert(PullToPush.With(threshold))
-                .Convert(SignalInto.Pulse(WhenSignalOf.PushIs.Enabled));
         }
 
         #endregion

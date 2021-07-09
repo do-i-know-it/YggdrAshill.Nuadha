@@ -25,7 +25,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            touch = handler.Touch.Convert(SignalInto.Pulse(WhenSignalOf.TouchIs.Enabled));
+            touch = handler.Touch.Convert(TouchInto.Pulse);
 
             tilt = new PulsatedTilt(handler.Tilt, threshold);
         }

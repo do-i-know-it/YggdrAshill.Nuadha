@@ -16,9 +16,9 @@ namespace YggdrAshill.Nuadha
 
         internal PulsatedButton(IButtonSoftwareHandler handler)
         {
-            touch = handler.Touch.Convert(SignalInto.Pulse(WhenSignalOf.TouchIs.Enabled));
+            touch = handler.Touch.Convert(TouchInto.Pulse);
 
-            push = handler.Push.Convert(SignalInto.Pulse(WhenSignalOf.PushIs.Enabled));
+            push = handler.Push.Convert(PushInto.Pulse);
         }
 
         /// <inheritdoc/>

@@ -16,9 +16,9 @@ namespace YggdrAshill.Nuadha
 
         internal PulsatedTrigger(ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
         {
-            touch = handler.Touch.Convert(SignalInto.Pulse(WhenSignalOf.TouchIs.Enabled));
+            touch = handler.Touch.Convert(TouchInto.Pulse);
 
-            pull = handler.Pull.Convert(threshold);
+            pull = handler.Pull.Convert(PullInto.Pulse(threshold));
         }
 
         /// <inheritdoc/>

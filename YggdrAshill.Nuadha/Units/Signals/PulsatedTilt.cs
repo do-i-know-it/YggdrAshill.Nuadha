@@ -31,11 +31,11 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            distance = production.Convert(TiltToPull.Distance).Convert(threshold.Distance);
-            left = production.Convert(TiltToPull.Left).Convert(threshold.Left);
-            right = production.Convert(TiltToPull.Right).Convert(threshold.Right);
-            forward = production.Convert(TiltToPull.Forward).Convert(threshold.Forward);
-            backward = production.Convert(TiltToPull.Backward).Convert(threshold.Backward);
+            distance = production.Convert(TiltInto.PulseBy.Distance(threshold.Distance));
+            left = production.Convert(TiltInto.PulseBy.Left(threshold.Left));
+            right = production.Convert(TiltInto.PulseBy.Right(threshold.Right));
+            forward = production.Convert(TiltInto.PulseBy.Forward(threshold.Forward));
+            backward = production.Convert(TiltInto.PulseBy.Backward(threshold.Backward));
         }
 
         /// <inheritdoc/>
