@@ -9,31 +9,31 @@ namespace YggdrAshill.Nuadha.Signals
         public static TiltToPull Distance { get; }
             = new TiltToPull(signal =>
             {
-                return (Pull)signal.Distance;
+                return signal.Distance.ToPull();
             });
 
         public static TiltToPull Right { get; }
             = new TiltToPull(signal =>
             {
-                return (Pull)Math.Max(signal.Horizontal, 0);
+                return Math.Max(signal.Horizontal, 0).ToPull();
             });
 
         public static TiltToPull Left { get; }
             = new TiltToPull(signal =>
             {
-                return (Pull)(Math.Max(-signal.Horizontal, 0));
+                return Math.Max(-signal.Horizontal, 0).ToPull();
             });
 
         public static TiltToPull Forward { get; }
             = new TiltToPull(signal =>
             {
-                return (Pull)Math.Max(signal.Vertical, 0);
+                return Math.Max(signal.Vertical, 0).ToPull();
             });
 
         public static TiltToPull Backward { get; }
             = new TiltToPull(signal =>
             {
-                return (Pull)Math.Max(-signal.Vertical, 0);
+                return Math.Max(-signal.Vertical, 0).ToPull();
             });
 
         private readonly Func<Tilt, Pull> onConverted;

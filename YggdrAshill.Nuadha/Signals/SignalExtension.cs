@@ -16,7 +16,7 @@ namespace YggdrAshill.Nuadha
 
             var detection = new Detection<Touch>(signal =>
             {
-                return (bool)signal;
+                return signal.ToBoolean();
             });
 
             return production.Convert(IntoPulseFrom<Touch>.With(detection));
@@ -31,7 +31,7 @@ namespace YggdrAshill.Nuadha
 
             var detection = new Detection<Push>(signal =>
             {
-                return (bool)signal;
+                return signal.ToBoolean();
             });
 
             return production.Convert(IntoPulseFrom<Push>.With(detection));

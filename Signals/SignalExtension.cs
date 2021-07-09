@@ -1,4 +1,4 @@
-namespace YggdrAshill.Nuadha.Signals.Experimental
+namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
     /// Extensions for Signals.
