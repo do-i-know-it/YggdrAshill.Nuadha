@@ -13,55 +13,22 @@ namespace YggdrAshill.Nuadha
     {
         private readonly IPropagation<Pulse> touch;
 
-        private readonly IPropagation<Pulse> distance;
+        private readonly PulsatedTiltModule tilt;
 
-        private readonly IPropagation<Pulse> left;
-
-        private readonly IPropagation<Pulse> right;
-
-        private readonly IPropagation<Pulse> upward;
-
-        private readonly IPropagation<Pulse> downward;
-
-        public PulsatedStickModule(
-            IPropagation<Pulse> touch,
-            IPropagation<Pulse> distance,
-            IPropagation<Pulse> left,
-            IPropagation<Pulse> right,
-            IPropagation<Pulse> upward,
-            IPropagation<Pulse> downward)
+        public PulsatedStickModule(IPropagation<Pulse> touch, PulsatedTiltModule tilt)
         {
             if (touch == null)
             {
                 throw new ArgumentNullException(nameof(touch));
             }
-            if (distance == null)
+            if (tilt == null)
             {
-                throw new ArgumentNullException(nameof(distance));
-            }
-            if (left == null)
-            {
-                throw new ArgumentNullException(nameof(left));
-            }
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-            if (upward == null)
-            {
-                throw new ArgumentNullException(nameof(upward));
-            }
-            if (downward == null)
-            {
-                throw new ArgumentNullException(nameof(downward));
+                throw new ArgumentNullException(nameof(tilt));
             }
 
             this.touch = touch;
-            this.distance = distance;
-            this.left = left;
-            this.right = right;
-            this.upward = upward;
-            this.downward = downward;
+
+            this.tilt = tilt;
         }
 
         public IPulsatedStickHardwareHandler HardwareHandler => this;
@@ -72,39 +39,15 @@ namespace YggdrAshill.Nuadha
         {
             touch.Dispose();
 
-            distance.Dispose();
-
-            left.Dispose();
-
-            right.Dispose();
-
-            upward.Dispose();
-
-            downward.Dispose();
+            tilt.Dispose();
         }
 
         IConsumption<Pulse> IPulsatedStickHardwareHandler.Touch => touch;
 
-        IConsumption<Pulse> IPulsatedStickHardwareHandler.Distance => distance;
-
-        IConsumption<Pulse> IPulsatedStickHardwareHandler.Left => left;
-
-        IConsumption<Pulse> IPulsatedStickHardwareHandler.Right => right;
-
-        IConsumption<Pulse> IPulsatedStickHardwareHandler.Forward => upward;
-
-        IConsumption<Pulse> IPulsatedStickHardwareHandler.Backward => downward;
+        IPulsatedTiltHardwareHandler IPulsatedStickHardwareHandler.Tilt => tilt;
 
         IProduction<Pulse> IPulsatedStickSoftwareHandler.Touch => touch;
 
-        IProduction<Pulse> IPulsatedStickSoftwareHandler.Distance => distance;
-
-        IProduction<Pulse> IPulsatedStickSoftwareHandler.Left => left;
-
-        IProduction<Pulse> IPulsatedStickSoftwareHandler.Right => right;
-
-        IProduction<Pulse> IPulsatedStickSoftwareHandler.Forward => upward;
-
-        IProduction<Pulse> IPulsatedStickSoftwareHandler.Backward => downward;
+        IPulsatedTiltSoftwareHandler IPulsatedStickSoftwareHandler.Tilt => tilt;
     }
 }

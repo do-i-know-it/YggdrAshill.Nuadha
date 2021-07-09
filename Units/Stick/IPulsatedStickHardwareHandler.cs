@@ -9,14 +9,6 @@ namespace YggdrAshill.Nuadha.Units
     {
         IConsumption<Pulse> Touch { get; }
 
-        IConsumption<Pulse> Distance { get; }
-
-        IConsumption<Pulse> Left { get; }
-
-        IConsumption<Pulse> Right { get; }
-
-        IConsumption<Pulse> Forward { get; }
-
-        IConsumption<Pulse> Backward { get; }
+        IPulsatedTiltHardwareHandler Tilt { get; }
     }
 }

@@ -12,15 +12,7 @@ namespace YggdrAshill.Nuadha
     {
         private readonly IProduction<Pulse> touch;
 
-        private readonly IProduction<Pulse> distance;
-
-        private readonly IProduction<Pulse> left;
-
-        private readonly IProduction<Pulse> right;
-
-        private readonly IProduction<Pulse> forward;
-
-        private readonly IProduction<Pulse> backward;
+        private readonly PulsatedTilt tilt;
 
         public PulsatedStick(IStickSoftwareHandler handler, ITiltThreshold threshold)
         {
@@ -35,12 +27,7 @@ namespace YggdrAshill.Nuadha
 
             touch = handler.Touch.Convert(new TouchToPulse());
 
-            distance = handler.Tilt.Convert(TiltToPulse.Distance(threshold.Distance));
-
-            left = handler.Tilt.Convert(TiltToPulse.Left(threshold.Left));
-            right = handler.Tilt.Convert(TiltToPulse.Right(threshold.Right));
-            forward = handler.Tilt.Convert(TiltToPulse.Forward(threshold.Forward));
-            backward = handler.Tilt.Convert(TiltToPulse.Backward(threshold.Backward));
+            tilt = new PulsatedTilt(handler.Tilt, threshold);
         }
 
         public ICancellation Connect(IPulsatedStickHardwareHandler handler)
@@ -53,11 +40,7 @@ namespace YggdrAshill.Nuadha
             var synthesized = new SynthesizedCancellation();
 
             touch.Produce(handler.Touch).Synthesize(synthesized);
-            distance.Produce(handler.Distance).Synthesize(synthesized);
-            left.Produce(handler.Left).Synthesize(synthesized);
-            right.Produce(handler.Right).Synthesize(synthesized);
-            forward.Produce(handler.Forward).Synthesize(synthesized);
-            backward.Produce(handler.Backward).Synthesize(synthesized);
+            tilt.Connect(handler.Tilt).Synthesize(synthesized);
 
             return synthesized;
         }

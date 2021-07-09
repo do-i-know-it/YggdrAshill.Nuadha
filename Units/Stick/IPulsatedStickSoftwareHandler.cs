@@ -9,14 +9,6 @@ namespace YggdrAshill.Nuadha.Units
     {
         IProduction<Pulse> Touch { get; }
 
-        IProduction<Pulse> Distance { get; }
-
-        IProduction<Pulse> Left { get; }
-
-        IProduction<Pulse> Right { get; }
-
-        IProduction<Pulse> Forward { get; }
-
-        IProduction<Pulse> Backward { get; }
+        IPulsatedTiltSoftwareHandler Tilt { get; }
     }
 }
