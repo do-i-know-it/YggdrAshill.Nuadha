@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha.Transformation
     /// <summary>
     /// Defines implementation of <see cref="IPulsation{TSignal}"/>.
     /// </summary>
-    public static class IntoPulseFrom
+    public static class IntoPulse
     {
         /// <summary>
         /// Constructs <see cref="IPulsation{TSignal}"/>.
@@ -23,7 +23,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="detection"/> is null.
         /// </exception>
-        public static IPulsation<TSignal> With<TSignal>(IDetection<TSignal> detection)
+        public static IPulsation<TSignal> From<TSignal>(IDetection<TSignal> detection)
             where TSignal : ISignal
         {
             if (detection == null)
