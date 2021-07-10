@@ -1,19 +1,19 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public sealed class StickModule :
         IModule<IStickHardwareHandler, IStickSoftwareHandler>,
         IStickHardwareHandler,
-        IStickSoftwareHandler
+        IStickSoftwareHandler,
+        IDisposable
     {
-        private readonly IPropagation<Touch> touch;
+        private IPropagation<Touch> Touch { get; }
 
-        private readonly IPropagation<Tilt> tilt;
+        private IPropagation<Tilt> Tilt { get; }
 
         public StickModule(IPropagation<Touch> touch, IPropagation<Tilt> tilt)
         {
@@ -26,9 +26,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(tilt));
             }
 
-            this.touch = touch;
+            Touch = touch;
 
-            this.tilt = tilt;
+            Tilt = tilt;
         }
 
         public IStickHardwareHandler HardwareHandler => this;
@@ -37,17 +37,17 @@ namespace YggdrAshill.Nuadha
 
         public void Dispose()
         {
-            touch.Dispose();
+            Touch.Dispose();
 
-            tilt.Dispose();
+            Tilt.Dispose();
         }
 
-        IConsumption<Touch> IStickHardwareHandler.Touch => touch;
+        IConsumption<Touch> IStickHardwareHandler.Touch => Touch;
 
-        IConsumption<Tilt> IStickHardwareHandler.Tilt => tilt;
+        IConsumption<Tilt> IStickHardwareHandler.Tilt => Tilt;
 
-        IProduction<Touch> IStickSoftwareHandler.Touch => touch;
+        IProduction<Touch> IStickSoftwareHandler.Touch => Touch;
 
-        IProduction<Tilt> IStickSoftwareHandler.Tilt => tilt;
+        IProduction<Tilt> IStickSoftwareHandler.Tilt => Tilt;
     }
 }

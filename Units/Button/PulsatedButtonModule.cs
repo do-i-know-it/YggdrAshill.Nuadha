@@ -1,19 +1,19 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public sealed class PulsatedButtonModule :
         IModule<IPulsatedButtonHardwareHandler, IPulsatedButtonSoftwareHandler>,
         IPulsatedButtonHardwareHandler,
-        IPulsatedButtonSoftwareHandler
+        IPulsatedButtonSoftwareHandler,
+        IDisposable
     {
-        private readonly IPropagation<Pulse> touch;
+        private IPropagation<Pulse> Touch { get; }
 
-        private readonly IPropagation<Pulse> push;
+        private IPropagation<Pulse> Push { get; }
 
         public PulsatedButtonModule(IPropagation<Pulse> touch, IPropagation<Pulse> push)
         {
@@ -26,9 +26,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(push));
             }
 
-            this.touch = touch;
+            Touch = touch;
 
-            this.push = push;
+            Push = push;
         }
 
         public IPulsatedButtonHardwareHandler HardwareHandler => this;
@@ -37,17 +37,17 @@ namespace YggdrAshill.Nuadha
 
         public void Dispose()
         {
-            touch.Dispose();
+            Touch.Dispose();
 
-            push.Dispose();
+            Push.Dispose();
         }
 
-        IConsumption<Pulse> IPulsatedButtonHardwareHandler.Touch => touch;
+        IConsumption<Pulse> IPulsatedButtonHardwareHandler.Touch => Touch;
 
-        IConsumption<Pulse> IPulsatedButtonHardwareHandler.Push => push;
+        IConsumption<Pulse> IPulsatedButtonHardwareHandler.Push => Push;
 
-        IProduction<Pulse> IPulsatedButtonSoftwareHandler.Touch => touch;
+        IProduction<Pulse> IPulsatedButtonSoftwareHandler.Touch => Touch;
 
-        IProduction<Pulse> IPulsatedButtonSoftwareHandler.Push => push;
+        IProduction<Pulse> IPulsatedButtonSoftwareHandler.Push => Push;
     }
 }

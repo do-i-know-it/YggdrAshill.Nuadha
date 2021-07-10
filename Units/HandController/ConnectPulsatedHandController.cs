@@ -6,31 +6,22 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    internal sealed class PulsatedHandController :
+    internal sealed class ConnectPulsatedHandController :
         IConnection<IPulsatedHandControllerHardwareHandler>
     {
-        private readonly PulsatedStick thumb;
+        private readonly ConnectPulsatedStick thumb;
 
-        private readonly PulsatedTrigger indexFinger;
+        private readonly ConnectPulsatedTrigger indexFinger;
 
-        private readonly PulsatedTrigger handGrip;
+        private readonly ConnectPulsatedTrigger handGrip;
 
-        internal PulsatedHandController(IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
+        internal ConnectPulsatedHandController(IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
         {
-            if (handler == null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
+            thumb = new ConnectPulsatedStick(handler.Thumb, threshold.Thumb);
 
-            thumb = new PulsatedStick(handler.Thumb, threshold.Thumb);
+            indexFinger = new ConnectPulsatedTrigger(handler.IndexFinger, threshold.IndexFinger);
 
-            indexFinger = new PulsatedTrigger(handler.IndexFinger, threshold.IndexFinger);
-
-            handGrip = new PulsatedTrigger(handler.HandGrip, threshold.HandGrip);
+            handGrip = new ConnectPulsatedTrigger(handler.HandGrip, threshold.HandGrip);
         }
 
         /// <inheritdoc/>

@@ -1,62 +1,21 @@
-using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class Stick :
-        IIgnition<IStickHardwareHandler>
+    internal sealed class Stick :
+        IStick
     {
-        private readonly ITransmission<Touch> touch;
+        public ITransmission<Touch> Touch { get; }
 
-        private readonly ITransmission<Tilt> tilt;
+        public ITransmission<Tilt> Tilt { get; }
 
-        public Stick(ITransmission<Touch> touch, ITransmission<Tilt> tilt)
+        internal Stick(IStickConfiguration configuration)
         {
-            if (touch == null)
-            {
-                throw new ArgumentNullException(nameof(touch));
-            }
-            if (tilt == null)
-            {
-                throw new ArgumentNullException(nameof(tilt));
-            }
+            Touch = new PropagationWithoutCache<Touch>().Transmit(configuration.Touch);
 
-            this.touch = touch;
-
-            this.tilt = tilt;
-        }
-
-        public ICancellation Connect(IStickHardwareHandler handler)
-        {
-            if (handler == null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
-
-            var synthesized = new SynthesizedCancellation();
-
-            touch.Produce(handler.Touch).Synthesize(synthesized);
-            tilt.Produce(handler.Tilt).Synthesize(synthesized);
-
-            return synthesized;
-        }
-
-        public void Emit()
-        {
-            touch.Emit();
-
-            tilt.Emit();
-        }
-
-        public void Dispose()
-        {
-            touch.Dispose();
-
-            tilt.Dispose();
+            Tilt = new PropagationWithoutCache<Tilt>().Transmit(configuration.Tilt);
         }
     }
 }

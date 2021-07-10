@@ -1,7 +1,7 @@
 using YggdrAshill.Nuadha.Signals;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public sealed class HandControllerThreshold
     {

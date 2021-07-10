@@ -1,19 +1,19 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public sealed class PulsatedTriggerModule :
         IModule<IPulsatedTriggerHardwareHandler, IPulsatedTriggerSoftwareHandler>,
         IPulsatedTriggerHardwareHandler,
-        IPulsatedTriggerSoftwareHandler
+        IPulsatedTriggerSoftwareHandler,
+        IDisposable
     {
-        private readonly IPropagation<Pulse> touch;
+        private IPropagation<Pulse> Touch { get; }
 
-        private readonly IPropagation<Pulse> pull;
+        private IPropagation<Pulse> Pull { get; }
 
         public PulsatedTriggerModule(IPropagation<Pulse> touch, IPropagation<Pulse> pull)
         {
@@ -26,9 +26,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(pull));
             }
 
-            this.touch = touch;
+            Touch = touch;
 
-            this.pull = pull;
+            Pull = pull;
         }
 
         public IPulsatedTriggerHardwareHandler HardwareHandler => this;
@@ -37,17 +37,17 @@ namespace YggdrAshill.Nuadha
 
         public void Dispose()
         {
-            touch.Dispose();
+            Touch.Dispose();
 
-            pull.Dispose();
+            Pull.Dispose();
         }
 
-        IConsumption<Pulse> IPulsatedTriggerHardwareHandler.Touch => touch;
+        IConsumption<Pulse> IPulsatedTriggerHardwareHandler.Touch => Touch;
 
-        IConsumption<Pulse> IPulsatedTriggerHardwareHandler.Pull => pull;
+        IConsumption<Pulse> IPulsatedTriggerHardwareHandler.Pull => Pull;
 
-        IProduction<Pulse> IPulsatedTriggerSoftwareHandler.Touch => touch;
+        IProduction<Pulse> IPulsatedTriggerSoftwareHandler.Touch => Touch;
 
-        IProduction<Pulse> IPulsatedTriggerSoftwareHandler.Pull => pull;
+        IProduction<Pulse> IPulsatedTriggerSoftwareHandler.Pull => Pull;
     }
 }

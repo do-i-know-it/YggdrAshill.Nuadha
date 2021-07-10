@@ -1,87 +1,27 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class HandController :
-        IIgnition<IHandControllerHardwareHandler>
+    internal sealed class HandController :
+        IHandController
     {
-        private readonly PoseTracker pose;
+        public IPoseTracker Pose { get; }
 
-        private readonly Stick thumb;
+        public IStick Thumb { get; }
 
-        private readonly Trigger indexFinger;
+        public ITrigger IndexFinger { get; }
 
-        private readonly Trigger handGrip;
+        public ITrigger HandGrip { get; }
 
-        public HandController(PoseTracker pose, Stick thumb, Trigger indexFinger, Trigger handGrip)
+        internal HandController(IHandControllerConfiguration configuration)
         {
-            if (pose == null)
-            {
-                throw new ArgumentNullException(nameof(pose));
-            }
-            if (thumb == null)
-            {
-                throw new ArgumentNullException(nameof(thumb));
-            }
-            if (indexFinger == null)
-            {
-                throw new ArgumentNullException(nameof(indexFinger));
-            }
-            if (handGrip == null)
-            {
-                throw new ArgumentNullException(nameof(handGrip));
-            }
+            Pose = new PoseTracker(configuration.Pose);
 
-            this.pose = pose;
+            Thumb = new Stick(configuration.Thumb);
 
-            this.thumb = thumb;
+            IndexFinger = new Trigger(configuration.IndexFinger);
 
-            this.indexFinger = indexFinger;
-
-            this.handGrip = handGrip;
-        }
-
-        public ICancellation Connect(IHandControllerHardwareHandler handler)
-        {
-            if (handler == null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
-
-            var synthesized = new SynthesizedCancellation();
-
-            pose.Connect(handler.Pose).Synthesize(synthesized);
-            thumb.Connect(handler.Thumb).Synthesize(synthesized);
-            indexFinger.Connect(handler.IndexFinger).Synthesize(synthesized);
-            handGrip.Connect(handler.HandGrip).Synthesize(synthesized);
-
-            return synthesized;
-        }
-
-        public void Emit()
-        {
-            pose.Emit();
-
-            thumb.Emit();
-
-            indexFinger.Emit();
-
-            handGrip.Emit();
-        }
-
-        public void Dispose()
-        {
-            pose.Dispose();
-
-            thumb.Dispose();
-
-            indexFinger.Dispose();
-
-            handGrip.Dispose();
+            HandGrip = new Trigger(configuration.HandGrip);
         }
     }
 }

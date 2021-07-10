@@ -1,19 +1,19 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
+using YggdrAshill.Nuadha.Unitization;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public sealed class TriggerModule :
         IModule<ITriggerHardwareHandler, ITriggerSoftwareHandler>,
         ITriggerHardwareHandler,
-        ITriggerSoftwareHandler
+        ITriggerSoftwareHandler,
+        IDisposable
     {
-        private readonly IPropagation<Touch> touch;
+        private IPropagation<Touch> Touch { get; }
 
-        private readonly IPropagation<Pull> pull;
+        private IPropagation<Pull> Pull { get; }
 
         public TriggerModule(IPropagation<Touch> touch, IPropagation<Pull> pull)
         {
@@ -26,9 +26,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(pull));
             }
 
-            this.touch = touch;
+            Touch = touch;
 
-            this.pull = pull;
+            Pull = pull;
         }
 
         public ITriggerHardwareHandler HardwareHandler => this;
@@ -37,17 +37,17 @@ namespace YggdrAshill.Nuadha
 
         public void Dispose()
         {
-            touch.Dispose();
+            Touch.Dispose();
 
-            pull.Dispose();
+            Pull.Dispose();
         }
 
-        IConsumption<Touch> ITriggerHardwareHandler.Touch => touch;
+        IConsumption<Touch> ITriggerHardwareHandler.Touch => Touch;
 
-        IConsumption<Pull> ITriggerHardwareHandler.Pull => pull;
+        IConsumption<Pull> ITriggerHardwareHandler.Pull => Pull;
 
-        IProduction<Touch> ITriggerSoftwareHandler.Touch => touch;
+        IProduction<Touch> ITriggerSoftwareHandler.Touch => Touch;
 
-        IProduction<Pull> ITriggerSoftwareHandler.Pull => pull;
+        IProduction<Pull> ITriggerSoftwareHandler.Pull => Pull;
     }
 }

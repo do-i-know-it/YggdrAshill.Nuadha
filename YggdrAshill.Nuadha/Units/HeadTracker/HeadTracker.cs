@@ -1,62 +1,21 @@
-using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
-    public sealed class HeadTracker :
-        IIgnition<IHeadTrackerHardwareHandler>
+    internal sealed class HeadTracker :
+        IHeadTracker
     {
-        private readonly PoseTracker pose;
+        public IPoseTracker Pose { get; }
 
-        private readonly ITransmission<Space3D.Direction> direction;
+        public ITransmission<Space3D.Direction> Direction { get; }
 
-        public HeadTracker(PoseTracker pose, ITransmission<Space3D.Direction> direction)
+        internal HeadTracker(IHeadTrackerConfiguration configuration)
         {
-            if (pose == null)
-            {
-                throw new ArgumentNullException(nameof(pose));
-            }
-            if (direction == null)
-            {
-                throw new ArgumentNullException(nameof(direction));
-            }
+            Pose = new PoseTracker(configuration.Pose);
 
-            this.pose = pose;
-
-            this.direction = direction;
-        }
-
-        public ICancellation Connect(IHeadTrackerHardwareHandler handler)
-        {
-            if (handler == null)
-            {
-                throw new ArgumentNullException(nameof(handler));
-            }
-
-            var synthesized = new SynthesizedCancellation();
-
-            pose.Connect(handler.Pose).Synthesize(synthesized);
-            direction.Produce(handler.Direction).Synthesize(synthesized);
-
-            return synthesized;
-        }
-
-        public void Emit()
-        {
-            pose.Emit();
-
-            direction.Emit();
-        }
-
-        public void Dispose()
-        {
-            pose.Dispose();
-
-            direction.Dispose();
+            Direction = new PropagationWithoutCache<Space3D.Direction>().Transmit(configuration.Direction);
         }
     }
 }

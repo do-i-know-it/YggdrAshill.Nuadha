@@ -1,77 +1,68 @@
-using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
+﻿using YggdrAshill.Nuadha.Units;
 using System;
-using YggdrAshill.Nuadha.Signalization;
 
 namespace YggdrAshill.Nuadha
 {
     public static class UnitExtension
     {
-        public static IConnection<IPulsatedTiltHardwareHandler> Pulsated(this IProduction<Tilt> production, TiltThreshold threshold)
+        public static IButton Convert(this IButtonConfiguration configuration)
         {
-            if (production == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new PulsatedTilt(production, threshold);
+            return new Button(configuration);
         }
 
-        public static IConnection<IPulsatedButtonHardwareHandler> Pulsated(this IButtonSoftwareHandler handler)
+        public static ITrigger Convert(this ITriggerConfiguration configuration)
         {
-            if (handler == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new PulsatedButton(handler);
+            return new Trigger(configuration);
         }
 
-        public static IConnection<IPulsatedTriggerHardwareHandler> Pulsated(this ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
+        public static IStick Convert(this IStickConfiguration configuration)
         {
-            if (handler == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(handler));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new PulsatedTrigger(handler, threshold);
+            return new Stick(configuration);
         }
 
-        public static IConnection<IPulsatedStickHardwareHandler> Pulsated(this IStickSoftwareHandler handler, TiltThreshold threshold)
+        public static IPoseTracker Convert(this IPoseTrackerConfiguration configuration)
         {
-            if (handler == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(handler));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new PulsatedStick(handler, threshold);
+            return new PoseTracker(configuration);
         }
 
-        public static IConnection<IPulsatedHandControllerHardwareHandler> Pulsated(this IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
+        public static IHeadTracker Convert(this IHeadTrackerConfiguration configuration)
         {
-            if (handler == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(handler));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new PulsatedHandController(handler, threshold);
+            return new HeadTracker(configuration);
+        }
+
+        public static IHandController Convert(this IHandControllerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new HandController(configuration);
         }
     }
 }

@@ -1,19 +1,19 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public sealed class PulsatedStickModule :
         IModule<IPulsatedStickHardwareHandler, IPulsatedStickSoftwareHandler>,
         IPulsatedStickHardwareHandler,
-        IPulsatedStickSoftwareHandler
+        IPulsatedStickSoftwareHandler,
+        IDisposable
     {
-        private readonly IPropagation<Pulse> touch;
+        private IPropagation<Pulse> Touch { get; }
 
-        private readonly PulsatedTiltModule tilt;
+        private PulsatedTiltModule Tilt { get; }
 
         public PulsatedStickModule(IPropagation<Pulse> touch, PulsatedTiltModule tilt)
         {
@@ -26,9 +26,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(tilt));
             }
 
-            this.touch = touch;
+            Touch = touch;
 
-            this.tilt = tilt;
+            Tilt = tilt;
         }
 
         public IPulsatedStickHardwareHandler HardwareHandler => this;
@@ -37,17 +37,17 @@ namespace YggdrAshill.Nuadha
 
         public void Dispose()
         {
-            touch.Dispose();
+            Touch.Dispose();
 
-            tilt.Dispose();
+            Tilt.Dispose();
         }
 
-        IConsumption<Pulse> IPulsatedStickHardwareHandler.Touch => touch;
+        IConsumption<Pulse> IPulsatedStickHardwareHandler.Touch => Touch;
 
-        IPulsatedTiltHardwareHandler IPulsatedStickHardwareHandler.Tilt => tilt;
+        IPulsatedTiltHardwareHandler IPulsatedStickHardwareHandler.Tilt => Tilt.HardwareHandler;
 
-        IProduction<Pulse> IPulsatedStickSoftwareHandler.Touch => touch;
+        IProduction<Pulse> IPulsatedStickSoftwareHandler.Touch => Touch;
 
-        IPulsatedTiltSoftwareHandler IPulsatedStickSoftwareHandler.Tilt => tilt;
+        IPulsatedTiltSoftwareHandler IPulsatedStickSoftwareHandler.Tilt => Tilt.SoftwareHandler;
     }
 }

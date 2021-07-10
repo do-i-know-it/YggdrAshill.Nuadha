@@ -3,12 +3,11 @@ using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class PulsatedTilt :
+    internal sealed class ConnectPulsatedTilt :
         IConnection<IPulsatedTiltHardwareHandler>
     {
         private readonly IProduction<Pulse> distance;
@@ -21,7 +20,7 @@ namespace YggdrAshill.Nuadha
 
         private readonly IProduction<Pulse> backward;
 
-        internal PulsatedTilt(IProduction<Tilt> production, TiltThreshold threshold)
+        internal ConnectPulsatedTilt(IProduction<Tilt> production, TiltThreshold threshold)
         {
             if (production == null)
             {

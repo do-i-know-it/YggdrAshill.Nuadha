@@ -3,27 +3,26 @@ using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class PulsatedTrigger :
-        IConnection<IPulsatedTriggerHardwareHandler>
+    internal sealed class ConnectPulsatedStick :
+        IConnection<IPulsatedStickHardwareHandler>
     {
         private readonly IProduction<Pulse> touch;
 
-        private readonly IProduction<Pulse> pull;
+        private readonly ConnectPulsatedTilt tilt;
 
-        internal PulsatedTrigger(ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
+        internal ConnectPulsatedStick(IStickSoftwareHandler handler, TiltThreshold threshold)
         {
             touch = handler.Touch.Convert(TouchInto.Pulse);
 
-            pull = handler.Pull.Convert(PullInto.Pulse(threshold));
+            tilt = new ConnectPulsatedTilt(handler.Tilt, threshold);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IPulsatedTriggerHardwareHandler handler)
+        public ICancellation Connect(IPulsatedStickHardwareHandler handler)
         {
             if (handler == null)
             {
@@ -33,7 +32,7 @@ namespace YggdrAshill.Nuadha
             var synthesized = new SynthesizedCancellation();
 
             touch.Produce(handler.Touch).Synthesize(synthesized);
-            pull.Produce(handler.Pull).Synthesize(synthesized);
+            tilt.Connect(handler.Tilt).Synthesize(synthesized);
 
             return synthesized;
         }
