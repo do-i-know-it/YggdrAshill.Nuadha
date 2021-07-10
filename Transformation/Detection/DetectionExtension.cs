@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Extensions for Detection.
+    /// Defines extensions for <see cref="IDetection{TSignal}"/>.
     /// </summary>
     public static class DetectionExtension
     {
