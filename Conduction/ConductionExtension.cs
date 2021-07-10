@@ -1,141 +1,76 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
-    /// Extension for Conduction.
+    /// Defines extensions for Conduction.
     /// </summary>
     public static class ConductionExtension
     {
         /// <summary>
-        /// Converts <see cref="IGeneration{TSignal}"/> to <see cref="IProduction{TSignal}"/>.
+        /// Converts <see cref="IPropagation{TSignal}"/> into <see cref="ITransmission{TSignal}"/> with <see cref="IGeneration{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to send.
+        /// Type of <see cref="ISignal"/> to emit.
         /// </typeparam>
+        /// <param name="propagation">
+        /// <see cref="IPropagation{TSignal}"/> to convert.
+        /// </param>
         /// <param name="generation">
         /// <see cref="IGeneration{TSignal}"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> converted.
+        /// <see cref="ITransmission{TSignal}"/> converted.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="propagation"/> is null.
+        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="generation"/> is null.
         /// </exception>
-        public static IProduction<TSignal> ToProduction<TSignal>(this IGeneration<TSignal> generation)
+        public static ITransmission<TSignal> Transmit<TSignal>(this IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
             where TSignal : ISignal
         {
+            if (propagation == null)
+            {
+                throw new ArgumentNullException(nameof(propagation));
+            }
             if (generation == null)
             {
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return new ProductionWithGeneration<TSignal>(generation);
+            return new ConvertedFromPropagation<TSignal>(propagation, generation);
         }
-
+        
         /// <summary>
-        /// Produces <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/> with <see cref="IGeneration{TSignal}"/>.
+        /// Collects <see cref="ICancellation"/> to cancel simultaneously.
         /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to send.
-        /// </typeparam>
-        /// <param name="generation">
-        /// <see cref="IGeneration{TSignal}"/> to generate.
+        /// <param name="cancellation">
+        /// <see cref="ICancellation"/> collected.
         /// </param>
-        /// <param name="consumption">
-        /// <see cref="IConsumption{TSignal}"/> to use <typeparamref name="TSignal"/>.
+        /// <param name="synthesized">
+        /// <see cref="SynthesizedCancellation"/> to collect.
         /// </param>
-        /// <returns>
-        /// <see cref="IEmission"/> to emit.
-        /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="generation"/> is null.
+        /// Thrown if <paramref name="cancellation"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="consumption"/> is null.
+        /// Thrown if <paramref name="synthesized"/> is null.
         /// </exception>
-        public static IEmission Produce<TSignal>(this IGeneration<TSignal> generation, IConsumption<TSignal> consumption)
-            where TSignal : ISignal
+        public static void Synthesize(this ICancellation cancellation, SynthesizedCancellation synthesized)
         {
-            if (generation == null)
+            if (cancellation == null)
             {
-                throw new ArgumentNullException(nameof(generation));
+                throw new ArgumentNullException(nameof(cancellation));
             }
-            if (consumption == null)
+            if (synthesized == null)
             {
-                throw new ArgumentNullException(nameof(consumption));
-            }
-
-            return new EmissionWithGeneration<TSignal>(generation, consumption);
-        }
-
-        /// <summary>
-        /// Converts <see cref="IProduction{TSignal}"/> to <see cref="IIgnition"/> with <see cref="IConsumption{TSignal}"/>.
-        /// </summary>
-        /// <typeparam name="TSignal"></typeparam>
-        /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> to convert.
-        /// </param>
-        /// <param name="consumption">
-        /// <see cref="IConsumption{TSignal}"/> to use <typeparamref name="TSignal"/>.
-        /// </param>
-        /// <returns>
-        /// <see cref="IIgnition"/> converted.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="consumption"/> is null.
-        /// </exception>
-        public static IIgnition ToIgnition<TSignal>(this IProduction<TSignal> production, IConsumption<TSignal> consumption)
-            where TSignal : ISignal
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (consumption == null)
-            {
-                throw new ArgumentNullException(nameof(consumption));
+                throw new ArgumentNullException(nameof(synthesized));
             }
 
-            return new IgnitionWithProduction<TSignal>(production, consumption);
-        }
-
-        /// <summary>
-        /// Converts <see cref="IGeneration{TSignal}"/> to <see cref="IIgnition"/> with <see cref="IConsumption{TSignal}"/>.
-        /// </summary>
-        /// <typeparam name="TSignal"></typeparam>
-        /// <param name="generation">
-        /// <see cref="IGeneration{TSignal}"/> to convert.
-        /// </param>
-        /// <param name="consumption">
-        /// <see cref="IConsumption{TSignal}"/> to use <typeparamref name="TSignal"/>.
-        /// </param>
-        /// <returns>
-        /// <see cref="IIgnition"/> converted.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="generation"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="consumption"/> is null.
-        /// </exception>
-        public static IIgnition ToIgnition<TSignal>(this IGeneration<TSignal> generation, IConsumption<TSignal> consumption)
-            where TSignal : ISignal
-        {
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-            if (consumption == null)
-            {
-                throw new ArgumentNullException(nameof(consumption));
-            }
-
-            return new IgnitionWithGeneration<TSignal>(generation, consumption);
+            synthesized.Synthesize(cancellation);
         }
     }
 }

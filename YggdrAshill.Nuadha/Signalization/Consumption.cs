@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
     /// Implementation of <see cref="IConsumption{TSignal}"/>.
     /// </summary>
     /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to use.
+    /// Type of <see cref="ISignal"/> to consume.
     /// </typeparam>
     public sealed class Consumption<TSignal> :
         IConsumption<TSignal>
@@ -21,7 +21,7 @@ namespace YggdrAshill.Nuadha
         /// Constructs an instance.
         /// </summary>
         /// <param name="onConsumed">
-        /// <see cref="Action{TSignal}"/> to execute when this has consumed <typeparamref name="TSignal"/>.
+        /// <see cref="Action{TSignal}"/> to execute when this has consumed.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="onConsumed"/> is null.

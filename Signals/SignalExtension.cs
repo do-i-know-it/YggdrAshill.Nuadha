@@ -1,156 +1,190 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Conversion;
-using System;
-
 namespace YggdrAshill.Nuadha.Signals
 {
+    /// <summary>
+    /// Defines extensions for Signals.
+    /// </summary>
     public static class SignalExtension
     {
         #region Touch
 
+        /// <summary>
+        /// Converts <see cref="bool"/> to <see cref="Touch"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="bool"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Touch"/> converted.
+        /// </returns>
         public static Touch ToTouch(this bool signal)
         {
-            return signal ? Touch.Enabled : Touch.Disabled;
+            return (Touch)signal;
         }
 
+        /// <summary>
+        /// Converts <see cref="Touch"/> to <see cref="bool"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Touch"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="bool"/> converted.
+        /// </returns>
         public static bool ToBoolean(this Touch signal)
         {
-            return signal == Touch.Enabled;
+            return (bool)signal;
         }
 
         #endregion
 
         #region Push
 
+        /// <summary>
+        /// Converts <see cref="bool"/> to <see cref="Push"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="bool"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Push"/> converted.
+        /// </returns>
         public static Push ToPush(this bool signal)
         {
-            return signal ? Push.Enabled : Push.Disabled;
+            return (Push)signal;
         }
 
+        /// <summary>
+        /// Converts <see cref="Push"/> to <see cref="bool"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Push"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="bool"/> converted.
+        /// </returns>
         public static bool ToBoolean(this Push signal)
         {
-            return signal == Push.Enabled;
+            return (bool)signal;
         }
 
         #endregion
 
         #region Pull
 
+        /// <summary>
+        /// Converts <see cref="float"/> to <see cref="Pull"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="float"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Pull"/> converted.
+        /// </returns>
         public static Pull ToPull(this float signal)
         {
-            if (float.IsNaN(signal))
-            {
-                throw new ArgumentException($"{nameof(signal)} is NaN.");
-            }
-
-            const float Min = 0.0f;
-            const float Max = 1.0f;
-            if (signal < Min || Max < signal)
-            {
-                throw new ArgumentOutOfRangeException(nameof(signal));
-            }
-
-            return new Pull(signal);
+            return (Pull)signal;
         }
 
+        /// <summary>
+        /// Converts <see cref="Pull"/> to <see cref="float"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Pull"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="float"/> converted.
+        /// </returns>
         public static float ToSingle(this Pull signal)
         {
-            return signal.Strength;
-        }
-
-        public static IConnection<Push> Translate(this IConnection<Pull> connection, HysteresisThreshold threshold, bool isPushed = false)
-        {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            return connection.Translate(new PullToPush(threshold, isPushed));
+            return (float)signal;
         }
 
         #endregion
 
         #region Angle
 
-        public static Angle ToAngle(this float signal)
+        /// <summary>
+        /// Converts <see cref="float"/> to <see cref="Angle.Radian"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="float"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Angle.Radian"/> converted.
+        /// </returns>
+        public static Angle.Radian ToRadian(this float signal)
         {
-            if (float.IsNaN(signal))
-            {
-                throw new ArgumentException($"{nameof(signal)} is NaN.");
-            }
-
-            const float Min = -180.0f;
-            const float Max = 180.0f;
-            if (signal < Min || Max < signal)
-            {
-                throw new ArgumentOutOfRangeException(nameof(signal));
-            }
-
-            return new Angle(signal);
+            return (Angle.Radian)signal;
         }
 
-        public static float ToSingle(this Angle signal)
+        /// <summary>
+        /// Converts <see cref="Angle.Radian"/> to <see cref="float"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Angle.Radian"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="float"/> converted.
+        /// </returns>
+        public static float ToSingle(this Angle.Radian signal)
         {
-            return signal.Degree;
+            return (float)signal;
         }
 
-        #endregion
-
-        #region Position
-
-        public static IConnection<Position> Correct(this IConnection<Position> connection, IGeneration<Position> generation)
+        /// <summary>
+        /// Converts <see cref="float"/> to <see cref="Angle.Degree"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="float"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Angle.Degree"/> converted.
+        /// </returns>
+        public static Angle.Degree ToDegree(float signal)
         {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-
-            return connection.Correct(Calculation.Position, generation);
+            return (Angle.Degree)signal;
         }
 
-        #endregion
-
-        #region Rotation
-
-        public static IConnection<Rotation> Correct(this IConnection<Rotation> connection, IGeneration<Rotation> generation)
+        /// <summary>
+        /// Converts <see cref="Angle.Degree"/> to <see cref="float"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Angle.Degree"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="float"/> converted.
+        /// </returns>
+        public static float ToSingle(Angle.Degree signal)
         {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-
-            return connection.Correct(Calculation.Rotation, generation);
+            return (float)signal;
         }
 
-        #endregion
-
-        #region Direction
-
-        public static IConnection<Direction> Correct(this IConnection<Direction> connection, IGeneration<Direction> generation)
+        /// <summary>
+        /// Converts <see cref="Angle.Degree"/> to <see cref="Angle.Radian"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Angle.Degree"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Angle.Radian"/> converted.
+        /// </returns>
+        public static Angle.Radian ToRadian(this Angle.Degree signal)
         {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
+            return (Angle.Radian)signal;
+        }
 
-            return connection.Correct(Calculation.Direction, generation);
+        /// <summary>
+        /// Converts <see cref="Angle.Radian"/> to <see cref="Angle.Degree"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Angle.Radian"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Angle.Degree"/> converted.
+        /// </returns>
+        public static Angle.Degree ToDegree(Angle.Radian signal)
+        {
+            return (Angle.Degree)signal;
         }
 
         #endregion

@@ -2,12 +2,12 @@ namespace YggdrAshill.Nuadha
 {
     public interface IHandControllerConfiguration
     {
-        IPoseTrackerConfiguration PoseTracker { get; }
+        IPoseTrackerConfiguration Pose { get; }
 
-        IStickConfiguration ThumbStick { get; }
+        IStickConfiguration Thumb { get; }
 
-        ITriggerConfiguration FingerTrigger { get; }
+        ITriggerConfiguration IndexFinger { get; }
 
-        ITriggerConfiguration HandTrigger { get; }
+        ITriggerConfiguration HandGrip { get; }
     }
 }

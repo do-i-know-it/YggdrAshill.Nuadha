@@ -1,12 +1,12 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
     public interface IButtonConfiguration
     {
-        IProduction<Touch> Touch { get; }
+        IGeneration<Touch> Touch { get; }
 
-        IProduction<Push> Push { get; }
+        IGeneration<Push> Push { get; }
     }
 }

@@ -1,10 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Extension for Signalization.
+    /// Defines extensions for Signalization.
     /// </summary>
     public static class SignalizationExtension
     {
@@ -17,55 +18,31 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> to produce.
         /// </param>
-        /// <param name="onConsumed">
+        /// <param name="consumption">
         /// <see cref="Action{TSignal}"/> to execute when this has consumed <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <see cref="IEmission"/> to emit.
         /// </returns>
-        public static IEmission Produce<TSignal>(this IProduction<TSignal> production, Action<TSignal> onConsumed)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="consumption"/> is null.
+        /// </exception>
+        public static ICancellation Produce<TSignal>(this IProduction<TSignal> production, Action<TSignal> consumption)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (onConsumed == null)
+            if (consumption == null)
             {
-                throw new ArgumentNullException(nameof(onConsumed));
+                throw new ArgumentNullException(nameof(consumption));
             }
 
-            return production.Produce(new Consumption<TSignal>(onConsumed));
-        }
-
-        /// <summary>
-        /// Connects with <see cref="Action{TSignal}"/> instead of <see cref="IConsumption{TSignal}"/>.
-        /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to send.
-        /// </typeparam>
-        /// <param name="connection">
-        /// <see cref="IConnection{TSignal}"/> to connect.
-        /// </param>
-        /// <param name="onConsumed">
-        /// <see cref="Action{TSignal}"/> to execute when this has consumed <typeparamref name="TSignal"/>.
-        /// </param>
-        /// <returns>
-        /// <see cref="IDisconnection"/> to disconnect.
-        /// </returns>
-        public static IDisconnection Connect<TSignal>(this IConnection<TSignal> connection, Action<TSignal> onConsumed)
-            where TSignal : ISignal
-        {
-            if (connection == null)
-            {
-                throw new ArgumentNullException(nameof(connection));
-            }
-            if (onConsumed == null)
-            {
-                throw new ArgumentNullException(nameof(onConsumed));
-            }
-
-            return connection.Connect(new Consumption<TSignal>(onConsumed));
+            return production.Produce(new Consumption<TSignal>(consumption));
         }
     }
 }

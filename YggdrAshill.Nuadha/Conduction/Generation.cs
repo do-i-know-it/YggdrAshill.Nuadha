@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
 using System;
 
@@ -7,7 +7,9 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Implementation of <see cref="IGeneration{TSignal}"/>.
     /// </summary>
-    /// <typeparam name="TSignal"></typeparam>
+    /// <typeparam name="TSignal">
+    /// Type of <see cref="ISignal"/> to generate.
+    /// </typeparam>
     public sealed class Generation<TSignal> :
         IGeneration<TSignal>
         where TSignal : ISignal
@@ -18,7 +20,7 @@ namespace YggdrAshill.Nuadha
         /// Constructs an instance.
         /// </summary>
         /// <param name="onGenerated">
-        /// <see cref="Func{TSignal}"/> to execute when this has generated.
+        /// <see cref="Func{T}"/> to execute when this has generated.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="onGenerated"/> is null.

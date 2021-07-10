@@ -1,4 +1,4 @@
-﻿namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
     /// Sends <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
@@ -10,14 +10,14 @@
         where TSignal : ISignal
     {
         /// <summary>
-        /// Connects itself to <see cref="IConsumption{TSignal}"/>.
+        /// Produces <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
         /// </summary>
         /// <param name="consumption">
         /// Destination to send <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// Token to send <typeparamref name="TSignal"/>.
+        /// <see cref="ICancellation"/> to cancel.
         /// </returns>
-        IEmission Produce(IConsumption<TSignal> consumption);
+        ICancellation Produce(IConsumption<TSignal> consumption);
     }
 }

@@ -15,7 +15,7 @@ namespace YggdrAshill.Nuadha.Specification
                 var threshold = new HysteresisThreshold(float.NaN, 0.0f);
             });
         }
-        
+
         [Test]
         public void CannotBeGeneratedWithNaNUpperLimit()
         {
