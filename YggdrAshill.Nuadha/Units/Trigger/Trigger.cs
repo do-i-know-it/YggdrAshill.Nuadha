@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -9,11 +10,11 @@ namespace YggdrAshill.Nuadha
     public sealed class Trigger :
         IIgnition<ITriggerHardwareHandler>
     {
-        private readonly IConduction<Touch> touch;
+        private readonly ITransmission<Touch> touch;
 
-        private readonly IConduction<Pull> pull;
+        private readonly ITransmission<Pull> pull;
 
-        public Trigger(IConduction<Touch> touch, IConduction<Pull> pull)
+        public Trigger(ITransmission<Touch> touch, ITransmission<Pull> pull)
         {
             if (touch == null)
             {

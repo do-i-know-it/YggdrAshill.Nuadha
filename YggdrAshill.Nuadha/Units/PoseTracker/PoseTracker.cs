@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -9,11 +10,11 @@ namespace YggdrAshill.Nuadha
     public sealed class PoseTracker :
         IIgnition<IPoseTrackerHardwareHandler>
     {
-        private readonly IConduction<Space3D.Position> position;
+        private readonly ITransmission<Space3D.Position> position;
 
-        private readonly IConduction<Space3D.Rotation> rotation;
+        private readonly ITransmission<Space3D.Rotation> rotation;
 
-        public PoseTracker(IConduction<Space3D.Position> position, IConduction<Space3D.Rotation> rotation)
+        public PoseTracker(ITransmission<Space3D.Position> position, ITransmission<Space3D.Rotation> rotation)
         {
             if (position == null)
             {

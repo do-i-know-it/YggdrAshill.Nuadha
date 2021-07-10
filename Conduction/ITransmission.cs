@@ -1,17 +1,18 @@
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
-namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
-    /// Conducts <typeparamref name="TSignal"/> to each connected <see cref="IConsumption{TSignal}"/>.
+    /// Transmits <typeparamref name="TSignal"/> to each <see cref="IConsumption{TSignal}"/>.
     /// </summary>
     /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to conduct.
+    /// Type of <see cref="ISignal"/> to transmit.
     /// </typeparam>
     /// <remarks>
     /// This is <see cref="IProduction{TSignal}"/> and <see cref="IEmission"/>.
     /// </remarks>
-    public interface IConduction<TSignal> :
+    public interface ITransmission<TSignal> :
         IProduction<TSignal>,
         IEmission,
         IDisposable

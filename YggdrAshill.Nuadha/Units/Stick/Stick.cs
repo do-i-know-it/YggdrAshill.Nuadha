@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -9,11 +10,11 @@ namespace YggdrAshill.Nuadha
     public sealed class Stick :
         IIgnition<IStickHardwareHandler>
     {
-        private readonly IConduction<Touch> touch;
+        private readonly ITransmission<Touch> touch;
 
-        private readonly IConduction<Tilt> tilt;
+        private readonly ITransmission<Tilt> tilt;
 
-        public Stick(IConduction<Touch> touch, IConduction<Tilt> tilt)
+        public Stick(ITransmission<Touch> touch, ITransmission<Tilt> tilt)
         {
             if (touch == null)
             {

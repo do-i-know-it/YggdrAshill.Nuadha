@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -11,9 +12,9 @@ namespace YggdrAshill.Nuadha
     {
         private readonly PoseTracker pose;
 
-        private readonly IConduction<Space3D.Direction> direction;
+        private readonly ITransmission<Space3D.Direction> direction;
 
-        public HeadTracker(PoseTracker pose, IConduction<Space3D.Direction> direction)
+        public HeadTracker(PoseTracker pose, ITransmission<Space3D.Direction> direction)
         {
             if (pose == null)
             {

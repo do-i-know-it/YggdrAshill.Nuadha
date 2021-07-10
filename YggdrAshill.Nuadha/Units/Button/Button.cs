@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -9,11 +10,11 @@ namespace YggdrAshill.Nuadha
     public sealed class Button :
        IIgnition<IButtonHardwareHandler>
     {
-        private readonly IConduction<Touch> touch;
+        private readonly ITransmission<Touch> touch;
 
-        private readonly IConduction<Push> push;
+        private readonly ITransmission<Push> push;
 
-        public Button(IConduction<Touch> touch, IConduction<Push> push)
+        public Button(ITransmission<Touch> touch, ITransmission<Push> push)
         {
             if (touch == null)
             {

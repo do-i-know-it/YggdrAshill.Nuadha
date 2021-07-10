@@ -1,4 +1,4 @@
-namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
     /// Token to emit.
