@@ -1,4 +1,5 @@
-﻿using YggdrAshill.Nuadha.Units;
+﻿using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -63,6 +64,20 @@ namespace YggdrAshill.Nuadha
             }
 
             return new HandController(configuration);
+        }
+
+        public static IConnection<IPoseTrackerHardwareHandler> Calibrate(this IPoseTrackerSoftwareHandler handler, IPoseTrackerConfiguration configuration)
+        {
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new ConnectCalibratedPoseTracker(handler, configuration);
         }
     }
 }
