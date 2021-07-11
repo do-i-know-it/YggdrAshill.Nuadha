@@ -1,10 +1,9 @@
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
 using System;
-using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     public static class UnitExtension
     {
@@ -24,11 +23,55 @@ namespace YggdrAshill.Nuadha
             return new ConnectPulsatedTilt(production, threshold);
         }
 
+        public static IModule<IPulsatedTiltHardwareHandler, IPulsatedTiltSoftwareHandler> Convert(this IPulsatedTiltModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new PulsatedTiltModule(module);
+        }
+
         #endregion
 
         #region Button
 
-        public static IIgnition<IButtonHardwareHandler> Convert(this IButton device)
+        public static IModule<IButtonHardwareHandler, IButtonSoftwareHandler> Convert(this IButtonModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ButtonModule(module);
+        }
+
+        public static IModule<IPulsatedButtonHardwareHandler, IPulsatedButtonSoftwareHandler> Convert(this IPulsatedButtonModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new PulsatedButtonModule(module);
+        }
+
+        public static IButton Transmit(this IButtonModule module, IButtonConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new Button(module, configuration);
+        }
+
+        public static IIgnition<IButtonHardwareHandler> Ignite(this IButton device)
         {
             if (device == null)
             {
@@ -36,6 +79,20 @@ namespace YggdrAshill.Nuadha
             }
 
             return new IgniteButton(device);
+        }
+
+        public static IIgnition<IButtonHardwareHandler> Ignite(this IButtonModule module, IButtonConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return module.Transmit(configuration).Ignite();
         }
 
         public static IConnection<IPulsatedButtonHardwareHandler> Convert(this IButtonSoftwareHandler handler)
@@ -52,7 +109,41 @@ namespace YggdrAshill.Nuadha
 
         #region Trigger
 
-        public static IIgnition<ITriggerHardwareHandler> Convert(this ITrigger device)
+        public static IModule<ITriggerHardwareHandler, ITriggerSoftwareHandler> Convert(this ITriggerModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new TriggerModule(module);
+        }
+
+        public static IModule<IPulsatedTriggerHardwareHandler, IPulsatedTriggerSoftwareHandler> Convert(this IPulsatedTriggerModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new PulsatedTriggerModule(module);
+        }
+
+        public static ITrigger Transmit(this ITriggerModule module, ITriggerConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new Trigger(module, configuration);
+        }
+
+        public static IIgnition<ITriggerHardwareHandler> Ignite(this ITrigger device)
         {
             if (device == null)
             {
@@ -60,6 +151,20 @@ namespace YggdrAshill.Nuadha
             }
 
             return new IgniteTrigger(device);
+        }
+
+        public static IIgnition<ITriggerHardwareHandler> Ignite(this ITriggerModule module, ITriggerConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return module.Transmit(configuration).Ignite();
         }
 
         public static IConnection<IPulsatedTriggerHardwareHandler> Convert(this ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
@@ -80,7 +185,41 @@ namespace YggdrAshill.Nuadha
 
         #region Stick
 
-        public static IIgnition<IStickHardwareHandler> Convert(this IStick device)
+        public static IModule<IStickHardwareHandler, IStickSoftwareHandler> Convert(this IStickModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new StickModule(module);
+        }
+
+        public static IModule<IPulsatedStickHardwareHandler, IPulsatedStickSoftwareHandler> Convert(this IPulsatedStickModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new PulsatedStickModule(module);
+        }
+
+        public static IStick Transmit(this IStickModule module, IStickConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new Stick(module, configuration);
+        }
+
+        public static IIgnition<IStickHardwareHandler> Ignite(this IStick device)
         {
             if (device == null)
             {
@@ -88,6 +227,20 @@ namespace YggdrAshill.Nuadha
             }
 
             return new IgniteStick(device);
+        }
+
+        public static IIgnition<IStickHardwareHandler> Ignite(this IStickModule module, IStickConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return module.Transmit(configuration).Ignite();
         }
 
         public static IConnection<IPulsatedStickHardwareHandler> Convert(this IStickSoftwareHandler handler, TiltThreshold threshold)
@@ -108,7 +261,31 @@ namespace YggdrAshill.Nuadha
 
         #region PoseTracker
 
-        public static IIgnition<IPoseTrackerHardwareHandler> Convert(this IPoseTracker device)
+        public static IModule<IPoseTrackerHardwareHandler, IPoseTrackerSoftwareHandler> Convert(this IPoseTrackerModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new PoseTrackerModule(module);
+        }
+
+        public static IPoseTracker Transmit(this IPoseTrackerModule module, IPoseTrackerConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new PoseTracker(module, configuration);
+        }
+
+        public static IIgnition<IPoseTrackerHardwareHandler> Ignite(this IPoseTracker device)
         {
             if (device == null)
             {
@@ -118,11 +295,59 @@ namespace YggdrAshill.Nuadha
             return new IgnitePoseTracker(device);
         }
 
+        public static IIgnition<IPoseTrackerHardwareHandler> Ignite(this IPoseTrackerModule module, IPoseTrackerConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return module.Transmit(configuration).Ignite();
+        }
+
+        public static IConnection<IPoseTrackerHardwareHandler> Calibrate(this IPoseTrackerSoftwareHandler handler, IPoseTrackerConfiguration configuration)
+        {
+            if (handler == null)
+            {
+                throw new ArgumentNullException(nameof(handler));
+            }
+
+            return new ConnectCalibratedPoseTracker(handler, configuration);
+        }
+
         #endregion
 
         #region HeadTracker
 
-        public static IIgnition<IHeadTrackerHardwareHandler> Convert(this IHeadTracker device)
+        public static IModule<IHeadTrackerHardwareHandler, IHeadTrackerSoftwareHandler> Convert(this IHeadTrackerModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new HeadTrackerModule(module);
+        }
+
+        public static IHeadTracker Transmit(this IHeadTrackerModule module, IHeadTrackerConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new HeadTracker(module, configuration);
+        }
+
+        public static IIgnition<IHeadTrackerHardwareHandler> Ignite(this IHeadTracker device)
         {
             if (device == null)
             {
@@ -132,11 +357,59 @@ namespace YggdrAshill.Nuadha
             return new IgniteHeadTracker(device);
         }
 
+        public static IIgnition<IHeadTrackerHardwareHandler> Ignite(this IHeadTrackerModule module, IHeadTrackerConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return module.Transmit(configuration).Ignite();
+        }
+
         #endregion
 
         #region HandController
 
-        public static IIgnition<IHandControllerHardwareHandler> Convert(this IHandController device)
+        public static IModule<IHandControllerHardwareHandler, IHandControllerSoftwareHandler> Convert(this IHandControllerModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new HandControllerModule(module);
+        }
+
+        public static IModule<IPulsatedHandControllerHardwareHandler, IPulsatedHandControllerSoftwareHandler> Convert(this IPulsatedHandControllerModule module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new PulsatedHandControllerModule(module);
+        }
+
+        public static IHandController Transmit(this IHandControllerModule module, IHandControllerConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new HandController(module, configuration);
+        }
+
+        public static IIgnition<IHandControllerHardwareHandler> Ignite(this IHandController device)
         {
             if (device == null)
             {
@@ -144,6 +417,20 @@ namespace YggdrAshill.Nuadha
             }
 
             return new IgniteHandController(device);
+        }
+
+        public static IIgnition<IHandControllerHardwareHandler> Ignite(this IHandControllerModule module, IHandControllerConfiguration configuration)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return module.Transmit(configuration).Ignite();
         }
 
         public static IConnection<IPulsatedHandControllerHardwareHandler> Convert(this IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
