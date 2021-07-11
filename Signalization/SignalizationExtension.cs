@@ -1,8 +1,6 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
     /// Defines extensions for Signalization.
@@ -10,7 +8,7 @@ namespace YggdrAshill.Nuadha
     public static class SignalizationExtension
     {
         /// <summary>
-        /// Produces with <see cref="Action{TSignal}"/> instead of <see cref="IConsumption{TSignal}"/>.
+        /// Produces <typeparamref name="TSignal"/> with <see cref="Action{T}"/> instead of <see cref="IConsumption{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to send.
@@ -19,10 +17,10 @@ namespace YggdrAshill.Nuadha
         /// <see cref="IProduction{TSignal}"/> to produce.
         /// </param>
         /// <param name="consumption">
-        /// <see cref="Action{TSignal}"/> to execute when this has consumed <typeparamref name="TSignal"/>.
+        /// <see cref="Action{T}"/> executed when this has consumed <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IEmission"/> to emit.
+        /// <see cref="ICancellation"/> to cancel.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.

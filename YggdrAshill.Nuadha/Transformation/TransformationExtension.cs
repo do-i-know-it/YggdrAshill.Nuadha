@@ -178,7 +178,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return production.Produce(new Consumption<Notice>(signal =>
+            return production.Produce(signal =>
             {
                 if (signal == null)
                 {
@@ -186,7 +186,7 @@ namespace YggdrAshill.Nuadha
                 }
 
                 consumption.Invoke();
-            }));
+            });
         }
     }
 }
