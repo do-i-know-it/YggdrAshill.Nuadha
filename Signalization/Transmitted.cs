@@ -2,7 +2,7 @@ using System;
 
 namespace YggdrAshill.Nuadha.Signalization
 {
-    internal sealed class ConvertedFromPropagation<TSignal> :
+    internal sealed class Transmitted<TSignal> :
         ITransmission<TSignal>
         where TSignal : ISignal
     {
@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha.Signalization
 
         private readonly IGeneration<TSignal> generation;
 
-        internal ConvertedFromPropagation(IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
+        internal Transmitted(IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
         {
             this.propagation = propagation;
 

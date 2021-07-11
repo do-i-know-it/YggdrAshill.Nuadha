@@ -76,7 +76,7 @@ namespace YggdrAshill.Nuadha.Signalization
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return new ConvertedFromPropagation<TSignal>(propagation, generation);
+            return new Transmitted<TSignal>(propagation, generation);
         }
 
         /// <summary>

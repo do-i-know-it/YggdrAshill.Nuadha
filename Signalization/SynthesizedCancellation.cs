@@ -22,16 +22,7 @@ namespace YggdrAshill.Nuadha.Signalization
             cancellationList.Clear();
         }
 
-        /// <summary>
-        /// Collects <see cref="ICancellation"/>.
-        /// </summary>
-        /// <param name="cancellation">
-        /// <see cref="ICancellation"/> to collect.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="cancellation"/> is null.
-        /// </exception>
-        public void Synthesize(ICancellation cancellation)
+        internal void Synthesize(ICancellation cancellation)
         {
             if (cancellation == null)
             {
