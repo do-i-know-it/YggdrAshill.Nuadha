@@ -4,12 +4,12 @@ using System;
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Defines implementation of <see cref="IPulsation{TSignal}"/>.
+    /// Defines implementation of <see cref="IConversion{TInput, TOutput}"/>.
     /// </summary>
     public static class SignalInto
     {
         /// <summary>
-        /// Constructs <see cref="IPulsation{TSignal}"/>.
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> into <see cref="Transformation.Pulse"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to be converted into <see cref="Transformation.Pulse"/>.
@@ -18,12 +18,12 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <see cref="IDetection{TSignal}"/> to detect.
         /// </param>
         /// <returns>
-        /// <see cref="IPulsation{TSignal}"/> to convert.
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> into <see cref="Transformation.Pulse"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="detection"/> is null.
         /// </exception>
-        public static IPulsation<TSignal> Pulse<TSignal>(IDetection<TSignal> detection)
+        public static IConversion<TSignal, Pulse> Pulse<TSignal>(IDetection<TSignal> detection)
             where TSignal : ISignal
         {
             if (detection == null)
@@ -31,23 +31,23 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(detection));
             }
 
-            return new Pulsation<TSignal>(detection);
+            return new Conversion<TSignal>(detection);
         }
-        private sealed class Pulsation<TSignal> :
-            IPulsation<TSignal>
+        private sealed class Conversion<TSignal> :
+            IConversion<TSignal, Pulse>
             where TSignal : ISignal
         {
             private readonly IDetection<TSignal> detection;
 
             private Pulse previous = Transformation.Pulse.IsDisabled;
 
-            internal Pulsation(IDetection<TSignal> detection)
+            internal Conversion(IDetection<TSignal> detection)
             {
                 this.detection = detection;
             }
 
             /// <inheritdoc/>
-            public Pulse Pulsate(TSignal signal)
+            public Pulse Convert(TSignal signal)
             {
                 if (previous == Transformation.Pulse.IsDisabled || previous == Transformation.Pulse.HasDisabled)
                 {

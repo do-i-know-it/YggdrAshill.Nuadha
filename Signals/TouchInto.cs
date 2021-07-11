@@ -21,6 +21,6 @@ namespace YggdrAshill.Nuadha.Signals
             }
         }
 
-        public static IPulsation<Touch> Pulse { get; } = SignalInto.Pulse(WhenTouch.IsEnabled);
+        public static IConversion<Touch, Pulse> Pulse { get; } = SignalInto.Pulse(WhenTouch.IsEnabled);
     }
 }

@@ -47,35 +47,14 @@ namespace YggdrAshill.Nuadha.Signals
             }
         }
 
-        public static IPulsation<Pull> Pulse(HysteresisThreshold threshold)
+        public static IConversion<Pull, Pulse> Pulse(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new Pulsation(Push(threshold));
-        }
-        private sealed class Pulsation :
-            IPulsation<Pull>
-        {
-            private readonly IConversion<Pull, Push> conversion;
-
-            private readonly IPulsation<Push> pulsation;
-
-            internal Pulsation(IConversion<Pull, Push> conversion)
-            {
-                this.conversion = conversion;
-
-                pulsation = PushInto.Pulse;
-            }
-
-            public Pulse Pulsate(Pull signal)
-            {
-                var converted = conversion.Convert(signal);
-
-                return pulsation.Pulsate(converted);
-            }
+            return Push(threshold).Then(PushInto.Pulse);
         }
     }
 }

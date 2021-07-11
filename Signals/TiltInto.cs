@@ -52,147 +52,107 @@ namespace YggdrAshill.Nuadha.Signals
             }
         }
 
-        public sealed class PushBy :
-            IConversion<Tilt, Push>
+        public static class PushBy
         {
-            public static PushBy Distance(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Push> Distance(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PushBy(PullBy.Distance, threshold);
+                return PullBy.Distance.Then(PullInto.Push(threshold));
             }
 
-            public static PushBy Left(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Push> Left(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PushBy(PullBy.Left, threshold);
+                return PullBy.Left.Then(PullInto.Push(threshold));
             }
 
-            public static PushBy Right(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Push> Right(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PushBy(PullBy.Right, threshold);
+                return PullBy.Right.Then(PullInto.Push(threshold));
             }
 
-            public static PushBy Forward(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Push> Forward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PushBy(PullBy.Forward, threshold);
+                return PullBy.Forward.Then(PullInto.Push(threshold));
             }
 
-            public static PushBy Backward(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Push> Backward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PushBy(PullBy.Backward, threshold);
-            }
-            
-            private readonly PullBy tiltToPull;
-
-            private readonly IConversion<Pull, Push> pullToPush;
-
-            private PushBy(PullBy tiltToPull, HysteresisThreshold threshold)
-            {
-                this.tiltToPull = tiltToPull;
-
-                pullToPush = PullInto.Push(threshold);
-            }
-
-            /// <inheritdoc/>
-            public Push Convert(Tilt signal)
-            {
-                var converted = tiltToPull.Convert(signal);
-
-                return pullToPush.Convert(converted);
+                return PullBy.Backward.Then(PullInto.Push(threshold));
             }
         }
 
-        public sealed class PulseBy :
-            IPulsation<Tilt>
+        public static class PulseBy
         {
-            public static PulseBy Distance(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Pulse> Distance(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PulseBy(PullBy.Distance, threshold);
+                return PushBy.Distance(threshold).Then(PushInto.Pulse);
             }
 
-            public static PulseBy Left(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Pulse> Left(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PulseBy(PullBy.Left, threshold);
+                return PushBy.Left(threshold).Then(PushInto.Pulse);
             }
 
-            public static PulseBy Right(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Pulse> Right(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PulseBy(PullBy.Right, threshold);
+                return PushBy.Right(threshold).Then(PushInto.Pulse);
             }
-            public static PulseBy Forward(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Pulse> Forward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PulseBy(PullBy.Forward, threshold);
+                return PushBy.Forward(threshold).Then(PushInto.Pulse);
             }
-            public static PulseBy Backward(HysteresisThreshold threshold)
+            public static IConversion<Tilt, Pulse> Backward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return new PulseBy(PullBy.Backward, threshold);
-            }
-
-            private readonly IConversion<Tilt, Pull> conversion;
-
-            private readonly IPulsation<Pull> pulsation;
-
-            private PulseBy(PullBy conversion, HysteresisThreshold threshold)
-            {
-                this.conversion = conversion;
-
-                pulsation = PullInto.Pulse(threshold);
-            }
-
-            /// <inheritdoc/>
-            public Pulse Pulsate(Tilt signal)
-            {
-                var converted = conversion.Convert(signal);
-
-                return pulsation.Pulsate(converted);
+                return PushBy.Backward(threshold).Then(PushInto.Pulse);
             }
         }
     }

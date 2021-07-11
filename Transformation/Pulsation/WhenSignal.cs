@@ -14,24 +14,24 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
-        /// <param name="pulsation">
-        /// <see cref="IPulsation{TSignal}"/> to convert <typeparamref name="TSignal"/> to <see cref="Pulse"/>.
+        /// <param name="conversion">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> to <see cref="Pulse"/>.
         /// </param>
         /// <returns>
         /// <see cref="IDetection{TSignal}"/> to detect.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="pulsation"/> is null.
+        /// Thrown if <paramref name="conversion"/> is null.
         /// </exception>
-        public static IDetection<TSignal> IsDisabled<TSignal>(IPulsation<TSignal> pulsation)
+        public static IDetection<TSignal> IsDisabled<TSignal>(IConversion<TSignal, Pulse> conversion)
             where TSignal : ISignal
         {
-            if (pulsation == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(pulsation));
+                throw new ArgumentNullException(nameof(conversion));
             }
 
-            return new Detection<TSignal>(pulsation, WhenPulse.IsDisabled);
+            return new Detection<TSignal>(conversion, WhenPulse.IsDisabled);
         }
 
         /// <summary>
@@ -40,24 +40,24 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
-        /// <param name="pulsation">
-        /// <see cref="IPulsation{TSignal}"/> to convert <typeparamref name="TSignal"/> to <see cref="Pulse"/>.
+        /// <param name="conversion">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> to <see cref="Pulse"/>.
         /// </param>
         /// <returns>
         /// <see cref="IDetection{TSignal}"/> to detect.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="pulsation"/> is null.
+        /// Thrown if <paramref name="conversion"/> is null.
         /// </exception>
-        public static IDetection<TSignal> HasDisabled<TSignal>(IPulsation<TSignal> pulsation)
+        public static IDetection<TSignal> HasDisabled<TSignal>(IConversion<TSignal, Pulse> conversion)
             where TSignal : ISignal
         {
-            if (pulsation == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(pulsation));
+                throw new ArgumentNullException(nameof(conversion));
             }
 
-            return new Detection<TSignal>(pulsation, WhenPulse.HasDisabled);
+            return new Detection<TSignal>(conversion, WhenPulse.HasDisabled);
         }
 
         /// <summary>
@@ -66,24 +66,24 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
-        /// <param name="pulsation">
-        /// <see cref="IPulsation{TSignal}"/> to convert <typeparamref name="TSignal"/> to <see cref="Pulse"/>.
+        /// <param name="conversion">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> to <see cref="Pulse"/>.
         /// </param>
         /// <returns>
         /// <see cref="IDetection{TSignal}"/> to detect.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="pulsation"/> is null.
+        /// Thrown if <paramref name="conversion"/> is null.
         /// </exception>
-        public static IDetection<TSignal> IsEnabled<TSignal>(IPulsation<TSignal> pulsation)
+        public static IDetection<TSignal> IsEnabled<TSignal>(IConversion<TSignal, Pulse> conversion)
             where TSignal : ISignal
         {
-            if (pulsation == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(pulsation));
+                throw new ArgumentNullException(nameof(conversion));
             }
 
-            return new Detection<TSignal>(pulsation, WhenPulse.IsEnabled);
+            return new Detection<TSignal>(conversion, WhenPulse.IsEnabled);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
         /// <param name="pulsation">
-        /// <see cref="IPulsation{TSignal}"/> to convert <typeparamref name="TSignal"/> to <see cref="Pulse"/>.
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> to <see cref="Pulse"/>.
         /// </param>
         /// <returns>
         /// <see cref="IDetection{TSignal}"/> to detect.
@@ -101,7 +101,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="pulsation"/> is null.
         /// </exception>
-        public static IDetection<TSignal> HasEnabled<TSignal>(IPulsation<TSignal> pulsation)
+        public static IDetection<TSignal> HasEnabled<TSignal>(IConversion<TSignal, Pulse> pulsation)
             where TSignal : ISignal
         {
             if (pulsation == null)
@@ -116,13 +116,13 @@ namespace YggdrAshill.Nuadha.Transformation
             IDetection<TSignal>
             where TSignal : ISignal
         {
-            private readonly IPulsation<TSignal> pulsation;
+            private readonly IConversion<TSignal, Pulse> conversion;
 
             private readonly IDetection<Pulse> detection;
 
-            internal Detection(IPulsation<TSignal> pulsation, IDetection<Pulse> detection)
+            internal Detection(IConversion<TSignal, Pulse> conversion, IDetection<Pulse> detection)
             {
-                this.pulsation = pulsation;
+                this.conversion = conversion;
 
                 this.detection = detection;
             }
@@ -130,7 +130,7 @@ namespace YggdrAshill.Nuadha.Transformation
             /// <inheritdoc/>
             public bool Detect(TSignal signal)
             {
-                var pulse = pulsation.Pulsate(signal);
+                var pulse = conversion.Convert(signal);
 
                 return detection.Detect(pulse);
             }

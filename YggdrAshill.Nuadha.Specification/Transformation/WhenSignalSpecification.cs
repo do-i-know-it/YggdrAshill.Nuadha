@@ -6,11 +6,11 @@ namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(WhenSignal))]
     internal class WhenSignalSpecification :
-        IPulsation<Signal>
+        IConversion<Signal, Pulse>
     {
         private Pulse expected;
 
-        public Pulse Pulsate(Signal signal)
+        public Pulse Convert(Signal signal)
         {
             if (signal == null)
             {
