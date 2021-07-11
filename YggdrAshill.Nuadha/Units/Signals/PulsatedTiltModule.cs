@@ -1,9 +1,10 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Units;
 using System;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     public sealed class PulsatedTiltModule :
         IModule<IPulsatedTiltHardwareHandler, IPulsatedTiltSoftwareHandler>,
