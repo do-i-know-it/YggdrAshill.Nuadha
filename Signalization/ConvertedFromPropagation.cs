@@ -1,7 +1,6 @@
-using YggdrAshill.Nuadha.Signalization;
 using System;
 
-namespace YggdrAshill.Nuadha.Conduction
+namespace YggdrAshill.Nuadha.Signalization
 {
     internal sealed class ConvertedFromPropagation<TSignal> :
         ITransmission<TSignal>

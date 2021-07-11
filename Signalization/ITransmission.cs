@@ -1,7 +1,7 @@
 using YggdrAshill.Nuadha.Signalization;
 using System;
 
-namespace YggdrAshill.Nuadha.Conduction
+namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
     /// Transmits <typeparamref name="TSignal"/> to each <see cref="IConsumption{TSignal}"/>.
