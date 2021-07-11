@@ -1,5 +1,7 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Transformation;
 using System;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Signals
 {
@@ -288,6 +290,36 @@ namespace YggdrAshill.Nuadha.Signals
             public static bool operator !=(Position left, Position right)
             {
                 return !(left == right);
+            }
+        }
+
+        public static class PositionInto
+        {
+            public static ICorrection<Position> Position(IGeneration<Position> generation)
+            {
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
+
+                return new CorrectPosition(generation);
+            }
+            private sealed class CorrectPosition :
+                ICorrection<Position>
+            {
+                private readonly IGeneration<Position> generation;
+
+                internal CorrectPosition(IGeneration<Position> generation)
+                {
+                    this.generation = generation;
+                }
+
+                public Position Correct(Position signal)
+                {
+                    var offset = generation.Generate();
+
+                    return signal + offset;
+                }
             }
         }
 
@@ -907,6 +939,36 @@ namespace YggdrAshill.Nuadha.Signals
             public static bool operator !=(Rotation left, Rotation right)
             {
                 return !(left == right);
+            }
+        }
+
+        public static class RotationInto
+        {
+            public static ICorrection<Rotation> Rotation(IGeneration<Rotation> generation)
+            {
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
+
+                return new CorrectRotation(generation);
+            }
+            private sealed class CorrectRotation :
+                ICorrection<Rotation>
+            {
+                private readonly IGeneration<Rotation> generation;
+
+                internal CorrectRotation(IGeneration<Rotation> generation)
+                {
+                    this.generation = generation;
+                }
+
+                public Rotation Correct(Rotation signal)
+                {
+                    var offset = generation.Generate();
+
+                    return signal + offset;
+                }
             }
         }
 
