@@ -113,10 +113,6 @@ namespace YggdrAshill.Nuadha.Transformation
             }
         }
 
-        #endregion
-
-        #region Correct
-
         /// <summary>
         /// Converts <typeparamref name="TSignal"/> to correct.
         /// </summary>
@@ -150,7 +146,7 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(correction));
             }
 
-            return production.Convert(new Correct<TSignal>(correction));
+            return production.Convert(correction.AsConversion());
         }
 
         /// <summary>
