@@ -12,11 +12,11 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly ITransmission<Tilt> tilt;
 
-        internal IgniteStick(IStick device)
+        internal IgniteStick(StickModule module, IStickConfiguration configuration)
         {
-            touch = device.Touch;
+            touch = module.Touch.Transmit(configuration.Touch);
 
-            tilt = device.Tilt;
+            tilt = module.Tilt.Transmit(configuration.Tilt);
         }
 
         /// <inheritdoc/>

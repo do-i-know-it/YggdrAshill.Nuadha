@@ -1,10 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class PulsatedTriggerModule :
+    public sealed class PulsatedTriggerModule :
         IPulsatedTriggerHardwareHandler,
         IPulsatedTriggerSoftwareHandler,
         IModule<IPulsatedTriggerHardwareHandler, IPulsatedTriggerSoftwareHandler>
@@ -13,11 +14,20 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly IPropagation<Pulse> pull;
 
-        internal PulsatedTriggerModule(IPulsatedTriggerModule module)
+        public PulsatedTriggerModule(IPropagation<Pulse> touch, IPropagation<Pulse> pull)
         {
-            touch = module.Touch;
+            if (touch == null)
+            {
+                throw new ArgumentNullException(nameof(touch));
+            }
+            if (pull == null)
+            {
+                throw new ArgumentNullException(nameof(pull));
+            }
 
-            pull = module.Pull;
+            this.touch = touch;
+
+            this.pull = pull;
         }
 
         public IPulsatedTriggerHardwareHandler HardwareHandler => this;

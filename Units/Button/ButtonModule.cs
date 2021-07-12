@@ -1,23 +1,33 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class ButtonModule :
+    public sealed class ButtonModule :
         IButtonHardwareHandler,
         IButtonSoftwareHandler,
         IModule<IButtonHardwareHandler, IButtonSoftwareHandler>
     {
-        private readonly IPropagation<Touch> touch;
+        internal IPropagation<Touch> Touch { get; }
 
-        private readonly IPropagation<Push> push;
+        internal IPropagation<Push> Push { get; }
 
-        internal ButtonModule(IButtonModule module)
+        public ButtonModule(IPropagation<Touch> touch, IPropagation<Push> push)
         {
-            touch = module.Touch;
+            if (touch == null)
+            {
+                throw new ArgumentNullException(nameof(touch));
+            }
+            if (push == null)
+            {
+                throw new ArgumentNullException(nameof(push));
+            }
 
-            push = module.Push;
+            Touch = touch;
+
+            Push = push;
         }
 
         public IButtonHardwareHandler HardwareHandler => this;
@@ -26,17 +36,17 @@ namespace YggdrAshill.Nuadha.Units
 
         public void Dispose()
         {
-            touch.Dispose();
+            Touch.Dispose();
 
-            push.Dispose();
+            Push.Dispose();
         }
 
-        IConsumption<Touch> IButtonHardwareHandler.Touch => touch;
+        IConsumption<Touch> IButtonHardwareHandler.Touch => Touch;
 
-        IConsumption<Push> IButtonHardwareHandler.Push => push;
+        IConsumption<Push> IButtonHardwareHandler.Push => Push;
 
-        IProduction<Touch> IButtonSoftwareHandler.Touch => touch;
+        IProduction<Touch> IButtonSoftwareHandler.Touch => Touch;
 
-        IProduction<Push> IButtonSoftwareHandler.Push => push;
+        IProduction<Push> IButtonSoftwareHandler.Push => Push;
     }
 }

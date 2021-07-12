@@ -1,8 +1,9 @@
 using YggdrAshill.Nuadha.Unitization;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class PulsatedHandControllerModule :
+    public sealed class PulsatedHandControllerModule :
         IPulsatedHandControllerHardwareHandler,
         IPulsatedHandControllerSoftwareHandler,
         IModule<IPulsatedHandControllerHardwareHandler, IPulsatedHandControllerSoftwareHandler>
@@ -13,13 +14,26 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly PulsatedTriggerModule handGrip;
 
-        internal PulsatedHandControllerModule(IPulsatedHandControllerModule module)
+        public PulsatedHandControllerModule(PulsatedStickModule thumb, PulsatedTriggerModule indexFinger, PulsatedTriggerModule handGrip)
         {
-            thumb = new PulsatedStickModule(module.Thumb);
+            if (thumb == null)
+            {
+                throw new ArgumentNullException(nameof(thumb));
+            }
+            if (indexFinger == null)
+            {
+                throw new ArgumentNullException(nameof(indexFinger));
+            }
+            if (handGrip == null)
+            {
+                throw new ArgumentNullException(nameof(handGrip));
+            }
 
-            indexFinger = new PulsatedTriggerModule(module.IndexFinger);
+            this.thumb = thumb;
 
-            handGrip = new PulsatedTriggerModule(module.HandGrip);
+            this.indexFinger = indexFinger;
+
+            this.handGrip = handGrip;
         }
 
         public IPulsatedHandControllerHardwareHandler HardwareHandler => this;

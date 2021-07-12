@@ -1,10 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class PulsatedTiltModule :
+    public sealed class PulsatedTiltModule :
         IPulsatedTiltHardwareHandler,
         IPulsatedTiltSoftwareHandler,
         IModule<IPulsatedTiltHardwareHandler, IPulsatedTiltSoftwareHandler>
@@ -19,17 +20,41 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly IPropagation<Pulse> backward;
 
-        internal PulsatedTiltModule(IPulsatedTiltModule module)
+        public PulsatedTiltModule(
+            IPropagation<Pulse> distance,
+            IPropagation<Pulse> left, IPropagation<Pulse> right,
+            IPropagation<Pulse> forward, IPropagation<Pulse> backward)
         {
-            distance = module.Distance;
+            if (distance == null)
+            {
+                throw new ArgumentNullException(nameof(distance));
+            }
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+            if (forward == null)
+            {
+                throw new ArgumentNullException(nameof(forward));
+            }
+            if (backward == null)
+            {
+                throw new ArgumentNullException(nameof(backward));
+            }
 
-            left = module.Left;
+            this.distance = distance;
 
-            right = module.Right;
+            this.left = left;
 
-            forward = module.Forward;
+            this.right = right;
 
-            backward = module.Backward;
+            this.forward = forward;
+
+            this.backward = backward;
         }
 
         public IPulsatedTiltHardwareHandler HardwareHandler => this;

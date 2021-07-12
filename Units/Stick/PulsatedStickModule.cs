@@ -1,10 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class PulsatedStickModule :
+    public sealed class PulsatedStickModule :
         IPulsatedStickHardwareHandler,
         IPulsatedStickSoftwareHandler,
         IModule<IPulsatedStickHardwareHandler, IPulsatedStickSoftwareHandler>
@@ -13,11 +14,20 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly PulsatedTiltModule tilt;
 
-        internal PulsatedStickModule(IPulsatedStickModule module)
+        public PulsatedStickModule(IPropagation<Pulse> touch, PulsatedTiltModule tilt)
         {
-            touch = module.Touch;
+            if (touch == null)
+            {
+                throw new ArgumentNullException(nameof(touch));
+            }
+            if (tilt == null)
+            {
+                throw new ArgumentNullException(nameof(tilt));
+            }
 
-            tilt = new PulsatedTiltModule(module.Tilt);
+            this.touch = touch;
+
+            this.tilt = tilt;
         }
 
         public IPulsatedStickHardwareHandler HardwareHandler => this;

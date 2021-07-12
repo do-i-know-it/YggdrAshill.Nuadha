@@ -1,10 +1,11 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class PulsatedButtonModule :
+    public sealed class PulsatedButtonModule :
         IPulsatedButtonHardwareHandler,
         IPulsatedButtonSoftwareHandler,
         IModule<IPulsatedButtonHardwareHandler, IPulsatedButtonSoftwareHandler>
@@ -13,11 +14,20 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly IPropagation<Pulse> push;
 
-        internal PulsatedButtonModule(IPulsatedButtonModule module)
+        public PulsatedButtonModule(IPropagation<Pulse> touch, IPropagation<Pulse> push)
         {
-            touch = module.Touch;
+            if (touch == null)
+            {
+                throw new ArgumentNullException(nameof(touch));
+            }
+            if (push == null)
+            {
+                throw new ArgumentNullException(nameof(push));
+            }
 
-            push = module.Push;
+            this.touch = touch;
+
+            this.push = push;
         }
 
         public IPulsatedButtonHardwareHandler HardwareHandler => this;

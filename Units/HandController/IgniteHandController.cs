@@ -15,15 +15,15 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly IgniteTrigger handGrip;
 
-        internal IgniteHandController(IHandController device)
+        internal IgniteHandController(HandControllerModule module, IHandControllerConfiguration configuration)
         {
-            pose = new IgnitePoseTracker(device.Pose);
+            pose = new IgnitePoseTracker(module.Pose, configuration.Pose);
 
-            thumb = new IgniteStick(device.Thumb);
+            thumb = new IgniteStick(module.Thumb, configuration.Thumb);
 
-            indexFinger = new IgniteTrigger(device.IndexFinger);
+            indexFinger = new IgniteTrigger(module.IndexFinger, configuration.IndexFinger);
 
-            handGrip = new IgniteTrigger(device.HandGrip);
+            handGrip = new IgniteTrigger(module.HandGrip, configuration.HandGrip);
         }
 
         /// <inheritdoc/>

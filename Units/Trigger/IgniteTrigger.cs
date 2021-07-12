@@ -12,11 +12,11 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly ITransmission<Pull> pull;
 
-        internal IgniteTrigger(ITrigger device)
+        internal IgniteTrigger(TriggerModule module, ITriggerConfiguration configuration)
         {
-            touch = device.Touch;
+            touch = module.Touch.Transmit(configuration.Touch);
 
-            pull = device.Pull;
+            pull = module.Pull.Transmit(configuration.Pull);
         }
 
         /// <inheritdoc/>

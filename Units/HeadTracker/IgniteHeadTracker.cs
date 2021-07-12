@@ -12,11 +12,11 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly ITransmission<Space3D.Direction> direction;
 
-        internal IgniteHeadTracker(IHeadTracker device)
+        internal IgniteHeadTracker(HeadTrackerModule module, IHeadTrackerConfiguration configuration)
         {
-            pose = new IgnitePoseTracker(device.Pose);
+            pose = new IgnitePoseTracker(module.Pose, configuration.Pose);
 
-            direction = device.Direction;
+            direction = module.Direction.Transmit(configuration.Direction);
         }
 
         /// <inheritdoc/>

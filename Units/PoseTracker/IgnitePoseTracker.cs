@@ -12,11 +12,11 @@ namespace YggdrAshill.Nuadha.Units
 
         private readonly ITransmission<Space3D.Rotation> rotation;
 
-        internal IgnitePoseTracker(IPoseTracker device)
+        internal IgnitePoseTracker(PoseTrackerModule module, IPoseTrackerConfiguration configuration)
         {
-            position = device.Position;
+            position = module.Position.Transmit(configuration.Position);
 
-            rotation = device.Rotation;
+            rotation = module.Rotation.Transmit(configuration.Rotation);
         }
 
         /// <inheritdoc/>

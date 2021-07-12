@@ -6,17 +6,17 @@ using System;
 namespace YggdrAshill.Nuadha.Units
 {
     internal sealed class IgniteButton :
-       IIgnition<IButtonHardwareHandler>
+        IIgnition<IButtonHardwareHandler>
     {
         private readonly ITransmission<Touch> touch;
 
         private readonly ITransmission<Push> push;
 
-        internal IgniteButton(IButton device)
+        internal IgniteButton(ButtonModule module, IButtonConfiguration configuration)
         {
-            touch = device.Touch;
+            touch = module.Touch.Transmit(configuration.Touch);
 
-            push = device.Push;
+            push = module.Push.Transmit(configuration.Push);
         }
 
         /// <inheritdoc/>

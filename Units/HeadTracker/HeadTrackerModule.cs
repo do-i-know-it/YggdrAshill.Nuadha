@@ -1,23 +1,33 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class HeadTrackerModule :
+    public sealed class HeadTrackerModule :
         IHeadTrackerHardwareHandler,
         IHeadTrackerSoftwareHandler,
         IModule<IHeadTrackerHardwareHandler, IHeadTrackerSoftwareHandler>
     {
-        private readonly PoseTrackerModule pose;
+        internal PoseTrackerModule Pose { get; }
 
-        private readonly IPropagation<Space3D.Direction> direction;
+        internal IPropagation<Space3D.Direction> Direction { get; }
 
-        internal HeadTrackerModule(IHeadTrackerModule module)
+        public HeadTrackerModule(PoseTrackerModule pose, IPropagation<Space3D.Direction> direction)
         {
-            pose = new PoseTrackerModule(module.Pose);
+            if (pose == null)
+            {
+                throw new ArgumentNullException(nameof(pose));
+            }
+            if (direction == null)
+            {
+                throw new ArgumentNullException(nameof(direction));
+            }
 
-            direction = module.Direction;
+            Pose = pose;
+
+            Direction = direction;
         }
 
         public IHeadTrackerHardwareHandler HardwareHandler => this;
@@ -26,17 +36,17 @@ namespace YggdrAshill.Nuadha.Units
 
         public void Dispose()
         {
-            pose.Dispose();
+            Pose.Dispose();
 
-            direction.Dispose();
+            Direction.Dispose();
         }
 
-        IPoseTrackerHardwareHandler IHeadTrackerHardwareHandler.Pose => pose.HardwareHandler;
+        IPoseTrackerHardwareHandler IHeadTrackerHardwareHandler.Pose => Pose.HardwareHandler;
 
-        IConsumption<Space3D.Direction> IHeadTrackerHardwareHandler.Direction => direction;
+        IConsumption<Space3D.Direction> IHeadTrackerHardwareHandler.Direction => Direction;
 
-        IPoseTrackerSoftwareHandler IHeadTrackerSoftwareHandler.Pose => pose.SoftwareHandler;
+        IPoseTrackerSoftwareHandler IHeadTrackerSoftwareHandler.Pose => Pose.SoftwareHandler;
 
-        IProduction<Space3D.Direction> IHeadTrackerSoftwareHandler.Direction => direction;
+        IProduction<Space3D.Direction> IHeadTrackerSoftwareHandler.Direction => Direction;
     }
 }

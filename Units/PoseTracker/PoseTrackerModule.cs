@@ -1,23 +1,33 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class PoseTrackerModule :
+    public sealed class PoseTrackerModule :
         IPoseTrackerHardwareHandler,
         IPoseTrackerSoftwareHandler,
         IModule<IPoseTrackerHardwareHandler, IPoseTrackerSoftwareHandler>
     {
-        private readonly IPropagation<Space3D.Position> position;
+        internal IPropagation<Space3D.Position> Position { get; }
 
-        private readonly IPropagation<Space3D.Rotation> rotation;
+        internal IPropagation<Space3D.Rotation> Rotation { get; }
 
-        internal PoseTrackerModule(IPoseTrackerModule module)
+        public PoseTrackerModule(IPropagation<Space3D.Position> position, IPropagation<Space3D.Rotation> rotation)
         {
-            position = module.Position;
+            if (position == null)
+            {
+                throw new ArgumentNullException(nameof(position));
+            }
+            if (rotation == null)
+            {
+                throw new ArgumentNullException(nameof(rotation));
+            }
 
-            rotation = module.Rotation;
+            Position = position;
+
+            Rotation = rotation;
         }
 
         public IPoseTrackerHardwareHandler HardwareHandler => this;
@@ -26,17 +36,17 @@ namespace YggdrAshill.Nuadha.Units
 
         public void Dispose()
         {
-            position.Dispose();
+            Position.Dispose();
 
-            rotation.Dispose();
+            Rotation.Dispose();
         }
 
-        IConsumption<Space3D.Position> IPoseTrackerHardwareHandler.Position => position;
+        IConsumption<Space3D.Position> IPoseTrackerHardwareHandler.Position => Position;
 
-        IConsumption<Space3D.Rotation> IPoseTrackerHardwareHandler.Rotation => rotation;
+        IConsumption<Space3D.Rotation> IPoseTrackerHardwareHandler.Rotation => Rotation;
 
-        IProduction<Space3D.Position> IPoseTrackerSoftwareHandler.Position => position;
+        IProduction<Space3D.Position> IPoseTrackerSoftwareHandler.Position => Position;
 
-        IProduction<Space3D.Rotation> IPoseTrackerSoftwareHandler.Rotation => rotation;
+        IProduction<Space3D.Rotation> IPoseTrackerSoftwareHandler.Rotation => Rotation;
     }
 }

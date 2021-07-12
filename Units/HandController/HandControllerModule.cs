@@ -1,29 +1,47 @@
 using YggdrAshill.Nuadha.Unitization;
+using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
-    internal sealed class HandControllerModule :
+    public sealed class HandControllerModule :
         IHandControllerHardwareHandler,
         IHandControllerSoftwareHandler,
         IModule<IHandControllerHardwareHandler, IHandControllerSoftwareHandler>
     {
-        private readonly PoseTrackerModule pose;
+        internal PoseTrackerModule Pose { get; }
 
-        private readonly StickModule thumb;
+        internal StickModule Thumb { get; }
 
-        private readonly TriggerModule indexFinger;
+        internal TriggerModule IndexFinger { get; }
 
-        private readonly TriggerModule handGrip;
+        internal TriggerModule HandGrip { get; }
 
-        internal HandControllerModule(IHandControllerModule module)
+        public HandControllerModule(PoseTrackerModule pose, StickModule thumb, TriggerModule indexFinger, TriggerModule handGrip)
         {
-            pose = new PoseTrackerModule(module.Pose);
+            if (pose == null)
+            {
+                throw new ArgumentNullException(nameof(pose));
+            }
+            if (thumb == null)
+            {
+                throw new ArgumentNullException(nameof(thumb));
+            }
+            if (indexFinger == null)
+            {
+                throw new ArgumentNullException(nameof(indexFinger));
+            }
+            if (handGrip == null)
+            {
+                throw new ArgumentNullException(nameof(handGrip));
+            }
 
-            thumb = new StickModule(module.Thumb);
+            Pose = pose;
 
-            indexFinger = new TriggerModule(module.IndexFinger);
+            Thumb = thumb;
 
-            handGrip = new TriggerModule(module.HandGrip);
+            IndexFinger = indexFinger;
+
+            HandGrip = handGrip;
         }
 
         public IHandControllerHardwareHandler HardwareHandler => this;
@@ -32,29 +50,29 @@ namespace YggdrAshill.Nuadha.Units
 
         public void Dispose()
         {
-            pose.Dispose();
+            Pose.Dispose();
 
-            thumb.Dispose();
+            Thumb.Dispose();
 
-            indexFinger.Dispose();
+            IndexFinger.Dispose();
 
-            handGrip.Dispose();
+            HandGrip.Dispose();
         }
 
-        IPoseTrackerHardwareHandler IHandControllerHardwareHandler.Pose => pose.HardwareHandler;
+        IPoseTrackerHardwareHandler IHandControllerHardwareHandler.Pose => Pose.HardwareHandler;
 
-        IStickHardwareHandler IHandControllerHardwareHandler.Thumb => thumb.HardwareHandler;
+        IStickHardwareHandler IHandControllerHardwareHandler.Thumb => Thumb.HardwareHandler;
 
-        ITriggerHardwareHandler IHandControllerHardwareHandler.IndexFinger => indexFinger.HardwareHandler;
+        ITriggerHardwareHandler IHandControllerHardwareHandler.IndexFinger => IndexFinger.HardwareHandler;
 
-        ITriggerHardwareHandler IHandControllerHardwareHandler.HandGrip => handGrip.HardwareHandler;
+        ITriggerHardwareHandler IHandControllerHardwareHandler.HandGrip => HandGrip.HardwareHandler;
 
-        IPoseTrackerSoftwareHandler IHandControllerSoftwareHandler.Pose => pose.SoftwareHandler;
+        IPoseTrackerSoftwareHandler IHandControllerSoftwareHandler.Pose => Pose.SoftwareHandler;
 
-        IStickSoftwareHandler IHandControllerSoftwareHandler.Thumb => thumb.SoftwareHandler;
+        IStickSoftwareHandler IHandControllerSoftwareHandler.Thumb => Thumb.SoftwareHandler;
 
-        ITriggerSoftwareHandler IHandControllerSoftwareHandler.IndexFinger => indexFinger.SoftwareHandler;
+        ITriggerSoftwareHandler IHandControllerSoftwareHandler.IndexFinger => IndexFinger.SoftwareHandler;
 
-        ITriggerSoftwareHandler IHandControllerSoftwareHandler.HandGrip => handGrip.SoftwareHandler;
+        ITriggerSoftwareHandler IHandControllerSoftwareHandler.HandGrip => HandGrip.SoftwareHandler;
     }
 }
