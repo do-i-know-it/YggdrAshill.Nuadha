@@ -1,6 +1,7 @@
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
-namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha
 {
     /// <summary>
     /// Defines extensions for Signalization.
@@ -42,100 +43,7 @@ namespace YggdrAshill.Nuadha.Signalization
 
             return production.Produce(new Consumption<TSignal>(consumption));
         }
-        private sealed class Consumption<TSignal> :
-            IConsumption<TSignal>
-            where TSignal : ISignal
-        {
-            private readonly Action<TSignal> onConsumed;
-
-            internal Consumption(Action<TSignal> onConsumed)
-            {
-                this.onConsumed = onConsumed;
-            }
-
-            /// <inheritdoc/>
-            public void Consume(TSignal signal)
-            {
-                onConsumed.Invoke(signal);
-            }
-        }
-
-        /// <summary>
-        /// Converts <see cref="IPropagation{TSignal}"/> into <see cref="ITransmission{TSignal}"/>.
-        /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to emit.
-        /// </typeparam>
-        /// <param name="propagation">
-        /// <see cref="IPropagation{TSignal}"/> to convert.
-        /// </param>
-        /// <param name="generation">
-        /// <see cref="IGeneration{TSignal}"/> to generate.
-        /// </param>
-        /// <returns>
-        /// <see cref="ITransmission{TSignal}"/> converted.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="propagation"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="generation"/> is null.
-        /// </exception>
-        public static ITransmission<TSignal> Transmit<TSignal>(this IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
-            where TSignal : ISignal
-        {
-            if (propagation == null)
-            {
-                throw new ArgumentNullException(nameof(propagation));
-            }
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-
-            return new Transmission<TSignal>(propagation, generation);
-        }
-        private sealed class Transmission<TSignal> :
-            ITransmission<TSignal>
-            where TSignal : ISignal
-        {
-            private readonly IPropagation<TSignal> propagation;
-
-            private readonly IGeneration<TSignal> generation;
-
-            internal Transmission(IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
-            {
-                this.propagation = propagation;
-
-                this.generation = generation;
-            }
-
-            /// <inheritdoc/>
-            public ICancellation Produce(IConsumption<TSignal> consumption)
-            {
-                if (consumption == null)
-                {
-                    throw new ArgumentNullException(nameof(consumption));
-                }
-
-                return propagation.Produce(consumption);
-            }
-
-            /// <inheritdoc/>
-            public void Emit()
-            {
-                var gemerated = generation.Generate();
-
-                propagation.Consume(gemerated);
-            }
-
-            /// <inheritdoc/>
-            public void Dispose()
-            {
-                propagation.Dispose();
-            }
-        }
-
+        
         /// <summary>
         /// Converts <see cref="IPropagation{TSignal}"/> into <see cref="ITransmission{TSignal}"/>.
         /// </summary>
@@ -170,23 +78,6 @@ namespace YggdrAshill.Nuadha.Signalization
             }
 
             return propagation.Transmit(new Generation<TSignal>(generation));
-        }
-        private sealed class Generation<TSignal> :
-            IGeneration<TSignal>
-            where TSignal : ISignal
-        {
-            private readonly Func<TSignal> onGenerated;
-
-            internal Generation(Func<TSignal> onGenerated)
-            {
-                this.onGenerated = onGenerated;
-            }
-
-            /// <inheritdoc/>
-            public TSignal Generate()
-            {
-                return onGenerated.Invoke();
-            }
         }
 
         /// <summary>

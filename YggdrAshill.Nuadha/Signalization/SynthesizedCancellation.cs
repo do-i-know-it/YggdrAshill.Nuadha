@@ -1,7 +1,8 @@
+using YggdrAshill.Nuadha.Signalization;
 using System;
 using System.Collections.Generic;
 
-namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha
 {
     /// <summary>
     /// Collects <see cref="ICancellation"/> to cancel simultaneously.

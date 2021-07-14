@@ -9,9 +9,12 @@ namespace YggdrAshill.Nuadha
     public sealed class Cancellation :
         ICancellation
     {
-        private readonly Action onCancelled;
+        /// <summary>
+        /// <see cref="Cancellation"/> to do nothing when this has cancelled.
+        /// </summary>
+        public static Cancellation None { get; } = new Cancellation(() => { });
 
-        #region Constructor
+        private readonly Action onCancelled;
 
         /// <summary>
         /// Constructs an instance.
@@ -32,27 +35,10 @@ namespace YggdrAshill.Nuadha
             this.onCancelled = onCancelled;
         }
 
-        /// <summary>
-        /// Constructs an instance to do nothing when this has cancelled.
-        /// </summary>
-        public Cancellation()
-        {
-            onCancelled = () =>
-            {
-
-            };
-        }
-
-        #endregion
-
-        #region ICancellation
-
         /// <inheritdoc/>
         public void Cancel()
         {
             onCancelled.Invoke();
         }
-
-        #endregion
     }
 }
