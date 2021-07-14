@@ -15,9 +15,9 @@ namespace YggdrAshill.Nuadha.Units
 
         internal ConnectCalibratedPoseTracker(IPoseTrackerSoftwareHandler handler, IPoseTrackerConfiguration configuration)
         {
-            position = handler.Position.Convert(Space3D.PositionInto.Position(configuration.Position));
+            position = handler.Position.Convert(Space3D.PositionInto.PositionTo.Calibrate(configuration.Position));
 
-            rotation = handler.Rotation.Convert(Space3D.RotationInto.Rotation(configuration.Rotation));
+            rotation = handler.Rotation.Convert(Space3D.RotationInto.RotationTo.Calibrate(configuration.Rotation));
         }
 
         public ICancellation Connect(IPoseTrackerHardwareHandler handler)

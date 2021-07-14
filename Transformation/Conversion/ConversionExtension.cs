@@ -3,9 +3,164 @@ using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
+    /// <summary>
+    /// Defines extensions for <see cref="IConversion{TInput, TOutput}"/>.
+    /// </summary>
     public static class ConversionExtension
     {
-        #region IConversion
+        /// <summary>
+        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// </summary>
+        /// <typeparam name="TInput">
+        /// Type of <see cref="ISignal"/> to convert.
+        /// </typeparam>
+        /// <typeparam name="TOutput">
+        /// Type of <see cref="ISignal"/> converted.
+        /// </typeparam>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TInput"/> to convert.
+        /// </param>
+        /// <param name="conversion">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TOutput"/> converted.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="conversion"/> is null.
+        /// </exception>
+        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, IConversion<TInput, TOutput> conversion)
+            where TInput : ISignal
+            where TOutput : ISignal
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (conversion == null)
+            {
+                throw new ArgumentNullException(nameof(conversion));
+            }
+
+            return new Production<TInput, TOutput>(production, conversion);
+        }
+        private sealed class Production<TInput, TOutput> :
+            IProduction<TOutput>
+            where TInput : ISignal
+            where TOutput : ISignal
+        {
+            private readonly IProduction<TInput> production;
+
+            private readonly IConversion<TInput, TOutput> conversion;
+
+            internal Production(IProduction<TInput> production, IConversion<TInput, TOutput> conversion)
+            {
+                this.production = production;
+
+                this.conversion = conversion;
+            }
+
+            /// <inheritdoc/>
+            public ICancellation Produce(IConsumption<TOutput> consumption)
+            {
+                if (consumption == null)
+                {
+                    throw new ArgumentNullException(nameof(consumption));
+                }
+
+                return production.Produce(new Consumption<TInput, TOutput>(conversion, consumption));
+            }
+        }
+        private sealed class Consumption<TInput, TOutput> :
+            IConsumption<TInput>
+            where TInput : ISignal
+            where TOutput : ISignal
+        {
+            private readonly IConversion<TInput, TOutput> conversion;
+
+            private readonly IConsumption<TOutput> consumption;
+
+            internal Consumption(IConversion<TInput, TOutput> conversion, IConsumption<TOutput> consumption)
+            {
+                this.conversion = conversion;
+
+                this.consumption = consumption;
+            }
+
+            /// <inheritdoc/>
+            public void Consume(TInput signal)
+            {
+                var converted = conversion.Convert(signal);
+
+                consumption.Consume(converted);
+            }
+        }
+
+        /// <summary>
+        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// </summary>
+        /// <typeparam name="TInput">
+        /// Type of <see cref="ISignal"/> to convert.
+        /// </typeparam>
+        /// <typeparam name="TOutput">
+        /// Type of <see cref="ISignal"/> converted.
+        /// </typeparam>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TInput"/> to convert.
+        /// </param>
+        /// <param name="conversion">
+        /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TOutput"/> converted.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="conversion"/> is null.
+        /// </exception>
+        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, Func<TInput, TOutput> conversion)
+            where TInput : ISignal
+            where TOutput : ISignal
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (conversion == null)
+            {
+                throw new ArgumentNullException(nameof(conversion));
+            }
+
+            return production.Convert(new Conversion<TInput, TOutput>(conversion));
+        }
+        private sealed class Conversion<TInput, TOutput> :
+            IConversion<TInput, TOutput>
+            where TInput : ISignal
+            where TOutput : ISignal
+        {
+            private readonly Func<TInput, TOutput> onConverted;
+
+            internal Conversion(Func<TInput, TOutput> onConverted)
+            {
+                if (onConverted == null)
+                {
+                    throw new ArgumentNullException(nameof(onConverted));
+                }
+
+                this.onConverted = onConverted;
+            }
+
+            /// <inheritdoc/>
+            public TOutput Convert(TInput signal)
+            {
+                return onConverted.Invoke(signal);
+            }
+        }
 
         public static IConversion<TInput, TOutput> Then<TInput, TMedium, TOutput>(this IConversion<TInput, TMedium> inputToMedium, IConversion<TMedium, TOutput> mediumToOutput)
             where TInput : ISignal
@@ -21,9 +176,9 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(mediumToOutput));
             }
 
-            return new ConvertIntermediate<TInput, TMedium, TOutput>(inputToMedium, mediumToOutput);
+            return new Intermediate<TInput, TMedium, TOutput>(inputToMedium, mediumToOutput);
         }
-        private sealed class ConvertIntermediate<TInput, TMedium, TOutput> :
+        private sealed class Intermediate<TInput, TMedium, TOutput> :
             IConversion<TInput, TOutput>
             where TInput : ISignal
             where TMedium : ISignal
@@ -33,7 +188,7 @@ namespace YggdrAshill.Nuadha.Transformation
 
             private readonly IConversion<TMedium, TOutput> mediumToOutput;
 
-            internal ConvertIntermediate(IConversion<TInput, TMedium> inputToMedium, IConversion<TMedium, TOutput> mediumToOutput)
+            internal Intermediate(IConversion<TInput, TMedium> inputToMedium, IConversion<TMedium, TOutput> mediumToOutput)
             {
                 this.inputToMedium = inputToMedium;
 
@@ -48,76 +203,5 @@ namespace YggdrAshill.Nuadha.Transformation
                 return mediumToOutput.Convert(medium);
             }
         }
-
-        #endregion
-
-        #region ICorrection
-
-        public static IConversion<TSignal, TSignal> AsConversion<TSignal>(this ICorrection<TSignal> correction)
-            where TSignal : ISignal
-        {
-            if (correction == null)
-            {
-                throw new ArgumentNullException(nameof(correction));
-            }
-
-            return new Correct<TSignal>(correction);
-        }
-        private sealed class Correct<TSignal> :
-            IConversion<TSignal, TSignal>
-            where TSignal : ISignal
-        {
-            private readonly ICorrection<TSignal> correction;
-
-            internal Correct(ICorrection<TSignal> correction)
-            {
-                this.correction = correction;
-            }
-
-            public TSignal Convert(TSignal signal)
-            {
-                return correction.Correct(signal);
-            }
-        }
-
-        public static ICorrection<TSignal> Then<TSignal>(this ICorrection<TSignal> correction, ICorrection<TSignal> hoge)
-            where TSignal : ISignal
-        {
-            if (correction == null)
-            {
-                throw new ArgumentNullException(nameof(correction));
-            }
-            if (hoge == null)
-            {
-                throw new ArgumentNullException(nameof(hoge));
-            }
-
-            return new CorrectIntermediate<TSignal>(correction, hoge);
-        }
-        private sealed class CorrectIntermediate<TSignal> :
-            ICorrection<TSignal>
-            where TSignal : ISignal
-        {
-            private readonly ICorrection<TSignal> correction;
-
-            private readonly ICorrection<TSignal> hoge;
-
-            internal CorrectIntermediate(ICorrection<TSignal> correction, ICorrection<TSignal> hoge)
-            {
-                this.correction = correction;
-
-                this.hoge = hoge;
-            }
-
-            /// <inheritdoc/>
-            public TSignal Correct(TSignal signal)
-            {
-                var medium = correction.Correct(signal);
-
-                return hoge.Correct(medium);
-            }
-        }
-
-        #endregion
     }
 }

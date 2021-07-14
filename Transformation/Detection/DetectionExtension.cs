@@ -9,6 +9,185 @@ namespace YggdrAshill.Nuadha.Transformation
     public static class DetectionExtension
     {
         /// <summary>
+        /// Detects <see cref="Notice"/> of <typeparamref name="TSignal"/>.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to detect.
+        /// </typeparam>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> to detect.
+        /// </param>
+        /// <param name="detection">
+        /// <see cref="IDetection{TSignal}"/> to detect.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{TSignal}"/> for <see cref="Notice"/> detected.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="detection"/> is null.
+        /// </exception>
+        public static IProduction<Notice> Detect<TSignal>(this IProduction<TSignal> production, IDetection<TSignal> detection)
+            where TSignal : ISignal
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (detection == null)
+            {
+                throw new ArgumentNullException(nameof(detection));
+            }
+
+            return new Production<TSignal>(production, detection);
+        }
+        private sealed class Production<TSignal> :
+            IProduction<Notice>
+            where TSignal : ISignal
+        {
+            private readonly IProduction<TSignal> production;
+
+            private readonly IDetection<TSignal> detection;
+
+            internal Production(IProduction<TSignal> production, IDetection<TSignal> detection)
+            {
+                this.production = production;
+
+                this.detection = detection;
+            }
+
+            /// <inheritdoc/>
+            public ICancellation Produce(IConsumption<Notice> consumption)
+            {
+                if (consumption == null)
+                {
+                    throw new ArgumentNullException(nameof(consumption));
+                }
+
+                return production.Produce(new Consumption<TSignal>(detection, consumption));
+            }
+        }
+        private sealed class Consumption<TSignal> :
+            IConsumption<TSignal>
+            where TSignal : ISignal
+        {
+            private readonly IDetection<TSignal> detection;
+
+            private readonly IConsumption<Notice> consumption;
+
+            internal Consumption(IDetection<TSignal> detection, IConsumption<Notice> consumption)
+            {
+                this.detection = detection;
+
+                this.consumption = consumption;
+            }
+
+            /// <inheritdoc/>
+            public void Consume(TSignal signal)
+            {
+                if (detection.Detect(signal))
+                {
+                    consumption.Consume(null);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Detects <see cref="Notice"/> of <typeparamref name="TSignal"/>.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to detect.
+        /// </typeparam>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> to detect.
+        /// </param>
+        /// <param name="detection">
+        /// <see cref="Func{T, TResult}"/> to detect <see cref="Notice"/> of <typeparamref name="TSignal"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{TSignal}"/> for <see cref="Notice"/> detected.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="detection"/> is null.
+        /// </exception>
+        public static IProduction<Notice> Detect<TSignal>(this IProduction<TSignal> production, Func<TSignal, bool> detection)
+            where TSignal : ISignal
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (detection == null)
+            {
+                throw new ArgumentNullException(nameof(detection));
+            }
+
+            return production.Detect(new Detection<TSignal>(detection));
+        }
+        private sealed class Detection<TSignal> :
+            IDetection<TSignal>
+            where TSignal : ISignal
+        {
+            private readonly Func<TSignal, bool> onDetected;
+
+            internal Detection(Func<TSignal, bool> onDetected)
+            {
+                this.onDetected = onDetected;
+            }
+
+            /// <inheritdoc/>
+            public bool Detect(TSignal signal)
+            {
+                return onDetected.Invoke(signal);
+            }
+        }
+
+        /// <summary>
+        /// Produces <see cref="Notice"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> for <see cref="Notice"/> to produce.
+        /// </param>
+        /// <param name="consumption">
+        /// <see cref="Action"/> executed when this has consumed <see cref="Notice"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ICancellation"/> to cancel.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="consumption"/> is null.
+        /// </exception>
+        public static ICancellation Produce(this IProduction<Notice> production, Action consumption)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (consumption == null)
+            {
+                throw new ArgumentNullException(nameof(consumption));
+            }
+
+            return production.Produce(signal =>
+            {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
+
+                consumption.Invoke();
+            });
+        }
+
+        /// <summary>
         /// Inverts <see cref="IDetection{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
@@ -39,7 +218,7 @@ namespace YggdrAshill.Nuadha.Transformation
         {
             private readonly IDetection<TSignal> detection;
 
-            public Invert(IDetection<TSignal> detection)
+            internal Invert(IDetection<TSignal> detection)
             {
                 this.detection = detection;
             }
@@ -79,9 +258,9 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(right));
             }
 
-            return new Product<TSignal>(left, right);
+            return new Multiply<TSignal>(left, right);
         }
-        private sealed class Product<TSignal> :
+        private sealed class Multiply<TSignal> :
             IDetection<TSignal>
             where TSignal : ISignal
         {
@@ -89,7 +268,7 @@ namespace YggdrAshill.Nuadha.Transformation
 
             private readonly IDetection<TSignal> right;
 
-            public Product(IDetection<TSignal> left, IDetection<TSignal> right)
+            internal Multiply(IDetection<TSignal> left, IDetection<TSignal> right)
             {
                 this.left = left;
 
@@ -131,9 +310,9 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(right));
             }
 
-            return new Sum<TSignal>(left, right);
+            return new Add<TSignal>(left, right);
         }
-        private sealed class Sum<TSignal> :
+        private sealed class Add<TSignal> :
             IDetection<TSignal>
             where TSignal : ISignal
         {
@@ -141,7 +320,7 @@ namespace YggdrAshill.Nuadha.Transformation
 
             private readonly IDetection<TSignal> right;
 
-            public Sum(IDetection<TSignal> left, IDetection<TSignal> right)
+            internal Add(IDetection<TSignal> left, IDetection<TSignal> right)
             {
                 this.left = left;
 

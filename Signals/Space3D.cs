@@ -294,29 +294,28 @@ namespace YggdrAshill.Nuadha.Signals
 
         public static class PositionInto
         {
-            public static ICorrection<Position> Position(IGeneration<Position> generation)
+            public sealed class PositionTo :
+                ICalibration<Position>
             {
-                if (generation == null)
+                public static IConversion<Position, Position> Calibrate(IGeneration<Position> generation)
                 {
-                    throw new ArgumentNullException(nameof(generation));
+                    if (generation == null)
+                    {
+                        throw new ArgumentNullException(nameof(generation));
+                    }
+
+                    return Instance.ToConversion(generation);
                 }
 
-                return new CorrectPosition(generation);
-            }
-            private sealed class CorrectPosition :
-                ICorrection<Position>
-            {
-                private readonly IGeneration<Position> generation;
+                public static PositionTo Instance { get; } = new PositionTo();
 
-                internal CorrectPosition(IGeneration<Position> generation)
+                private PositionTo()
                 {
-                    this.generation = generation;
+
                 }
 
-                public Position Correct(Position signal)
+                public Position Calibrate(Position signal, Position offset)
                 {
-                    var offset = generation.Generate();
-
                     return signal + offset;
                 }
             }
@@ -943,29 +942,28 @@ namespace YggdrAshill.Nuadha.Signals
 
         public static class RotationInto
         {
-            public static ICorrection<Rotation> Rotation(IGeneration<Rotation> generation)
+            public sealed class RotationTo :
+                ICalibration<Rotation>
             {
-                if (generation == null)
+                public static IConversion<Rotation, Rotation> Calibrate(IGeneration<Rotation> generation)
                 {
-                    throw new ArgumentNullException(nameof(generation));
+                    if (generation == null)
+                    {
+                        throw new ArgumentNullException(nameof(generation));
+                    }
+
+                    return Instance.ToConversion(generation);
                 }
 
-                return new CorrectRotation(generation);
-            }
-            private sealed class CorrectRotation :
-                ICorrection<Rotation>
-            {
-                private readonly IGeneration<Rotation> generation;
+                public static RotationTo Instance { get; } = new RotationTo();
 
-                internal CorrectRotation(IGeneration<Rotation> generation)
+                private RotationTo()
                 {
-                    this.generation = generation;
+
                 }
 
-                public Rotation Correct(Rotation signal)
+                public Rotation Calibrate(Rotation signal, Rotation offset)
                 {
-                    var offset = generation.Generate();
-
                     return signal + offset;
                 }
             }
