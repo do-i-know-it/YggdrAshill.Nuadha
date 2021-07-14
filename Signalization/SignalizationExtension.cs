@@ -42,6 +42,23 @@ namespace YggdrAshill.Nuadha.Signalization
 
             return production.Produce(new Consumption<TSignal>(consumption));
         }
+        private sealed class Consumption<TSignal> :
+            IConsumption<TSignal>
+            where TSignal : ISignal
+        {
+            private readonly Action<TSignal> onConsumed;
+
+            internal Consumption(Action<TSignal> onConsumed)
+            {
+                this.onConsumed = onConsumed;
+            }
+
+            /// <inheritdoc/>
+            public void Consume(TSignal signal)
+            {
+                onConsumed.Invoke(signal);
+            }
+        }
 
         /// <summary>
         /// Converts <see cref="IPropagation{TSignal}"/> into <see cref="ITransmission{TSignal}"/>.
@@ -76,7 +93,47 @@ namespace YggdrAshill.Nuadha.Signalization
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return new Transmitted<TSignal>(propagation, generation);
+            return new Transmission<TSignal>(propagation, generation);
+        }
+        private sealed class Transmission<TSignal> :
+            ITransmission<TSignal>
+            where TSignal : ISignal
+        {
+            private readonly IPropagation<TSignal> propagation;
+
+            private readonly IGeneration<TSignal> generation;
+
+            internal Transmission(IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
+            {
+                this.propagation = propagation;
+
+                this.generation = generation;
+            }
+
+            /// <inheritdoc/>
+            public ICancellation Produce(IConsumption<TSignal> consumption)
+            {
+                if (consumption == null)
+                {
+                    throw new ArgumentNullException(nameof(consumption));
+                }
+
+                return propagation.Produce(consumption);
+            }
+
+            /// <inheritdoc/>
+            public void Emit()
+            {
+                var gemerated = generation.Generate();
+
+                propagation.Consume(gemerated);
+            }
+
+            /// <inheritdoc/>
+            public void Dispose()
+            {
+                propagation.Dispose();
+            }
         }
 
         /// <summary>
@@ -113,6 +170,23 @@ namespace YggdrAshill.Nuadha.Signalization
             }
 
             return propagation.Transmit(new Generation<TSignal>(generation));
+        }
+        private sealed class Generation<TSignal> :
+            IGeneration<TSignal>
+            where TSignal : ISignal
+        {
+            private readonly Func<TSignal> onGenerated;
+
+            internal Generation(Func<TSignal> onGenerated)
+            {
+                this.onGenerated = onGenerated;
+            }
+
+            /// <inheritdoc/>
+            public TSignal Generate()
+            {
+                return onGenerated.Invoke();
+            }
         }
 
         /// <summary>
