@@ -1,6 +1,6 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Transformation
+namespace YggdrAshill.Nuadha
 {
     public interface ICalibration<TSignal>
         where TSignal : ISignal

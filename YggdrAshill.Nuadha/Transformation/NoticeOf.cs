@@ -37,22 +37,16 @@ namespace YggdrAshill.Nuadha
             }
         }
 
-        public static IDetection<TSignal> Signal<TSignal>(bool result)
-            where TSignal : ISignal
-        {
-            return Signal<TSignal>(_ => result);
-        }
-
         public static IDetection<TSignal> All<TSignal>()
             where TSignal : ISignal
         {
-            return Signal<TSignal>(true);
+            return Signal<TSignal>(_ => true);
         }
 
         public static IDetection<TSignal> None<TSignal>()
             where TSignal : ISignal
         {
-            return Signal<TSignal>(false);
+            return Signal<TSignal>(_ => false);
         }
     }
 }

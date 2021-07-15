@@ -51,7 +51,11 @@ namespace YggdrAshill.Nuadha
             return production.Convert(SignalInto.Signal(conversion));
         }
 
-        public static IConversion<TSignal, TSignal> ToConversion<TSignal>(this ICalibration<TSignal> calibration, Func<TSignal> generation)
+        #endregion
+
+        #region Calibrate
+
+        public static IConversion<TSignal, TSignal> ToConvert<TSignal>(this ICalibration<TSignal> calibration, IGeneration<TSignal> generation)
             where TSignal : ISignal
         {
             if (calibration == null)
@@ -63,10 +67,40 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return SignalTo.Calibrate(calibration, Generation.Of(generation));
+            return SignalInto.SignalTo.Correct(calibration, generation);
         }
 
-        public static IConversion<TSignal, TSignal> ToConversion<TSignal>(this IFiltration<TSignal> filtration, Func<TSignal> generation)
+        public static IConversion<TSignal, TSignal> ToConvert<TSignal>(this ICalibration<TSignal> calibration, Func<TSignal> generation)
+            where TSignal : ISignal
+        {
+            if (calibration == null)
+            {
+                throw new ArgumentNullException(nameof(calibration));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return SignalInto.SignalTo.Correct(calibration, generation);
+        }
+
+        public static IConversion<TSignal, TSignal> ToConvert<TSignal>(this ICalibration<TSignal> calibration, TSignal signal)
+            where TSignal : ISignal
+        {
+            if (calibration == null)
+            {
+                throw new ArgumentNullException(nameof(calibration));
+            }
+
+            return SignalInto.SignalTo.Correct(calibration, signal);
+        }
+
+        #endregion
+
+        #region Filtrate
+
+        public static IConversion<TSignal, TSignal> ToConvert<TSignal>(this IFiltration<TSignal> filtration, IGeneration<TSignal> generation)
            where TSignal : ISignal
         {
             if (filtration == null)
@@ -78,7 +112,33 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return SignalTo.Filtrate(filtration, Generation.Of(generation));
+            return SignalInto.SignalTo.Correct(filtration, generation);
+        }
+
+        public static IConversion<TSignal, TSignal> ToConvert<TSignal>(this IFiltration<TSignal> filtration, Func<TSignal> generation)
+           where TSignal : ISignal
+        {
+            if (filtration == null)
+            {
+                throw new ArgumentNullException(nameof(filtration));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return SignalInto.SignalTo.Correct(filtration, generation);
+        }
+
+        public static IConversion<TSignal, TSignal> ToConvert<TSignal>(this IFiltration<TSignal> filtration, TSignal signal)
+           where TSignal : ISignal
+        {
+            if (filtration == null)
+            {
+                throw new ArgumentNullException(nameof(filtration));
+            }
+
+            return SignalInto.SignalTo.Correct(filtration, signal);
         }
 
         #endregion

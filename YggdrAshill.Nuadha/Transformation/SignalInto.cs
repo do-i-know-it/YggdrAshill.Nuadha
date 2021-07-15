@@ -138,5 +138,116 @@ namespace YggdrAshill.Nuadha
         {
             return Signal<TInput, TOutput>(() => output);
         }
+
+        public static class SignalTo
+        {
+            public static IConversion<TSignal, TSignal> Correct<TSignal>(ICalibration<TSignal> calibration, IGeneration<TSignal> generation)
+                where TSignal : ISignal
+            {
+                if (calibration == null)
+                {
+                    throw new ArgumentNullException(nameof(calibration));
+                }
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
+
+                return Signal<TSignal, TSignal>(signal =>
+                {
+                    var offset = generation.Generate();
+
+                    return calibration.Calibrate(signal, offset);
+                });
+            }
+
+            public static IConversion<TSignal, TSignal> Correct<TSignal>(ICalibration<TSignal> calibration, Func<TSignal> generation)
+                where TSignal : ISignal
+            {
+                if (calibration == null)
+                {
+                    throw new ArgumentNullException(nameof(calibration));
+                }
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
+
+                return Correct(calibration, Generation.Of(generation));
+            }
+
+            public static IConversion<TSignal, TSignal> Correct<TSignal>(ICalibration<TSignal> calibration, TSignal signal)
+                where TSignal : ISignal
+            {
+                if (calibration == null)
+                {
+                    throw new ArgumentNullException(nameof(calibration));
+                }
+
+                return Correct(calibration, () => signal);
+            }
+
+            public static IConversion<TSignal, TSignal> Correct<TSignal>(IFiltration<TSignal> filtration, IGeneration<TSignal> generation)
+                where TSignal : ISignal
+            {
+                if (filtration == null)
+                {
+                    throw new ArgumentNullException(nameof(filtration));
+                }
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
+
+                return new Conversion<TSignal>(filtration, generation);
+            }
+            private sealed class Conversion<TSignal> :
+                IConversion<TSignal, TSignal>
+                where TSignal : ISignal
+            {
+                private readonly IFiltration<TSignal> filtration;
+
+                private TSignal previous;
+
+                internal Conversion(IFiltration<TSignal> filtration, IGeneration<TSignal> generation)
+                {
+                    this.filtration = filtration;
+
+                    previous = generation.Generate();
+                }
+
+                /// <inheritdoc/>
+                public TSignal Convert(TSignal signal)
+                {
+                    return previous = filtration.Filtrate(signal, previous);
+                }
+            }
+
+            public static IConversion<TSignal, TSignal> Correct<TSignal>(IFiltration<TSignal> filtration, Func<TSignal> generation)
+                where TSignal : ISignal
+            {
+                if (filtration == null)
+                {
+                    throw new ArgumentNullException(nameof(filtration));
+                }
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
+
+                return Correct(filtration, Generation.Of(generation));
+            }
+
+            public static IConversion<TSignal, TSignal> Correct<TSignal>(IFiltration<TSignal> filtration, TSignal signal)
+                where TSignal : ISignal
+            {
+                if (filtration == null)
+                {
+                    throw new ArgumentNullException(nameof(filtration));
+                }
+
+                return Correct(filtration, () => signal);
+            }
+        }
     }
 }

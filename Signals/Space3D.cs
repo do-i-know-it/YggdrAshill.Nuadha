@@ -292,35 +292,6 @@ namespace YggdrAshill.Nuadha.Signals
             }
         }
 
-        public static class PositionInto
-        {
-            public sealed class PositionTo :
-                ICalibration<Position>
-            {
-                public static IConversion<Position, Position> Calibrate(IGeneration<Position> generation)
-                {
-                    if (generation == null)
-                    {
-                        throw new ArgumentNullException(nameof(generation));
-                    }
-
-                    return SignalTo.Calibrate(Instance, generation);
-                }
-
-                public static PositionTo Instance { get; } = new PositionTo();
-
-                private PositionTo()
-                {
-
-                }
-
-                public Position Calibrate(Position signal, Position offset)
-                {
-                    return signal + offset;
-                }
-            }
-        }
-
         #endregion
 
         #region Direction
@@ -937,35 +908,6 @@ namespace YggdrAshill.Nuadha.Signals
             public static bool operator !=(Rotation left, Rotation right)
             {
                 return !(left == right);
-            }
-        }
-
-        public static class RotationInto
-        {
-            public sealed class RotationTo :
-                ICalibration<Rotation>
-            {
-                public static IConversion<Rotation, Rotation> Calibrate(IGeneration<Rotation> generation)
-                {
-                    if (generation == null)
-                    {
-                        throw new ArgumentNullException(nameof(generation));
-                    }
-
-                    return SignalTo.Calibrate(Instance, generation);
-                }
-
-                public static RotationTo Instance { get; } = new RotationTo();
-
-                private RotationTo()
-                {
-
-                }
-
-                public Rotation Calibrate(Rotation signal, Rotation offset)
-                {
-                    return signal + offset;
-                }
             }
         }
 
