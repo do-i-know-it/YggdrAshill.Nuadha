@@ -15,6 +15,11 @@ namespace YggdrAshill.Nuadha
             return new PulsatedTriggerModule(Propagation.WithoutCache.Create<Pulse>(), Propagation.WithoutCache.Create<Pulse>());
         }
 
+        public static PulsatedTriggerModule WithLatestCache()
+        {
+            return new PulsatedTriggerModule(Propagation.WithLatestCache.Create(Initialize.Pulse), Propagation.WithLatestCache.Create(Initialize.Pulse));
+        }
+
         private readonly IPropagation<Pulse> touch;
 
         private readonly IPropagation<Pulse> pull;

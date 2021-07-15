@@ -15,6 +15,11 @@ namespace YggdrAshill.Nuadha
             return new PulsatedButtonModule(Propagation.WithoutCache.Create<Pulse>(), Propagation.WithoutCache.Create<Pulse>());
         }
 
+        public static PulsatedButtonModule WithLatestCache()
+        {
+            return new PulsatedButtonModule(Propagation.WithLatestCache.Create(Initialize.Pulse), Propagation.WithLatestCache.Create(Initialize.Pulse));
+        }
+
         private readonly IPropagation<Pulse> touch;
 
         private readonly IPropagation<Pulse> push;

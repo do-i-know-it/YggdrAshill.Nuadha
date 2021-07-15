@@ -20,6 +20,16 @@ namespace YggdrAshill.Nuadha
                 Propagation.WithoutCache.Create<Pulse>());
         }
 
+        public static PulsatedTiltModule WithLatestCache()
+        {
+            return new PulsatedTiltModule(
+                Propagation.WithLatestCache.Create(Initialize.Pulse),
+                Propagation.WithLatestCache.Create(Initialize.Pulse),
+                Propagation.WithLatestCache.Create(Initialize.Pulse),
+                Propagation.WithLatestCache.Create(Initialize.Pulse),
+                Propagation.WithLatestCache.Create(Initialize.Pulse));
+        }
+
         private readonly IPropagation<Pulse> distance;
 
         private readonly IPropagation<Pulse> left;

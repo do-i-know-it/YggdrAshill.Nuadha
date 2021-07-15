@@ -17,6 +17,15 @@ namespace YggdrAshill.Nuadha
                 TriggerModule.WithoutCache());
         }
 
+        public static HandControllerModule WithLatestCache()
+        {
+            return new HandControllerModule(
+                PoseTrackerModule.WithLatestCache(),
+                StickModule.WithLatestCache(),
+                TriggerModule.WithLatestCache(),
+                TriggerModule.WithLatestCache());
+        }
+
         internal PoseTrackerModule Pose { get; }
 
         internal StickModule Thumb { get; }

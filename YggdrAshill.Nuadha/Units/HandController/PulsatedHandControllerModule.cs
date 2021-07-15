@@ -16,6 +16,14 @@ namespace YggdrAshill.Nuadha
                 PulsatedTriggerModule.WithoutCache());
         }
 
+        public static PulsatedHandControllerModule WithLatestCache()
+        {
+            return new PulsatedHandControllerModule(
+                PulsatedStickModule.WithLatestCache(),
+                PulsatedTriggerModule.WithLatestCache(),
+                PulsatedTriggerModule.WithLatestCache());
+        }
+
         private readonly PulsatedStickModule thumb;
 
         private readonly PulsatedTriggerModule indexFinger;

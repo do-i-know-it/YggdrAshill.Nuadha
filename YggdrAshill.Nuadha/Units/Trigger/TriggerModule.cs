@@ -15,6 +15,11 @@ namespace YggdrAshill.Nuadha
             return new TriggerModule(Propagation.WithoutCache.Create<Touch>(), Propagation.WithoutCache.Create<Pull>());
         }
 
+        public static TriggerModule WithLatestCache()
+        {
+            return new TriggerModule(Propagation.WithLatestCache.Create(Initialize.Touch), Propagation.WithLatestCache.Create(Initialize.Pull));
+        }
+
         internal IPropagation<Touch> Touch { get; }
 
         internal IPropagation<Pull> Pull { get; }

@@ -15,6 +15,11 @@ namespace YggdrAshill.Nuadha
             return new StickModule(Propagation.WithoutCache.Create<Touch>(), Propagation.WithoutCache.Create<Tilt>());
         }
 
+        public static StickModule WithLatestCache()
+        {
+            return new StickModule(Propagation.WithLatestCache.Create(Initialize.Touch), Propagation.WithLatestCache.Create(Initialize.Tilt));
+        }
+
         internal IPropagation<Touch> Touch { get; }
 
         internal IPropagation<Tilt> Tilt { get; }

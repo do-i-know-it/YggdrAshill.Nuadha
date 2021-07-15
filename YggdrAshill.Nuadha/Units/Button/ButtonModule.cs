@@ -15,6 +15,11 @@ namespace YggdrAshill.Nuadha
             return new ButtonModule(Propagation.WithoutCache.Create<Touch>(), Propagation.WithoutCache.Create<Push>());
         }
 
+        public static ButtonModule WithLatestCache()
+        {
+            return new ButtonModule(Propagation.WithLatestCache.Create(Initialize.Touch), Propagation.WithLatestCache.Create(Initialize.Push));
+        }
+
         internal IPropagation<Touch> Touch { get; }
 
         internal IPropagation<Push> Push { get; }

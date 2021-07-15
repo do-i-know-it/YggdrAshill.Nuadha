@@ -15,6 +15,11 @@ namespace YggdrAshill.Nuadha
             return new HeadTrackerModule(PoseTrackerModule.WithoutCache(), Propagation.WithoutCache.Create<Space3D.Direction>());
         }
 
+        public static HeadTrackerModule WithLatestCache()
+        {
+            return new HeadTrackerModule(PoseTrackerModule.WithLatestCache(), Propagation.WithLatestCache.Create(Initialize.Space3D.Direction));
+        }
+
         internal PoseTrackerModule Pose { get; }
 
         internal IPropagation<Space3D.Direction> Direction { get; }
