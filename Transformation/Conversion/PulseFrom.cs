@@ -1,29 +1,26 @@
-using YggdrAshill.Nuadha.Signalization;
+﻿using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
-    /// <summary>
-    /// Defines implementation of <see cref="IConversion{TInput, TOutput}"/>.
-    /// </summary>
-    public static class SignalInto
+    public static class PulseFrom
     {
         /// <summary>
-        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> into <see cref="Transformation.Pulse"/>.
+        /// Converts <typeparamref name="TSignal"/> into <see cref="Pulse"/>.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to be converted into <see cref="Transformation.Pulse"/>.
+        /// Type of <see cref="ISignal"/> to be converted into <see cref="Pulse"/>.
         /// </typeparam>
         /// <param name="detection">
         /// <see cref="IDetection{TSignal}"/> to detect.
         /// </param>
         /// <returns>
-        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> into <see cref="Transformation.Pulse"/>.
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> into <see cref="Pulse"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="detection"/> is null.
         /// </exception>
-        public static IConversion<TSignal, Pulse> Pulse<TSignal>(IDetection<TSignal> detection)
+        public static IConversion<TSignal, Pulse> Signal<TSignal>(IDetection<TSignal> detection)
             where TSignal : ISignal
         {
             if (detection == null)
@@ -39,7 +36,7 @@ namespace YggdrAshill.Nuadha.Transformation
         {
             private readonly IDetection<TSignal> detection;
 
-            private Pulse previous = Transformation.Pulse.IsDisabled;
+            private Pulse previous = Pulse.IsDisabled;
 
             internal Conversion(IDetection<TSignal> detection)
             {
@@ -49,13 +46,13 @@ namespace YggdrAshill.Nuadha.Transformation
             /// <inheritdoc/>
             public Pulse Convert(TSignal signal)
             {
-                if (previous == Transformation.Pulse.IsDisabled || previous == Transformation.Pulse.HasDisabled)
+                if (previous == Pulse.IsDisabled || previous == Pulse.HasDisabled)
                 {
-                    previous = detection.Detect(signal) ? Transformation.Pulse.HasEnabled : Transformation.Pulse.IsDisabled;
+                    previous = detection.Detect(signal) ? Pulse.HasEnabled : Pulse.IsDisabled;
                 }
-                else if (previous == Transformation.Pulse.IsEnabled || previous == Transformation.Pulse.HasEnabled)
+                else if (previous == Pulse.IsEnabled || previous == Pulse.HasEnabled)
                 {
-                    previous = detection.Detect(signal) ? Transformation.Pulse.IsEnabled : Transformation.Pulse.HasDisabled;
+                    previous = detection.Detect(signal) ? Pulse.IsEnabled : Pulse.HasDisabled;
                 }
 
                 return previous;

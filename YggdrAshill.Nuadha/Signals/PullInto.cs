@@ -1,7 +1,8 @@
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Signals;
 using System;
 
-namespace YggdrAshill.Nuadha.Signals
+namespace YggdrAshill.Nuadha
 {
     public static class PullInto
     {
@@ -12,41 +13,34 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new Conversion(threshold);
+            var detection = new Detection(threshold);
+            return SignalInto.Signal<Pull, Push>(signal => detection.Detect(signal).ToPush());
         }
-        private sealed class Conversion :
-            IConversion<Pull, Push>
+        private sealed class Detection :
+            IDetection<Pull>
         {
             private readonly HysteresisThreshold threshold;
 
             private bool previous = false;
 
-            internal Conversion(HysteresisThreshold threshold)
+            internal Detection(HysteresisThreshold threshold)
             {
-                if (threshold == null)
-                {
-                    throw new ArgumentNullException(nameof(threshold));
-                }
-
                 this.threshold = threshold;
             }
 
-            /// <inheritdoc/>
-            public Push Convert(Pull signal)
+            public bool Detect(Pull signal)
             {
                 if (previous)
                 {
-                    previous = threshold.Lower <= (float)signal;
+                    return previous = threshold.Lower <= (float)signal;
                 }
                 else
                 {
-                    previous = threshold.Upper <= (float)signal;
+                    return previous = threshold.Upper <= (float)signal;
                 }
-
-                return previous.ToPush();
             }
         }
-
+       
         public static IConversion<Pull, Pulse> Pulse(HysteresisThreshold threshold)
         {
             if (threshold == null)

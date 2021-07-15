@@ -1,7 +1,8 @@
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Signals;
 using System;
 
-namespace YggdrAshill.Nuadha.Signals
+namespace YggdrAshill.Nuadha
 {
     public static class TiltInto
     {

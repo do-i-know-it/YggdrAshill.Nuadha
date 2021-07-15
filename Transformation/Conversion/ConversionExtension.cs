@@ -99,69 +99,6 @@ namespace YggdrAshill.Nuadha.Transformation
             }
         }
 
-        /// <summary>
-        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
-        /// </summary>
-        /// <typeparam name="TInput">
-        /// Type of <see cref="ISignal"/> to convert.
-        /// </typeparam>
-        /// <typeparam name="TOutput">
-        /// Type of <see cref="ISignal"/> converted.
-        /// </typeparam>
-        /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TInput"/> to convert.
-        /// </param>
-        /// <param name="conversion">
-        /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
-        /// </param>
-        /// <returns>
-        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TOutput"/> converted.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="conversion"/> is null.
-        /// </exception>
-        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, Func<TInput, TOutput> conversion)
-            where TInput : ISignal
-            where TOutput : ISignal
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (conversion == null)
-            {
-                throw new ArgumentNullException(nameof(conversion));
-            }
-
-            return production.Convert(new Conversion<TInput, TOutput>(conversion));
-        }
-        private sealed class Conversion<TInput, TOutput> :
-            IConversion<TInput, TOutput>
-            where TInput : ISignal
-            where TOutput : ISignal
-        {
-            private readonly Func<TInput, TOutput> onConverted;
-
-            internal Conversion(Func<TInput, TOutput> onConverted)
-            {
-                if (onConverted == null)
-                {
-                    throw new ArgumentNullException(nameof(onConverted));
-                }
-
-                this.onConverted = onConverted;
-            }
-
-            /// <inheritdoc/>
-            public TOutput Convert(TInput signal)
-            {
-                return onConverted.Invoke(signal);
-            }
-        }
-
         public static IConversion<TInput, TOutput> Then<TInput, TMedium, TOutput>(this IConversion<TInput, TMedium> inputToMedium, IConversion<TMedium, TOutput> mediumToOutput)
             where TInput : ISignal
             where TMedium : ISignal
@@ -176,9 +113,9 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(mediumToOutput));
             }
 
-            return new Intermediate<TInput, TMedium, TOutput>(inputToMedium, mediumToOutput);
+            return new Conversion<TInput, TMedium, TOutput>(inputToMedium, mediumToOutput);
         }
-        private sealed class Intermediate<TInput, TMedium, TOutput> :
+        private sealed class Conversion<TInput, TMedium, TOutput> :
             IConversion<TInput, TOutput>
             where TInput : ISignal
             where TMedium : ISignal
@@ -188,7 +125,7 @@ namespace YggdrAshill.Nuadha.Transformation
 
             private readonly IConversion<TMedium, TOutput> mediumToOutput;
 
-            internal Intermediate(IConversion<TInput, TMedium> inputToMedium, IConversion<TMedium, TOutput> mediumToOutput)
+            internal Conversion(IConversion<TInput, TMedium> inputToMedium, IConversion<TMedium, TOutput> mediumToOutput)
             {
                 this.inputToMedium = inputToMedium;
 

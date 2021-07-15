@@ -4,8 +4,8 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(SignalInto))]
-    internal class SignalIntoSpecification :
+    [TestFixture(TestOf = typeof(PulseFrom))]
+    internal class PulseFromSpecification :
         IDetection<Signal>
     {
         private bool expected;
@@ -24,7 +24,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldPulsateAccordingPreviousPulse()
         {
             // initial pulse is disabled when pulsation is generated.
-            var conversion = SignalInto.Pulse(this);
+            var conversion = PulseFrom.Signal(this);
 
             // when previous pulse is disabled and detection doesn't detect, current pulse is disabled.
             expected = false;

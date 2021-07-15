@@ -1,6 +1,6 @@
 using System;
 
-namespace YggdrAshill.Nuadha.Signals
+namespace YggdrAshill.Nuadha
 {
     /// <summary>
     /// Threshold to convert analog signal into digital signal.

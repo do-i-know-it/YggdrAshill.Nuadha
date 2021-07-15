@@ -304,7 +304,7 @@ namespace YggdrAshill.Nuadha.Signals
                         throw new ArgumentNullException(nameof(generation));
                     }
 
-                    return Instance.ToConversion(generation);
+                    return SignalTo.Calibrate(Instance, generation);
                 }
 
                 public static PositionTo Instance { get; } = new PositionTo();
@@ -952,7 +952,7 @@ namespace YggdrAshill.Nuadha.Signals
                         throw new ArgumentNullException(nameof(generation));
                     }
 
-                    return Instance.ToConversion(generation);
+                    return SignalTo.Calibrate(Instance, generation);
                 }
 
                 public static RotationTo Instance { get; } = new RotationTo();
