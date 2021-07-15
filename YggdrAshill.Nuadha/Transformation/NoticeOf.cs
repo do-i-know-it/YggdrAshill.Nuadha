@@ -9,6 +9,21 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public sealed class NoticeOf
     {
+        /// <summary>
+        /// Detects <typeparamref name="TSignal"/>.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to detect.
+        /// </typeparam>
+        /// <param name="detection">
+        /// <see cref="Func{T, TResult}"/> to detect <typeparamref name="TSignal"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="IDetection{TSignal}"/> created.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="detection"/> is null.
+        /// </exception>
         public static IDetection<TSignal> Signal<TSignal>(Func<TSignal, bool> detection)
             where TSignal : ISignal
         {
@@ -37,12 +52,30 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        /// <summary>
+        /// Detects all of <typeparamref name="TSignal"/> even if <typeparamref name="TSignal"/> is <see cref="null"/>.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to detect.
+        /// </typeparam>
+        /// <returns>
+        /// <see cref="IDetection{TSignal}"/> created.
+        /// </returns>
         public static IDetection<TSignal> All<TSignal>()
             where TSignal : ISignal
         {
             return Signal<TSignal>(_ => true);
         }
 
+        /// <summary>
+        /// Detects none of <typeparamref name="TSignal"/> even if <typeparamref name="TSignal"/> is <see cref="null"/>.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to detect.
+        /// </typeparam>
+        /// <returns>
+        /// <see cref="IDetection{TSignal}"/> created.
+        /// </returns>
         public static IDetection<TSignal> None<TSignal>()
             where TSignal : ISignal
         {

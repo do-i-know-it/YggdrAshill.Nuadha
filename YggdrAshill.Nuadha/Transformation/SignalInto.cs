@@ -141,6 +141,27 @@ namespace YggdrAshill.Nuadha
 
         public static class SignalTo
         {
+            /// <summary>
+            /// Corrects <typeparamref name="TSignal"/> to calibrate.
+            /// </summary>
+            /// <typeparam name="TSignal">
+            /// Type of <see cref="ISignal"/> to correct.
+            /// </typeparam>
+            /// <param name="calibration">
+            /// <see cref="ICalibration{TSignal}"/> to correct.
+            /// </param>
+            /// <param name="generation">
+            /// <see cref="IGeneration{TSignal}"/> to generate offset of <typeparamref name="TSignal"/>.
+            /// </param>
+            /// <returns>
+            /// <see cref="IConversion{TInput, TOutput}"/> to correct <typeparamref name="TSignal"/>.
+            /// </returns>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="calibration"/> is null.
+            /// </exception>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="generation"/> is null.
+            /// </exception>
             public static IConversion<TSignal, TSignal> Correct<TSignal>(ICalibration<TSignal> calibration, IGeneration<TSignal> generation)
                 where TSignal : ISignal
             {
@@ -161,6 +182,27 @@ namespace YggdrAshill.Nuadha
                 });
             }
 
+            /// <summary>
+            /// Corrects <typeparamref name="TSignal"/> to calibrate.
+            /// </summary>
+            /// <typeparam name="TSignal">
+            /// Type of <see cref="ISignal"/> to correct.
+            /// </typeparam>
+            /// <param name="calibration">
+            /// <see cref="ICalibration{TSignal}"/> to correct.
+            /// </param>
+            /// <param name="generation">
+            /// <see cref="Func{TResult}"/> to generate offset of <typeparamref name="TSignal"/>.
+            /// </param>
+            /// <returns>
+            /// <see cref="IConversion{TInput, TOutput}"/> to correct <typeparamref name="TSignal"/>.
+            /// </returns>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="calibration"/> is null.
+            /// </exception>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="generation"/> is null.
+            /// </exception>
             public static IConversion<TSignal, TSignal> Correct<TSignal>(ICalibration<TSignal> calibration, Func<TSignal> generation)
                 where TSignal : ISignal
             {
@@ -176,6 +218,24 @@ namespace YggdrAshill.Nuadha
                 return Correct(calibration, Generation.Of(generation));
             }
 
+            /// <summary>
+            /// Corrects <typeparamref name="TSignal"/> to calibrate.
+            /// </summary>
+            /// <typeparam name="TSignal">
+            /// Type of <see cref="ISignal"/> to correct.
+            /// </typeparam>
+            /// <param name="calibration">
+            /// <see cref="ICalibration{TSignal}"/> to correct.
+            /// </param>
+            /// <param name="signal">
+            /// <typeparamref name="TSignal"/> for offset.
+            /// </param>
+            /// <returns>
+            /// <see cref="IConversion{TInput, TOutput}"/> to correct <typeparamref name="TSignal"/>.
+            /// </returns>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="calibration"/> is null.
+            /// </exception>
             public static IConversion<TSignal, TSignal> Correct<TSignal>(ICalibration<TSignal> calibration, TSignal signal)
                 where TSignal : ISignal
             {
@@ -187,6 +247,27 @@ namespace YggdrAshill.Nuadha
                 return Correct(calibration, () => signal);
             }
 
+            /// <summary>
+            /// Corrects <typeparamref name="TSignal"/> to filtrate.
+            /// </summary>
+            /// <typeparam name="TSignal">
+            /// Type of <see cref="ISignal"/> to correct.
+            /// </typeparam>
+            /// <param name="filtration">
+            /// <see cref="IFiltration{TSignal}"/> to correct.
+            /// </param>
+            /// <param name="generation">
+            /// <see cref="IGeneration{TSignal}"/> to initialize <typeparamref name="TSignal"/>.
+            /// </param>
+            /// <returns>
+            /// <see cref="IConversion{TInput, TOutput}"/> to correct <typeparamref name="TSignal"/>.
+            /// </returns>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="filtration"/> is null.
+            /// </exception>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="generation"/> is null.
+            /// </exception>
             public static IConversion<TSignal, TSignal> Correct<TSignal>(IFiltration<TSignal> filtration, IGeneration<TSignal> generation)
                 where TSignal : ISignal
             {
@@ -223,6 +304,27 @@ namespace YggdrAshill.Nuadha
                 }
             }
 
+            /// <summary>
+            /// Corrects <typeparamref name="TSignal"/> to filtrate.
+            /// </summary>
+            /// <typeparam name="TSignal">
+            /// Type of <see cref="ISignal"/> to correct.
+            /// </typeparam>
+            /// <param name="filtration">
+            /// <see cref="IFiltration{TSignal}"/> to correct.
+            /// </param>
+            /// <param name="generation">
+            /// <see cref="Func{TResult}"/> to initialize <typeparamref name="TSignal"/>.
+            /// </param>
+            /// <returns>
+            /// <see cref="IConversion{TInput, TOutput}"/> to correct <typeparamref name="TSignal"/>.
+            /// </returns>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="filtration"/> is null.
+            /// </exception>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="generation"/> is null.
+            /// </exception>
             public static IConversion<TSignal, TSignal> Correct<TSignal>(IFiltration<TSignal> filtration, Func<TSignal> generation)
                 where TSignal : ISignal
             {
@@ -238,6 +340,24 @@ namespace YggdrAshill.Nuadha
                 return Correct(filtration, Generation.Of(generation));
             }
 
+            /// <summary>
+            /// Corrects <typeparamref name="TSignal"/> to filtrate.
+            /// </summary>
+            /// <typeparam name="TSignal">
+            /// Type of <see cref="ISignal"/> to correct.
+            /// </typeparam>
+            /// <param name="filtration">
+            /// <see cref="IFiltration{TSignal}"/> to correct.
+            /// </param>
+            /// <param name="signal">
+            /// <typeparamref name="TSignal"/> for initial.
+            /// </param>
+            /// <returns>
+            /// <see cref="IConversion{TInput, TOutput}"/> to correct <typeparamref name="TSignal"/>.
+            /// </returns>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="filtration"/> is null.
+            /// </exception>
             public static IConversion<TSignal, TSignal> Correct<TSignal>(IFiltration<TSignal> filtration, TSignal signal)
                 where TSignal : ISignal
             {
