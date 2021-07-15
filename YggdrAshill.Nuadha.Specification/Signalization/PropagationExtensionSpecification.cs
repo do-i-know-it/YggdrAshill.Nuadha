@@ -14,26 +14,17 @@ namespace YggdrAshill.Nuadha.Specification
 
         private Signal expected;
 
-        private IConsumption<Signal> consumption;
+        private Signal consumed;
+
 
         public void Cancel()
         {
-            consumption = null;
-        }
 
-        public void Consume(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            consumption.Consume(signal);
         }
 
         public void Dispose()
         {
-            Cancel();
+
         }
 
         public Signal Generate()
@@ -46,14 +37,22 @@ namespace YggdrAshill.Nuadha.Specification
             return expected;
         }
 
+        public void Consume(Signal signal)
+        {
+            if (signal == null)
+            {
+                throw new ArgumentNullException(nameof(signal));
+            }
+
+            consumed = signal;
+        }
+
         public ICancellation Produce(IConsumption<Signal> consumption)
         {
             if (consumption == null)
             {
                 throw new ArgumentNullException(nameof(consumption));
             }
-
-            this.consumption = consumption;
 
             return this;
         }
@@ -64,6 +63,8 @@ namespace YggdrAshill.Nuadha.Specification
 
         private IGeneration<Signal> generation;
 
+        private IConsumption<Signal> consumption;
+
         [SetUp]
         public void SetUp()
         {
@@ -73,7 +74,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             generation = this;
 
-            consumption = null;
+            consumption = this;
         }
 
         [Test]
@@ -81,13 +82,11 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var transmission = propagation.Transmit(generation);
 
-            var consumption = new Consumption();
-
             var cancellation = transmission.Produce(consumption);
 
             transmission.Emit();
 
-            Assert.AreEqual(expected, consumption.consumed);
+            Assert.AreEqual(expected, consumed);
 
             cancellation.Cancel();
         }
@@ -105,22 +104,6 @@ namespace YggdrAshill.Nuadha.Specification
             {
                 var transmission = propagation.Transmit(default);
             });
-        }
-
-        private sealed class Consumption :
-            IConsumption<Signal>
-        {
-            internal Signal consumed;
-
-            public void Consume(Signal signal)
-            {
-                if (signal == null)
-                {
-                    throw new ArgumentNullException(nameof(signal));
-                }
-
-                consumed = signal;
-            }
         }
     }
 }
