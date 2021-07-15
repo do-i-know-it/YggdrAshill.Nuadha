@@ -26,10 +26,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldGenerateSignal()
         {
             var expected = new Signal();
-            var generation = Generation.Of(() =>
-            {
-                return expected;
-            });
+            var generation = Generation.Of(expected);
 
             var generated = generation.Generate();
 
@@ -41,7 +38,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var generation = Generation.Of<Signal>(default);
+                var generation = Generation.Of(default(Func<Signal>));
             });
         }
     }

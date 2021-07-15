@@ -63,7 +63,7 @@ namespace YggdrAshill.Nuadha
         /// <returns>
         /// <see cref="IGeneration{TSignal}"/> created.
         /// </returns>
-        public static IGeneration<TSignal> Constant<TSignal>(TSignal signal)
+        public static IGeneration<TSignal> Of<TSignal>(TSignal signal)
             where TSignal : ISignal
         {
             return Of(() => signal);
