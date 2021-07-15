@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -50,7 +50,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var consumption = Consumption.Of<Signal>(null);
+                var consumption = Consumption.Of<Signal>(default);
             });
         }
     }

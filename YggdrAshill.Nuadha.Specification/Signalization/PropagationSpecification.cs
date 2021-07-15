@@ -120,23 +120,21 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void CannotProduceNull()
         {
-            Assert.Throws<ArgumentNullException>(() =>
+            foreach (var propagation in TestSuiteForPropagation)
             {
-                var cancellation = Propagation.WithoutCache.Create<Signal>().Produce(null);
-            });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var cancellation = Propagation.WithLatestCache.Create(this).Produce(null);
-            });
+                Assert.Throws<ArgumentNullException>(() =>
+                {
+                    var cancellation = propagation.Produce(default);
+                });
+            }
         }
 
         [Test]
-        public void WithLatestCacheCannotBeCreatedWithNull()
+        public void CannotBeCreatedWithNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var propagation = Propagation.WithLatestCache.Create<Signal>(null);
+                var propagation = Propagation.WithLatestCache.Create<Signal>(default);
             });
         }
     }

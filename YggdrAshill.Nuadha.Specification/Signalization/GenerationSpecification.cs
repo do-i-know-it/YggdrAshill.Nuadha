@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -41,7 +41,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var generation = Generation.Of<Signal>(null);
+                var generation = Generation.Of<Signal>(default);
             });
         }
     }

@@ -97,7 +97,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var cancellation = propagation.Produce(default(Action<Signal>));
+                var cancellation = propagation.Produce(default);
             });
         }
 
@@ -114,7 +114,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = propagation.Transmit(default(Func<Signal>));
+                var transmission = propagation.Transmit(default);
             });
         }
 
@@ -128,7 +128,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                Cancellation.None.Synthesize(default(SynthesizedCancellation));
+                Cancellation.None.Synthesize(default);
             });
         }
     }

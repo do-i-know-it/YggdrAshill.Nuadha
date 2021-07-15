@@ -103,7 +103,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = propagation.Transmit(default(IGeneration<Signal>));
+                var transmission = propagation.Transmit(default);
             });
         }
 
