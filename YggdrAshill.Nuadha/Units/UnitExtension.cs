@@ -6,10 +6,31 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Defines extensions for Units.
+    /// </summary>
     public static class UnitExtension
     {
         #region Signals
 
+        /// <summary>
+        /// Converts <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/> into <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedTiltHardwareHandler"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/> to convert.
+        /// </param>
+        /// <param name="threshold">
+        /// <see cref="TiltThreshold"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedTiltHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedTiltHardwareHandler> Convert(this IProduction<Tilt> production, TiltThreshold threshold)
         {
             if (production == null)
@@ -28,7 +49,25 @@ namespace YggdrAshill.Nuadha
 
         #region Button
 
-        public static IIgnition<IButtonHardwareHandler> Ignite(this ButtonModule module, IButtonConfiguration configuration)
+        /// <summary>
+        /// Converts <see cref="ButtonModule"/> into <see cref="IIgnition{THandler}"/> to ignite <see cref="IButtonHardwareHandler"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="ButtonModule"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IButtonConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{THandler}"/> to ignite <see cref="IButtonHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<IButtonHardwareHandler> Convert(this ButtonModule module, IButtonConfiguration configuration)
         {
             if (module == null)
             {
@@ -42,6 +81,18 @@ namespace YggdrAshill.Nuadha
             return new IgniteButton(module, configuration);
         }
 
+        /// <summary>
+        /// Converts <see cref="IButtonSoftwareHandler"/> into <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedButtonHardwareHandler"/>.
+        /// </summary>
+        /// <param name="handler">
+        /// <see cref="IButtonSoftwareHandler"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedButtonHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="handler"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedButtonHardwareHandler> Convert(this IButtonSoftwareHandler handler)
         {
             if (handler == null)
@@ -56,7 +107,25 @@ namespace YggdrAshill.Nuadha
 
         #region Trigger
 
-        public static IIgnition<ITriggerHardwareHandler> Ignite(this TriggerModule module, ITriggerConfiguration configuration)
+        /// <summary>
+        /// Converts <see cref="TriggerModule"/> into <see cref="IIgnition{THandler}"/> to ignite <see cref="ITriggerHardwareHandler"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="TriggerModule"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="ITriggerConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{THandler}"/> to ignite <see cref="ITriggerHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<ITriggerHardwareHandler> Convert(this TriggerModule module, ITriggerConfiguration configuration)
         {
             if (module == null)
             {
@@ -70,6 +139,24 @@ namespace YggdrAshill.Nuadha
             return new IgniteTrigger(module, configuration);
         }
 
+        /// <summary>
+        /// Converts <see cref="ITriggerSoftwareHandler"/> into <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedTriggerHardwareHandler"/>.
+        /// </summary>
+        /// <param name="handler">
+        /// <see cref="ITriggerSoftwareHandler"/> to convert.
+        /// </param>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedTriggerHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="handler"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedTriggerHardwareHandler> Convert(this ITriggerSoftwareHandler handler, HysteresisThreshold threshold)
         {
             if (handler == null)
@@ -88,7 +175,25 @@ namespace YggdrAshill.Nuadha
 
         #region Stick
 
-        public static IIgnition<IStickHardwareHandler> Ignite(this StickModule module, IStickConfiguration configuration)
+        /// <summary>
+        /// Converts <see cref="StickModule"/> into <see cref="IIgnition{THandler}"/> to ignite <see cref="IStickHardwareHandler"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="StickModule"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IStickConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{THandler}"/> to ignite <see cref="IStickHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<IStickHardwareHandler> Convert(this StickModule module, IStickConfiguration configuration)
         {
             if (module == null)
             {
@@ -102,6 +207,24 @@ namespace YggdrAshill.Nuadha
             return new IgniteStick(module, configuration);
         }
 
+        /// <summary>
+        /// Converts <see cref="IStickSoftwareHandler"/> into <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedStickHardwareHandler"/>.
+        /// </summary>
+        /// <param name="handler">
+        /// <see cref="IStickSoftwareHandler"/> to convert.
+        /// </param>
+        /// <param name="threshold">
+        /// <see cref="TiltThreshold"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedStickHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="handler"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedStickHardwareHandler> Convert(this IStickSoftwareHandler handler, TiltThreshold threshold)
         {
             if (handler == null)
@@ -120,7 +243,25 @@ namespace YggdrAshill.Nuadha
 
         #region PoseTracker
 
-        public static IIgnition<IPoseTrackerHardwareHandler> Ignite(this PoseTrackerModule module, IPoseTrackerConfiguration configuration)
+        /// <summary>
+        /// Converts <see cref="PoseTrackerModule"/> into <see cref="IIgnition{THandler}"/> to ignite <see cref="IPoseTrackerHardwareHandler"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="PoseTrackerModule"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IPoseTrackerConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{THandler}"/> to ignite <see cref="IPoseTrackerHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<IPoseTrackerHardwareHandler> Convert(this PoseTrackerModule module, IPoseTrackerConfiguration configuration)
         {
             if (module == null)
             {
@@ -134,6 +275,24 @@ namespace YggdrAshill.Nuadha
             return new IgnitePoseTracker(module, configuration);
         }
 
+        /// <summary>
+        /// Converts <see cref="IPoseTrackerSoftwareHandler"/> into <see cref="IConnection{THandler}"/> to connect <see cref="IPoseTrackerHardwareHandler"/>.
+        /// </summary>
+        /// <param name="handler">
+        /// <see cref="IPoseTrackerSoftwareHandler"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IPoseTrackerConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{THandler}"/> to connect <see cref="IPoseTrackerHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="handler"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static IConnection<IPoseTrackerHardwareHandler> Convert(this IPoseTrackerSoftwareHandler handler, IPoseTrackerConfiguration configuration)
         {
             if (handler == null)
@@ -148,7 +307,25 @@ namespace YggdrAshill.Nuadha
 
         #region HeadTracker
 
-        public static IIgnition<IHeadTrackerHardwareHandler> Ignite(this HeadTrackerModule module, IHeadTrackerConfiguration configuration)
+        /// <summary>
+        /// Converts <see cref="HeadTrackerModule"/> into <see cref="IIgnition{THandler}"/> to ignite <see cref="IHeadTrackerHardwareHandler"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="HeadTrackerModule"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IHeadTrackerConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{THandler}"/> to ignite <see cref="IHeadTrackerHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<IHeadTrackerHardwareHandler> Convert(this HeadTrackerModule module, IHeadTrackerConfiguration configuration)
         {
             if (module == null)
             {
@@ -166,7 +343,25 @@ namespace YggdrAshill.Nuadha
 
         #region HandController
 
-        public static IIgnition<IHandControllerHardwareHandler> Ignite(this HandControllerModule module, IHandControllerConfiguration configuration)
+        /// <summary>
+        /// Converts <see cref="HandControllerModule"/> into <see cref="IIgnition{THandler}"/> to ignite <see cref="IHandControllerHardwareHandler"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="HandControllerModule"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IHandControllerConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{THandler}"/> to ignite <see cref="IHandControllerHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<IHandControllerHardwareHandler> Convert(this HandControllerModule module, IHandControllerConfiguration configuration)
         {
             if (module == null)
             {
@@ -180,6 +375,24 @@ namespace YggdrAshill.Nuadha
             return new IgniteHandController(module, configuration);
         }
 
+        /// <summary>
+        /// Converts <see cref="IHandControllerSoftwareHandler"/> into <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedHandControllerHardwareHandler"/>.
+        /// </summary>
+        /// <param name="handler">
+        /// <see cref="IHandControllerSoftwareHandler"/> to convert.
+        /// </param>
+        /// <param name="threshold">
+        /// <see cref="HandControllerThreshold"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{THandler}"/> to connect <see cref="IPulsatedHandControllerHardwareHandler"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="handler"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedHandControllerHardwareHandler> Convert(this IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
         {
             if (handler == null)

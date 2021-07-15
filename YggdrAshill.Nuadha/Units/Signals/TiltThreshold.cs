@@ -1,20 +1,72 @@
-using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Threshold to convert <see cref="Signals.Tilt"/> into <see cref="Transformation.Pulse"/>.
+    /// </summary>
     public sealed class TiltThreshold
     {
+        /// <summary>
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Distance"/>.
+        /// </summary>
         public HysteresisThreshold Distance { get; }
 
+        /// <summary>
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Left"/>.
+        /// </summary>
         public HysteresisThreshold Left { get; }
 
+        /// <summary>
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Right"/>.
+        /// </summary>
         public HysteresisThreshold Right { get; }
 
+        /// <summary>
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Forward"/>.
+        /// </summary>
         public HysteresisThreshold Forward { get; }
 
+        /// <summary>
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Backward"/>.
+        /// </summary>
         public HysteresisThreshold Backward { get; }
 
+        #region Constructor
+
+        /// <summary>
+        /// Constructs an instance.
+        /// </summary>
+        /// <param name="distance">
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Distance"/>.
+        /// </param>
+        /// <param name="left">
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Left"/>.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Right"/>.
+        /// </param>
+        /// <param name="forward">
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Forward"/>.
+        /// </param>
+        /// <param name="backward">
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Backward"/>.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="distance"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="left"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="right"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="forward"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="backward"/> is null.
+        /// </exception>
         public TiltThreshold(
             HysteresisThreshold distance,
             HysteresisThreshold left, HysteresisThreshold right,
@@ -48,6 +100,15 @@ namespace YggdrAshill.Nuadha
             Backward = backward;
         }
 
+        /// <summary>
+        /// Constructs an instance.
+        /// </summary>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> for all.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public TiltThreshold(HysteresisThreshold threshold)
         {
             if (threshold == null)
@@ -61,5 +122,7 @@ namespace YggdrAshill.Nuadha
             Forward = threshold;
             Backward = threshold;
         }
+
+        #endregion
     }
 }

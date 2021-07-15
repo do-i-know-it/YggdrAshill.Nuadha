@@ -5,11 +5,18 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <inheritdoc/>
     public sealed class PulsatedTiltModule :
         IPulsatedTiltHardwareHandler,
         IPulsatedTiltSoftwareHandler,
         IModule<IPulsatedTiltHardwareHandler, IPulsatedTiltSoftwareHandler>
     {
+        /// <summary>
+        /// <see cref="PulsatedTiltModule"/> without cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="PulsatedTiltModule"/> without cache.
+        /// </returns>
         public static PulsatedTiltModule WithoutCache()
         {
             return new PulsatedTiltModule(
@@ -20,6 +27,12 @@ namespace YggdrAshill.Nuadha
                 Propagation.WithoutCache.Of<Pulse>());
         }
 
+        /// <summary>
+        /// <see cref="PulsatedTiltModule"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="PulsatedTiltModule"/> with latest cache.
+        /// </returns>
         public static PulsatedTiltModule WithLatestCache()
         {
             return new PulsatedTiltModule(
@@ -56,10 +69,13 @@ namespace YggdrAshill.Nuadha
             this.backward = backward;
         }
 
+        /// <inheritdoc/>
         public IPulsatedTiltHardwareHandler HardwareHandler => this;
 
+        /// <inheritdoc/>
         public IPulsatedTiltSoftwareHandler SoftwareHandler => this;
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             distance.Dispose();
@@ -73,24 +89,34 @@ namespace YggdrAshill.Nuadha
             backward.Dispose();
         }
 
+        /// <inheritdoc/>
         IConsumption<Pulse> IPulsatedTiltHardwareHandler.Distance => distance;
 
+        /// <inheritdoc/>
         IConsumption<Pulse> IPulsatedTiltHardwareHandler.Left => left;
 
+        /// <inheritdoc/>
         IConsumption<Pulse> IPulsatedTiltHardwareHandler.Right => right;
 
+        /// <inheritdoc/>
         IConsumption<Pulse> IPulsatedTiltHardwareHandler.Forward => forward;
 
+        /// <inheritdoc/>
         IConsumption<Pulse> IPulsatedTiltHardwareHandler.Backward => backward;
 
+        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltSoftwareHandler.Distance => distance;
 
+        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltSoftwareHandler.Left => left;
 
+        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltSoftwareHandler.Right => right;
 
+        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltSoftwareHandler.Forward => forward;
 
+        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltSoftwareHandler.Backward => backward;
     }
 }

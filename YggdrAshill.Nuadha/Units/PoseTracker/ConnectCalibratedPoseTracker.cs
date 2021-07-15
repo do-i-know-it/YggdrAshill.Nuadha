@@ -21,6 +21,7 @@ namespace YggdrAshill.Nuadha
             rotation = handler.Rotation.Convert(ToCorrect.Space3D.RotationTo.Calibrate(configuration.Rotation));
         }
 
+        /// <inheritdoc/>
         public ICancellation Connect(IPoseTrackerHardwareHandler handler)
         {
             if (handler == null)

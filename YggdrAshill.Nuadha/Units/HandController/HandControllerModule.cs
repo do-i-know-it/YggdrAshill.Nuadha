@@ -3,11 +3,18 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <inheritdoc/>
     public sealed class HandControllerModule :
         IHandControllerHardwareHandler,
         IHandControllerSoftwareHandler,
         IModule<IHandControllerHardwareHandler, IHandControllerSoftwareHandler>
     {
+        /// <summary>
+        /// <see cref="HandControllerModule"/> without cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="HandControllerModule"/> without cache.
+        /// </returns>
         public static HandControllerModule WithoutCache()
         {
             return new HandControllerModule(
@@ -17,6 +24,12 @@ namespace YggdrAshill.Nuadha
                 TriggerModule.WithoutCache());
         }
 
+        /// <summary>
+        /// <see cref="HandControllerModule"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="HandControllerModule"/> with latest cache.
+        /// </returns>
         public static HandControllerModule WithLatestCache()
         {
             return new HandControllerModule(
@@ -45,10 +58,13 @@ namespace YggdrAshill.Nuadha
             HandGrip = handGrip;
         }
 
+        /// <inheritdoc/>
         public IHandControllerHardwareHandler HardwareHandler => this;
 
+        /// <inheritdoc/>
         public IHandControllerSoftwareHandler SoftwareHandler => this;
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             Pose.Dispose();
@@ -60,20 +76,28 @@ namespace YggdrAshill.Nuadha
             HandGrip.Dispose();
         }
 
+        /// <inheritdoc/>
         IPoseTrackerHardwareHandler IHandControllerHardwareHandler.Pose => Pose.HardwareHandler;
 
+        /// <inheritdoc/>
         IStickHardwareHandler IHandControllerHardwareHandler.Thumb => Thumb.HardwareHandler;
 
+        /// <inheritdoc/>
         ITriggerHardwareHandler IHandControllerHardwareHandler.IndexFinger => IndexFinger.HardwareHandler;
 
+        /// <inheritdoc/>
         ITriggerHardwareHandler IHandControllerHardwareHandler.HandGrip => HandGrip.HardwareHandler;
 
+        /// <inheritdoc/>
         IPoseTrackerSoftwareHandler IHandControllerSoftwareHandler.Pose => Pose.SoftwareHandler;
 
+        /// <inheritdoc/>
         IStickSoftwareHandler IHandControllerSoftwareHandler.Thumb => Thumb.SoftwareHandler;
 
+        /// <inheritdoc/>
         ITriggerSoftwareHandler IHandControllerSoftwareHandler.IndexFinger => IndexFinger.SoftwareHandler;
 
+        /// <inheritdoc/>
         ITriggerSoftwareHandler IHandControllerSoftwareHandler.HandGrip => HandGrip.SoftwareHandler;
     }
 }
