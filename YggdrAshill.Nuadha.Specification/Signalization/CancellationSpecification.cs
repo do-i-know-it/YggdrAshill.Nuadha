@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldExecuteActionWhenHasCancelled()
         {
             var expected = false;
-            var cancellation = new Cancellation(() =>
+            var cancellation = Cancellation.Of(() =>
             {
                 expected = true;
             });
@@ -25,7 +25,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var cancellation = new Cancellation(null);
+                var cancellation = Cancellation.Of(null);
             });
         }
     }

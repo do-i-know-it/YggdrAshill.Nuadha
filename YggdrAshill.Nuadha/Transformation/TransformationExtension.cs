@@ -63,7 +63,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return SignalTo.Calibrate(calibration, new Generation<TSignal>(generation));
+            return SignalTo.Calibrate(calibration, Generation.Of(generation));
         }
 
         public static IConversion<TSignal, TSignal> ToConversion<TSignal>(this IFiltration<TSignal> filtration, Func<TSignal> generation)
@@ -78,7 +78,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return SignalTo.Filtrate(filtration, new Generation<TSignal>(generation));
+            return SignalTo.Filtrate(filtration, Generation.Of(generation));
         }
 
         #endregion

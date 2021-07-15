@@ -12,27 +12,40 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="Cancellation"/> to do nothing when this has cancelled.
         /// </summary>
-        public static Cancellation None { get; } = new Cancellation(() => { });
+        public static Cancellation None { get; } = Of(() => { });
+
+        /// <summary>
+        /// <see cref="Cancellation"/> to execute <see cref="Action"/> when this has cancelled.
+        /// </summary>
+        /// <param name="cancellation">
+        /// <see cref="Action"/> to cancel.
+        /// </param>
+        /// <returns>
+        /// <see cref="Cancellation"/> created.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="cancellation"/> is null.
+        /// </exception>
+        public static Cancellation Of(Action cancellation)
+        {
+            if (cancellation == null)
+            {
+                throw new ArgumentNullException(nameof(cancellation));
+            }
+
+            return new Cancellation(cancellation);
+        }
 
         private readonly Action onCancelled;
 
-        /// <summary>
-        /// Constructs an instance.
-        /// </summary>
-        /// <param name="onCancelled">
-        /// <see cref="Action"/> to execute when this has cancelled.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="onCancelled"/> is null.
-        /// </exception>
-        public Cancellation(Action onCancelled)
+        private Cancellation(Action cancellation)
         {
-            if (onCancelled == null)
+            if (cancellation == null)
             {
-                throw new ArgumentNullException(nameof(onCancelled));
+                throw new ArgumentNullException(nameof(cancellation));
             }
 
-            this.onCancelled = onCancelled;
+            this.onCancelled = cancellation;
         }
 
         /// <inheritdoc/>

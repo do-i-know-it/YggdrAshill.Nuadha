@@ -44,7 +44,7 @@ namespace YggdrAshill.Nuadha
                         consumptionList.Add(consumption);
                     }
 
-                    return new Cancellation(() =>
+                    return Cancellation.Of(() =>
                     {
                         if (consumptionList.Contains(consumption))
                         {

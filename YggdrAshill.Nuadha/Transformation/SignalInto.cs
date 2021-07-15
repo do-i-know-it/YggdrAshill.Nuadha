@@ -114,7 +114,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return Signal<TInput, TOutput>(_ => generation.Invoke());
+            return Signal<TInput, TOutput>(Generation.Of(generation));
         }
 
         /// <summary>

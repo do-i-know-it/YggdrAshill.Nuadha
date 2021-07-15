@@ -41,7 +41,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return production.Produce(new Consumption<TSignal>(consumption));
+            return production.Produce(Consumption.Of(consumption));
         }
         
         /// <summary>
@@ -77,7 +77,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return propagation.Transmit(new Generation<TSignal>(generation));
+            return propagation.Transmit(Generation.Of(generation));
         }
 
         /// <summary>
