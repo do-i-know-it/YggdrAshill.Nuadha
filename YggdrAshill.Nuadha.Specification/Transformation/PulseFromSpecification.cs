@@ -21,7 +21,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldPulsateAccordingPreviousPulse()
+        public void ShouldConvertSignalIntoPulse()
         {
             // initial pulse is disabled when pulsation is generated.
             var conversion = PulseFrom.Signal(this);

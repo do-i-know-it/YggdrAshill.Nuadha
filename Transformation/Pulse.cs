@@ -29,14 +29,17 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <see cref="Pulse"/> that is disabled.
         /// </summary>
         public static Pulse IsDisabled { get; } = new Pulse(State.IsDisabled);
+
         /// <summary>
         /// <see cref="Pulse"/> that has disabled.
         /// </summary>
         public static Pulse HasDisabled { get; } = new Pulse(State.HasDisabled);
+
         /// <summary>
         /// <see cref="Pulse"/> that is enabled.
         /// </summary>
         public static Pulse IsEnabled { get; } = new Pulse(State.IsEnabled);
+
         /// <summary>
         /// <see cref="Pulse"/> that has enabled.
         /// </summary>

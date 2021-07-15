@@ -89,7 +89,7 @@ namespace YggdrAshill.Nuadha.Transformation
             {
                 if (detection.Detect(signal))
                 {
-                    consumption.Consume(null);
+                    consumption.Consume(Notice.Instance);
                 }
             }
         }
