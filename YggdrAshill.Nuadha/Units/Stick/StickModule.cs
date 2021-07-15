@@ -12,12 +12,12 @@ namespace YggdrAshill.Nuadha
     {
         public static StickModule WithoutCache()
         {
-            return new StickModule(Propagation.WithoutCache.Create<Touch>(), Propagation.WithoutCache.Create<Tilt>());
+            return new StickModule(Propagation.WithoutCache.Of<Touch>(), Propagation.WithoutCache.Of<Tilt>());
         }
 
         public static StickModule WithLatestCache()
         {
-            return new StickModule(Propagation.WithLatestCache.Create(Initialize.Touch), Propagation.WithLatestCache.Create(Initialize.Tilt));
+            return new StickModule(Propagation.WithLatestCache.Of(Initialize.Touch), Propagation.WithLatestCache.Of(Initialize.Tilt));
         }
 
         internal IPropagation<Touch> Touch { get; }

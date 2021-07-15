@@ -18,7 +18,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             expected = new Signal();
 
-            propagation = Propagation.WithoutCache.Create<Signal>();
+            propagation = Propagation.WithoutCache.Of<Signal>();
 
             synthesized = new SynthesizedCancellation();
         }

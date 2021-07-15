@@ -13,15 +13,15 @@ namespace YggdrAshill.Nuadha
         public static PoseTrackerModule WithoutCache()
         {
             return new PoseTrackerModule(
-                Propagation.WithoutCache.Create<Space3D.Position>(),
-                Propagation.WithoutCache.Create<Space3D.Rotation>());
+                Propagation.WithoutCache.Of<Space3D.Position>(),
+                Propagation.WithoutCache.Of<Space3D.Rotation>());
         }
 
         public static PoseTrackerModule WithLatestCache()
         {
             return new PoseTrackerModule(
-                Propagation.WithLatestCache.Create(Initialize.Space3D.Position),
-                Propagation.WithLatestCache.Create(Initialize.Space3D.Rotation));
+                Propagation.WithLatestCache.Of(Initialize.Space3D.Position),
+                Propagation.WithLatestCache.Of(Initialize.Space3D.Rotation));
         }
 
         internal IPropagation<Space3D.Position> Position { get; }

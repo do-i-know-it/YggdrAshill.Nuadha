@@ -12,12 +12,12 @@ namespace YggdrAshill.Nuadha
     {
         public static PulsatedButtonModule WithoutCache()
         {
-            return new PulsatedButtonModule(Propagation.WithoutCache.Create<Pulse>(), Propagation.WithoutCache.Create<Pulse>());
+            return new PulsatedButtonModule(Propagation.WithoutCache.Of<Pulse>(), Propagation.WithoutCache.Of<Pulse>());
         }
 
         public static PulsatedButtonModule WithLatestCache()
         {
-            return new PulsatedButtonModule(Propagation.WithLatestCache.Create(Initialize.Pulse), Propagation.WithLatestCache.Create(Initialize.Pulse));
+            return new PulsatedButtonModule(Propagation.WithLatestCache.Of(Initialize.Pulse), Propagation.WithLatestCache.Of(Initialize.Pulse));
         }
 
         private readonly IPropagation<Pulse> touch;

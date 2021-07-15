@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha
             /// <returns>
             /// <see cref="IPropagation{TSignal}"/> created.
             /// </returns>
-            public static IPropagation<TSignal> Create<TSignal>()
+            public static IPropagation<TSignal> Of<TSignal>()
                 where TSignal : ISignal
             {
                 return new Created<TSignal>();
@@ -83,7 +83,7 @@ namespace YggdrAshill.Nuadha
             /// <returns>
             /// <see cref="IPropagation{TSignal}"/> created.
             /// </returns>
-            public static IPropagation<TSignal> Create<TSignal>(IGeneration<TSignal> generation)
+            public static IPropagation<TSignal> Of<TSignal>(IGeneration<TSignal> generation)
                 where TSignal : ISignal
             {
                 if (generation == null)
@@ -97,7 +97,7 @@ namespace YggdrAshill.Nuadha
                 IPropagation<TSignal>
                 where TSignal : ISignal
             {
-                private readonly IPropagation<TSignal> propagation = WithoutCache.Create<TSignal>();
+                private readonly IPropagation<TSignal> propagation = WithoutCache.Of<TSignal>();
 
                 private TSignal cached;
 
@@ -134,6 +134,23 @@ namespace YggdrAshill.Nuadha
                 {
                     propagation.Dispose();
                 }
+            }
+
+            public static IPropagation<TSignal> Of<TSignal>(Func<TSignal> generation)
+                where TSignal : ISignal
+            {
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
+
+                return Of(Generation.Of(generation));
+            }
+
+            public static IPropagation<TSignal> Of<TSignal>(TSignal signal)
+                where TSignal : ISignal
+            {
+                return Of(() => signal);
             }
         }
     }

@@ -13,21 +13,21 @@ namespace YggdrAshill.Nuadha
         public static PulsatedTiltModule WithoutCache()
         {
             return new PulsatedTiltModule(
-                Propagation.WithoutCache.Create<Pulse>(),
-                Propagation.WithoutCache.Create<Pulse>(),
-                Propagation.WithoutCache.Create<Pulse>(),
-                Propagation.WithoutCache.Create<Pulse>(),
-                Propagation.WithoutCache.Create<Pulse>());
+                Propagation.WithoutCache.Of<Pulse>(),
+                Propagation.WithoutCache.Of<Pulse>(),
+                Propagation.WithoutCache.Of<Pulse>(),
+                Propagation.WithoutCache.Of<Pulse>(),
+                Propagation.WithoutCache.Of<Pulse>());
         }
 
         public static PulsatedTiltModule WithLatestCache()
         {
             return new PulsatedTiltModule(
-                Propagation.WithLatestCache.Create(Initialize.Pulse),
-                Propagation.WithLatestCache.Create(Initialize.Pulse),
-                Propagation.WithLatestCache.Create(Initialize.Pulse),
-                Propagation.WithLatestCache.Create(Initialize.Pulse),
-                Propagation.WithLatestCache.Create(Initialize.Pulse));
+                Propagation.WithLatestCache.Of(Initialize.Pulse),
+                Propagation.WithLatestCache.Of(Initialize.Pulse),
+                Propagation.WithLatestCache.Of(Initialize.Pulse),
+                Propagation.WithLatestCache.Of(Initialize.Pulse),
+                Propagation.WithLatestCache.Of(Initialize.Pulse));
         }
 
         private readonly IPropagation<Pulse> distance;

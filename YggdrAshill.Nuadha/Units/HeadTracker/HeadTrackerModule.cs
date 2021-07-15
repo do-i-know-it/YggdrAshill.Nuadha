@@ -12,12 +12,12 @@ namespace YggdrAshill.Nuadha
     {
         public static HeadTrackerModule WithoutCache()
         {
-            return new HeadTrackerModule(PoseTrackerModule.WithoutCache(), Propagation.WithoutCache.Create<Space3D.Direction>());
+            return new HeadTrackerModule(PoseTrackerModule.WithoutCache(), Propagation.WithoutCache.Of<Space3D.Direction>());
         }
 
         public static HeadTrackerModule WithLatestCache()
         {
-            return new HeadTrackerModule(PoseTrackerModule.WithLatestCache(), Propagation.WithLatestCache.Create(Initialize.Space3D.Direction));
+            return new HeadTrackerModule(PoseTrackerModule.WithLatestCache(), Propagation.WithLatestCache.Of(Initialize.Space3D.Direction));
         }
 
         internal PoseTrackerModule Pose { get; }

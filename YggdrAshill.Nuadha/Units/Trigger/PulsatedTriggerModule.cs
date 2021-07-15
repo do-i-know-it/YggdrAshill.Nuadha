@@ -12,12 +12,12 @@ namespace YggdrAshill.Nuadha
     {
         public static PulsatedTriggerModule WithoutCache()
         {
-            return new PulsatedTriggerModule(Propagation.WithoutCache.Create<Pulse>(), Propagation.WithoutCache.Create<Pulse>());
+            return new PulsatedTriggerModule(Propagation.WithoutCache.Of<Pulse>(), Propagation.WithoutCache.Of<Pulse>());
         }
 
         public static PulsatedTriggerModule WithLatestCache()
         {
-            return new PulsatedTriggerModule(Propagation.WithLatestCache.Create(Initialize.Pulse), Propagation.WithLatestCache.Create(Initialize.Pulse));
+            return new PulsatedTriggerModule(Propagation.WithLatestCache.Of(Initialize.Pulse), Propagation.WithLatestCache.Of(Initialize.Pulse));
         }
 
         private readonly IPropagation<Pulse> touch;

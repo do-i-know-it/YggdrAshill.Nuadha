@@ -15,8 +15,8 @@ namespace YggdrAshill.Nuadha.Specification
             {
                 return new[]
                 {
-                    Propagation.WithoutCache.Create<Signal>(),
-                    Propagation.WithLatestCache.Create(this),
+                    Propagation.WithoutCache.Of<Signal>(),
+                    Propagation.WithLatestCache.Of(this),
                 };
             }
         }
@@ -104,7 +104,7 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldSendCachedSignalToProducedWhenHasProduced()
         {
-            var propagation = Propagation.WithLatestCache.Create(this);
+            var propagation = Propagation.WithLatestCache.Of(this);
 
             var expected = new Signal();
 
@@ -134,7 +134,12 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var propagation = Propagation.WithLatestCache.Create<Signal>(default);
+                var propagation = Propagation.WithLatestCache.Of(default(IGeneration<Signal>));
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var propagation = Propagation.WithLatestCache.Of(default(Func<Signal>));
             });
         }
     }
