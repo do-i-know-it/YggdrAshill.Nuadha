@@ -32,7 +32,7 @@ Now writing... -->
 
 ## Dependencies
 
-Nuadha depends on .NET Standard 2.0.
+This framework depends on .NET Standard 2.0.
 
 ## Installation
 
@@ -49,11 +49,10 @@ Now writing samples for this framework.
 
 ## Architecture
 
-Nuadha consists of core modules below.
+This framework consists of core modules below.
 
 - [Signalization](./Documentation/Signalization.md)
-- [Conduction](./Documentation/Conduction.md)
-- [Conversion](./Documentation/Conversion.md)
+- [Transformation](./Documentation/Transformation.md)
 - [Unitization](./Documentation/Unitization.md)
 
 This framework also includes sub modules below.
@@ -63,7 +62,7 @@ This framework also includes sub modules below.
 
 ### Implementation
 
-Nuadha includes [Implementation](./Documentation/Implementation.md) to provide implementations and extensions for above.
+This module includes [Implementation](./Documentation/Implementation.md) to provide implementations and extensions for above.
 
 ## Known issues
 
@@ -75,13 +74,6 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 
 - Adds contributing guidelines.
 - Adds samples.
-- Writes document comments in codes completely.
-  - [Signals](./Documentation/Signals.md)
-  - [Units](./Documentation/Units.md)
-  - [Implementation](./Documentation/Implementation.md)
-- Writes test codes for specification completely.
-  - [Units](./Documentation/Units.md)
-  - [Implementation](./Documentation/Implementation.md)
 
 ### Version 1.0.0 ~
 
@@ -99,9 +91,9 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 
 ## License
 
-Nuadha is under the MIT License, see [LICENSE](./LICENSE.txt).
+This framework is under the MIT License, see [LICENSE](./LICENSE.txt).
 
 ## Remarks
 
-Nuadha is a part of YggdrAshill framework.
+This framework is a part of YggdrAshill framework.
 Other frameworks will be produced soon for YggdrAshill.
