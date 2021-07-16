@@ -108,5 +108,51 @@ namespace YggdrAshill.Nuadha
 
             synthesized.Synthesize(cancellation);
         }
+
+        /// <summary>
+        /// Converts <see cref="ICancellation"/> to <see cref="IDisposable"/>.
+        /// </summary>
+        /// <param name="cancellation">
+        /// <see cref="ICancellation"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="IDisposable"/>
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="cancellation"/> is null.
+        /// </exception>
+        public static IDisposable ToDisposable(this ICancellation cancellation)
+        {
+            if (cancellation == null)
+            {
+                throw new ArgumentNullException(nameof(cancellation));
+            }
+
+            return new Disposable(cancellation);
+        }
+        private sealed class Disposable :
+            IDisposable
+        {
+            private readonly ICancellation cancellation;
+
+            private bool isDisposed = false;
+
+            public Disposable(ICancellation cancellation)
+            {
+                this.cancellation = cancellation;
+            }
+
+            public void Dispose()
+            {
+                if (isDisposed)
+                {
+                    throw new ObjectDisposedException(nameof(IDisposable));
+                }
+
+                cancellation.Cancel();
+
+                isDisposed = true;
+            }
+        }
     }
 }

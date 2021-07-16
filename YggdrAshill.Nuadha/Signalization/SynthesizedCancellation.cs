@@ -8,7 +8,8 @@ namespace YggdrAshill.Nuadha
     /// Collects <see cref="ICancellation"/> to cancel simultaneously.
     /// </summary>
     public sealed class SynthesizedCancellation :
-        ICancellation
+        ICancellation,
+        IDisposable
     {
         private readonly List<ICancellation> cancellationList = new List<ICancellation>();
 
@@ -21,6 +22,12 @@ namespace YggdrAshill.Nuadha
             }
 
             cancellationList.Clear();
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            Cancel();
         }
 
         internal void Synthesize(ICancellation cancellation)

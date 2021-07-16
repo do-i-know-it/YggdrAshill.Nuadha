@@ -88,6 +88,33 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
+        public void ShouldConvertCancellationIntoDisposable()
+        {
+            var expected = false;
+            var disposable = Cancellation.Of(() =>
+            {
+                expected = true;
+            }).ToDisposable();
+
+            disposable.Dispose();
+
+            Assert.IsTrue(expected);
+        }
+
+        [Test]
+        public void ConvertedDisposableShouldDisposeOnlyOnce()
+        {
+            var disposable = Cancellation.None.ToDisposable();
+
+            disposable.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() =>
+            {
+                disposable.Dispose();
+            });
+        }
+
+        [Test]
         public void CannotProduceWithNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -129,6 +156,15 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.Throws<ArgumentNullException>(() =>
             {
                 Cancellation.None.Synthesize(default);
+            });
+        }
+
+        [Test]
+        public void CannotConvertWithNull()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                default(ICancellation).ToDisposable();
             });
         }
     }
