@@ -1,4 +1,6 @@
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -37,6 +39,76 @@ namespace YggdrAshill.Nuadha
             return (bool)signal;
         }
 
+        /// <summary>
+        /// Produces <see cref="Touch"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> to produce <see cref="Touch"/>.
+        /// </param>
+        /// <param name="consumption">
+        /// <see cref="Action{T}"/> executed when this has consumed <see cref="Touch"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ICancellation"/> to cancel.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="consumption"/> is null.
+        /// </exception>
+        public static ICancellation Produce(this IProduction<Touch> production, Action<bool> consumption)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (consumption == null)
+            {
+                throw new ArgumentNullException(nameof(consumption));
+            }
+
+            return production.Produce(signal =>
+            {
+                consumption.Invoke(signal.ToBoolean());
+            });
+        }
+
+        /// <summary>
+        /// Converts <see cref="IPropagation{TSignal}"/> for <see cref="Touch"/> into <see cref="ITransmission{TSignal}"/> for <see cref="Touch"/>.
+        /// </summary>
+        /// <param name="propagation">
+        /// <see cref="IPropagation{TSignal}"/> to produce <see cref="Touch"/>.
+        /// </param>
+        /// <param name="generation">
+        /// <see cref="Func{TResult}"/> to generate <see cref="Touch"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TSignal}"/> to transmit <see cref="Touch"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="propagation"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="generation"/> is null.
+        /// </exception>
+        public static ITransmission<Touch> Transmit(this IPropagation<Touch> propagation, Func<bool> generation)
+        {
+            if (propagation == null)
+            {
+                throw new ArgumentNullException(nameof(propagation));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return propagation.Transmit(() =>
+            {
+                return generation.Invoke().ToTouch();
+            });
+        }
+
         #endregion
 
         #region Push
@@ -69,6 +141,76 @@ namespace YggdrAshill.Nuadha
             return (bool)signal;
         }
 
+        /// <summary>
+        /// Produces <see cref="Push"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> to produce <see cref="Push"/>.
+        /// </param>
+        /// <param name="consumption">
+        /// <see cref="Action{T}"/> executed when this has consumed <see cref="Push"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ICancellation"/> to cancel.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="consumption"/> is null.
+        /// </exception>
+        public static ICancellation Produce(this IProduction<Push> production, Action<bool> consumption)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (consumption == null)
+            {
+                throw new ArgumentNullException(nameof(consumption));
+            }
+
+            return production.Produce(signal =>
+            {
+                consumption.Invoke(signal.ToBoolean());
+            });
+        }
+
+        /// <summary>
+        /// Converts <see cref="IPropagation{TSignal}"/> for <see cref="Push"/> into <see cref="ITransmission{TSignal}"/> for <see cref="Push"/>.
+        /// </summary>
+        /// <param name="propagation">
+        /// <see cref="IPropagation{TSignal}"/> to produce <see cref="Push"/>.
+        /// </param>
+        /// <param name="generation">
+        /// <see cref="Func{TResult}"/> to generate <see cref="Push"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TSignal}"/> to transmit <see cref="Push"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="propagation"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="generation"/> is null.
+        /// </exception>
+        public static ITransmission<Push> Transmit(this IPropagation<Push> propagation, Func<bool> generation)
+        {
+            if (propagation == null)
+            {
+                throw new ArgumentNullException(nameof(propagation));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return propagation.Transmit(() =>
+            {
+                return generation.Invoke().ToPush();
+            });
+        }
+
         #endregion
 
         #region Pull
@@ -99,6 +241,76 @@ namespace YggdrAshill.Nuadha
         public static float ToSingle(this Pull signal)
         {
             return (float)signal;
+        }
+
+        /// <summary>
+        /// Produces <see cref="Pull"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> to produce <see cref="Pull"/>.
+        /// </param>
+        /// <param name="consumption">
+        /// <see cref="Action{T}"/> executed when this has consumed <see cref="Pull"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ICancellation"/> to cancel.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="consumption"/> is null.
+        /// </exception>
+        public static ICancellation Produce(this IProduction<Pull> production, Action<float> consumption)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (consumption == null)
+            {
+                throw new ArgumentNullException(nameof(consumption));
+            }
+
+            return production.Produce(signal =>
+            {
+                consumption.Invoke(signal.ToSingle());
+            });
+        }
+
+        /// <summary>
+        /// Converts <see cref="IPropagation{TSignal}"/> for <see cref="Pull"/> into <see cref="ITransmission{TSignal}"/> for <see cref="Pull"/>.
+        /// </summary>
+        /// <param name="propagation">
+        /// <see cref="IPropagation{TSignal}"/> to produce <see cref="Pull"/>.
+        /// </param>
+        /// <param name="generation">
+        /// <see cref="Func{TResult}"/> to generate <see cref="Pull"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TSignal}"/> to transmit <see cref="Pull"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="propagation"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="generation"/> is null.
+        /// </exception>
+        public static ITransmission<Pull> Transmit(this IPropagation<Pull> propagation, Func<float> generation)
+        {
+            if (propagation == null)
+            {
+                throw new ArgumentNullException(nameof(propagation));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return propagation.Transmit(() =>
+            {
+                return generation.Invoke().ToPull();
+            });
         }
 
         #endregion
