@@ -1,7 +1,5 @@
-# Release notes for version 0.15.0
+# Release notes for version 1.0.0
 
-- Added GitHub Actions to build.
-- Added templates for issues and pull requests.
-- Modified documents.
-- Modified Unitization.
-- Added document comments for Unitization.
+- Modified architecture of framework.
+- Modified documents for framework.
+- Added samples for framework.
