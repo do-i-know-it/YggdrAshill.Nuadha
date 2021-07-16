@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
-    <ProjectReference Include="..\Transformation\Transformation.csproj" />
   </ItemGroup>
 
 </Project>
