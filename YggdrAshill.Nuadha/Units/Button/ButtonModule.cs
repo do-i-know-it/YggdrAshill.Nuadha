@@ -1,43 +1,73 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <inheritdoc/>
     public sealed class ButtonModule :
-        IButtonSoftware,
-        IButtonHardware,
-        IDisconnection
+        IButtonHardwareHandler,
+        IButtonSoftwareHandler,
+        IModule<IButtonHardwareHandler, IButtonSoftwareHandler>
     {
-        private readonly Propagation<Touch> touch = new Propagation<Touch>();
-
-        private readonly Propagation<Push> push = new Propagation<Push>();
-
-        #region IButtonSoftware
-
-        IConsumption<Touch> IButtonSoftware.Touch => touch;
-
-        IConsumption<Push> IButtonSoftware.Push => push;
-
-        #endregion
-
-        #region IButtonHardware
-
-        IConnection<Touch> IButtonHardware.Touch => touch;
-
-        IConnection<Push> IButtonHardware.Push => push;
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
+        /// <summary>
+        /// <see cref="ButtonModule"/> without cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="ButtonModule"/> without cache.
+        /// </returns>
+        public static ButtonModule WithoutCache()
         {
-            touch.Disconnect();
-
-            push.Disconnect();
+            return new ButtonModule(Propagation.WithoutCache.Of<Touch>(), Propagation.WithoutCache.Of<Push>());
         }
 
-        #endregion
+        /// <summary>
+        /// <see cref="ButtonModule"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="ButtonModule"/> with latest cache.
+        /// </returns>
+        public static ButtonModule WithLatestCache()
+        {
+            return new ButtonModule(Propagation.WithLatestCache.Of(Initialize.Touch), Propagation.WithLatestCache.Of(Initialize.Push));
+        }
+
+        internal IPropagation<Touch> Touch { get; }
+
+        internal IPropagation<Push> Push { get; }
+
+        private ButtonModule(IPropagation<Touch> touch, IPropagation<Push> push)
+        {
+            Touch = touch;
+
+            Push = push;
+        }
+
+        /// <inheritdoc/>
+        public IButtonHardwareHandler HardwareHandler => this;
+
+        /// <inheritdoc/>
+        public IButtonSoftwareHandler SoftwareHandler => this;
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            Touch.Dispose();
+
+            Push.Dispose();
+        }
+
+        /// <inheritdoc/>
+        IConsumption<Touch> IButtonHardwareHandler.Touch => Touch;
+
+        /// <inheritdoc/>
+        IConsumption<Push> IButtonHardwareHandler.Push => Push;
+
+        /// <inheritdoc/>
+        IProduction<Touch> IButtonSoftwareHandler.Touch => Touch;
+
+        /// <inheritdoc/>
+        IProduction<Push> IButtonSoftwareHandler.Push => Push;
     }
 }

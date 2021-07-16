@@ -1,58 +1,103 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <inheritdoc/>
     public sealed class HandControllerModule :
-        IHandControllerSoftware,
-        IHandControllerHardware,
-        IDisconnection
+        IHandControllerHardwareHandler,
+        IHandControllerSoftwareHandler,
+        IModule<IHandControllerHardwareHandler, IHandControllerSoftwareHandler>
     {
-        private readonly PoseTrackerModule poseTracker = new PoseTrackerModule();
-
-        private readonly StickModule thumbStick = new StickModule();
-
-        private readonly TriggerModule fingerTrigger = new TriggerModule();
-
-        private readonly TriggerModule handTrigger = new TriggerModule();
-
-        #region IHandControllerSoftware
-
-        IPoseTrackerSoftware IHandControllerSoftware.PoseTracker => poseTracker;
-
-        IStickSoftware IHandControllerSoftware.ThumbStick => thumbStick;
-
-        ITriggerSoftware IHandControllerSoftware.FingerTrigger => fingerTrigger;
-
-        ITriggerSoftware IHandControllerSoftware.HandTrigger => handTrigger;
-
-        #endregion
-
-        #region IHandControllerHardware
-
-        IPoseTrackerHardware IHandControllerHardware.PoseTracker => poseTracker;
-
-        IStickHardware IHandControllerHardware.ThumbStick => thumbStick;
-
-        ITriggerHardware IHandControllerHardware.FingerTrigger => fingerTrigger;
-
-        ITriggerHardware IHandControllerHardware.HandTrigger => handTrigger;
-
-        #endregion
-
-        #region IDisconnection
-
-        public void Disconnect()
+        /// <summary>
+        /// <see cref="HandControllerModule"/> without cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="HandControllerModule"/> without cache.
+        /// </returns>
+        public static HandControllerModule WithoutCache()
         {
-            poseTracker.Disconnect();
-
-            thumbStick.Disconnect();
-
-            fingerTrigger.Disconnect();
-
-            handTrigger.Disconnect();
+            return new HandControllerModule(
+                PoseTrackerModule.WithoutCache(),
+                StickModule.WithoutCache(),
+                TriggerModule.WithoutCache(),
+                TriggerModule.WithoutCache());
         }
 
-        #endregion
+        /// <summary>
+        /// <see cref="HandControllerModule"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="HandControllerModule"/> with latest cache.
+        /// </returns>
+        public static HandControllerModule WithLatestCache()
+        {
+            return new HandControllerModule(
+                PoseTrackerModule.WithLatestCache(),
+                StickModule.WithLatestCache(),
+                TriggerModule.WithLatestCache(),
+                TriggerModule.WithLatestCache());
+        }
+
+        internal PoseTrackerModule Pose { get; }
+
+        internal StickModule Thumb { get; }
+
+        internal TriggerModule IndexFinger { get; }
+
+        internal TriggerModule HandGrip { get; }
+
+        private HandControllerModule(PoseTrackerModule pose, StickModule thumb, TriggerModule indexFinger, TriggerModule handGrip)
+        {
+            Pose = pose;
+
+            Thumb = thumb;
+
+            IndexFinger = indexFinger;
+
+            HandGrip = handGrip;
+        }
+
+        /// <inheritdoc/>
+        public IHandControllerHardwareHandler HardwareHandler => this;
+
+        /// <inheritdoc/>
+        public IHandControllerSoftwareHandler SoftwareHandler => this;
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            Pose.Dispose();
+
+            Thumb.Dispose();
+
+            IndexFinger.Dispose();
+
+            HandGrip.Dispose();
+        }
+
+        /// <inheritdoc/>
+        IPoseTrackerHardwareHandler IHandControllerHardwareHandler.Pose => Pose.HardwareHandler;
+
+        /// <inheritdoc/>
+        IStickHardwareHandler IHandControllerHardwareHandler.Thumb => Thumb.HardwareHandler;
+
+        /// <inheritdoc/>
+        ITriggerHardwareHandler IHandControllerHardwareHandler.IndexFinger => IndexFinger.HardwareHandler;
+
+        /// <inheritdoc/>
+        ITriggerHardwareHandler IHandControllerHardwareHandler.HandGrip => HandGrip.HardwareHandler;
+
+        /// <inheritdoc/>
+        IPoseTrackerSoftwareHandler IHandControllerSoftwareHandler.Pose => Pose.SoftwareHandler;
+
+        /// <inheritdoc/>
+        IStickSoftwareHandler IHandControllerSoftwareHandler.Thumb => Thumb.SoftwareHandler;
+
+        /// <inheritdoc/>
+        ITriggerSoftwareHandler IHandControllerSoftwareHandler.IndexFinger => IndexFinger.SoftwareHandler;
+
+        /// <inheritdoc/>
+        ITriggerSoftwareHandler IHandControllerSoftwareHandler.HandGrip => HandGrip.SoftwareHandler;
     }
 }

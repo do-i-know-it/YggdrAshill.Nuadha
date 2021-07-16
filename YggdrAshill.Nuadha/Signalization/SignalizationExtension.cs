@@ -4,12 +4,12 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Extension for Signalization.
+    /// Defines extensions for Signalization.
     /// </summary>
     public static class SignalizationExtension
     {
         /// <summary>
-        /// Produces with <see cref="Action{TSignal}"/> instead of <see cref="IConsumption{TSignal}"/>.
+        /// Produces <typeparamref name="TSignal"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to send.
@@ -17,55 +17,142 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> to produce.
         /// </param>
-        /// <param name="onConsumed">
-        /// <see cref="Action{TSignal}"/> to execute when this has consumed <typeparamref name="TSignal"/>.
+        /// <param name="consumption">
+        /// <see cref="Action{T}"/> executed when this has consumed <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IEmission"/> to emit.
+        /// <see cref="ICancellation"/> to cancel.
         /// </returns>
-        public static IEmission Produce<TSignal>(this IProduction<TSignal> production, Action<TSignal> onConsumed)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="consumption"/> is null.
+        /// </exception>
+        public static ICancellation Produce<TSignal>(this IProduction<TSignal> production, Action<TSignal> consumption)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (onConsumed == null)
+            if (consumption == null)
             {
-                throw new ArgumentNullException(nameof(onConsumed));
+                throw new ArgumentNullException(nameof(consumption));
             }
 
-            return production.Produce(new Consumption<TSignal>(onConsumed));
+            return production.Produce(Consumption.Of(consumption));
+        }
+        
+        /// <summary>
+        /// Converts <see cref="IPropagation{TSignal}"/> into <see cref="ITransmission{TSignal}"/>.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to emit.
+        /// </typeparam>
+        /// <param name="propagation">
+        /// <see cref="IPropagation{TSignal}"/> to convert.
+        /// </param>
+        /// <param name="generation">
+        /// <see cref="Func{TResult}"/> to generate <typeparamref name="TSignal"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TSignal}"/> converted.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="propagation"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="generation"/> is null.
+        /// </exception>
+        public static ITransmission<TSignal> Transmit<TSignal>(this IPropagation<TSignal> propagation, Func<TSignal> generation)
+            where TSignal : ISignal
+        {
+            if (propagation == null)
+            {
+                throw new ArgumentNullException(nameof(propagation));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return propagation.Transmit(Generation.Of(generation));
         }
 
         /// <summary>
-        /// Connects with <see cref="Action{TSignal}"/> instead of <see cref="IConsumption{TSignal}"/>.
+        /// Collects <see cref="ICancellation"/> to cancel simultaneously.
         /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to send.
-        /// </typeparam>
-        /// <param name="connection">
-        /// <see cref="IConnection{TSignal}"/> to connect.
+        /// <param name="cancellation">
+        /// <see cref="ICancellation"/> collected.
         /// </param>
-        /// <param name="onConsumed">
-        /// <see cref="Action{TSignal}"/> to execute when this has consumed <typeparamref name="TSignal"/>.
+        /// <param name="synthesized">
+        /// <see cref="SynthesizedCancellation"/> to collect.
         /// </param>
-        /// <returns>
-        /// <see cref="IDisconnection"/> to disconnect.
-        /// </returns>
-        public static IDisconnection Connect<TSignal>(this IConnection<TSignal> connection, Action<TSignal> onConsumed)
-            where TSignal : ISignal
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="cancellation"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="synthesized"/> is null.
+        /// </exception>
+        public static void Synthesize(this ICancellation cancellation, SynthesizedCancellation synthesized)
         {
-            if (connection == null)
+            if (cancellation == null)
             {
-                throw new ArgumentNullException(nameof(connection));
+                throw new ArgumentNullException(nameof(cancellation));
             }
-            if (onConsumed == null)
+            if (synthesized == null)
             {
-                throw new ArgumentNullException(nameof(onConsumed));
+                throw new ArgumentNullException(nameof(synthesized));
             }
 
-            return connection.Connect(new Consumption<TSignal>(onConsumed));
+            synthesized.Synthesize(cancellation);
+        }
+
+        /// <summary>
+        /// Converts <see cref="ICancellation"/> to <see cref="IDisposable"/>.
+        /// </summary>
+        /// <param name="cancellation">
+        /// <see cref="ICancellation"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="IDisposable"/>
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="cancellation"/> is null.
+        /// </exception>
+        public static IDisposable ToDisposable(this ICancellation cancellation)
+        {
+            if (cancellation == null)
+            {
+                throw new ArgumentNullException(nameof(cancellation));
+            }
+
+            return new Disposable(cancellation);
+        }
+        private sealed class Disposable :
+            IDisposable
+        {
+            private readonly ICancellation cancellation;
+
+            private bool isDisposed = false;
+
+            public Disposable(ICancellation cancellation)
+            {
+                this.cancellation = cancellation;
+            }
+
+            public void Dispose()
+            {
+                if (isDisposed)
+                {
+                    throw new ObjectDisposedException(nameof(IDisposable));
+                }
+
+                cancellation.Cancel();
+
+                isDisposed = true;
+            }
         }
     }
 }

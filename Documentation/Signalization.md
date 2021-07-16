@@ -1,11 +1,12 @@
 # Signalization
 
-Signalization defines how to
+This module defines how to
 
+- generate
 - send
 - receive
 
-data for I/O in applications.
+data for user's input/output in XR applications.
 
 ## Dependencies
 
@@ -17,27 +18,31 @@ Nothing.
 
 | Word | Abstraction |
 |:-----------|:------------|
-| Signal | Data for I/O. |
+| Signal | Data for user's input/output. |
 | Consumption | Receives `Signal`. |
 | Production | Sends `Signal` to `Consumption`. |
+| Cancellation | Token to stop producing. |
+| Propagation | Collects `Consumption` to distribute `Signal`. |
 | Emission | Token to send `Signal`. |
-| Connection | Collects `Consumption`. |
-| Disconnection | Token to disconnect. |
-| Propagation | Distributes `Signal`. |
+| Transmission | Collects `Consumption` to send `Signal`. |
+| Generation | Creates `Signal`. |
 
 `Consumption` receives `Signal` for interaction between devices and systems.
-`Production` produces `Emission` token that sends `Signal` to `Consumption`.
-Every time `Emission` token is executed, generated `Signal` is sent to `Consumption`.
+`Production` sends `Signal` to each of `Consumption`.
+When `Production` starts to send, it provides `Cancellation` token to stop sending.
 
-`Connection` collects `Consumption` to distribute `Signal` sent when `Emission` is executed.
-When `Connection` connects to `Consumption`, it provides `Disconnection` token to disconnect `Consumption` from `Connection`.
-`Propagation` is `Consumption` and `Connection`.
-When `Propagation` consumes `Signal`, it distributes `Signal` to each connected `Consumption`.
+`Propagation` is `Consumption` and `Production`.
+When `Propagation` receives `Signal`, it distributes `Signal` to each `Consumption`.
+
+`Emission` is token to send `Signal`, and `Generation` is how to generate `Signal`.
+`Transmission` is `Emission` and `Production`.
+It has the `Generation`, so every time `Transmission` Emits, `Generation` generates `Signal`, then it sends `Signal` to each of `Consumption`.
 
 ## Implementation
 
 Nothing because this module only defines how to
 
+- generate
 - send
 - receive
 

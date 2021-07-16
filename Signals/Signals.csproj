@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conversion\Conversion.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
   </ItemGroup>
 

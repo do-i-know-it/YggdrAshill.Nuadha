@@ -5,8 +5,8 @@ namespace YggdrAshill.Nuadha
 {
     public interface IStickConfiguration
     {
-        IProduction<Touch> Touch { get; }
+        IGeneration<Touch> Touch { get; }
 
-        IProduction<Tilt> Tilt { get; }
+        IGeneration<Tilt> Tilt { get; }
     }
 }

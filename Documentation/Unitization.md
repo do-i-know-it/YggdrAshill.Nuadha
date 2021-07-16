@@ -1,6 +1,6 @@
 # Unitization
 
-Unitization defines how to connect device to system.
+This module extends [Signalization](./Signalization.md) to define how to connect hardware to software.
 
 ## Dependencies
 
@@ -9,18 +9,21 @@ This module depends on [Signalization](./Signalization.md).
 ## Architecture
 
 ![Image not found.](./Resources/Unitization.jpg "Architecture of Unitization.")
+![Image not found.](./Resources/HardwareAndSoftware.jpg "HardwareAndSoftware.")
 
 | Word | Abstraction |
 |:-----------|:------------|
-| Device | Connects `Software`. |
-| Software | I/O interface for users. |
-| System | Connects `Hardware`. |
-| Hardware | I/O interface for applications. |
+| Handler | Provides `Production` and `Consumption`. |
+| Connection | Connects `Handler` to send and receive `Signal`. |
+| Ignition | `Connection` to emit. |
+| Hardware | Sends `Signal` device generated and receives `Signal` system generated. |
+| Software | Receives `Signal` device generated and sends `Signal` system generated. |
+| Module | Defines `Handler` for `Hardware` and `Software`. |
 
-`Device` is an entity that users of applications operates, and connects `Software` interface to send and receive some types of `Signal`.
-
-`System` is an application itself to interact to users, and connects `Hardware` interfaces.
+`Handler` is interface for `Hardware` or `Software`.
+`Connection` enables to connect `Handler` in order to send and receive `Signal`.
+`Ignition` is `Connection` to emit.
 
 ## Implementation
 
-Nothing because this module only defines how to connect device to system.
+Nothing because this module only defines how to connect hardware to software.

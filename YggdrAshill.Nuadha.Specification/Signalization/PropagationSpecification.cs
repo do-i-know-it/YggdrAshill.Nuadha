@@ -1,16 +1,29 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Propagation<>))]
+    [TestFixture(TestOf = typeof(Propagation))]
     internal class PropagationSpecification :
-        IConsumption<Signal>
+        IConsumption<Signal>,
+        IGeneration<Signal>
     {
-        #region IConsumption
+        private IPropagation<Signal>[] TestSuiteForPropagation
+        {
+            get
+            {
+                return new[]
+                {
+                    Propagation.WithoutCache.Of<Signal>(),
+                    Propagation.WithLatestCache.Of(this),
+                };
+            }
+        }
 
         private Signal consumed;
+
+        private Signal generated;
 
         public void Consume(Signal signal)
         {
@@ -22,75 +35,111 @@ namespace YggdrAshill.Nuadha.Specification
             consumed = signal;
         }
 
-        #endregion
-
-        private Propagation<Signal> propagation;
+        public Signal Generate()
+        {
+            return generated;
+        }
 
         [SetUp]
         public void SetUp()
         {
-            propagation = new Propagation<Signal>();
-
-            consumed = default;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
             consumed = default;
 
-            propagation.Disconnect();
-            propagation = default;
+            generated = new Signal();
         }
 
         [Test]
-        public void ShouldSendSignalToConnectedWhenHasConsumed()
+        public void ShouldSendSignalToProducedWhenHasConsumed()
         {
-            var disconnection = propagation.Connect(this);
+            foreach (var propagation in TestSuiteForPropagation)
+            {
+                var cancellation = propagation.Produce(this);
+
+                var expected = new Signal();
+
+                propagation.Consume(expected);
+
+                Assert.AreEqual(expected, consumed);
+
+                cancellation.Cancel();
+            }
+        }
+
+        [Test]
+        public void ShouldNotSendSignalToNotProducedWhenHasConsumed()
+        {
+            foreach (var propagation in TestSuiteForPropagation)
+            {
+                var cancellation = propagation.Produce(this);
+
+                cancellation.Cancel();
+
+                var expected = new Signal();
+
+                propagation.Consume(expected);
+
+                Assert.AreNotEqual(expected, consumed);
+            }
+        }
+
+        [Test]
+        public void ShouldNotSendSignalAfterHasDisposed()
+        {
+            foreach (var propagation in TestSuiteForPropagation)
+            {
+                var cancellation = propagation.Produce(this);
+
+                propagation.Dispose();
+
+                var expected = new Signal();
+
+                propagation.Consume(expected);
+
+                Assert.AreNotEqual(expected, consumed);
+
+                cancellation.Cancel();
+            }
+        }
+
+        [Test]
+        public void ShouldSendCachedSignalToProducedWhenHasProduced()
+        {
+            var propagation = Propagation.WithLatestCache.Of(this);
 
             var expected = new Signal();
 
             propagation.Consume(expected);
+
+            var cancellation = propagation.Produce(this);
 
             Assert.AreEqual(expected, consumed);
 
-            disconnection.Disconnect();
+            cancellation.Cancel();
         }
 
         [Test]
-        public void ShouldNotSendSignalToDisconnectedWhenHasConsumed()
+        public void CannotProduceNull()
         {
-            var disconnection = propagation.Connect(this);
-
-            disconnection.Disconnect();
-
-            var expected = new Signal();
-
-            propagation.Consume(expected);
-
-            Assert.AreNotEqual(expected, consumed);
+            foreach (var propagation in TestSuiteForPropagation)
+            {
+                Assert.Throws<ArgumentNullException>(() =>
+                {
+                    var cancellation = propagation.Produce(default);
+                });
+            }
         }
 
         [Test]
-        public void ShouldNotSendSignalAfterHasDisconnected()
-        {
-            var disconnection = propagation.Connect(this);
-
-            propagation.Disconnect();
-
-            var expected = new Signal();
-
-            propagation.Consume(expected);
-
-            Assert.AreNotEqual(expected, consumed);
-        }
-
-        [Test]
-        public void CannotConnectNull()
+        public void CannotBeCreatedWithNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                propagation.Connect(null);
+                var propagation = Propagation.WithLatestCache.Of(default(IGeneration<Signal>));
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var propagation = Propagation.WithLatestCache.Of(default(Func<Signal>));
             });
         }
     }

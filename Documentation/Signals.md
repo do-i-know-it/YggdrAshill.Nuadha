@@ -1,13 +1,10 @@
 # Signals
 
-Signals defines some types of `Signal`.
+This module extends [Signalization](./Signalization.md) to define some types of `Signal`.
 
 ## Dependencies
 
-This module depends on
-
-- [Signalization](./Signalization.md).
-- [Conversion](./Conversion.md).
+This module depends on [Signalization](./Signalization.md).
 
 ## Architecture
 
@@ -26,4 +23,4 @@ This module defines
 - `Direction`
 - `Angle`
 
-as `Signal` and conversions for above.
+as `Signal`.

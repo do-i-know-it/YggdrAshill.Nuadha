@@ -5,8 +5,8 @@ namespace YggdrAshill.Nuadha
 {
     public interface ITriggerConfiguration
     {
-        IProduction<Touch> Touch { get; }
+        IGeneration<Touch> Touch { get; }
 
-        IProduction<Pull> Pull { get; }
+        IGeneration<Pull> Pull { get; }
     }
 }

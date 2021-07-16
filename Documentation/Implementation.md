@@ -8,8 +8,7 @@ This module provides
 for modules below.
 
 - [Signalization](./Signalization.md)
-- [Conduction](./Conduction.md)
-- [Conversion](./Conversion.md)
+- [Transformation](./Transformation.md)
 - [Unitization](./Unitization.md)
 - [Signals](./Signals.md)
 - [Units](./Units.md)
@@ -19,8 +18,7 @@ for modules below.
 This module depends on
 
 - [Signalization](./Signalization.md)
-- [Conduction](./Conduction.md)
-- [Conversion](./Conversion.md)
+- [Transformation](./Transformation.md)
 - [Unitization](./Unitization.md)
 - [Signals](./Signals.md)
 - [Units](./Units.md)
@@ -39,17 +37,17 @@ in order developers to use this framework in ease.
 This module provides simple implementations for
 
 - [Signalization](./Signalization.md)
-- [Conduction](./Conduction.md)
-- [Conversion](./Conversion.md)
+- [Transformation](./Transformation.md)
 - [Unitization](./Unitization.md)
+- [Signals](./Signals.md)
 - [Units](./Units.md)
 
-generated with `System.Action` or `System.Function`.  
+generated with `System.Action` or `System.Function`.
+
 Also, this module provides useful extensions for
 
 - [Signalization](./Signalization.md)
-- [Conduction](./Conduction.md)
-- [Conversion](./Conversion.md)
+- [Transformation](./Transformation.md)
 - [Unitization](./Unitization.md)
 - [Signals](./Signals.md)
 - [Units](./Units.md)

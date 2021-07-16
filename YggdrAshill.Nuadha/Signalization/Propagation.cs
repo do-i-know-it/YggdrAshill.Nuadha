@@ -7,67 +7,151 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Implementation of <see cref="IPropagation{TSignal}"/>.
     /// </summary>
-    /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to propagate.
-    /// </typeparam>
-    public sealed class Propagation<TSignal> :
-        IPropagation<TSignal>
-        where TSignal : ISignal
+    public static class Propagation
     {
-        private readonly List<IConsumption<TSignal>> consumptionList = new List<IConsumption<TSignal>>();
-
-        #region IConnection
-
-        /// <inheritdoc/>
-        public IDisconnection Connect(IConsumption<TSignal> consumption)
+        public static class WithoutCache
         {
-            if (consumption == null)
+            /// <summary>
+            /// Creates <see cref="IPropagation{TSignal}"/> without cache of <typeparamref name="TSignal"/>.
+            /// </summary>
+            /// <typeparam name="TSignal">
+            /// Type of <see cref="ISignal"/> to propagate.
+            /// </typeparam>
+            /// <returns>
+            /// <see cref="IPropagation{TSignal}"/> created.
+            /// </returns>
+            public static IPropagation<TSignal> Of<TSignal>()
+                where TSignal : ISignal
             {
-                throw new ArgumentNullException(nameof(consumption));
+                return new Created<TSignal>();
             }
-
-            if (!consumptionList.Contains(consumption))
+            private sealed class Created<TSignal> :
+                IPropagation<TSignal>
+                where TSignal : ISignal
             {
-                consumptionList.Add(consumption);
-            }
+                private readonly List<IConsumption<TSignal>> consumptionList = new List<IConsumption<TSignal>>();
 
-            return new Disconnection(() =>
-            {
-                if (consumptionList.Contains(consumption))
+                /// <inheritdoc/>
+                public ICancellation Produce(IConsumption<TSignal> consumption)
                 {
-                    consumptionList.Remove(consumption);
+                    if (consumption == null)
+                    {
+                        throw new ArgumentNullException(nameof(consumption));
+                    }
+
+                    if (!consumptionList.Contains(consumption))
+                    {
+                        consumptionList.Add(consumption);
+                    }
+
+                    return Cancellation.Of(() =>
+                    {
+                        if (consumptionList.Contains(consumption))
+                        {
+                            consumptionList.Remove(consumption);
+                        }
+                    });
                 }
-            });
-        }
 
-        #endregion
+                /// <inheritdoc/>
+                public void Consume(TSignal signal)
+                {
+                    foreach (var consumption in consumptionList)
+                    {
+                        consumption.Consume(signal);
+                    }
+                }
 
-        #region IConsumption
-
-        /// <summary>
-        /// Propagates <typeparamref name="TSignal"/> to each connected <see cref="IConsumption{TSignal}"/>.
-        /// </summary>
-        /// <param name="signal">
-        /// <see cref="ISignal"/> to propagate.
-        /// </param>
-        public void Consume(TSignal signal)
-        {
-            foreach (var consumption in consumptionList)
-            {
-                consumption.Consume(signal);
+                /// <inheritdoc/>
+                public void Dispose()
+                {
+                    consumptionList.Clear();
+                }
             }
         }
-
-        #endregion
-
-        #region IDisconnection
-
-        /// <inheritdoc/>
-        public void Disconnect()
+        public static class WithLatestCache
         {
-            consumptionList.Clear();
-        }
+            /// <summary>
+            /// Creates <see cref="IPropagation{TSignal}"/> with latest cache of <typeparamref name="TSignal"/>.
+            /// </summary>
+            /// <typeparam name="TSignal">
+            /// Type of <see cref="ISignal"/> to propagate.
+            /// </typeparam>
+            /// <param name="generation">
+            /// <see cref="IGeneration{TSignal}"/> to initialize cache of <typeparamref name="TSignal"/>.
+            /// </param>
+            /// <returns>
+            /// <see cref="IPropagation{TSignal}"/> created.
+            /// </returns>
+            public static IPropagation<TSignal> Of<TSignal>(IGeneration<TSignal> generation)
+                where TSignal : ISignal
+            {
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
 
-        #endregion
+                return new Created<TSignal>(generation);
+            }
+            private sealed class Created<TSignal> :
+                IPropagation<TSignal>
+                where TSignal : ISignal
+            {
+                private readonly IPropagation<TSignal> propagation = WithoutCache.Of<TSignal>();
+
+                private TSignal cached;
+
+                internal Created(IGeneration<TSignal> generation)
+                {
+                    cached = generation.Generate();
+                }
+
+                /// <inheritdoc/>
+                public ICancellation Produce(IConsumption<TSignal> consumption)
+                {
+                    if (consumption == null)
+                    {
+                        throw new ArgumentNullException(nameof(consumption));
+                    }
+
+                    var cancellation = propagation.Produce(consumption);
+
+                    consumption.Consume(cached);
+
+                    return cancellation;
+                }
+
+                /// <inheritdoc/>
+                public void Consume(TSignal signal)
+                {
+                    cached = signal;
+
+                    propagation.Consume(signal);
+                }
+
+                /// <inheritdoc/>
+                public void Dispose()
+                {
+                    propagation.Dispose();
+                }
+            }
+
+            public static IPropagation<TSignal> Of<TSignal>(Func<TSignal> generation)
+                where TSignal : ISignal
+            {
+                if (generation == null)
+                {
+                    throw new ArgumentNullException(nameof(generation));
+                }
+
+                return Of(Generation.Of(generation));
+            }
+
+            public static IPropagation<TSignal> Of<TSignal>(TSignal signal)
+                where TSignal : ISignal
+            {
+                return Of(() => signal);
+            }
+        }
     }
 }

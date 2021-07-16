@@ -1,7 +1,7 @@
-﻿namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Receives <typeparamref name="TSignal"/> to use.
+    /// Receives <typeparamref name="TSignal"/> to consume.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to receive.
@@ -10,10 +10,10 @@
         where TSignal : ISignal
     {
         /// <summary>
-        /// Uses <typeparamref name="TSignal"/>.
+        /// Consumes <typeparamref name="TSignal"/>.
         /// </summary>
         /// <param name="signal">
-        /// <typeparamref name="TSignal"/> to use.
+        /// <typeparamref name="TSignal"/> to consume.
         /// </param>
         void Consume(TSignal signal);
     }

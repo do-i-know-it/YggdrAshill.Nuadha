@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -6,46 +7,27 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(SignalizationExtension))]
     internal class SignalizationExtensionSpecification
     {
-        [Test]
-        public void ShouldProduceWithAction()
+        private Signal expected;
+
+        private IPropagation<Signal> propagation;
+
+        private SynthesizedCancellation synthesized;
+
+        [SetUp]
+        public void SetUp()
         {
-            var expected = new Signal();
-            var production = new Production<Signal>(consumption =>
-            {
-                if (consumption == null)
-                {
-                    throw new ArgumentNullException(nameof(consumption));
-                }
+            expected = new Signal();
 
-                return new Emission(() =>
-                {
-                    consumption.Consume(expected);
-                });
-            });
+            propagation = Propagation.WithoutCache.Of<Signal>();
 
-            var consumed = default(Signal);
-            var emission = production.Produce(signal =>
-            {
-                if (signal == null)
-                {
-                    throw new ArgumentNullException(nameof(signal));
-                }
-
-                consumed = signal;
-            });
-
-            emission.Emit();
-
-            Assert.AreEqual(expected, consumed);
+            synthesized = new SynthesizedCancellation();
         }
 
         [Test]
-        public void ShouldConnectWithAction()
+        public void ShouldProduceSignal()
         {
-            var propagation = new Propagation<Signal>();
-
             var consumed = default(Signal);
-            var disconnection = propagation.Connect(signal =>
+            var cancellation = propagation.Produce(signal =>
             {
                 if (signal == null)
                 {
@@ -54,14 +36,136 @@ namespace YggdrAshill.Nuadha.Specification
 
                 consumed = signal;
             });
-
-            var expected = new Signal();
 
             propagation.Consume(expected);
 
             Assert.AreEqual(expected, consumed);
 
-            disconnection.Disconnect();
+            cancellation.Cancel();
+        }
+
+        [Test]
+        public void ShouldTransmitSignal()
+        {
+            var transmission = propagation.Transmit(() =>
+            {
+                return expected;
+            });
+
+            var consumed = default(Signal);
+            var cancellation = transmission.Produce(signal =>
+            {
+                if (signal == null)
+                {
+                    throw new ArgumentNullException(nameof(signal));
+                }
+
+                consumed = signal;
+            });
+
+            transmission.Emit();
+
+            Assert.AreEqual(expected, consumed);
+
+            cancellation.Cancel();
+        }
+
+        [Test]
+        public void ShouldSynthesizeCancellation()
+        {
+            var synthesized = new SynthesizedCancellation();
+
+            var expected = false;
+            var cancellation = Cancellation.Of(() =>
+            {
+                expected = true;
+            });
+            cancellation.Synthesize(synthesized);
+
+            synthesized.Cancel();
+
+            Assert.IsTrue(expected);
+        }
+
+        [Test]
+        public void ShouldConvertCancellationIntoDisposable()
+        {
+            var expected = false;
+            var disposable = Cancellation.Of(() =>
+            {
+                expected = true;
+            }).ToDisposable();
+
+            disposable.Dispose();
+
+            Assert.IsTrue(expected);
+        }
+
+        [Test]
+        public void ConvertedDisposableShouldDisposeOnlyOnce()
+        {
+            var disposable = Cancellation.None.ToDisposable();
+
+            disposable.Dispose();
+
+            Assert.Throws<ObjectDisposedException>(() =>
+            {
+                disposable.Dispose();
+            });
+        }
+
+        [Test]
+        public void CannotProduceWithNull()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var cancellation = default(IPropagation<Signal>).Produce(_ => { });
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var cancellation = propagation.Produce(default);
+            });
+        }
+
+        [Test]
+        public void CannotTransmitWithNull()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var transmission = default(IPropagation<Signal>).Transmit(() =>
+                {
+                    return expected;
+                });
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var transmission = propagation.Transmit(default);
+            });
+        }
+
+        [Test]
+        public void CannotSynthesizeWithNull()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                default(ICancellation).Synthesize(synthesized);
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                Cancellation.None.Synthesize(default);
+            });
+        }
+
+        [Test]
+        public void CannotConvertWithNull()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                default(ICancellation).ToDisposable();
+            });
         }
     }
 }

@@ -1,62 +1,69 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IConsumption{TSignal}"/>.
+    /// Defines implementations of <see cref="IConsumption{TSignal}"/>.
     /// </summary>
-    /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to use.
-    /// </typeparam>
-    public sealed class Consumption<TSignal> :
-        IConsumption<TSignal>
-        where TSignal : ISignal
+    public static class Consumption
     {
-        private readonly Action<TSignal> onConsumed;
-
-        #region Constructor
-
         /// <summary>
-        /// Constructs an instance.
+        /// <see cref="IConsumption{TSignal}"/> to execute <see cref="Action{T}"/> when this has consumed <typeparamref name="TSignal"/>.
         /// </summary>
-        /// <param name="onConsumed">
-        /// <see cref="Action{TSignal}"/> to execute when this has consumed <typeparamref name="TSignal"/>.
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to consume.
+        /// </typeparam>
+        /// <param name="consumption">
+        /// <see cref="Action{T}"/> to consume <typeparamref name="TSignal"/>.
         /// </param>
+        /// <returns>
+        /// <see cref="IConsumption{TSignal}"/> created.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="onConsumed"/> is null.
+        /// Thrown if <paramref name="consumption"/> is null.
         /// </exception>
-        public Consumption(Action<TSignal> onConsumed)
+        public static IConsumption<TSignal> Of<TSignal>(Action<TSignal> consumption)
+            where TSignal : ISignal
         {
-            if (onConsumed == null)
+            if (consumption == null)
             {
-                throw new ArgumentNullException(nameof(onConsumed));
+                throw new ArgumentNullException(nameof(consumption));
             }
 
-            this.onConsumed = onConsumed;
+            return new Created<TSignal>(consumption);
+        }
+        private sealed class Created<TSignal> :
+            IConsumption<TSignal>
+            where TSignal : ISignal
+        {
+            private readonly Action<TSignal> onConsumed;
+
+            internal Created(Action<TSignal> onConsumed)
+            {
+                this.onConsumed = onConsumed;
+            }
+
+            /// <inheritdoc/>
+            public void Consume(TSignal signal)
+            {
+                onConsumed.Invoke(signal);
+            }
         }
 
         /// <summary>
-        /// Constructs an instance to do nothing when this has consumed.
+        /// <see cref="IConsumption{TSignal}"/> to do nothing when this has consumed <typeparamref name="TSignal"/>.
         /// </summary>
-        public Consumption()
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to consume.
+        /// </typeparam>
+        /// <returns>
+        /// <see cref="IConsumption{TSignal}"/> created.
+        /// </returns>
+        public static IConsumption<TSignal> None<TSignal>()
+            where TSignal : ISignal
         {
-            onConsumed = (_) =>
-            {
-
-            };
+            return Of<TSignal>(_ => { });
         }
-
-        #endregion
-
-        #region IConsumption
-
-        /// <inheritdoc/>
-        public void Consume(TSignal signal)
-        {
-            onConsumed.Invoke(signal);
-        }
-
-        #endregion
     }
 }
