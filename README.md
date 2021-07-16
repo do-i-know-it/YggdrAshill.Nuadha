@@ -18,18 +18,6 @@ or devices like below.
 - ex) [Oculus store](https://www.oculus.com/)
 - ex) [Steam VR](https://store.steampowered.com/steamvr)
 
-<!-- ## Specifications
-
-Now writing...
-
-### Normal scenarios
-
-Now writing...
-
-### Abnormal scenarios
-
-Now writing... -->
-
 ## Dependencies
 
 This framework depends on .NET Standard 2.0.
@@ -70,13 +58,6 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 
 ## Future works
 
-### ~ Version 1.0.0
-
-- Adds contributing guidelines.
-- Adds samples.
-
-### Version 1.0.0 ~
-
 - Adds definitions for Signals.
   - ex) Blink
   - ex) Pupil
@@ -88,6 +69,7 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
   - ex) Face tracker
   - ex) Hand pose tracker
   - ex) Treadmill
+- Adds contributing guidelines.
 
 ## License
 
