@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(PulseExtension))]
     internal class PulseExtensionSpecification :
-        IDetection<Signal>,
+        ICondition<Signal>,
         IProduction<Signal>,
         IConsumption<Pulse>,
         ICancellation
@@ -45,7 +45,7 @@ namespace YggdrAshill.Nuadha.Specification
             consumed = signal;
         }
 
-        bool IDetection<Signal>.Detect(Signal signal)
+        bool ICondition<Signal>.IsSatisfiedBy(Signal signal)
         {
             if (signal == null)
             {
@@ -57,7 +57,7 @@ namespace YggdrAshill.Nuadha.Specification
 
         private IProduction<Signal> production;
 
-        private IDetection<Signal> detection;
+        private ICondition<Signal> condition;
 
         [SetUp]
         public void SetUp()
@@ -68,13 +68,13 @@ namespace YggdrAshill.Nuadha.Specification
 
             production = this;
 
-            detection = this;
+            condition = this;
         }
 
         [Test]
         public void ShouldConvertSignalIntoPulse()
         {
-            var cancellation = production.Convert(detection).Produce(this);
+            var cancellation = production.Convert(condition).Produce(this);
 
             expected = false;
             consumption.Consume(new Signal());

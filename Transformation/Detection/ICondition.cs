@@ -3,23 +3,23 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Detects <typeparamref name="TSignal"/>.
+    /// Detects <see cref="Notice"/> of <typeparamref name="TSignal"/>.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to detect.
     /// </typeparam>
-    public interface IDetection<TSignal>
+    public interface ICondition<TSignal>
         where TSignal : ISignal
     {
         /// <summary>
-        /// Detects <typeparamref name="TSignal"/>.
+        /// Checks that <typeparamref name="TSignal"/> is satisfied with condition.
         /// </summary>
         /// <param name="signal">
         /// <typeparamref name="TSignal"/> to detect.
         /// </param>
         /// <returns>
-        /// True if <typeparamref name="TSignal"/> is detected.
+        /// True if condition is satisfied.
         /// </returns>
-        bool Detect(TSignal signal);
+        bool IsSatisfiedBy(TSignal signal);
     }
 }

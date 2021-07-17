@@ -11,36 +11,36 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to be converted into <see cref="Pulse"/>.
         /// </typeparam>
-        /// <param name="detection">
-        /// <see cref="IDetection{TSignal}"/> to detect.
+        /// <param name="condition">
+        /// <see cref="ICondition{TSignal}"/> to detect.
         /// </param>
         /// <returns>
         /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> into <see cref="Pulse"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="detection"/> is null.
+        /// Thrown if <paramref name="condition"/> is null.
         /// </exception>
-        public static IConversion<TSignal, Pulse> Signal<TSignal>(IDetection<TSignal> detection)
+        public static IConversion<TSignal, Pulse> Signal<TSignal>(ICondition<TSignal> condition)
             where TSignal : ISignal
         {
-            if (detection == null)
+            if (condition == null)
             {
-                throw new ArgumentNullException(nameof(detection));
+                throw new ArgumentNullException(nameof(condition));
             }
 
-            return new Conversion<TSignal>(detection);
+            return new Conversion<TSignal>(condition);
         }
         private sealed class Conversion<TSignal> :
             IConversion<TSignal, Pulse>
             where TSignal : ISignal
         {
-            private readonly IDetection<TSignal> detection;
+            private readonly ICondition<TSignal> condition;
 
             private Pulse previous = Pulse.IsDisabled;
 
-            internal Conversion(IDetection<TSignal> detection)
+            internal Conversion(ICondition<TSignal> condition)
             {
-                this.detection = detection;
+                this.condition = condition;
             }
 
             /// <inheritdoc/>
@@ -48,11 +48,11 @@ namespace YggdrAshill.Nuadha.Transformation
             {
                 if (previous == Pulse.IsDisabled || previous == Pulse.HasDisabled)
                 {
-                    previous = detection.Detect(signal) ? Pulse.HasEnabled : Pulse.IsDisabled;
+                    previous = condition.IsSatisfiedBy(signal) ? Pulse.HasEnabled : Pulse.IsDisabled;
                 }
                 else if (previous == Pulse.IsEnabled || previous == Pulse.HasEnabled)
                 {
-                    previous = detection.Detect(signal) ? Pulse.IsEnabled : Pulse.HasDisabled;
+                    previous = condition.IsSatisfiedBy(signal) ? Pulse.IsEnabled : Pulse.HasDisabled;
                 }
 
                 return previous;

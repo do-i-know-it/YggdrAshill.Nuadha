@@ -274,7 +274,7 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> to detect.
         /// </param>
-        /// <param name="detection">
+        /// <param name="condition">
         /// <see cref="Func{T, TResult}"/> to detect <see cref="Notice"/> of <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
@@ -284,21 +284,21 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="detection"/> is null.
+        /// Thrown if <paramref name="condition"/> is null.
         /// </exception>
-        public static IProduction<Notice> Detect<TSignal>(this IProduction<TSignal> production, Func<TSignal, bool> detection)
+        public static IProduction<Notice> Detect<TSignal>(this IProduction<TSignal> production, Func<TSignal, bool> condition)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (detection == null)
+            if (condition == null)
             {
-                throw new ArgumentNullException(nameof(detection));
+                throw new ArgumentNullException(nameof(condition));
             }
 
-            return production.Detect(NoticeOf.Signal(detection));
+            return production.Detect(NoticeOf.Signal(condition));
         }
 
         /// <summary>

@@ -3,10 +3,10 @@ using System;
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Implementation of <see cref="IDetection{TSignal}"/> for <see cref="Pulse"/>.
+    /// Implementation of <see cref="ICondition{TSignal}"/> for <see cref="Pulse"/>.
     /// </summary>
     public sealed class PulseIs :
-        IDetection<Pulse>
+        ICondition<Pulse>
     {
         /// <summary>
         /// When <see cref="Pulse"/> is <see cref="Pulse.HasDisabled"/> or <see cref="Pulse.IsDisabled"/>.
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha.Transformation
         }
 
         /// <inheritdoc/>
-        public bool Detect(Pulse signal)
+        public bool IsSatisfiedBy(Pulse signal)
         {
             if (signal == null)
             {
