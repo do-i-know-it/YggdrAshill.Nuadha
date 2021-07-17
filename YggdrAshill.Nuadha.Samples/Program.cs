@@ -1,4 +1,3 @@
-using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
@@ -6,10 +5,10 @@ namespace YggdrAshill.Nuadha.Samples
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main(string[] arguments)
         {
             using (var module = ButtonModule.WithoutCache())
-            using (var device = ButtonModule.WithoutCache().Convert(MockButton.Instance))
+            using (var device = ButtonModule.WithoutCache().Convert(new Button()))
             using (device.Connect(module.HardwareHandler).ToDisposable())
             using (var synthesized = new SynthesizedCancellation())
             {
