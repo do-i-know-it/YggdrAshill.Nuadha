@@ -20,28 +20,28 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldConvertTouchIntoPulse()
         {
-            // initial pulse is disabled when pulsation is generated.
+            // When condition is generated, initial pulse is disabled.
             var conversion = TouchInto.Pulse;
 
-            // when previous pulse is disabled and detection doesn't detect, current pulse is disabled.
+            // When previous pulse is disabled and condition is not satisfied, current pulse is disabled.
             Assert.AreEqual(Pulse.IsDisabled, conversion.Convert(Touch.Disabled));
 
-            // when previous pulse is disabled and detection detects, current pulse has enabled.
+            // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
             Assert.AreEqual(Pulse.HasEnabled, conversion.Convert(Touch.Enabled));
 
-            // when previous pulse has enabled and detection detects, current pulse is enabled.
+            // When previous pulse has enabled and condition is satisfied, current pulse is enabled.
             Assert.AreEqual(Pulse.IsEnabled, conversion.Convert(Touch.Enabled));
 
-            // when previous pulse is enabled and detection doesn't detect, current pulse has disabled.
+            // When previous pulse is enabled and condition is not satisfied, current pulse has disabled.
             Assert.AreEqual(Pulse.HasDisabled, conversion.Convert(Touch.Disabled));
 
-            // when previous pulse has disabled and detection doesn't detect, current pulse is disabled.
+            // When previous pulse has disabled and condition is not satisfied, current pulse is disabled.
             Assert.AreEqual(Pulse.IsDisabled, conversion.Convert(Touch.Disabled));
 
-            // when previous pulse is disabled and detection detects, current pulse has enabled.
+            // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
             Assert.AreEqual(Pulse.HasEnabled, conversion.Convert(Touch.Enabled));
 
-            // when previous pulse has enabled and detection doesn't detect, current pulse has disabled.
+            // When previous pulse has enabled and condition is not satisfied, current pulse has disabled.
             Assert.AreEqual(Pulse.HasDisabled, conversion.Convert(Touch.Disabled));
         }
     }

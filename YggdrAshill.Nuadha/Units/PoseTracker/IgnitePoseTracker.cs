@@ -28,12 +28,12 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var synthesized = new SynthesizedCancellation();
+            var composite = new CompositeCancellation();
 
-            position.Produce(handler.Position).Synthesize(synthesized);
-            rotation.Produce(handler.Rotation).Synthesize(synthesized);
+            position.Produce(handler.Position).Synthesize(composite);
+            rotation.Produce(handler.Rotation).Synthesize(composite);
 
-            return synthesized;
+            return composite;
         }
 
         /// <inheritdoc/>

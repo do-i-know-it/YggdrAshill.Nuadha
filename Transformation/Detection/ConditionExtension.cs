@@ -4,9 +4,9 @@ using System;
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Defines extensions for <see cref="IDetection{TSignal}"/>.
+    /// Defines extensions for <see cref="ICondition{TSignal}"/>.
     /// </summary>
-    public static class DetectionExtension
+    public static class ConditionExtension
     {
         /// <summary>
         /// Detects <see cref="Notice"/> of <typeparamref name="TSignal"/>.
@@ -17,8 +17,8 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> to detect.
         /// </param>
-        /// <param name="detection">
-        /// <see cref="IDetection{TSignal}"/> to detect.
+        /// <param name="condition">
+        /// <see cref="ICondition{TSignal}"/> to detect.
         /// </param>
         /// <returns>
         /// <see cref="IProduction{TSignal}"/> for <see cref="Notice"/> detected.
@@ -27,21 +27,21 @@ namespace YggdrAshill.Nuadha.Transformation
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="detection"/> is null.
+        /// Thrown if <paramref name="condition"/> is null.
         /// </exception>
-        public static IProduction<Notice> Detect<TSignal>(this IProduction<TSignal> production, IDetection<TSignal> detection)
+        public static IProduction<Notice> Detect<TSignal>(this IProduction<TSignal> production, ICondition<TSignal> condition)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (detection == null)
+            if (condition == null)
             {
-                throw new ArgumentNullException(nameof(detection));
+                throw new ArgumentNullException(nameof(condition));
             }
 
-            return new Production<TSignal>(production, detection);
+            return new Production<TSignal>(production, condition);
         }
         private sealed class Production<TSignal> :
             IProduction<Notice>
@@ -49,13 +49,13 @@ namespace YggdrAshill.Nuadha.Transformation
         {
             private readonly IProduction<TSignal> production;
 
-            private readonly IDetection<TSignal> detection;
+            private readonly ICondition<TSignal> condition;
 
-            internal Production(IProduction<TSignal> production, IDetection<TSignal> detection)
+            internal Production(IProduction<TSignal> production, ICondition<TSignal> condition)
             {
                 this.production = production;
 
-                this.detection = detection;
+                this.condition = condition;
             }
 
             /// <inheritdoc/>
@@ -66,20 +66,20 @@ namespace YggdrAshill.Nuadha.Transformation
                     throw new ArgumentNullException(nameof(consumption));
                 }
 
-                return production.Produce(new Consumption<TSignal>(detection, consumption));
+                return production.Produce(new Consumption<TSignal>(condition, consumption));
             }
         }
         private sealed class Consumption<TSignal> :
             IConsumption<TSignal>
             where TSignal : ISignal
         {
-            private readonly IDetection<TSignal> detection;
+            private readonly ICondition<TSignal> condition;
 
             private readonly IConsumption<Notice> consumption;
 
-            internal Consumption(IDetection<TSignal> detection, IConsumption<Notice> consumption)
+            internal Consumption(ICondition<TSignal> condition, IConsumption<Notice> consumption)
             {
-                this.detection = detection;
+                this.condition = condition;
 
                 this.consumption = consumption;
             }
@@ -87,7 +87,7 @@ namespace YggdrAshill.Nuadha.Transformation
             /// <inheritdoc/>
             public void Consume(TSignal signal)
             {
-                if (detection.Detect(signal))
+                if (condition.IsSatisfiedBy(signal))
                 {
                     consumption.Consume(Notice.Instance);
                 }
@@ -95,49 +95,49 @@ namespace YggdrAshill.Nuadha.Transformation
         }
 
         /// <summary>
-        /// Inverts <see cref="IDetection{TSignal}"/>.
+        /// Inverts <see cref="ICondition{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
-        /// <param name="detection">
-        /// <see cref="IDetection{TSignal}"/> to invert.
+        /// <param name="condition">
+        /// <see cref="ICondition{TSignal}"/> to invert.
         /// </param>
         /// <returns>
-        /// <see cref="IDetection{TSignal}"/> inverted.
+        /// <see cref="ICondition{TSignal}"/> inverted.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="detection"/> is null.
+        /// Thrown if <paramref name="condition"/> is null.
         /// </exception>
-        public static IDetection<TSignal> Not<TSignal>(this IDetection<TSignal> detection)
+        public static ICondition<TSignal> Not<TSignal>(this ICondition<TSignal> condition)
             where TSignal : ISignal
         {
-            if (detection == null)
+            if (condition == null)
             {
-                throw new ArgumentNullException(nameof(detection));
+                throw new ArgumentNullException(nameof(condition));
             }
 
-            return new Invert<TSignal>(detection);
+            return new Invert<TSignal>(condition);
         }
         private sealed class Invert<TSignal> :
-            IDetection<TSignal>
+            ICondition<TSignal>
             where TSignal : ISignal
         {
-            private readonly IDetection<TSignal> detection;
+            private readonly ICondition<TSignal> condition;
 
-            internal Invert(IDetection<TSignal> detection)
+            internal Invert(ICondition<TSignal> condition)
             {
-                this.detection = detection;
+                this.condition = condition;
             }
 
-            public bool Detect(TSignal signal)
+            public bool IsSatisfiedBy(TSignal signal)
             {
-                return !detection.Detect(signal);
+                return !condition.IsSatisfiedBy(signal);
             }
         }
 
         /// <summary>
-        /// Multiplies two instances of <see cref="IDetection{TSignal}"/>.
+        /// Multiplies two instances of <see cref="ICondition{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
@@ -145,7 +145,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns>
-        /// <see cref="IDetection{TSignal}"/> multiplied.
+        /// <see cref="ICondition{TSignal}"/> multiplied.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="left"/> is null.
@@ -153,7 +153,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="right"/> is null.
         /// </exception>
-        public static IDetection<TSignal> And<TSignal>(this IDetection<TSignal> left, IDetection<TSignal> right)
+        public static ICondition<TSignal> And<TSignal>(this ICondition<TSignal> left, ICondition<TSignal> right)
             where TSignal : ISignal
         {
             if (left == null)
@@ -168,28 +168,28 @@ namespace YggdrAshill.Nuadha.Transformation
             return new Multiply<TSignal>(left, right);
         }
         private sealed class Multiply<TSignal> :
-            IDetection<TSignal>
+            ICondition<TSignal>
             where TSignal : ISignal
         {
-            private readonly IDetection<TSignal> left;
+            private readonly ICondition<TSignal> left;
 
-            private readonly IDetection<TSignal> right;
+            private readonly ICondition<TSignal> right;
 
-            internal Multiply(IDetection<TSignal> left, IDetection<TSignal> right)
+            internal Multiply(ICondition<TSignal> left, ICondition<TSignal> right)
             {
                 this.left = left;
 
                 this.right = right;
             }
 
-            public bool Detect(TSignal signal)
+            public bool IsSatisfiedBy(TSignal signal)
             {
-                return left.Detect(signal) && right.Detect(signal);
+                return left.IsSatisfiedBy(signal) && right.IsSatisfiedBy(signal);
             }
         }
 
         /// <summary>
-        /// Adds two instances of <see cref="IDetection{TSignal}"/>.
+        /// Adds two instances of <see cref="ICondition{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
@@ -197,7 +197,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns>
-        /// <see cref="IDetection{TSignal}"/> added.
+        /// <see cref="ICondition{TSignal}"/> added.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="left"/> is null.
@@ -205,7 +205,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="right"/> is null.
         /// </exception>
-        public static IDetection<TSignal> Or<TSignal>(this IDetection<TSignal> left, IDetection<TSignal> right)
+        public static ICondition<TSignal> Or<TSignal>(this ICondition<TSignal> left, ICondition<TSignal> right)
             where TSignal : ISignal
         {
             if (left == null)
@@ -220,23 +220,23 @@ namespace YggdrAshill.Nuadha.Transformation
             return new Add<TSignal>(left, right);
         }
         private sealed class Add<TSignal> :
-            IDetection<TSignal>
+            ICondition<TSignal>
             where TSignal : ISignal
         {
-            private readonly IDetection<TSignal> left;
+            private readonly ICondition<TSignal> left;
 
-            private readonly IDetection<TSignal> right;
+            private readonly ICondition<TSignal> right;
 
-            internal Add(IDetection<TSignal> left, IDetection<TSignal> right)
+            internal Add(ICondition<TSignal> left, ICondition<TSignal> right)
             {
                 this.left = left;
 
                 this.right = right;
             }
 
-            public bool Detect(TSignal signal)
+            public bool IsSatisfiedBy(TSignal signal)
             {
-                return left.Detect(signal) || right.Detect(signal);
+                return left.IsSatisfiedBy(signal) || right.IsSatisfiedBy(signal);
             }
         }
     }

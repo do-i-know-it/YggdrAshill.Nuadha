@@ -11,7 +11,7 @@ namespace YggdrAshill.Nuadha.Specification
 
         private IPropagation<Signal> propagation;
 
-        private SynthesizedCancellation synthesized;
+        private CompositeCancellation composite;
 
         [SetUp]
         public void SetUp()
@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             propagation = Propagation.WithoutCache.Of<Signal>();
 
-            synthesized = new SynthesizedCancellation();
+            composite = new CompositeCancellation();
         }
 
         [Test]
@@ -73,16 +73,16 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldSynthesizeCancellation()
         {
-            var synthesized = new SynthesizedCancellation();
+            var composite = new CompositeCancellation();
 
             var expected = false;
             var cancellation = Cancellation.Of(() =>
             {
                 expected = true;
             });
-            cancellation.Synthesize(synthesized);
+            cancellation.Synthesize(composite);
 
-            synthesized.Cancel();
+            composite.Cancel();
 
             Assert.IsTrue(expected);
         }
@@ -150,7 +150,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                default(ICancellation).Synthesize(synthesized);
+                default(ICancellation).Synthesize(composite);
             });
 
             Assert.Throws<ArgumentNullException>(() =>

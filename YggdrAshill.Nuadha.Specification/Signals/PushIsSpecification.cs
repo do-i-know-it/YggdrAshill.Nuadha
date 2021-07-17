@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -7,17 +7,17 @@ namespace YggdrAshill.Nuadha.Specification
     internal class PushIsSpecification
     {
         [Test]
-        public void ShouldDetectWhenPushIsDisabled()
+        public void ShouldBeSatisfiedWhenPushIsDisabled()
         {
-            Assert.IsTrue(PushIs.Disabled.Detect(Push.Disabled));
-            Assert.IsFalse(PushIs.Disabled.Detect(Push.Enabled));
+            Assert.IsTrue(PushIs.Disabled.IsSatisfiedBy(Push.Disabled));
+            Assert.IsFalse(PushIs.Disabled.IsSatisfiedBy(Push.Enabled));
         }
 
         [Test]
-        public void ShouldDetectWhenPushIsEnabled()
+        public void ShouldBeSatisfiedWhenPushIsEnabled()
         {
-            Assert.IsFalse(PushIs.Enabled.Detect(Push.Disabled));
-            Assert.IsTrue(PushIs.Enabled.Detect(Push.Enabled));
+            Assert.IsFalse(PushIs.Enabled.IsSatisfiedBy(Push.Disabled));
+            Assert.IsTrue(PushIs.Enabled.IsSatisfiedBy(Push.Enabled));
         }
     }
 }

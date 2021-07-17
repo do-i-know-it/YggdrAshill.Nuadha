@@ -35,14 +35,14 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var synthesized = new SynthesizedCancellation();
+            var composite = new CompositeCancellation();
 
-            pose.Connect(handler.Pose).Synthesize(synthesized);
-            thumb.Connect(handler.Thumb).Synthesize(synthesized);
-            indexFinger.Connect(handler.IndexFinger).Synthesize(synthesized);
-            handGrip.Connect(handler.HandGrip).Synthesize(synthesized);
+            pose.Connect(handler.Pose).Synthesize(composite);
+            thumb.Connect(handler.Thumb).Synthesize(composite);
+            indexFinger.Connect(handler.IndexFinger).Synthesize(composite);
+            handGrip.Connect(handler.HandGrip).Synthesize(composite);
 
-            return synthesized;
+            return composite;
         }
 
         /// <inheritdoc/>

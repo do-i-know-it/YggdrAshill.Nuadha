@@ -58,6 +58,8 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 
 ## Future works
 
+Please see [GitHub Project for road map](https://github.com/do-i-know-it/YggdrAshill.Nuadha/projects/1).
+
 - Adds definitions for Signals.
   - ex) Blink
   - ex) Pupil

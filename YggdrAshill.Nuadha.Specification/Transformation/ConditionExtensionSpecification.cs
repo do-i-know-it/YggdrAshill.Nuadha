@@ -1,13 +1,13 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(DetectionExtension))]
-    internal class DetectionExtensionSpecification :
-        IDetection<Signal>,
+    [TestFixture(TestOf = typeof(ConditionExtension))]
+    internal class ConditionExtensionSpecification :
+        ICondition<Signal>,
         IProduction<Signal>,
         IConsumption<Notice>,
         ICancellation
@@ -45,7 +45,7 @@ namespace YggdrAshill.Nuadha.Specification
             consumed = true;
         }
 
-        bool IDetection<Signal>.Detect(Signal signal)
+        bool ICondition<Signal>.IsSatisfiedBy(Signal signal)
         {
             if (signal == null)
             {
@@ -57,7 +57,7 @@ namespace YggdrAshill.Nuadha.Specification
 
         private IProduction<Signal> production;
 
-        private IDetection<Signal> detection;
+        private ICondition<Signal> condition;
 
         [SetUp]
         public void SetUp()
@@ -68,7 +68,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             production = this;
 
-            detection = this;
+            condition = this;
         }
 
         [TestCase(true)]
@@ -77,7 +77,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             this.expected = expected;
 
-            var cancellation = production.Detect(detection).Produce(this);
+            var cancellation = production.Detect(condition).Produce(this);
 
             consumption.Consume(new Signal());
 
@@ -91,24 +91,24 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detected = default(IProduction<Signal>).Convert(detection);
+                var detected = default(IProduction<Signal>).Convert(condition);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detected = production.Detect(default(IDetection<Signal>));
+                var detected = production.Detect(default(ICondition<Signal>));
             });
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void ShouldInverseDetection(bool expected)
+        public void ShouldInverseCondition(bool expected)
         {
             this.expected = expected;
 
-            var inversed = detection.Not();
+            var inversed = condition.Not();
 
-            var detected = inversed.Detect(new Signal());
+            var detected = inversed.IsSatisfiedBy(new Signal());
 
             Assert.AreNotEqual(expected, detected);
         }
@@ -118,25 +118,25 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var inversed = default(IDetection<Signal>).Not();
+                var inversed = default(ICondition<Signal>).Not();
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var multiplied = default(IDetection<Signal>).And(detection);
+                var multiplied = default(ICondition<Signal>).And(condition);
             });
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var multiplied = detection.And(default);
+                var multiplied = condition.And(default);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var added = default(IDetection<Signal>).Or(detection);
+                var added = default(ICondition<Signal>).Or(condition);
             });
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var added = detection.Or(default);
+                var added = condition.Or(default);
             });
         }
     }

@@ -6,11 +6,11 @@ namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(PulseFrom))]
     internal class PulseFromSpecification :
-        IDetection<Signal>
+        ICondition<Signal>
     {
         private bool expected;
 
-        public bool Detect(Signal signal)
+        public bool IsSatisfiedBy(Signal signal)
         {
             if (signal == null)
             {
@@ -23,34 +23,34 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldConvertSignalIntoPulse()
         {
-            // initial pulse is disabled when pulsation is generated.
+            // When condition is generated, initial pulse is disabled.
             var conversion = PulseFrom.Signal(this);
 
-            // when previous pulse is disabled and detection doesn't detect, current pulse is disabled.
+            // When previous pulse is disabled and condition is not satisfied, current pulse is disabled.
             expected = false;
             Assert.AreEqual(Pulse.IsDisabled, conversion.Convert(new Signal()));
 
-            // when previous pulse is disabled and detection detects, current pulse has enabled.
+            // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
             expected = true;
             Assert.AreEqual(Pulse.HasEnabled, conversion.Convert(new Signal()));
 
-            // when previous pulse has enabled and detection detects, current pulse is enabled.
+            // When previous pulse has enabled and condition is satisfied, current pulse is enabled.
             expected = true;
             Assert.AreEqual(Pulse.IsEnabled, conversion.Convert(new Signal()));
 
-            // when previous pulse is enabled and detection doesn't detect, current pulse has disabled.
+            // When previous pulse is enabled and condition is not satisfied, current pulse has disabled.
             expected = false;
             Assert.AreEqual(Pulse.HasDisabled, conversion.Convert(new Signal()));
 
-            // when previous pulse has disabled and detection doesn't detect, current pulse is disabled.
+            // When previous pulse has disabled and condition is not satisfied, current pulse is disabled.
             expected = false;
             Assert.AreEqual(Pulse.IsDisabled, conversion.Convert(new Signal()));
 
-            // when previous pulse is disabled and detection detects, current pulse has enabled.
+            // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
             expected = true;
             Assert.AreEqual(Pulse.HasEnabled, conversion.Convert(new Signal()));
 
-            // when previous pulse has enabled and detection doesn't detect, current pulse has disabled.
+            // When previous pulse has enabled and condition is not satisfied, current pulse has disabled.
             expected = false;
             Assert.AreEqual(Pulse.HasDisabled, conversion.Convert(new Signal()));
         }

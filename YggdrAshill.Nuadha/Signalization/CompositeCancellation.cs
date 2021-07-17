@@ -5,9 +5,9 @@ using System.Collections.Generic;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Collects <see cref="ICancellation"/> to cancel simultaneously.
+    /// <see cref="ICancellation"/> to execute each of synthesized <see cref="ICancellation"/> simultaneously.
     /// </summary>
-    public sealed class SynthesizedCancellation :
+    public sealed class CompositeCancellation :
         ICancellation,
         IDisposable
     {

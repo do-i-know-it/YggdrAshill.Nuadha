@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -7,10 +7,10 @@ namespace YggdrAshill.Nuadha.Specification
     internal class NoticeOfSpecification
     {
         [Test]
-        public void ShouldExecuteFunctionWhenHasDetected()
+        public void ShouldExecuteFunctionWhenHasBeenSatisfied()
         {
             var expected = false;
-            var detection = NoticeOf.Signal<Signal>(signal =>
+            var condition = NoticeOf.Signal<Signal>(signal =>
             {
                 if (signal == null)
                 {
@@ -20,16 +20,16 @@ namespace YggdrAshill.Nuadha.Specification
                 return expected = true;
             });
 
-            detection.Detect(new Signal());
+            condition.IsSatisfiedBy(new Signal());
 
             Assert.IsTrue(expected);
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void ShouldDetectSignal(bool expected)
+        public void ShouldBeSatisfiedBySignal(bool expected)
         {
-            var detection = NoticeOf.Signal<Signal>(signal =>
+            var condition = NoticeOf.Signal<Signal>(signal =>
             {
                 if (signal == null)
                 {
@@ -39,21 +39,21 @@ namespace YggdrAshill.Nuadha.Specification
                 return expected;
             });
 
-            var detected = detection.Detect(new Signal());
+            var detected = condition.IsSatisfiedBy(new Signal());
 
             Assert.AreEqual(expected, detected);
         }
 
         [Test]
-        public void ShouldAlwaysDetect()
+        public void ShouldBeAlwaysSatisfied()
         {
-            Assert.IsTrue(NoticeOf.All<Signal>().Detect(null));
+            Assert.IsTrue(NoticeOf.All<Signal>().IsSatisfiedBy(null));
         }
 
         [Test]
-        public void ShouldNeverDetect()
+        public void ShouldBeNeverSatisfied()
         {
-            Assert.IsFalse(NoticeOf.None<Signal>().Detect(null));
+            Assert.IsFalse(NoticeOf.None<Signal>().IsSatisfiedBy(null));
         }
 
         [Test]

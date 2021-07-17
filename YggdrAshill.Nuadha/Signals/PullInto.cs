@@ -28,23 +28,23 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            var detection = new Detection(threshold);
-            return SignalInto.Signal<Pull, Push>(signal => detection.Detect(signal).ToPush());
+            var condition = new Condition(threshold);
+            return SignalInto.Signal<Pull, Push>(signal => condition.IsSatisfiedBy(signal).ToPush());
         }
-        private sealed class Detection :
-            IDetection<Pull>
+        private sealed class Condition :
+            ICondition<Pull>
         {
             private readonly HysteresisThreshold threshold;
 
             private bool previous = false;
 
-            internal Detection(HysteresisThreshold threshold)
+            internal Condition(HysteresisThreshold threshold)
             {
                 this.threshold = threshold;
             }
 
             /// <inheritdoc/>
-            public bool Detect(Pull signal)
+            public bool IsSatisfiedBy(Pull signal)
             {
                 if (previous)
                 {
