@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha.Samples
             using (var module = ButtonModule.WithoutCache())
             using (var device = ButtonModule.WithoutCache().Convert(new Button()))
             using (device.Connect(module.HardwareHandler).ToDisposable())
-            using (var synthesized = new SynthesizedCancellation())
+            using (var composite = new CompositeCancellation())
             {
                 var software = module.SoftwareHandler;
                 software
@@ -18,13 +18,13 @@ namespace YggdrAshill.Nuadha.Samples
                     {
                         Console.WriteLine(signal);
                     })
-                    .Synthesize(synthesized);
+                    .Synthesize(composite);
                 software
                     .Push.Produce<Push>(signal =>
                     {
                         Console.WriteLine(signal);
                     })
-                    .Synthesize(synthesized);
+                    .Synthesize(composite);
 
                 while (true)
                 {

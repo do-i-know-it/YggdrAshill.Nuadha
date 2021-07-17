@@ -86,27 +86,27 @@ namespace YggdrAshill.Nuadha
         /// <param name="cancellation">
         /// <see cref="ICancellation"/> collected.
         /// </param>
-        /// <param name="synthesized">
-        /// <see cref="SynthesizedCancellation"/> to collect.
+        /// <param name="composite">
+        /// <see cref="CompositeCancellation"/> to collect.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="cancellation"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="synthesized"/> is null.
+        /// Thrown if <paramref name="composite"/> is null.
         /// </exception>
-        public static void Synthesize(this ICancellation cancellation, SynthesizedCancellation synthesized)
+        public static void Synthesize(this ICancellation cancellation, CompositeCancellation composite)
         {
             if (cancellation == null)
             {
                 throw new ArgumentNullException(nameof(cancellation));
             }
-            if (synthesized == null)
+            if (composite == null)
             {
-                throw new ArgumentNullException(nameof(synthesized));
+                throw new ArgumentNullException(nameof(composite));
             }
 
-            synthesized.Synthesize(cancellation);
+            composite.Synthesize(cancellation);
         }
 
         /// <summary>
@@ -135,23 +135,24 @@ namespace YggdrAshill.Nuadha
         {
             private readonly ICancellation cancellation;
 
-            private bool isDisposed = false;
+            private bool disposed;
 
-            public Disposable(ICancellation cancellation)
+            internal Disposable(ICancellation cancellation)
             {
                 this.cancellation = cancellation;
             }
 
+            /// <inheritdoc/>
             public void Dispose()
             {
-                if (isDisposed)
+                if (disposed)
                 {
                     throw new ObjectDisposedException(nameof(IDisposable));
                 }
 
                 cancellation.Cancel();
 
-                isDisposed = true;
+                disposed = true;
             }
         }
     }

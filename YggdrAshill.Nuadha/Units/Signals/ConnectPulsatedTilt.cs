@@ -46,15 +46,15 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(handler));
             }
 
-            var synthesized = new SynthesizedCancellation();
+            var composite = new CompositeCancellation();
 
-            distance.Produce(handler.Distance).Synthesize(synthesized);
-            left.Produce(handler.Left).Synthesize(synthesized);
-            right.Produce(handler.Right).Synthesize(synthesized);
-            forward.Produce(handler.Forward).Synthesize(synthesized);
-            backward.Produce(handler.Backward).Synthesize(synthesized);
+            distance.Produce(handler.Distance).Synthesize(composite);
+            left.Produce(handler.Left).Synthesize(composite);
+            right.Produce(handler.Right).Synthesize(composite);
+            forward.Produce(handler.Forward).Synthesize(composite);
+            backward.Produce(handler.Backward).Synthesize(composite);
 
-            return synthesized;
+            return composite;
         }
     }
 }
