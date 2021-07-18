@@ -1,7 +1,7 @@
 namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Token to emit.
+    /// Token to <see cref="Emit"/>.
     /// </summary>
     public interface IEmission
     {

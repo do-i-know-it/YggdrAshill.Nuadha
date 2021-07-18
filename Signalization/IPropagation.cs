@@ -3,13 +3,14 @@ using System;
 namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Propagates <typeparamref name="TSignal"/> to each <see cref="IConsumption{TSignal}"/>.
+    /// Receives <typeparamref name="TSignal"/> in order to send to each of <see cref="IConsumption{TSignal}"/>.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to propagate.
     /// </typeparam>
     /// <remarks>
-    /// This is <see cref="IProduction{TSignal}"/> and <see cref="IConsumption{TSignal}"/>.
+    /// Can be combined with <see cref="IGeneration{TSignal}"/> to generate <see cref="ITransmission{TSignal}"/>.
+    /// In detail, please see <see cref="PropagationExtension.Transmit{TSignal}(IPropagation{TSignal}, IGeneration{TSignal})"/>.
     /// </remarks>
     public interface IPropagation<TSignal> :
         IProduction<TSignal>,
