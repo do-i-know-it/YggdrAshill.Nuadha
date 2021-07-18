@@ -15,9 +15,9 @@ namespace YggdrAshill.Nuadha
 
         internal IgniteButton(ButtonModule module, IButtonConfiguration configuration)
         {
-            touch = module.Touch.Transmit(configuration.Touch);
+            touch = module.Touch.ToTransmit(configuration.Touch);
 
-            push = module.Push.Transmit(configuration.Push);
+            push = module.Push.ToTransmit(configuration.Push);
         }
 
         /// <inheritdoc/>

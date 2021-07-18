@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha.Signalization
     /// </typeparam>
     /// <remarks>
     /// Can be combined with <see cref="IGeneration{TSignal}"/> to generate <see cref="ITransmission{TSignal}"/>.
-    /// In detail, please see <see cref="PropagationExtension.Transmit{TSignal}(IPropagation{TSignal}, IGeneration{TSignal})"/>.
+    /// In detail, please see <see cref="PropagationExtension.ToTransmit{TSignal}(IPropagation{TSignal}, IGeneration{TSignal})"/>.
     /// </remarks>
     public interface IPropagation<TSignal> :
         IProduction<TSignal>,

@@ -15,9 +15,9 @@ namespace YggdrAshill.Nuadha
 
         internal IgniteTrigger(TriggerModule module, ITriggerConfiguration configuration)
         {
-            touch = module.Touch.Transmit(configuration.Touch);
+            touch = module.Touch.ToTransmit(configuration.Touch);
 
-            pull = module.Pull.Transmit(configuration.Pull);
+            pull = module.Pull.ToTransmit(configuration.Pull);
         }
 
         /// <inheritdoc/>
