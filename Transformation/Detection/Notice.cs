@@ -1,17 +1,15 @@
 using YggdrAshill.Nuadha.Signalization;
-using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/>.
+    /// Implementation of <see cref="ISignal"/> <see cref="Notice"/>.
     /// </summary>
     public sealed class Notice :
-        ISignal,
-        IEquatable<Notice>
+        ISignal
     {
         /// <summary>
-        /// Singleton instance of <see cref="Notice"/>.
+        /// Only <see cref="Notice"/> that exists.
         /// </summary>
         public static Notice Instance { get; } = new Notice();
 
@@ -21,9 +19,15 @@ namespace YggdrAshill.Nuadha.Transformation
         }
 
         /// <inheritdoc/>
-        public bool Equals(Notice other)
+        public override string ToString()
         {
-            return ReferenceEquals(this, other);
+            return $"{nameof(Notice)}";
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return 0;
         }
     }
 }
