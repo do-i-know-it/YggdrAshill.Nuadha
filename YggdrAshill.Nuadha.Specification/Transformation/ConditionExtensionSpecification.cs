@@ -91,7 +91,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detected = default(IProduction<Signal>).Convert(condition);
+                var detected = default(IProduction<Signal>).Detect(condition);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
