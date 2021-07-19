@@ -33,7 +33,7 @@ to use this framework.
 
 ## Usage
 
-Now writing samples for this framework.
+Please see [sample application](https://github.com/do-i-know-it/YggdrAshill.Nuadha/blob/main/YggdrAshill.Nuadha.Samples/Program.cs).
 
 ## Architecture
 
