@@ -7,10 +7,10 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Defines implementations for <see cref="ICondition{TSignal}"/>.
     /// </summary>
-    public sealed class NoticeOf
+    public static class NoticeOf
     {
         /// <summary>
-        /// Creates <see cref="ICondition{TSignal}"/>.
+        /// Executes <see cref="Func{T, TResult}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         /// <see cref="Func{T, TResult}"/> to detect <see cref="Notice"/> of <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="ICondition{TSignal}"/>.
+        /// <see cref="ICondition{TSignal}"/> created.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="condition"/> is null.

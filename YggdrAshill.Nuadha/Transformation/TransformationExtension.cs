@@ -21,13 +21,13 @@ namespace YggdrAshill.Nuadha
         /// Type of <see cref="ISignal"/> converted.
         /// </typeparam>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TInput"/> to convert.
+        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TInput"/>.
         /// </param>
         /// <param name="conversion">
         /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TOutput"/> converted.
+        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TOutput"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
@@ -272,13 +272,13 @@ namespace YggdrAshill.Nuadha
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> to detect.
+        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="condition">
         /// <see cref="Func{T, TResult}"/> to detect <see cref="Notice"/> of <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> for <see cref="Notice"/> detected.
+        /// <see cref="IProduction{TSignal}"/> to send <see cref="Notice"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
@@ -302,13 +302,13 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Produces <see cref="Notice"/>.
+        /// Sends <see cref="Notice"/> to <see cref="Action"/>.
         /// </summary>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> for <see cref="Notice"/> to produce.
+        /// <see cref="IProduction{TSignal}"/> to send <see cref="Notice"/>.
         /// </param>
         /// <param name="consumption">
-        /// <see cref="Action"/> executed when this has consumed <see cref="Notice"/>.
+        /// <see cref="Action"/> to receive <see cref="Notice"/>.
         /// </param>
         /// <returns>
         /// <see cref="ICancellation"/> to cancel.

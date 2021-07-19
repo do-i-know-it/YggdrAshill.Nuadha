@@ -10,12 +10,7 @@ namespace YggdrAshill.Nuadha
         ICancellation
     {
         /// <summary>
-        /// <see cref="Cancellation"/> to do nothing when this has cancelled.
-        /// </summary>
-        public static Cancellation None { get; } = Of(() => { });
-
-        /// <summary>
-        /// <see cref="Cancellation"/> to execute <see cref="Action"/> when this has cancelled.
+        /// Executes <see cref="Action"/>.
         /// </summary>
         /// <param name="cancellation">
         /// <see cref="Action"/> to cancel.
@@ -35,6 +30,11 @@ namespace YggdrAshill.Nuadha
 
             return new Cancellation(cancellation);
         }
+
+        /// <summary>
+        /// Executes none.
+        /// </summary>
+        public static Cancellation None { get; } = Of(() => { });
 
         private readonly Action onCancelled;
 

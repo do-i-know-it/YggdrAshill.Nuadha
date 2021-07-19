@@ -9,29 +9,29 @@ namespace YggdrAshill.Nuadha
     public static class Generation
     {
         /// <summary>
-        /// <see cref="IGeneration{TSignal}"/> to execute <see cref="Func{TResult}"/> when this has generated <typeparamref name="TSignal"/>.
+        /// Executes <see cref="Func{TResult}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to generate.
         /// </typeparam>
-        /// <param name="onGenerated">
+        /// <param name="generation">
         /// <see cref="Func{TResult}"/> to generate <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <see cref="IGeneration{TSignal}"/> created.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="onGenerated"/> is null.
+        /// Thrown if <paramref name="generation"/> is null.
         /// </exception>
-        public static IGeneration<TSignal> Of<TSignal>(Func<TSignal> onGenerated)
+        public static IGeneration<TSignal> Of<TSignal>(Func<TSignal> generation)
             where TSignal : ISignal
         {
-            if (onGenerated == null)
+            if (generation == null)
             {
-                throw new ArgumentNullException(nameof(onGenerated));
+                throw new ArgumentNullException(nameof(generation));
             }
 
-            return new Created<TSignal>(onGenerated);
+            return new Created<TSignal>(generation);
         }
         private sealed class Created<TSignal> :
             IGeneration<TSignal>
@@ -52,7 +52,7 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// <see cref="IGeneration{TSignal}"/> to generate same <typeparamref name="TSignal"/>.
+        /// Generates same <typeparamref name="TSignal"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to generate.

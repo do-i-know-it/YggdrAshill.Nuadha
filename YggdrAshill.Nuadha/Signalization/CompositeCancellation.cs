@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// <see cref="ICancellation"/> to execute each of synthesized <see cref="ICancellation"/> simultaneously.
+    /// Executes each of synthesized <see cref="ICancellation"/> simultaneously.
     /// </summary>
     public sealed class CompositeCancellation :
         ICancellation,

@@ -10,13 +10,13 @@ namespace YggdrAshill.Nuadha
     public static class SignalInto
     {
         /// <summary>
-        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// Executes <see cref="Func{T, TResult}"/>.
         /// </summary>
         /// <typeparam name="TInput">
-        /// Type of <see cref="ISignal"/> for input.
+        /// Type of <see cref="ISignal"/> to convert.
         /// </typeparam>
         /// <typeparam name="TOutput">
-        /// Type of <see cref="ISignal"/> for output.
+        /// Type of <see cref="ISignal"/> converted.
         /// </typeparam>
         /// <param name="conversion">
         /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
@@ -142,7 +142,7 @@ namespace YggdrAshill.Nuadha
         public static class SignalTo
         {
             /// <summary>
-            /// Corrects <typeparamref name="TSignal"/> to calibrate.
+            /// Calibrates <typeparamref name="TSignal"/> to correct.
             /// </summary>
             /// <typeparam name="TSignal">
             /// Type of <see cref="ISignal"/> to correct.

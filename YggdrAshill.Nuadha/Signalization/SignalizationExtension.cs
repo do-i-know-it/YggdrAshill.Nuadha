@@ -9,16 +9,16 @@ namespace YggdrAshill.Nuadha
     public static class SignalizationExtension
     {
         /// <summary>
-        /// Produces <typeparamref name="TSignal"/>.
+        /// Sends <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to send.
+        /// Type of <see cref="ISignal"/> to produce.
         /// </typeparam>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> to produce.
+        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="consumption">
-        /// <see cref="Action{T}"/> executed when this has consumed <typeparamref name="TSignal"/>.
+        /// <see cref="Action{T}"/> to receive <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <see cref="ICancellation"/> to cancel.
@@ -43,21 +43,21 @@ namespace YggdrAshill.Nuadha
 
             return production.Produce(Consumption.Of(consumption));
         }
-        
+
         /// <summary>
-        /// Converts <see cref="IPropagation{TSignal}"/> into <see cref="ITransmission{TSignal}"/>.
+        /// Creates <see cref="ITransmission{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to emit.
+        /// Type of <see cref="ISignal"/> to transmit.
         /// </typeparam>
         /// <param name="propagation">
-        /// <see cref="IPropagation{TSignal}"/> to convert.
+        /// <see cref="IPropagation{TSignal}"/> to propagate <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="generation">
         /// <see cref="Func{TResult}"/> to generate <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="ITransmission{TSignal}"/> converted.
+        /// <see cref="ITransmission{TSignal}"/> to transmit.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="propagation"/> is null.

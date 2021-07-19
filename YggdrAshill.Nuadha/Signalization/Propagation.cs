@@ -12,7 +12,7 @@ namespace YggdrAshill.Nuadha
         public static class WithoutCache
         {
             /// <summary>
-            /// Creates <see cref="IPropagation{TSignal}"/> without cache of <typeparamref name="TSignal"/>.
+            /// Propagates <typeparamref name="TSignal"/> without cache.
             /// </summary>
             /// <typeparam name="TSignal">
             /// Type of <see cref="ISignal"/> to propagate.
@@ -72,7 +72,7 @@ namespace YggdrAshill.Nuadha
         public static class WithLatestCache
         {
             /// <summary>
-            /// Creates <see cref="IPropagation{TSignal}"/> with latest cache of <typeparamref name="TSignal"/>.
+            /// Propagates <typeparamref name="TSignal"/> with latest cache.
             /// </summary>
             /// <typeparam name="TSignal">
             /// Type of <see cref="ISignal"/> to propagate.
@@ -83,6 +83,9 @@ namespace YggdrAshill.Nuadha
             /// <returns>
             /// <see cref="IPropagation{TSignal}"/> created.
             /// </returns>
+            /// <exception cref="ArgumentNullException">
+            /// Thrown if <paramref name="generation"/> is null.
+            /// </exception>
             public static IPropagation<TSignal> Of<TSignal>(IGeneration<TSignal> generation)
                 where TSignal : ISignal
             {

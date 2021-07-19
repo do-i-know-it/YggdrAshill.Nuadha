@@ -5,7 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/>, <see cref="ICalibration{TSignal}"/>.
+    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> and <see cref="ICalibration{TSignal}"/>.
     /// </summary>
     public static class ToCorrect
     {
@@ -18,7 +18,7 @@ namespace YggdrAshill.Nuadha
                 /// Calibrates <see cref="Signals.Space3D.Position"/>.
                 /// </summary>
                 /// <returns>
-                /// <see cref="ICalibration{TSignal}"/> for <see cref="Signals.Space3D.Position"/>.
+                /// <see cref="ICalibration{TSignal}"/> to correct <see cref="Signals.Space3D.Position"/>.
                 /// </returns>
                 public static ICalibration<Signals.Space3D.Position> Calibrate()
                 {
@@ -65,7 +65,7 @@ namespace YggdrAshill.Nuadha
                 /// Calibrates <see cref="Signals.Space3D.Rotation"/>.
                 /// </summary>
                 /// <returns>
-                /// <see cref="ICalibration{TSignal}"/> for <see cref="Signals.Space3D.Rotation"/>.
+                /// <see cref="ICalibration{TSignal}"/> to correct <see cref="Signals.Space3D.Rotation"/>.
                 /// </returns>
                 public static ICalibration<Signals.Space3D.Rotation> Calibrate()
                 {
