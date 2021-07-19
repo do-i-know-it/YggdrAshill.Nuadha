@@ -138,23 +138,6 @@ namespace YggdrAshill.Nuadha
                     propagation.Dispose();
                 }
             }
-
-            public static IPropagation<TSignal> Of<TSignal>(Func<TSignal> generation)
-                where TSignal : ISignal
-            {
-                if (generation == null)
-                {
-                    throw new ArgumentNullException(nameof(generation));
-                }
-
-                return Of(Generation.Of(generation));
-            }
-
-            public static IPropagation<TSignal> Of<TSignal>(TSignal signal)
-                where TSignal : ISignal
-            {
-                return Of(() => signal);
-            }
         }
     }
 }
