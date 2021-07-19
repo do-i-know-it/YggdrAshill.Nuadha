@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> to describe touch.
+    /// Implementation of <see cref="ISignal"/> for <see cref="Touch"/>.
     /// </summary>
     public struct Touch :
         ISignal,
@@ -98,8 +98,12 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// Converts <see cref="Touch"/> to <see cref="bool"/> in an expression.
         /// </summary>
-        /// <param name="signal"></param>
-        /// <returns></returns>
+        /// <param name="signal">
+        /// <see cref="Touch"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="bool"/> converted.
+        /// </returns>
         public static bool operator true(Touch signal)
         {
             return (bool)signal;
@@ -108,8 +112,12 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// Converts <see cref="Touch"/> to <see cref="bool"/> in an expression.
         /// </summary>
-        /// <param name="signal"></param>
-        /// <returns></returns>
+        /// <param name="signal">
+        /// <see cref="Touch"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="bool"/> converted.
+        /// </returns>
         public static bool operator false(Touch signal)
         {
             return !(bool)signal;

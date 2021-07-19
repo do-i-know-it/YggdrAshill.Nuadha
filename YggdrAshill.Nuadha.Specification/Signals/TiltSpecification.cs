@@ -46,17 +46,13 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithNaNHorizontal()
+        public void CannotBeGeneratedWithNaN()
         {
             Assert.Throws<ArgumentException>(() =>
             {
                 var signal = new Tilt(float.NaN, 0.0f);
             });
-        }
 
-        [Test]
-        public void CannotBeGeneratedWithNaNVertical()
-        {
             Assert.Throws<ArgumentException>(() =>
             {
                 var signal = new Tilt(0.0f, float.NaN);
@@ -64,44 +60,33 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithHorizontalLowerThanNegativeOne()
+        public void CannotBeGeneratedWithValueOutOfRange()
         {
+            // Horizontal lower than minimum.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var signal = new Tilt(-1.1f, 0.0f);
             });
-        }
 
-        [Test]
-        public void CannotBeGeneratedWithHorizontalHigherThanPositiveOne()
-        {
+            // Horizontal higher than maximum.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var signal = new Tilt(1.1f, 0.0f);
             });
-        }
 
-        [Test]
-        public void CannotBeGeneratedWithVerticalLowerThanNegativeOne()
-        {
+            // Vertical lower than minimum.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var signal = new Tilt(0.0f, -1.1f);
             });
-        }
 
-        [Test]
-        public void CannotBeGeneratedWithVerticalHigherThanPositiveOne()
-        {
+            // Vertical higher than maximum.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var signal = new Tilt(0.0f, 1.1f);
             });
-        }
 
-        [Test]
-        public void CannotBeGeneratedWithLengthLargerThanOne()
-        {
+            // Distance larger than length.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var signal = new Tilt(1.0f, 1.0f);

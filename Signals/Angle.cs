@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines some types of <see cref="ISignal"/> for angle.
+    /// Defines some types of <see cref="ISignal"/> for <see cref="Angle"/>.
     /// </summary>
     public static class Angle
     {
@@ -20,14 +20,12 @@ namespace YggdrAshill.Nuadha.Signals
         /// </summary>
         public const float RadianToDegree = Degree.Maximum / Radian.Maximum;
 
-        private const float Tolerance = 1e-4f;
-
         #endregion
 
         #region Radian
 
         /// <summary>
-        /// Implementation of <see cref="ISignal"/> to describe radian.
+        /// Implementation of <see cref="ISignal"/> to <see cref="Radian"/>.
         /// </summary>
         public struct Radian :
             ISignal,
@@ -43,17 +41,19 @@ namespace YggdrAshill.Nuadha.Signals
             /// </summary>
             public const float Maximum = (float)Math.PI;
 
-            internal readonly float value;
+            private readonly float value;
 
             /// <summary>
             /// Constructs an instance.
             /// </summary>
-            /// <param name="value"></param>
+            /// <param name="value">
+            /// <see cref="float"/> for <see cref="Radian"/>.
+            /// </param>
             /// <exception cref="ArgumentException">
             /// Thrown if <paramref name="value"/> is <see cref="float.NaN"/>.
             /// </exception>
             /// <exception cref="ArgumentOutOfRangeException">
-            /// Thrown if <paramref name="value"/> is not between <see cref="Minimum"/> to <see cref="Maximum"/>.
+            /// Thrown if <paramref name="value"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
             /// </exception>
             public Radian(float value)
             {
@@ -113,12 +113,6 @@ namespace YggdrAshill.Nuadha.Signals
             /// <returns>
             /// <see cref="Radian"/> converted.
             /// </returns>
-            /// <exception cref="ArgumentException">
-            /// Thrown if <paramref name="signal"/> is <see cref="float.NaN"/>.
-            /// </exception>
-            /// <exception cref="ArgumentOutOfRangeException">
-            /// Thrown if <paramref name="signal"/> is not between <see cref="Minimum"/> to <see cref="Maximum"/>.
-            /// </exception>
             public static explicit operator Radian(float signal)
             {
                 return new Radian(signal);
@@ -139,19 +133,19 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Converts explicitly <see cref="Degree"/> to <see cref="Radian"/>.
+            /// Converts explicitly <see cref="Radian"/> to <see cref="Degree"/>.
             /// </summary>
-            /// <param name="degree">
-            /// <see cref="Degree"/> to covert.
+            /// <param name="radian">
+            /// <see cref="Radian"/> to covert.
             /// </param>
             /// <returns>
-            /// <see cref="Radian"/> converted.
+            /// <see cref="Degree"/> converted.
             /// </returns>
-            public static explicit operator Radian(Degree degree)
+            public static explicit operator Degree(Radian radian)
             {
-                var value = degree.value * DegreeToRadian;
+                var value = radian.value * RadianToDegree;
 
-                return new Radian(value);
+                return new Degree(value);
             }
 
             /// <summary>
@@ -215,12 +209,7 @@ namespace YggdrAshill.Nuadha.Signals
             /// <returns></returns>
             public static bool operator ==(Radian left, Radian right)
             {
-                if (left.Equals(right))
-                {
-                    return true;
-                }
-
-                return Math.Abs(left.value - right.value) < Tolerance;
+                return left.Equals(right);
             }
 
             /// <summary>
@@ -240,7 +229,7 @@ namespace YggdrAshill.Nuadha.Signals
         #region Degree
 
         /// <summary>
-        /// Implementation of <see cref="ISignal"/> to describe degree.
+        /// Implementation of <see cref="ISignal"/> for <see cref="Degree"/>.
         /// </summary>
         public struct Degree :
             ISignal,
@@ -256,7 +245,7 @@ namespace YggdrAshill.Nuadha.Signals
             /// </summary>
             public const float Maximum = 180.0f;
 
-            internal readonly float value;
+            private readonly float value;
 
             /// <summary>
             /// Constructs an instance.
@@ -266,7 +255,7 @@ namespace YggdrAshill.Nuadha.Signals
             /// Thrown if <paramref name="value"/> is <see cref="float.NaN"/>.
             /// </exception>
             /// <exception cref="ArgumentOutOfRangeException">
-            /// Thrown if <paramref name="value"/> is not between <see cref="Minimum"/> to <see cref="Maximum"/>.
+            /// Thrown if <paramref name="value"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
             /// </exception>
             public Degree(float value)
             {
@@ -290,6 +279,22 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <inheritdoc/>
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(this, obj))
+                {
+                    return true;
+                }
+
+                if (obj is Degree signal)
+                {
+                    return Equals(signal);
+                }
+
+                return false;
+            }
+
+            /// <inheritdoc/>
             public bool Equals(Degree other)
             {
                 return value.Equals(other.value);
@@ -304,12 +309,6 @@ namespace YggdrAshill.Nuadha.Signals
             /// <returns>
             /// <see cref="Degree"/> converted.
             /// </returns>
-            /// <exception cref="ArgumentException">
-            /// Thrown if <paramref name="signal"/> is <see cref="float.NaN"/>.
-            /// </exception>
-            /// <exception cref="ArgumentOutOfRangeException">
-            /// Thrown if <paramref name="signal"/> is not between <see cref="Minimum"/> to <see cref="Maximum"/>.
-            /// </exception>
             public static explicit operator Degree(float signal)
             {
                 return new Degree(signal);
@@ -330,19 +329,19 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Converts explicitly <see cref="Radian"/> to <see cref="Degree"/>.
+            /// Converts explicitly <see cref="Degree"/> to <see cref="Radian"/>.
             /// </summary>
-            /// <param name="radian">
-            /// <see cref="Radian"/> to covert.
+            /// <param name="degree">
+            /// <see cref="Degree"/> to covert.
             /// </param>
             /// <returns>
-            /// <see cref="Degree"/> converted.
+            /// <see cref="Radian"/> converted.
             /// </returns>
-            public static explicit operator Degree(Radian radian)
+            public static explicit operator Radian(Degree degree)
             {
-                var value = radian.value * RadianToDegree;
+                var value = degree.value * DegreeToRadian;
 
-                return new Degree(value);
+                return new Radian(value);
             }
 
             /// <summary>
@@ -406,12 +405,7 @@ namespace YggdrAshill.Nuadha.Signals
             /// <returns></returns>
             public static bool operator ==(Degree left, Degree right)
             {
-                if (left.Equals(right))
-                {
-                    return true;
-                }
-
-                return Math.Abs(left.value - right.value) < Tolerance;
+                return left.Equals(right);
             }
 
             /// <summary>

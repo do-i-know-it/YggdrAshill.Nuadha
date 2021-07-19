@@ -4,53 +4,65 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> to describe tilt.
+    /// Implementation of <see cref="ISignal"/> for <see cref="Tilt"/>.
     /// </summary>
     public struct Tilt :
         ISignal,
         IEquatable<Tilt>
     {
-        private const float Tolerance = float.Epsilon;
-        private const float Length = 1.0f;
+        /// <summary>
+        /// Maximum of <see cref="Length"/> for <see cref="Tilt"/>.
+        /// </summary>
+        public const float Length = 1.0f;
 
         /// <summary>
-        /// Origin of the coordinate.
+        /// <see cref="Minimum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/>.
+        /// </summary>
+        public const float Minimum = -Length;
+
+        /// <summary>
+        /// <see cref="Maximum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/>.
+        /// </summary>
+        public const float Maximum = Length;
+
+        /// <summary>
+        /// <see cref="Origin"/> of the coordinate.
         /// </summary>
         public static Tilt Origin { get; } = new Tilt(0.0f, 0.0f);
 
         /// <summary>
-        /// Right side in the coordinate.
+        /// <see cref="Right"/> in the coordinate.
         /// </summary>
         public static Tilt Right { get; } = new Tilt(1.0f, 0.0f);
 
         /// <summary>
-        /// Left side in the coordinate.
+        /// <see cref="Left"/> in the coordinate.
         /// </summary>
         public static Tilt Left { get; } = new Tilt(-1.0f, 0.0f);
 
         /// <summary>
-        /// Front side in the coordinate.
+        /// <see cref="Upward"/> in the coordinate.
         /// </summary>
         public static Tilt Upward { get; } = new Tilt(0.0f, 1.0f);
 
         /// <summary>
-        /// Back side in the coordinate.
+        /// <see cref="Downward"/> in the coordinate.
         /// </summary>
         public static Tilt Downward { get; } = new Tilt(0.0f, -1.0f);
 
         /// <summary>
-        /// Value for horizontal of the coordinate.
+        /// <see cref="Horizontal"/> of the coordinate.
         /// </summary>
         public float Horizontal { get; }
 
         /// <summary>
-        /// Value for vertical of the coordinate.
+        /// <see cref="Vertical"/> of the coordinate.
         /// </summary>
         public float Vertical { get; }
 
         private float distance;
         /// <summary>
-        /// Distance of <see cref="Tilt"/>.
+        /// <see cref="Distance"/> of <see cref="Tilt"/>.
         /// </summary>
         public float Distance
         {
@@ -80,7 +92,7 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         /// <summary>
-        /// Reversed <see cref="Tilt"/>.
+        /// <see cref="Reversed"/> <see cref="Tilt"/>.
         /// </summary>
         public Tilt Reversed
             => new Tilt(-Horizontal, -Vertical);
@@ -88,8 +100,12 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// Constructs an instance.
         /// </summary>
-        /// <param name="horizontal"></param>
-        /// <param name="vertical"></param>
+        /// <param name="horizontal">
+        /// <see cref="float"/> for <see cref="Horizontal"/>.
+        /// </param>
+        /// <param name="vertical">
+        /// <see cref="float"/> for <see cref="Vertical"/>.
+        /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown if <paramref name="horizontal"/> is <see cref="float.NaN"/>.
         /// </exception>
@@ -97,13 +113,13 @@ namespace YggdrAshill.Nuadha.Signals
         /// Thrown if <paramref name="vertical"/> is <see cref="float.NaN"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="horizontal"/> is not between -1 to 1.
+        /// Thrown if <paramref name="horizontal"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="vertical"/> is not between -1 to 1.
+        /// Thrown if <paramref name="vertical"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="horizontal"/>^2 + <paramref name="vertical"/>^2 is larger than 1.
+        /// Thrown if <see cref="Distance"/> is out of <see cref="Length"/>.
         /// </exception>
         public Tilt(float horizontal, float vertical)
         {
@@ -116,11 +132,11 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentException($"{nameof(vertical)} is NaN.");
             }
 
-            if (horizontal < -Length || Length < horizontal)
+            if (horizontal < Minimum || Maximum < horizontal)
             {
                 throw new ArgumentOutOfRangeException(nameof(horizontal));
             }
-            if (vertical < -Length || Length < vertical)
+            if (vertical < Minimum || Maximum < vertical)
             {
                 throw new ArgumentOutOfRangeException(nameof(vertical));
             }
@@ -130,7 +146,7 @@ namespace YggdrAshill.Nuadha.Signals
                 + vertical * vertical;
             if (dotted > Length)
             {
-                throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(horizontal)}^2");
+                throw new ArgumentOutOfRangeException($"{nameof(Distance)}");
             }
 
             Horizontal = horizontal;
@@ -151,8 +167,11 @@ namespace YggdrAshill.Nuadha.Signals
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            // todo
-            return base.GetHashCode();
+            // Visual Studio auto generated.
+            var hashCode = 1238135884;
+            hashCode = hashCode * -1521134295 + Horizontal.GetHashCode();
+            hashCode = hashCode * -1521134295 + Vertical.GetHashCode();
+            return hashCode;
         }
 
         /// <inheritdoc/>
@@ -186,15 +205,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// <returns></returns>
         public static bool operator ==(Tilt left, Tilt right)
         {
-            if (left.Equals(right))
-            {
-                return true;
-            }
-
-            var horizontal = left.Horizontal - right.Horizontal;
-            var vertical = left.Vertical - right.Vertical;
-
-            return new Tilt(horizontal, vertical).Distance < Tolerance;
+            return left.Equals(right);
         }
 
         /// <summary>

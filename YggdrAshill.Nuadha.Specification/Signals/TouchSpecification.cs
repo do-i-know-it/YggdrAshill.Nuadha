@@ -6,18 +6,28 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(Touch))]
     internal class TouchSpecification
     {
-        [Test]
-        public void ShouldBeEqualWhenTouchIsDisabled()
+        private static object[] TestSuiteForEquation => new[]
         {
-            Assert.IsTrue(Touch.Disabled == Touch.Disabled);
-            Assert.IsTrue(Touch.Disabled != Touch.Enabled);
+            new object[] { Touch.Disabled, Touch.Disabled },
+            new object[] { Touch.Enabled, Touch.Enabled },
+        };
+        [TestCaseSource("TestSuiteForEquation")]
+        public void ShouldBeEqual(Touch one, Touch another)
+        {
+            Assert.AreEqual(one, another);
+            Assert.IsTrue(one == another);
         }
 
-        [Test]
-        public void ShouldBeEqualWhenTouchIsEnabled()
+        private static object[] TestSuiteForNotEquation => new[]
         {
-            Assert.IsTrue(Touch.Enabled != Touch.Disabled);
-            Assert.IsTrue(Touch.Enabled == Touch.Enabled);
+            new object[] { Touch.Disabled, Touch.Enabled },
+            new object[] { Touch.Enabled, Touch.Disabled },
+        };
+        [TestCaseSource("TestSuiteForNotEquation")]
+        public void ShouldNotBeEqual(Touch one, Touch another)
+        {
+            Assert.AreNotEqual(one, another);
+            Assert.IsTrue(one != another);
         }
     }
 }

@@ -7,6 +7,8 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(Space2D))]
     internal class Space2DSpecification
     {
+        #region Position
+
         [TestCase(0.0f, -1.0f)]
         [TestCase(-1.0f, 0.0f)]
         [TestCase(0.0f, 1.0f)]
@@ -22,7 +24,7 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(1.0f, 0.0f)]
         public void PositionShouldNotBeEqualToDifferentOne(float horizontal, float vertical)
         {
-            Assert.AreNotEqual(new Space2D.Position(horizontal, vertical), new Space2D.Position(vertical, horizontal));
+            Assert.AreNotEqual(new Space2D.Position(horizontal, vertical), new Space2D.Position(-horizontal, -vertical));
         }
 
         [Test]
@@ -81,6 +83,24 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreEqual(Space2D.Position.Origin, position - position);
         }
 
+        [Test]
+        public void PositionCannotBeGeneratedWithNaN()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var position = new Space2D.Position(float.NaN, 0.0f);
+            });
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var position = new Space2D.Position(0.0f, float.NaN);
+            });
+        }
+
+        #endregion
+
+        #region Direction
+
         [TestCase(0.0f, -1.0f)]
         [TestCase(-1.0f, 0.0f)]
         [TestCase(0.0f, 1.0f)]
@@ -118,13 +138,8 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithNaNHorizontal()
+        public void DirectionCannotBeGeneratedWithNaN()
         {
-            Assert.Throws<ArgumentException>(() =>
-            {
-                var position = new Space2D.Position(float.NaN, 0.0f);
-            });
-
             Assert.Throws<ArgumentException>(() =>
             {
                 var direction = new Space2D.Direction(float.NaN, 0.0f);
@@ -132,21 +147,18 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentException>(() =>
             {
-                var rotation = new Space2D.Rotation(float.NaN, 0.0f);
+                var direction = new Space2D.Direction(0.0f, float.NaN);
             });
         }
 
+        #endregion
+
         [Test]
-        public void CannotBeGeneratedWithNaNVertical()
+        public void RotationCannotBeGeneratedWithNaN()
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Space2D.Position(0.0f, float.NaN);
-            });
-
-            Assert.Throws<ArgumentException>(() =>
-            {
-                var direction = new Space2D.Direction(0.0f, float.NaN);
+                var rotation = new Space2D.Rotation(float.NaN, 0.0f);
             });
 
             Assert.Throws<ArgumentException>(() =>

@@ -15,6 +15,14 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreEqual(new Pull(expected), new Pull(expected));
         }
 
+        [TestCase(1.0f, 0.0f)]
+        [TestCase(0.5f, 1.0f)]
+        [TestCase(0.0f, 0.5f)]
+        public void ShouldNotBeEqualToSameValue(float one, float another)
+        {
+            Assert.AreNotEqual(new Pull(one), new Pull(another));
+        }
+
         [Test]
         public void CannotBeGeneratedWithNaN()
         {
@@ -25,17 +33,13 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithStrengthLowerThanZero()
+        public void CannotBeGeneratedWithValueOutOfRange()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var signal = new Pull(-0.1f);
             });
-        }
 
-        [Test]
-        public void CannotBeGeneratedWithStrengthHigherThanOne()
-        {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var signal = new Pull(1.1f);
