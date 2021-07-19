@@ -1,30 +1,13 @@
 using YggdrAshill.Nuadha.Signalization;
-using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/>.
+    /// Implementation of <see cref="ISignal"/> for <see cref="Pulse"/>.
     /// </summary>
     public sealed class Pulse :
-        ISignal,
-        IEquatable<Pulse>
+        ISignal
     {
-        private enum State
-        {
-            IsDisabled,
-            HasDisabled,
-            IsEnabled,
-            HasEnabled,
-        }
-
-        private readonly State state;
-
-        private Pulse(State state)
-        {
-            this.state = state;
-        }
-
         /// <summary>
         /// <see cref="Pulse"/> that is disabled.
         /// </summary>
@@ -44,6 +27,21 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <see cref="Pulse"/> that has enabled.
         /// </summary>
         public static Pulse HasEnabled { get; } = new Pulse(State.HasEnabled);
+
+        private enum State
+        {
+            IsDisabled,
+            HasDisabled,
+            IsEnabled,
+            HasEnabled,
+        }
+
+        private readonly State state;
+
+        private Pulse(State state)
+        {
+            this.state = state;
+        }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -65,26 +63,16 @@ namespace YggdrAshill.Nuadha.Transformation
                 return false;
             }
 
-            if (obj is Pulse pulse)
+            if (obj is Pulse signal)
             {
-                return Equals(pulse);
+                return state.Equals(signal.state);
             }
 
             return false;
         }
-        /// <inheritdoc/>
-        public bool Equals(Pulse other)
-        {
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-
-            return state.Equals(other.state);
-        }
 
         /// <summary>
-        /// Checks if <see cref="Pulse"/> and <see cref="Pulse"/> are equal.
+        /// Checks if one <see cref="Pulse"/> and another <see cref="Pulse"/> are equal.
         /// </summary>
         /// <param name="left"></param>
         /// <param name="right"></param>
@@ -101,10 +89,11 @@ namespace YggdrAshill.Nuadha.Transformation
                 return false;
             }
 
-            return left.Equals(right);
+            return left.state.Equals(right.state);
         }
+
         /// <summary>
-        /// Checks if <see cref="Pulse"/> and <see cref="Pulse"/> are not equal.
+        /// Checks if one <see cref="Pulse"/> and another <see cref="Pulse"/> are not equal.
         /// </summary>
         /// <param name="left"></param>
         /// <param name="right"></param>

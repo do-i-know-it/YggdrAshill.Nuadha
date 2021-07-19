@@ -77,7 +77,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Distance"/> into <see cref="Push"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Distance"/> into <see cref="Push"/>.
@@ -99,7 +99,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Push"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Push"/>.
@@ -121,7 +121,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Push"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Push"/>.
@@ -143,7 +143,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Vertical"/> into <see cref="Push"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Push"/>.
@@ -165,7 +165,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Vertical"/> into <see cref="Push"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Push"/>.
@@ -190,7 +190,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Distance"/> into <see cref="Pulse"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Distance"/> into <see cref="Pulse"/>.
@@ -212,7 +212,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
@@ -234,7 +234,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
@@ -256,7 +256,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
@@ -278,7 +278,7 @@ namespace YggdrAshill.Nuadha
             /// Converts <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
             /// </summary>
             /// <param name="threshold">
-            /// <see cref="HysteresisThreshold"/> to detect.
+            /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
             /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.

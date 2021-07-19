@@ -1,19 +1,19 @@
 namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Receives <typeparamref name="TSignal"/> to consume.
+    /// Consumes <typeparamref name="TSignal"/> received.
     /// </summary>
     /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to receive.
+    /// Type of <see cref="ISignal"/> to consume.
     /// </typeparam>
     public interface IConsumption<TSignal>
         where TSignal : ISignal
     {
         /// <summary>
-        /// Consumes <typeparamref name="TSignal"/>.
+        /// Receives <typeparamref name="TSignal"/>.
         /// </summary>
         /// <param name="signal">
-        /// <typeparamref name="TSignal"/> to consume.
+        /// <typeparamref name="TSignal"/> received.
         /// </param>
         void Consume(TSignal signal);
     }

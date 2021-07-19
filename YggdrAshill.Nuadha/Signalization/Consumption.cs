@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public static class Consumption
     {
         /// <summary>
-        /// <see cref="IConsumption{TSignal}"/> to execute <see cref="Action{T}"/> when this has consumed <typeparamref name="TSignal"/>.
+        /// Executes <see cref="Action{T}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to consume.
@@ -52,7 +52,7 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// <see cref="IConsumption{TSignal}"/> to do nothing when this has consumed <typeparamref name="TSignal"/>.
+        /// Executes none.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to consume.

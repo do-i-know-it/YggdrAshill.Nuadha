@@ -15,9 +15,9 @@ namespace YggdrAshill.Nuadha
 
         internal IgniteStick(StickModule module, IStickConfiguration configuration)
         {
-            touch = module.Touch.Transmit(configuration.Touch);
+            touch = module.Touch.ToTransmit(configuration.Touch);
 
-            tilt = module.Tilt.Transmit(configuration.Tilt);
+            tilt = module.Tilt.ToTransmit(configuration.Tilt);
         }
 
         /// <inheritdoc/>

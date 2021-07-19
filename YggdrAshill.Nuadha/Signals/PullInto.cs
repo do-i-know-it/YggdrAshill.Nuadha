@@ -13,7 +13,7 @@ namespace YggdrAshill.Nuadha
         /// Converts <see cref="Pull"/> into <see cref="Signals.Push"/>.
         /// </summary>
         /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to detect.
+        /// <see cref="HysteresisThreshold"/> to convert.
         /// </param>
         /// <returns>
         /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Signals.Push"/>.
@@ -61,7 +61,7 @@ namespace YggdrAshill.Nuadha
         /// Converts <see cref="Pull"/> into <see cref="Transformation.Pulse"/>.
         /// </summary>
         /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to detect.
+        /// <see cref="HysteresisThreshold"/> to convert.
         /// </param>
         /// <returns>
         /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Transformation.Pulse"/>.

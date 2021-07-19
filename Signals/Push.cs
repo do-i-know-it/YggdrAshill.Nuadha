@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> to describe push.
+    /// Implementation of <see cref="ISignal"/> <see cref="Push"/>.
     /// </summary>
     public struct Push :
         ISignal,
@@ -98,8 +98,12 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// Converts <see cref="Push"/> to <see cref="bool"/> in an expression.
         /// </summary>
-        /// <param name="signal"></param>
-        /// <returns></returns>
+        /// <param name="signal">
+        /// <see cref="Push"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="bool"/> converted.
+        /// </returns>
         public static bool operator true(Push signal)
         {
             return (bool)signal;
@@ -108,8 +112,12 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// Converts <see cref="Push"/> to <see cref="bool"/> in an expression.
         /// </summary>
-        /// <param name="signal"></param>
-        /// <returns></returns>
+        /// <param name="signal">
+        /// <see cref="Push"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="bool"/> converted.
+        /// </returns>
         public static bool operator false(Push signal)
         {
             return !(bool)signal;

@@ -3,6 +3,9 @@ using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
+    /// <summary>
+    /// Defines implementation of <see cref="IConversion{TInput, TOutput}"/> for <see cref="Pulse"/>.
+    /// </summary>
     public static class PulseFrom
     {
         /// <summary>

@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha
     /// Calibrates <typeparamref name="TSignal"/> to correct.
     /// </summary>
     /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to correct.
+    /// Type of <see cref="ISignal"/> to calibrate.
     /// </typeparam>
     public interface ICalibration<TSignal>
         where TSignal : ISignal
@@ -15,10 +15,10 @@ namespace YggdrAshill.Nuadha
         /// Calibrates <typeparamref name="TSignal"/> to correct.
         /// </summary>
         /// <param name="signal">
-        /// <typeparamref name="TSignal"/> for original.
+        /// Original <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="offset">
-        /// <typeparamref name="TSignal"/> for offset
+        /// Offset <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <typeparamref name="TSignal"/> corrected.

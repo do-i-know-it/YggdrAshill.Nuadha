@@ -15,9 +15,9 @@ namespace YggdrAshill.Nuadha
 
         internal IgnitePoseTracker(PoseTrackerModule module, IPoseTrackerConfiguration configuration)
         {
-            position = module.Position.Transmit(configuration.Position);
+            position = module.Position.ToTransmit(configuration.Position);
 
-            rotation = module.Rotation.Transmit(configuration.Rotation);
+            rotation = module.Rotation.ToTransmit(configuration.Rotation);
         }
 
         /// <inheritdoc/>

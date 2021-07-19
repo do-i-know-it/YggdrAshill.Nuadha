@@ -37,17 +37,7 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(signal));
             }
 
-            if (signal == first)
-            {
-                return true;
-            }
-
-            if (signal == second)
-            {
-                return true;
-            }
-
-            return false;
+            return signal == first || signal == second;
         }
     }
 }

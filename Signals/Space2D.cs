@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines some types of <see cref="ISignal"/> for two dimentional space.
+    /// Defines some types of <see cref="ISignal"/> for <see cref="Space2D"/>.
     /// </summary>
     public static class Space2D
     {
@@ -14,50 +14,50 @@ namespace YggdrAshill.Nuadha.Signals
         #region Position
 
         /// <summary>
-        /// Implementation of <see cref="ISignal"/> to describe position of <see cref="Space2D"/>.
+        /// Implementation of <see cref="ISignal"/> for <see cref="Position"/> of <see cref="Space2D"/>.
         /// </summary>
         public struct Position :
             ISignal,
             IEquatable<Position>
         {
             /// <summary>
-            /// Origin of the coordinate.
+            /// <see cref="Origin"/> of the coordinate.
             /// </summary>
             public static Position Origin { get; } = new Position(0.0f, 0.0f);
 
             /// <summary>
-            /// Right side in the coordinate.
+            /// <see cref="Right"/> in the coordinate.
             /// </summary>
             public static Position Right { get; } = new Position(1.0f, 0.0f);
 
             /// <summary>
-            /// Left side in the coordinate.
+            /// <see cref="Left"/> in the coordinate.
             /// </summary>
             public static Position Left { get; } = new Position(-1.0f, 0.0f);
 
             /// <summary>
-            /// Up side in the coordinate.
+            /// <see cref="Upward"/> in the coordinate.
             /// </summary>
             public static Position Upward { get; } = new Position(0.0f, 1.0f);
 
             /// <summary>
-            /// Down side in the coordinate.
+            /// <see cref="Downward"/> in the coordinate.
             /// </summary>
             public static Position Downward { get; } = new Position(0.0f, -1.0f);
 
             /// <summary>
-            /// Value for horizontal of the coordinate.
+            /// <see cref="Horizontal"/> of the coordinate.
             /// </summary>
             public float Horizontal { get; }
 
             /// <summary>
-            /// Value for vertical of the coordinate.
+            /// <see cref="Vertical"/> of the coordinate.
             /// </summary>
             public float Vertical { get; }
 
             private float distance;
             /// <summary>
-            /// Distance of <see cref="Position"/>.
+            /// <see cref="Distance"/> of <see cref="Position"/>.
             /// </summary>
             public float Distance
             {
@@ -89,8 +89,12 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Constructs an instance.
             /// </summary>
-            /// <param name="horizontal"></param>
-            /// <param name="vertical"></param>
+            /// <param name="horizontal">
+            /// <see cref="float"/> for <see cref="Horizontal"/>.
+            /// </param>
+            /// <param name="vertical">
+            /// <see cref="float"/> for <see cref="Vertical"/>.
+            /// </param>
             /// <exception cref="ArgumentException">
             /// Thrown if <paramref name="horizontal"/> is <see cref="float.NaN"/>.
             /// </exception>
@@ -126,8 +130,11 @@ namespace YggdrAshill.Nuadha.Signals
             /// <inheritdoc/>
             public override int GetHashCode()
             {
-                // todo
-                return base.GetHashCode();
+                // Visual Studio auto generated.
+                var hashCode = 1238135884;
+                hashCode = hashCode * -1521134295 + Horizontal.GetHashCode();
+                hashCode = hashCode * -1521134295 + Vertical.GetHashCode();
+                return hashCode;
             }
 
             /// <inheritdoc/>
@@ -154,7 +161,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Calculates <see cref="Direction"/> from <see cref="Position"/>.
+            /// <see cref="Direction"/> from <see cref="Position"/>.
             /// </summary>
             /// <param name="position"></param>
             /// <returns>
@@ -236,12 +243,7 @@ namespace YggdrAshill.Nuadha.Signals
             /// <returns></returns>
             public static bool operator ==(Position left, Position right)
             {
-                if (left.Equals(right))
-                {
-                    return true;
-                }
-
-                return (left - right).Distance < Tolerance;
+                return left.Equals(right);
             }
 
             /// <summary>
@@ -261,35 +263,35 @@ namespace YggdrAshill.Nuadha.Signals
         #region Direction
 
         /// <summary>
-        /// Implementation of <see cref="ISignal"/> to describe direction of <see cref="Space2D"/>.
+        /// Implementation of <see cref="ISignal"/> for <see cref="Direction"/> of <see cref="Space2D"/>.
         /// </summary>
         public struct Direction :
             ISignal,
             IEquatable<Direction>
         {
             /// <summary>
-            /// Right side in the coordinate.
+            /// <see cref="Right"/> in the coordinate.
             /// </summary>
             public static Direction Right { get; } = Position.Right.DirectionFrom(Position.Origin);
 
             /// <summary>
-            /// Left side in the coordinate.
+            /// <see cref="Left"/> in the coordinate.
             /// </summary>
             public static Direction Left { get; } = Position.Left.DirectionFrom(Position.Origin);
 
             /// <summary>
-            /// Up side in the coordinate.
+            /// <see cref="Upward"/> in the coordinate.
             /// </summary>
             public static Direction Upward { get; } = Position.Upward.DirectionFrom(Position.Origin);
 
             /// <summary>
-            /// Down side in the coordinate.
+            /// <see cref="Downward"/> in the coordinate.
             /// </summary>
             public static Direction Downward { get; } = Position.Downward.DirectionFrom(Position.Origin);
 
             private float horizontal;
             /// <summary>
-            /// Value for horizontal of the coordinate.
+            /// <see cref="Horizontal"/> of the coordinate.
             /// </summary>
             public float Horizontal
             {
@@ -303,7 +305,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             private float vertical;
             /// <summary>
-            /// Value for vertical of the coordinate.
+            /// <see cref="Vertical"/> of the coordinate.
             /// </summary>
             public float Vertical
             {
@@ -339,8 +341,12 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Constructs an instance.
             /// </summary>
-            /// <param name="horizontal"></param>
-            /// <param name="vertical"></param>
+            /// <param name="horizontal">
+            /// <see cref="float"/> for <see cref="Horizontal"/>.
+            /// </param>
+            /// <param name="vertical">
+            /// <see cref="float"/> for <see cref="Vertical"/>.
+            /// </param>
             /// <exception cref="ArgumentException">
             /// Thrown if <paramref name="horizontal"/> is <see cref="float.NaN"/>.
             /// </exception>
@@ -393,8 +399,11 @@ namespace YggdrAshill.Nuadha.Signals
             /// <inheritdoc/>
             public override int GetHashCode()
             {
-                // todo
-                return base.GetHashCode();
+                // Visual Studio auto generated.
+                var hashCode = 1238135884;
+                hashCode = hashCode * -1521134295 + Horizontal.GetHashCode();
+                hashCode = hashCode * -1521134295 + Vertical.GetHashCode();
+                return hashCode;
             }
 
             /// <inheritdoc/>
@@ -421,7 +430,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Calculates <see cref="Rotation"/> from <see cref="Direction"/>.
+            /// <see cref="Rotation"/> from <see cref="Direction"/>.
             /// </summary>
             /// <param name="direction"></param>
             /// <returns>
@@ -448,18 +457,7 @@ namespace YggdrAshill.Nuadha.Signals
             /// <returns></returns>
             public static bool operator ==(Direction left, Direction right)
             {
-                if (left.Equals(right))
-                {
-                    return true;
-                }
-
-                var dotted
-                    = left.Horizontal * right.Horizontal
-                    + left.Vertical * right.Vertical;
-
-                var difference = Math.Abs(Length - dotted);
-
-                return difference <= Tolerance;
+                return left.Equals(right);
             }
 
             /// <summary>
@@ -479,12 +477,15 @@ namespace YggdrAshill.Nuadha.Signals
         #region Rotation
 
         /// <summary>
-        /// Implementation of <see cref="ISignal"/> to describe rotation of <see cref="Space2D"/>.
+        /// Implementation of <see cref="ISignal"/> for <see cref="Rotation"/> of <see cref="Space2D"/>.
         /// </summary>
         public struct Rotation :
             ISignal,
             IEquatable<Rotation>
         {
+            /// <summary>
+            /// <see cref="Rotation"/> not rotated.
+            /// </summary>
             public static Rotation None { get; } = new Rotation(1f, 0f);
 
             private float horizontal;
@@ -527,8 +528,12 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Constructs an instance.
             /// </summary>
-            /// <param name="horizontal"></param>
-            /// <param name="vertical"></param>
+            /// <param name="horizontal">
+            /// <see cref="float"/> for <see cref="Rotation"/>.
+            /// </param>
+            /// <param name="vertical">
+            /// <see cref="float"/> for <see cref="Rotation"/>.
+            /// </param>
             /// <exception cref="ArgumentException">
             /// Thrown if <paramref name="horizontal"/> is <see cref="float.NaN"/>.
             /// </exception>
@@ -581,8 +586,11 @@ namespace YggdrAshill.Nuadha.Signals
             /// <inheritdoc/>
             public override int GetHashCode()
             {
-                // todo
-                return base.GetHashCode();
+                // Visual Studio auto generated.
+                var hashCode = 1238135884;
+                hashCode = hashCode * -1521134295 + Horizontal.GetHashCode();
+                hashCode = hashCode * -1521134295 + Vertical.GetHashCode();
+                return hashCode;
             }
 
             /// <inheritdoc/>
@@ -639,7 +647,7 @@ namespace YggdrAshill.Nuadha.Signals
             {
                 var radian = (float)Math.Acos(rotation.Horizontal) * Math.Sign(rotation.Vertical);
 
-                return (Angle.Radian)radian;
+                return new Angle.Radian(radian);
             }
 
             /// <summary>

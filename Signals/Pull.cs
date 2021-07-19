@@ -4,14 +4,12 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> to describe pull.
+    /// Implementation of <see cref="ISignal"/> for <see cref="Pull"/>.
     /// </summary>
     public struct Pull :
         ISignal,
         IEquatable<Pull>
     {
-        #region Constants
-
         /// <summary>
         /// <see cref="Minimum"/> of <see cref="Pull"/>.
         /// </summary>
@@ -22,21 +20,19 @@ namespace YggdrAshill.Nuadha.Signals
         /// </summary>
         public const float Maximum = 1.0f;
 
-        private const float Tolerance = float.Epsilon;
-
-        #endregion
-
         private readonly float value;
 
         /// <summary>
         /// Constructs an instance.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">
+        /// <see cref="float"/> for <see cref="Pull"/>.
+        /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown if <paramref name="value"/> is <see cref="float.NaN"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="value"/> is not between <see cref="Minimum"/> to <see cref="Maximum"/>.
+        /// Thrown if <paramref name="value"/> is not between <see cref="Minimum"/> and <see cref="Maximum"/>.
         /// </exception>
         public Pull(float value)
         {
@@ -44,7 +40,6 @@ namespace YggdrAshill.Nuadha.Signals
             {
                 throw new ArgumentException($"{nameof(value)} is NaN.");
             }
-
             
             if (value < Minimum || Maximum < value)
             {
@@ -97,12 +92,6 @@ namespace YggdrAshill.Nuadha.Signals
         /// <returns>
         /// <see cref="Pull"/> converted.
         /// </returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown if <paramref name="signal"/> is <see cref="float.NaN"/>.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="signal"/> is not between <see cref="Minimum"/> to <see cref="Maximum"/>.
-        /// </exception>
         public static explicit operator Pull(float signal)
         {
             return new Pull(signal);
@@ -130,12 +119,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// <returns></returns>
         public static bool operator ==(Pull left, Pull right)
         {
-            if (left.Equals(right))
-            {
-                return true;
-            }
-
-            return Math.Abs(left.value - right.value) < Tolerance;
+            return left.Equals(right);
         }
 
         /// <summary>

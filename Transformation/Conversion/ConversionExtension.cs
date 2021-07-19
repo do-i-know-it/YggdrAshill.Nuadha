@@ -18,13 +18,13 @@ namespace YggdrAshill.Nuadha.Transformation
         /// Type of <see cref="ISignal"/> converted.
         /// </typeparam>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TInput"/> to convert.
+        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TInput"/>.
         /// </param>
         /// <param name="conversion">
         /// <see cref="IConversion{TInput, TOutput}"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TOutput"/> converted.
+        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TOutput"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
@@ -99,6 +99,33 @@ namespace YggdrAshill.Nuadha.Transformation
             }
         }
 
+        /// <summary>
+        /// Creates <see cref="IConversion{TInput, TOutput}"/>.
+        /// </summary>
+        /// <typeparam name="TInput">
+        /// Type of <see cref="ISignal"/> to convert.
+        /// </typeparam>
+        /// <typeparam name="TMedium">
+        /// Type of <see cref="ISignal"/> converted from <typeparamref name="TInput"/> in order to convert <typeparamref name="TOutput"/>.
+        /// </typeparam>
+        /// <typeparam name="TOutput">
+        /// Type of <see cref="ISignal"/> converted.
+        /// </typeparam>
+        /// <param name="inputToMedium">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TMedium"/>.
+        /// </param>
+        /// <param name="mediumToOutput">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TMedium"/> into <typeparamref name="TOutput"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="inputToMedium"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="mediumToOutput"/> is null.
+        /// </exception>
         public static IConversion<TInput, TOutput> Then<TInput, TMedium, TOutput>(this IConversion<TInput, TMedium> inputToMedium, IConversion<TMedium, TOutput> mediumToOutput)
             where TInput : ISignal
             where TMedium : ISignal

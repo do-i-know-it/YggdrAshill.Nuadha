@@ -136,11 +136,6 @@ namespace YggdrAshill.Nuadha.Specification
             {
                 var propagation = Propagation.WithLatestCache.Of(default(IGeneration<Signal>));
             });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var propagation = Propagation.WithLatestCache.Of(default(Func<Signal>));
-            });
         }
     }
 }

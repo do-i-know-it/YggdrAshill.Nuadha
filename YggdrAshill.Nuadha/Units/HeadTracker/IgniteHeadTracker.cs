@@ -17,7 +17,7 @@ namespace YggdrAshill.Nuadha
         {
             pose = new IgnitePoseTracker(module.Pose, configuration.Pose);
 
-            direction = module.Direction.Transmit(configuration.Direction);
+            direction = module.Direction.ToTransmit(configuration.Direction);
         }
 
         /// <inheritdoc/>

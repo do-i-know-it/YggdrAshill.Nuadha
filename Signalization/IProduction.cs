@@ -1,23 +1,26 @@
 namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Sends <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
+    /// Produces <typeparamref name="TSignal"/>.
     /// </summary>
     /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to send.
+    /// Type of <see cref="ISignal"/> to produce.
     /// </typeparam>
     public interface IProduction<TSignal>
         where TSignal : ISignal
     {
         /// <summary>
-        /// Produces <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
+        /// Sends <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
         /// </summary>
         /// <param name="consumption">
-        /// Destination to send <typeparamref name="TSignal"/>.
+        /// <see cref="IConsumption{TSignal}"/> to receive <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <see cref="ICancellation"/> to cancel.
         /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown if <paramref name="consumption"/> is null.
+        /// </exception>
         ICancellation Produce(IConsumption<TSignal> consumption);
     }
 }

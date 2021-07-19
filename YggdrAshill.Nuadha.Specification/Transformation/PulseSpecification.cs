@@ -6,49 +6,54 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(Pulse))]
     internal class PulseSpecification
     {
-        [Test]
-        public void ShouldBeEqualWhenPulseIsDisabled()
+        private static object[] TestSuiteForEquation => new[]
         {
-            Assert.IsTrue(Pulse.IsDisabled == Pulse.IsDisabled);
-            Assert.IsTrue(Pulse.IsDisabled != Pulse.HasDisabled);
-            Assert.IsTrue(Pulse.IsDisabled != Pulse.IsEnabled);
-            Assert.IsTrue(Pulse.IsDisabled != Pulse.HasEnabled);
+            new object[] { Pulse.IsDisabled, Pulse.IsDisabled },
+            new object[] { Pulse.HasDisabled, Pulse.HasDisabled },
+            new object[] { Pulse.IsEnabled, Pulse.IsEnabled },
+            new object[] { Pulse.HasEnabled, Pulse.HasEnabled },
+        };
+        [TestCaseSource("TestSuiteForEquation")]
+        public void ShouldBeEqual(Pulse one, Pulse another)
+        {
+            Assert.AreEqual(one, another);
+            Assert.IsTrue(one == another);
         }
 
-        [Test]
-        public void ShouldBeEqualWhenPulseHasDisabled()
+        private static object[] TestSuiteForNotEquation => new[]
         {
-            Assert.IsTrue(Pulse.HasDisabled != Pulse.IsDisabled);
-            Assert.IsTrue(Pulse.HasDisabled == Pulse.HasDisabled);
-            Assert.IsTrue(Pulse.HasDisabled != Pulse.IsEnabled);
-            Assert.IsTrue(Pulse.HasDisabled != Pulse.HasEnabled);
+            new object[] { Pulse.IsDisabled, Pulse.HasDisabled },
+            new object[] { Pulse.IsDisabled, Pulse.IsEnabled },
+            new object[] { Pulse.IsDisabled, Pulse.HasEnabled },
+            new object[] { Pulse.HasDisabled, Pulse.IsDisabled },
+            new object[] { Pulse.HasDisabled, Pulse.IsEnabled },
+            new object[] { Pulse.HasDisabled, Pulse.HasEnabled },
+            new object[] { Pulse.IsEnabled, Pulse.IsDisabled },
+            new object[] { Pulse.IsEnabled, Pulse.HasDisabled },
+            new object[] { Pulse.IsEnabled, Pulse.HasEnabled },
+            new object[] { Pulse.HasEnabled, Pulse.IsDisabled },
+            new object[] { Pulse.HasEnabled, Pulse.HasDisabled },
+            new object[] { Pulse.HasEnabled, Pulse.IsEnabled },
+        };
+        [TestCaseSource("TestSuiteForNotEquation")]
+        public void ShouldNotBeEqual(Pulse one, Pulse another)
+        {
+            Assert.AreNotEqual(one, another);
+            Assert.IsTrue(one != another);
         }
 
-        [Test]
-        public void ShouldBeEqualWhenPulseIsEnabled()
+        private static object[] TestSuiteForNotNull => new[]
         {
-            Assert.IsTrue(Pulse.IsEnabled != Pulse.IsDisabled);
-            Assert.IsTrue(Pulse.IsEnabled != Pulse.HasDisabled);
-            Assert.IsTrue(Pulse.IsEnabled == Pulse.IsEnabled);
-            Assert.IsTrue(Pulse.IsEnabled != Pulse.HasEnabled);
-        }
-
-        [Test]
-        public void ShouldBeEqualWhenPulseHasEnabled()
+            new object[] { Pulse.IsDisabled },
+            new object[] { Pulse.HasDisabled },
+            new object[] { Pulse.IsEnabled },
+            new object[] { Pulse.HasEnabled },
+        };
+        [TestCaseSource("TestSuiteForNotNull")]
+        public void CannotBeEqualToNull(Pulse expected)
         {
-            Assert.IsTrue(Pulse.HasEnabled != Pulse.IsDisabled);
-            Assert.IsTrue(Pulse.HasEnabled != Pulse.HasDisabled);
-            Assert.IsTrue(Pulse.HasEnabled != Pulse.IsEnabled);
-            Assert.IsTrue(Pulse.HasEnabled == Pulse.HasEnabled);
-        }
-
-        [Test]
-        public void CannotBeEqualToNull()
-        {
-            Assert.IsTrue(Pulse.IsDisabled != null);
-            Assert.IsTrue(Pulse.HasDisabled != null);
-            Assert.IsTrue(Pulse.IsEnabled != null);
-            Assert.IsTrue(Pulse.HasEnabled != null);
+            Assert.AreNotEqual(expected, null);
+            Assert.IsTrue(expected != null);
         }
     }
 }

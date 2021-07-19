@@ -12,13 +12,13 @@ namespace YggdrAshill.Nuadha.Transformation
         where TSignal : ISignal
     {
         /// <summary>
-        /// Checks that <typeparamref name="TSignal"/> is satisfied with condition.
+        /// Checks this is satisfied by <typeparamref name="TSignal"/>.
         /// </summary>
         /// <param name="signal">
         /// <typeparamref name="TSignal"/> to detect.
         /// </param>
         /// <returns>
-        /// True if condition is satisfied.
+        /// True if this is satisfied.
         /// </returns>
         bool IsSatisfiedBy(TSignal signal);
     }

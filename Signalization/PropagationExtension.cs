@@ -8,19 +8,19 @@ namespace YggdrAshill.Nuadha.Signalization
     public static class PropagationExtension
     {
         /// <summary>
-        /// Converts <see cref="IPropagation{TSignal}"/> into <see cref="ITransmission{TSignal}"/>.
+        /// Creates <see cref="ITransmission{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to emit.
+        /// Type of <see cref="ISignal"/> to transmit.
         /// </typeparam>
         /// <param name="propagation">
-        /// <see cref="IPropagation{TSignal}"/> to convert.
+        /// <see cref="IPropagation{TSignal}"/> to propagate <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="generation">
-        /// <see cref="IGeneration{TSignal}"/> to generate.
+        /// <see cref="IGeneration{TSignal}"/> to generate <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="ITransmission{TSignal}"/> converted.
+        /// <see cref="ITransmission{TSignal}"/> to transmit.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="propagation"/> is null.
@@ -28,7 +28,7 @@ namespace YggdrAshill.Nuadha.Signalization
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="generation"/> is null.
         /// </exception>
-        public static ITransmission<TSignal> Transmit<TSignal>(this IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
+        public static ITransmission<TSignal> ToTransmit<TSignal>(this IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
             where TSignal : ISignal
         {
             if (propagation == null)
@@ -71,9 +71,9 @@ namespace YggdrAshill.Nuadha.Signalization
             /// <inheritdoc/>
             public void Emit()
             {
-                var gemerated = generation.Generate();
+                var signal = generation.Generate();
 
-                propagation.Consume(gemerated);
+                propagation.Consume(signal);
             }
 
             /// <inheritdoc/>

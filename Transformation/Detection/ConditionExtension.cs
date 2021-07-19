@@ -15,13 +15,13 @@ namespace YggdrAshill.Nuadha.Transformation
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> to detect.
+        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="condition">
         /// <see cref="ICondition{TSignal}"/> to detect.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> for <see cref="Notice"/> detected.
+        /// <see cref="IProduction{TSignal}"/> to send <see cref="Notice"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
@@ -130,6 +130,7 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.condition = condition;
             }
 
+            /// <inheritdoc/>
             public bool IsSatisfiedBy(TSignal signal)
             {
                 return !condition.IsSatisfiedBy(signal);
@@ -142,49 +143,50 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
         /// <returns>
         /// <see cref="ICondition{TSignal}"/> multiplied.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="left"/> is null.
+        /// Thrown if <paramref name="first"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="right"/> is null.
+        /// Thrown if <paramref name="second"/> is null.
         /// </exception>
-        public static ICondition<TSignal> And<TSignal>(this ICondition<TSignal> left, ICondition<TSignal> right)
+        public static ICondition<TSignal> And<TSignal>(this ICondition<TSignal> first, ICondition<TSignal> second)
             where TSignal : ISignal
         {
-            if (left == null)
+            if (first == null)
             {
-                throw new ArgumentNullException(nameof(left));
+                throw new ArgumentNullException(nameof(first));
             }
-            if (right == null)
+            if (second == null)
             {
-                throw new ArgumentNullException(nameof(right));
+                throw new ArgumentNullException(nameof(second));
             }
 
-            return new Multiply<TSignal>(left, right);
+            return new Multiply<TSignal>(first, second);
         }
         private sealed class Multiply<TSignal> :
             ICondition<TSignal>
             where TSignal : ISignal
         {
-            private readonly ICondition<TSignal> left;
+            private readonly ICondition<TSignal> first;
 
-            private readonly ICondition<TSignal> right;
+            private readonly ICondition<TSignal> second;
 
-            internal Multiply(ICondition<TSignal> left, ICondition<TSignal> right)
+            internal Multiply(ICondition<TSignal> first, ICondition<TSignal> second)
             {
-                this.left = left;
+                this.first = first;
 
-                this.right = right;
+                this.second = second;
             }
 
+            /// <inheritdoc/>
             public bool IsSatisfiedBy(TSignal signal)
             {
-                return left.IsSatisfiedBy(signal) && right.IsSatisfiedBy(signal);
+                return first.IsSatisfiedBy(signal) && second.IsSatisfiedBy(signal);
             }
         }
 
@@ -194,49 +196,50 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
         /// <returns>
         /// <see cref="ICondition{TSignal}"/> added.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="left"/> is null.
+        /// Thrown if <paramref name="first"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="right"/> is null.
+        /// Thrown if <paramref name="second"/> is null.
         /// </exception>
-        public static ICondition<TSignal> Or<TSignal>(this ICondition<TSignal> left, ICondition<TSignal> right)
+        public static ICondition<TSignal> Or<TSignal>(this ICondition<TSignal> first, ICondition<TSignal> second)
             where TSignal : ISignal
         {
-            if (left == null)
+            if (first == null)
             {
-                throw new ArgumentNullException(nameof(left));
+                throw new ArgumentNullException(nameof(first));
             }
-            if (right == null)
+            if (second == null)
             {
-                throw new ArgumentNullException(nameof(right));
+                throw new ArgumentNullException(nameof(second));
             }
 
-            return new Add<TSignal>(left, right);
+            return new Add<TSignal>(first, second);
         }
         private sealed class Add<TSignal> :
             ICondition<TSignal>
             where TSignal : ISignal
         {
-            private readonly ICondition<TSignal> left;
+            private readonly ICondition<TSignal> first;
 
-            private readonly ICondition<TSignal> right;
+            private readonly ICondition<TSignal> second;
 
-            internal Add(ICondition<TSignal> left, ICondition<TSignal> right)
+            internal Add(ICondition<TSignal> first, ICondition<TSignal> second)
             {
-                this.left = left;
+                this.first = first;
 
-                this.right = right;
+                this.second = second;
             }
 
+            /// <inheritdoc/>
             public bool IsSatisfiedBy(TSignal signal)
             {
-                return left.IsSatisfiedBy(signal) || right.IsSatisfiedBy(signal);
+                return first.IsSatisfiedBy(signal) || second.IsSatisfiedBy(signal);
             }
         }
     }

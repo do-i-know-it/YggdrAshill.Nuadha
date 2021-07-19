@@ -1,4 +1,3 @@
-using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha.Samples
@@ -14,13 +13,13 @@ namespace YggdrAshill.Nuadha.Samples
             {
                 var software = module.SoftwareHandler;
                 software
-                    .Touch.Produce<Touch>(signal =>
+                    .Touch.Produce(signal =>
                     {
                         Console.WriteLine(signal);
                     })
                     .Synthesize(composite);
                 software
-                    .Push.Produce<Push>(signal =>
+                    .Push.Produce(signal =>
                     {
                         Console.WriteLine(signal);
                     })

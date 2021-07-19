@@ -18,9 +18,9 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(Angle.Radian.Minimum, Angle.Radian.Maximum)]
         [TestCase(0.0f, Angle.Radian.Maximum)]
         [TestCase(0.0f, Angle.Radian.Minimum)]
-        public void RadianShouldNotBeEqualToDiffrentOne(float expected, float another)
+        public void RadianShouldNotBeEqualToDiffrentOne(float one, float another)
         {
-            Assert.AreNotEqual(new Angle.Radian(expected), new Angle.Radian(another));
+            Assert.AreNotEqual(new Angle.Radian(one), new Angle.Radian(another));
         }
 
         [TestCase(Angle.Radian.Maximum, Angle.Radian.Maximum, 0.0f)]
@@ -56,9 +56,9 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(Angle.Degree.Minimum, Angle.Degree.Maximum)]
         [TestCase(0.0f, Angle.Degree.Maximum)]
         [TestCase(0.0f, Angle.Degree.Minimum)]
-        public void DegreeShouldNotBeEqualToDiffrentOne(float expected, float another)
+        public void DegreeShouldNotBeEqualToDiffrentOne(float one, float another)
         {
-            Assert.AreNotEqual(new Angle.Degree(expected), new Angle.Degree(another));
+            Assert.AreNotEqual(new Angle.Degree(one), new Angle.Degree(another));
         }
 
         [TestCase(Angle.Degree.Maximum, Angle.Degree.Maximum, 0.0f)]
@@ -83,6 +83,15 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreEqual(new Angle.Degree(expected), new Angle.Degree(left) - new Angle.Degree(right));
         }
 
+        [TestCase(Angle.Radian.Maximum, Angle.Degree.Maximum)]
+        [TestCase(Angle.Radian.Minimum, Angle.Degree.Minimum)]
+        [TestCase(0.0f, 0.0f)]
+        public void RadianAndDegreeShouldBeConvertible(float radian, float degree)
+        {
+            Assert.AreEqual((Angle.Degree)new Angle.Radian(radian), new Angle.Degree(degree));
+            Assert.AreEqual((Angle.Radian)new Angle.Degree(degree), new Angle.Radian(radian));
+        }
+
         [Test]
         public void CannotBeGeneratedWithNaN()
         {
@@ -98,7 +107,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithNumberLowerThanMinimum()
+        public void RadianCannotBeGeneratedWithValueOutOfRange()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
@@ -107,30 +116,22 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var degree = new Angle.Degree(Angle.Degree.Minimum - 0.1f);
+                var radian = new Angle.Radian(Angle.Radian.Maximum + 0.1f);
             });
         }
 
         [Test]
-        public void CannotBeGeneratedWithNumberHigherThanMaximum()
+        public void DegreeCannotBeGeneratedWithValueOutOfRange()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var radian = new Angle.Radian(Angle.Radian.Maximum + 0.1f);
+                var degree = new Angle.Degree(Angle.Degree.Minimum - 0.1f);
             });
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var degree = new Angle.Degree(Angle.Degree.Maximum + 0.1f);
             });
-        }
-
-        [TestCase(Angle.Radian.Maximum, Angle.Degree.Maximum)]
-        [TestCase(Angle.Radian.Minimum, Angle.Degree.Minimum)]
-        [TestCase(0.0f, 0.0f)]
-        public void RadianAndDegreeShouldBeConvertible(float radian, float degree)
-        {
-            Assert.AreEqual((Angle.Degree)(Angle.Radian)radian, (Angle.Degree)degree);
         }
     }
 }
