@@ -1,6 +1,7 @@
-﻿using System;
+using YggdrAshill.Nuadha.Signalization;
+using System;
 
-namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
     /// Defines extensions for <see cref="IPropagation{TSignal}"/>.

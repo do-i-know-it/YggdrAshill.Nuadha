@@ -1,4 +1,6 @@
-namespace YggdrAshill.Nuadha.Signalization
+using YggdrAshill.Nuadha.Signalization;
+
+namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
     /// Generates <typeparamref name="TSignal"/>.
