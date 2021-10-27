@@ -1,7 +1,8 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using System;
 
-namespace YggdrAshill.Nuadha.Unitization
+namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
     /// Connects <typeparamref name="THandler"/> to emit some types of <see cref="ISignal"/>.

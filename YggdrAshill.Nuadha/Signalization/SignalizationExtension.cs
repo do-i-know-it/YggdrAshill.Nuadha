@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -77,7 +78,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return propagation.ToTransmit(Generation.Of(generation));
+            return propagation.Transmit(Generation.Of(generation));
         }
 
         /// <summary>

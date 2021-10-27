@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -15,9 +15,9 @@ namespace YggdrAshill.Nuadha
 
         internal IgniteTrigger(TriggerModule module, ITriggerConfiguration configuration)
         {
-            touch = module.Touch.ToTransmit(configuration.Touch);
+            touch = module.Touch.Transmit(configuration.Touch);
 
-            pull = module.Pull.ToTransmit(configuration.Pull);
+            pull = module.Pull.Transmit(configuration.Pull);
         }
 
         /// <inheritdoc/>

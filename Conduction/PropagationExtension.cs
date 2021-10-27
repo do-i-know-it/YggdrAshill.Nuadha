@@ -1,6 +1,7 @@
-﻿using System;
+using YggdrAshill.Nuadha.Signalization;
+using System;
 
-namespace YggdrAshill.Nuadha.Signalization
+namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
     /// Defines extensions for <see cref="IPropagation{TSignal}"/>.
@@ -28,7 +29,7 @@ namespace YggdrAshill.Nuadha.Signalization
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="generation"/> is null.
         /// </exception>
-        public static ITransmission<TSignal> ToTransmit<TSignal>(this IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
+        public static ITransmission<TSignal> Transmit<TSignal>(this IPropagation<TSignal> propagation, IGeneration<TSignal> generation)
             where TSignal : ISignal
         {
             if (propagation == null)

@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -80,7 +81,7 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldTransmitSignal()
         {
-            var transmission = propagation.ToTransmit(generation);
+            var transmission = propagation.Transmit(generation);
 
             var cancellation = transmission.Produce(consumption);
 
@@ -96,7 +97,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = default(IPropagation<Signal>).ToTransmit(generation);
+                var transmission = default(IPropagation<Signal>).Transmit(generation);
 
             });
 

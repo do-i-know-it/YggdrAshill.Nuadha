@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -17,7 +17,7 @@ namespace YggdrAshill.Nuadha
         {
             pose = new IgnitePoseTracker(module.Pose, configuration.Pose);
 
-            direction = module.Direction.ToTransmit(configuration.Direction);
+            direction = module.Direction.Transmit(configuration.Direction);
         }
 
         /// <inheritdoc/>

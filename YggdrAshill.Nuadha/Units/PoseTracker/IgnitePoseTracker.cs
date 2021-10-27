@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -15,9 +15,9 @@ namespace YggdrAshill.Nuadha
 
         internal IgnitePoseTracker(PoseTrackerModule module, IPoseTrackerConfiguration configuration)
         {
-            position = module.Position.ToTransmit(configuration.Position);
+            position = module.Position.Transmit(configuration.Position);
 
-            rotation = module.Rotation.ToTransmit(configuration.Rotation);
+            rotation = module.Rotation.Transmit(configuration.Rotation);
         }
 
         /// <inheritdoc/>

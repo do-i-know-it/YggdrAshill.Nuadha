@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -15,9 +15,9 @@ namespace YggdrAshill.Nuadha
 
         internal IgniteButton(ButtonModule module, IButtonConfiguration configuration)
         {
-            touch = module.Touch.ToTransmit(configuration.Touch);
+            touch = module.Touch.Transmit(configuration.Touch);
 
-            push = module.Push.ToTransmit(configuration.Push);
+            push = module.Push.Transmit(configuration.Push);
         }
 
         /// <inheritdoc/>
