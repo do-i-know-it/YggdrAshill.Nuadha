@@ -78,7 +78,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return propagation.ToTransmit(Generation.Of(generation));
+            return propagation.Transmit(Generation.Of(generation));
         }
 
         /// <summary>
