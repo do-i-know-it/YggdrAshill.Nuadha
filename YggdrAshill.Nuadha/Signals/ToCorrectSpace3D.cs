@@ -40,7 +40,7 @@ namespace YggdrAshill.Nuadha
                     throw new ArgumentNullException(nameof(generation));
                 }
 
-                return SignalIntoSignal.SignalTo.Correct(Instance, generation);
+                return SignalIntoSignalTo.Correct(Instance, generation);
             }
 
             private static PositionTo Instance { get; } = new PositionTo();
@@ -87,7 +87,7 @@ namespace YggdrAshill.Nuadha
                     throw new ArgumentNullException(nameof(generation));
                 }
 
-                return SignalIntoSignal.SignalTo.Correct(Instance, generation);
+                return SignalIntoSignalTo.Correct(Instance, generation);
             }
 
             private static RotationTo Instance { get; } = new RotationTo();
