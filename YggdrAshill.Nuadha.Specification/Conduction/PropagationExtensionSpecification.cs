@@ -6,76 +6,22 @@ using System;
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(PropagationExtension))]
-    internal class PropagationExtensionSpecification :
-        IPropagation<Signal>,
-        IGeneration<Signal>,
-        ICancellation
+    internal class PropagationExtensionSpecification
     {
-        #region Mock of Propagation
+        private PropagateSignal propagation;
 
-        private Signal expected;
+        private GenerateSignal generation;
 
-        private Signal consumed;
-
-
-        public void Cancel()
-        {
-
-        }
-
-        public void Dispose()
-        {
-
-        }
-
-        public Signal Generate()
-        {
-            if (expected == null)
-            {
-                throw new InvalidOperationException(nameof(expected));
-            }
-
-            return expected;
-        }
-
-        public void Consume(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            consumed = signal;
-        }
-
-        public ICancellation Produce(IConsumption<Signal> consumption)
-        {
-            if (consumption == null)
-            {
-                throw new ArgumentNullException(nameof(consumption));
-            }
-
-            return this;
-        }
-
-        #endregion
-
-        private IPropagation<Signal> propagation;
-
-        private IGeneration<Signal> generation;
-
-        private IConsumption<Signal> consumption;
+        private ConsumeSignal consumption;
 
         [SetUp]
         public void SetUp()
         {
-            expected = new Signal();
+            propagation = new PropagateSignal();
 
-            propagation = this;
+            generation = new GenerateSignal();
 
-            generation = this;
-
-            consumption = this;
+            consumption = new ConsumeSignal();
         }
 
         [Test]
@@ -87,7 +33,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             transmission.Emit();
 
-            Assert.AreEqual(expected, consumed);
+            Assert.AreEqual(generation.Generated, consumption.Consumed);
 
             cancellation.Cancel();
         }
