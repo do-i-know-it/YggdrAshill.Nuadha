@@ -8,7 +8,7 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/>.
     /// </summary>
-    public static class SignalInto
+    public static class SignalIntoSignal
     {
         /// <summary>
         /// Executes <see cref="Func{T, TResult}"/>.

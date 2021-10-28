@@ -29,7 +29,7 @@ namespace YggdrAshill.Nuadha
             }
 
             var condition = new Condition(threshold);
-            return SignalInto.Signal<Pull, Push>(signal => condition.IsSatisfiedBy(signal).ToPush());
+            return SignalIntoSignal.Signal<Pull, Push>(signal => condition.IsSatisfiedBy(signal).ToPush());
         }
         private sealed class Condition :
             ICondition<Pull>
