@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class IgniteHandController :
-        IIgnition<IHandControllerHardwareHandler>
+        IIgnition<IHandControllerSoftware>
     {
         private readonly IgnitePoseTracker pose;
 
@@ -16,31 +16,31 @@ namespace YggdrAshill.Nuadha
 
         private readonly IgniteTrigger handGrip;
 
-        internal IgniteHandController(HandControllerModule module, IHandControllerConfiguration configuration)
+        internal IgniteHandController(HandController protocol, IHandControllerConfiguration configuration)
         {
-            pose = new IgnitePoseTracker(module.Pose, configuration.Pose);
+            pose = new IgnitePoseTracker(protocol.Pose, configuration.Pose);
 
-            thumb = new IgniteStick(module.Thumb, configuration.Thumb);
+            thumb = new IgniteStick(protocol.Thumb, configuration.Thumb);
 
-            indexFinger = new IgniteTrigger(module.IndexFinger, configuration.IndexFinger);
+            indexFinger = new IgniteTrigger(protocol.IndexFinger, configuration.IndexFinger);
 
-            handGrip = new IgniteTrigger(module.HandGrip, configuration.HandGrip);
+            handGrip = new IgniteTrigger(protocol.HandGrip, configuration.HandGrip);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IHandControllerHardwareHandler handler)
+        public ICancellation Connect(IHandControllerSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            pose.Connect(handler.Pose).Synthesize(composite);
-            thumb.Connect(handler.Thumb).Synthesize(composite);
-            indexFinger.Connect(handler.IndexFinger).Synthesize(composite);
-            handGrip.Connect(handler.HandGrip).Synthesize(composite);
+            pose.Connect(module.Pose).Synthesize(composite);
+            thumb.Connect(module.Thumb).Synthesize(composite);
+            indexFinger.Connect(module.IndexFinger).Synthesize(composite);
+            handGrip.Connect(module.HandGrip).Synthesize(composite);
 
             return composite;
         }

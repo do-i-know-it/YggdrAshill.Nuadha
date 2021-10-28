@@ -8,7 +8,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class ConnectPulsatedTilt :
-        IConnection<IPulsatedTiltHardwareHandler>
+        IConnection<IPulsatedTiltSoftware>
     {
         private readonly IProduction<Pulse> distance;
 
@@ -39,20 +39,20 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IPulsatedTiltHardwareHandler handler)
+        public ICancellation Connect(IPulsatedTiltSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            distance.Produce(handler.Distance).Synthesize(composite);
-            left.Produce(handler.Left).Synthesize(composite);
-            right.Produce(handler.Right).Synthesize(composite);
-            forward.Produce(handler.Forward).Synthesize(composite);
-            backward.Produce(handler.Backward).Synthesize(composite);
+            distance.Produce(module.Distance).Synthesize(composite);
+            left.Produce(module.Left).Synthesize(composite);
+            right.Produce(module.Right).Synthesize(composite);
+            forward.Produce(module.Forward).Synthesize(composite);
+            backward.Produce(module.Backward).Synthesize(composite);
 
             return composite;
         }

@@ -1,28 +1,51 @@
+using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha.Samples
 {
     internal class Program
     {
+        private sealed class FixedButton :
+            IButtonConfiguration
+        {
+            internal static FixedButton Instance { get; } = new FixedButton();
+
+            private FixedButton()
+            {
+
+            }
+
+            public IGeneration<Touch> Touch => Generation.Of(() => Signals.Touch.Enabled);
+
+            public IGeneration<Push> Push => Generation.Of(() => Signals.Push.Disabled);
+        }
+
         private static void Main(string[] arguments)
         {
-            using (var module = ButtonModule.WithoutCache())
-            using (var device = ButtonModule.WithoutCache().Convert(new Button()))
-            using (device.Connect(module.HardwareHandler).ToDisposable())
+            using (var protocol = Button.WithoutCache())
+            using (var ignition = Button.WithoutCache().Convert(FixedButton.Instance))
             using (var composite = new CompositeCancellation())
             {
-                var software = module.SoftwareHandler;
-                software
-                    .Touch.Produce(signal =>
+                protocol
+                    .Software
+                    .Touch
+                    .Produce(signal =>
                     {
                         Console.WriteLine(signal);
                     })
                     .Synthesize(composite);
-                software
-                    .Push.Produce(signal =>
+                protocol
+                    .Software
+                    .Push
+                    .Produce(signal =>
                     {
                         Console.WriteLine(signal);
                     })
+                    .Synthesize(composite);
+
+                ignition
+                    .Connect(protocol.Hardware)
                     .Synthesize(composite);
 
                 while (true)
@@ -38,7 +61,7 @@ namespace YggdrAshill.Nuadha.Samples
                         return;
                     }
 
-                    device.Emit();
+                    ignition.Emit();
 
                     Console.WriteLine($"{input}");
                     Console.WriteLine();

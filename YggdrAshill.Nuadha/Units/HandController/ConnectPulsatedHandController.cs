@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class ConnectPulsatedHandController :
-        IConnection<IPulsatedHandControllerHardwareHandler>
+        IConnection<IPulsatedHandControllerSoftware>
     {
         private readonly ConnectPulsatedStick thumb;
 
@@ -14,28 +14,28 @@ namespace YggdrAshill.Nuadha
 
         private readonly ConnectPulsatedTrigger handGrip;
 
-        internal ConnectPulsatedHandController(IHandControllerSoftwareHandler handler, HandControllerThreshold threshold)
+        internal ConnectPulsatedHandController(IHandControllerHardware module, HandControllerThreshold threshold)
         {
-            thumb = new ConnectPulsatedStick(handler.Thumb, threshold.Thumb);
+            thumb = new ConnectPulsatedStick(module.Thumb, threshold.Thumb);
 
-            indexFinger = new ConnectPulsatedTrigger(handler.IndexFinger, threshold.IndexFinger);
+            indexFinger = new ConnectPulsatedTrigger(module.IndexFinger, threshold.IndexFinger);
 
-            handGrip = new ConnectPulsatedTrigger(handler.HandGrip, threshold.HandGrip);
+            handGrip = new ConnectPulsatedTrigger(module.HandGrip, threshold.HandGrip);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IPulsatedHandControllerHardwareHandler handler)
+        public ICancellation Connect(IPulsatedHandControllerSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            thumb.Connect(handler.Thumb).Synthesize(composite);
-            indexFinger.Connect(handler.IndexFinger).Synthesize(composite);
-            handGrip.Connect(handler.HandGrip).Synthesize(composite);
+            thumb.Connect(module.Thumb).Synthesize(composite);
+            indexFinger.Connect(module.IndexFinger).Synthesize(composite);
+            handGrip.Connect(module.HandGrip).Synthesize(composite);
 
             return composite;
         }

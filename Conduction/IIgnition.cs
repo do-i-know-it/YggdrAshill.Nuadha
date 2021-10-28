@@ -5,16 +5,16 @@ using System;
 namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
-    /// Connects <typeparamref name="THandler"/> to emit some types of <see cref="ISignal"/>.
+    /// Connects <typeparamref name="TModule"/> to emit some types of <see cref="ISignal"/>.
     /// </summary>
-    /// <typeparam name="THandler">
-    /// Type of <see cref="IHandler"/> to ignite.
+    /// <typeparam name="TModule">
+    /// Type of <see cref="IModule"/> to ignite.
     /// </typeparam>
-    public interface IIgnition<THandler> :
-        IConnection<THandler>,
+    public interface IIgnition<TModule> :
+        IConnection<TModule>,
         IEmission,
         IDisposable
-        where THandler : IHandler
+        where TModule : IModule
     {
 
     }

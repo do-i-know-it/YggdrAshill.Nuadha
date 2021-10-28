@@ -7,31 +7,31 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class ConnectPulsatedButton :
-        IConnection<IPulsatedButtonHardwareHandler>
+        IConnection<IPulsatedButtonSoftware>
     {
         private readonly IProduction<Pulse> touch;
 
         private readonly IProduction<Pulse> push;
 
-        internal ConnectPulsatedButton(IButtonSoftwareHandler handler)
+        internal ConnectPulsatedButton(IButtonHardware module)
         {
-            touch = handler.Touch.Convert(TouchInto.Pulse);
+            touch = module.Touch.Convert(TouchInto.Pulse);
 
-            push = handler.Push.Convert(PushInto.Pulse);
+            push = module.Push.Convert(PushInto.Pulse);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IPulsatedButtonHardwareHandler handler)
+        public ICancellation Connect(IPulsatedButtonSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            touch.Produce(handler.Touch).Synthesize(composite);
-            push.Produce(handler.Push).Synthesize(composite);
+            touch.Produce(module.Touch).Synthesize(composite);
+            push.Produce(module.Push).Synthesize(composite);
 
             return composite;
         }

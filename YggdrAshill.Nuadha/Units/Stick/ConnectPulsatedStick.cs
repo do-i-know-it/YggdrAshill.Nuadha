@@ -7,31 +7,31 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class ConnectPulsatedStick :
-        IConnection<IPulsatedStickHardwareHandler>
+        IConnection<IPulsatedStickSoftware>
     {
         private readonly IProduction<Pulse> touch;
 
         private readonly ConnectPulsatedTilt tilt;
 
-        internal ConnectPulsatedStick(IStickSoftwareHandler handler, TiltThreshold threshold)
+        internal ConnectPulsatedStick(IStickHardware module, TiltThreshold threshold)
         {
-            touch = handler.Touch.Convert(TouchInto.Pulse);
+            touch = module.Touch.Convert(TouchInto.Pulse);
 
-            tilt = new ConnectPulsatedTilt(handler.Tilt, threshold);
+            tilt = new ConnectPulsatedTilt(module.Tilt, threshold);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IPulsatedStickHardwareHandler handler)
+        public ICancellation Connect(IPulsatedStickSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            touch.Produce(handler.Touch).Synthesize(composite);
-            tilt.Connect(handler.Tilt).Synthesize(composite);
+            touch.Produce(module.Touch).Synthesize(composite);
+            tilt.Connect(module.Tilt).Synthesize(composite);
 
             return composite;
         }
