@@ -7,31 +7,31 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class IgniteHeadTracker :
-        IIgnition<IHeadTrackerHardwareHandler>
+        IIgnition<IHeadTrackerSoftware>
     {
         private readonly IgnitePoseTracker pose;
 
         private readonly ITransmission<Space3D.Direction> direction;
 
-        internal IgniteHeadTracker(HeadTrackerModule module, IHeadTrackerConfiguration configuration)
+        internal IgniteHeadTracker(HeadTracker protocol, IHeadTrackerConfiguration configuration)
         {
-            pose = new IgnitePoseTracker(module.Pose, configuration.Pose);
+            pose = new IgnitePoseTracker(protocol.Pose, configuration.Pose);
 
-            direction = module.Direction.Transmit(configuration.Direction);
+            direction = protocol.Direction.Transmit(configuration.Direction);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IHeadTrackerHardwareHandler handler)
+        public ICancellation Connect(IHeadTrackerSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            pose.Connect(handler.Pose).Synthesize(composite);
-            direction.Produce(handler.Direction).Synthesize(composite);
+            pose.Connect(module.Pose).Synthesize(composite);
+            direction.Produce(module.Direction).Synthesize(composite);
 
             return composite;
         }

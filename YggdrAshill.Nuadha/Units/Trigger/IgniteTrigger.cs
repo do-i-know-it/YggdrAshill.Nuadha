@@ -7,21 +7,21 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class IgniteTrigger :
-        IIgnition<ITriggerHardwareHandler>
+        IIgnition<ITriggerSoftware>
     {
         private readonly ITransmission<Touch> touch;
 
         private readonly ITransmission<Pull> pull;
 
-        internal IgniteTrigger(TriggerModule module, ITriggerConfiguration configuration)
+        internal IgniteTrigger(Trigger protocol, ITriggerConfiguration configuration)
         {
-            touch = module.Touch.Transmit(configuration.Touch);
+            touch = protocol.Touch.Transmit(configuration.Touch);
 
-            pull = module.Pull.Transmit(configuration.Pull);
+            pull = protocol.Pull.Transmit(configuration.Pull);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(ITriggerHardwareHandler handler)
+        public ICancellation Connect(ITriggerSoftware handler)
         {
             if (handler == null)
             {

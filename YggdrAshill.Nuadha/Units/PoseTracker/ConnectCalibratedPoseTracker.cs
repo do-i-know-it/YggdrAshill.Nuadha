@@ -8,31 +8,31 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class ConnectCalibratedPoseTracker :
-        IConnection<IPoseTrackerHardwareHandler>
+        IConnection<IPoseTrackerSoftware>
     {
         private readonly IProduction<Space3D.Position> position;
 
         private readonly IProduction<Space3D.Rotation> rotation;
 
-        internal ConnectCalibratedPoseTracker(IPoseTrackerSoftwareHandler handler, IPoseTrackerConfiguration configuration)
+        internal ConnectCalibratedPoseTracker(IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
         {
-            position = handler.Position.Convert(ToCorrectSpace3D.PositionTo.Calibrate(configuration.Position));
+            position = module.Position.Convert(ToCorrectSpace3D.PositionTo.Calibrate(configuration.Position));
 
-            rotation = handler.Rotation.Convert(ToCorrectSpace3D.RotationTo.Calibrate(configuration.Rotation));
+            rotation = module.Rotation.Convert(ToCorrectSpace3D.RotationTo.Calibrate(configuration.Rotation));
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IPoseTrackerHardwareHandler handler)
+        public ICancellation Connect(IPoseTrackerSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            position.Produce(handler.Position).Synthesize(composite);
-            rotation.Produce(handler.Rotation).Synthesize(composite);
+            position.Produce(module.Position).Synthesize(composite);
+            rotation.Produce(module.Rotation).Synthesize(composite);
 
             return composite;
         }

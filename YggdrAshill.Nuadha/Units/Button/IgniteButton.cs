@@ -7,31 +7,31 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class IgniteButton :
-        IIgnition<IButtonHardwareHandler>
+        IIgnition<IButtonSoftware>
     {
         private readonly ITransmission<Touch> touch;
 
         private readonly ITransmission<Push> push;
 
-        internal IgniteButton(ButtonModule module, IButtonConfiguration configuration)
+        internal IgniteButton(Button protocol, IButtonConfiguration configuration)
         {
-            touch = module.Touch.Transmit(configuration.Touch);
+            touch = protocol.Touch.Transmit(configuration.Touch);
 
-            push = module.Push.Transmit(configuration.Push);
+            push = protocol.Push.Transmit(configuration.Push);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IButtonHardwareHandler handler)
+        public ICancellation Connect(IButtonSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            touch.Produce(handler.Touch).Synthesize(composite);
-            push.Produce(handler.Push).Synthesize(composite);
+            touch.Produce(module.Touch).Synthesize(composite);
+            push.Produce(module.Push).Synthesize(composite);
 
             return composite;
         }

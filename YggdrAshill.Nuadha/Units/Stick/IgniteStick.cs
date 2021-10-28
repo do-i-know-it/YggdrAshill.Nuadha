@@ -7,31 +7,31 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     internal sealed class IgniteStick :
-        IIgnition<IStickHardwareHandler>
+        IIgnition<IStickSoftware>
     {
         private readonly ITransmission<Touch> touch;
 
         private readonly ITransmission<Tilt> tilt;
 
-        internal IgniteStick(StickModule module, IStickConfiguration configuration)
+        internal IgniteStick(Stick protocol, IStickConfiguration configuration)
         {
-            touch = module.Touch.Transmit(configuration.Touch);
+            touch = protocol.Touch.Transmit(configuration.Touch);
 
-            tilt = module.Tilt.Transmit(configuration.Tilt);
+            tilt = protocol.Tilt.Transmit(configuration.Tilt);
         }
 
         /// <inheritdoc/>
-        public ICancellation Connect(IStickHardwareHandler handler)
+        public ICancellation Connect(IStickSoftware module)
         {
-            if (handler == null)
+            if (module == null)
             {
-                throw new ArgumentNullException(nameof(handler));
+                throw new ArgumentNullException(nameof(module));
             }
 
             var composite = new CompositeCancellation();
 
-            touch.Produce(handler.Touch).Synthesize(composite);
-            tilt.Produce(handler.Tilt).Synthesize(composite);
+            touch.Produce(module.Touch).Synthesize(composite);
+            tilt.Produce(module.Tilt).Synthesize(composite);
 
             return composite;
         }
