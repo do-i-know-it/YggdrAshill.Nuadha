@@ -6,9 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(Propagation))]
-    internal class PropagationSpecification :
-        IConsumption<Signal>,
-        IGeneration<Signal>
+    internal class PropagationSpecification
     {
         private IPropagation<Signal>[] TestSuiteForPropagation
         {
@@ -17,36 +15,17 @@ namespace YggdrAshill.Nuadha.Specification
                 return new[]
                 {
                     Propagation.WithoutCache.Of<Signal>(),
-                    Propagation.WithLatestCache.Of(this),
+                    Propagation.WithLatestCache.Of(new GenerateSignal()),
                 };
             }
         }
 
-        private Signal consumed;
-
-        private Signal generated;
-
-        public void Consume(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            consumed = signal;
-        }
-
-        public Signal Generate()
-        {
-            return generated;
-        }
+        private ConsumeSignal consumption;
 
         [SetUp]
         public void SetUp()
         {
-            consumed = default;
-
-            generated = new Signal();
+            consumption = new ConsumeSignal();
         }
 
         [Test]
@@ -54,13 +33,13 @@ namespace YggdrAshill.Nuadha.Specification
         {
             foreach (var propagation in TestSuiteForPropagation)
             {
-                var cancellation = propagation.Produce(this);
+                var cancellation = propagation.Produce(consumption);
 
                 var expected = new Signal();
 
                 propagation.Consume(expected);
 
-                Assert.AreEqual(expected, consumed);
+                Assert.AreEqual(expected, consumption.Consumed);
 
                 cancellation.Cancel();
             }
@@ -71,7 +50,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             foreach (var propagation in TestSuiteForPropagation)
             {
-                var cancellation = propagation.Produce(this);
+                var cancellation = propagation.Produce(consumption);
 
                 cancellation.Cancel();
 
@@ -79,7 +58,7 @@ namespace YggdrAshill.Nuadha.Specification
 
                 propagation.Consume(expected);
 
-                Assert.AreNotEqual(expected, consumed);
+                Assert.AreNotEqual(expected, consumption.Consumed);
             }
         }
 
@@ -88,7 +67,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             foreach (var propagation in TestSuiteForPropagation)
             {
-                var cancellation = propagation.Produce(this);
+                var cancellation = propagation.Produce(consumption);
 
                 propagation.Dispose();
 
@@ -96,7 +75,7 @@ namespace YggdrAshill.Nuadha.Specification
 
                 propagation.Consume(expected);
 
-                Assert.AreNotEqual(expected, consumed);
+                Assert.AreNotEqual(expected, consumption.Consumed);
 
                 cancellation.Cancel();
             }
@@ -105,15 +84,15 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldSendCachedSignalToProducedWhenHasProduced()
         {
-            var propagation = Propagation.WithLatestCache.Of(this);
+            var propagation = Propagation.WithLatestCache.Of(new GenerateSignal());
 
             var expected = new Signal();
 
             propagation.Consume(expected);
 
-            var cancellation = propagation.Produce(this);
+            var cancellation = propagation.Produce(consumption);
 
-            Assert.AreEqual(expected, consumed);
+            Assert.AreEqual(expected, consumption.Consumed);
 
             cancellation.Cancel();
         }

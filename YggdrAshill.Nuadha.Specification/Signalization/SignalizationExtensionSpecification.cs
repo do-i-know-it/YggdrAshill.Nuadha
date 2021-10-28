@@ -11,6 +11,8 @@ namespace YggdrAshill.Nuadha.Specification
 
         private IPropagation<Signal> propagation;
 
+        private FakeCancellation cancellation;
+
         private CompositeCancellation composite;
 
         [SetUp]
@@ -19,6 +21,8 @@ namespace YggdrAshill.Nuadha.Specification
             expected = new Signal();
 
             propagation = Propagation.WithoutCache.Of<Signal>();
+
+            cancellation = new FakeCancellation();
 
             composite = new CompositeCancellation();
         }
@@ -75,36 +79,25 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var composite = new CompositeCancellation();
 
-            var expected = false;
-            var cancellation = Cancellation.Of(() =>
-            {
-                expected = true;
-            });
             cancellation.Synthesize(composite);
 
             composite.Cancel();
 
-            Assert.IsTrue(expected);
+            Assert.IsTrue(cancellation.Cancelled);
         }
 
         [Test]
         public void ShouldConvertCancellationIntoDisposable()
         {
-            var expected = false;
-            var disposable = Cancellation.Of(() =>
-            {
-                expected = true;
-            }).ToDisposable();
+            cancellation.ToDisposable().Dispose();
 
-            disposable.Dispose();
-
-            Assert.IsTrue(expected);
+            Assert.IsTrue(cancellation.Cancelled);
         }
 
         [Test]
         public void ConvertedDisposableShouldDisposeOnlyOnce()
         {
-            var disposable = Cancellation.None.ToDisposable();
+            var disposable = cancellation.ToDisposable();
 
             disposable.Dispose();
 
@@ -155,7 +148,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                Cancellation.None.Synthesize(default);
+                cancellation.Synthesize(default);
             });
         }
 
