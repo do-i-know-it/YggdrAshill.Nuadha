@@ -46,7 +46,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.condition = condition;
             }
 
-            /// <inheritdoc/>
             public Pulse Translate(TSignal signal)
             {
                 if (previous == Pulse.IsDisabled || previous == Pulse.HasDisabled)

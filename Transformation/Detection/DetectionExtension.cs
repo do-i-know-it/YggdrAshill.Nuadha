@@ -58,7 +58,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.condition = condition;
             }
 
-            /// <inheritdoc/>
             public ICancellation Produce(IConsumption<Notice> consumption)
             {
                 if (consumption == null)
@@ -84,7 +83,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.consumption = consumption;
             }
 
-            /// <inheritdoc/>
             public void Consume(TSignal signal)
             {
                 if (condition.IsSatisfiedBy(signal))

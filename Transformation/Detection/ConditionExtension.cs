@@ -44,7 +44,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.condition = condition;
             }
 
-            /// <inheritdoc/>
             public bool IsSatisfiedBy(TSignal signal)
             {
                 return !condition.IsSatisfiedBy(signal);
@@ -97,7 +96,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.second = second;
             }
 
-            /// <inheritdoc/>
             public bool IsSatisfiedBy(TSignal signal)
             {
                 return first.IsSatisfiedBy(signal) && second.IsSatisfiedBy(signal);
@@ -150,7 +148,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.second = second;
             }
 
-            /// <inheritdoc/>
             public bool IsSatisfiedBy(TSignal signal)
             {
                 return first.IsSatisfiedBy(signal) || second.IsSatisfiedBy(signal);

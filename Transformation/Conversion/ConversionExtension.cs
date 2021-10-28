@@ -63,7 +63,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.translation = translation;
             }
 
-            /// <inheritdoc/>
             public ICancellation Produce(IConsumption<TOutput> consumption)
             {
                 if (consumption == null)
@@ -90,7 +89,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.consumption = consumption;
             }
 
-            /// <inheritdoc/>
             public void Consume(TInput signal)
             {
                 var translated = translation.Translate(signal);

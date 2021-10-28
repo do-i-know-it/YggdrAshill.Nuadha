@@ -143,7 +143,6 @@ namespace YggdrAshill.Nuadha
                 this.cancellation = cancellation;
             }
 
-            /// <inheritdoc/>
             public void Dispose()
             {
                 if (disposed)

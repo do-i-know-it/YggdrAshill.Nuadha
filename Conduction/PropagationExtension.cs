@@ -58,7 +58,6 @@ namespace YggdrAshill.Nuadha.Conduction
                 this.generation = generation;
             }
 
-            /// <inheritdoc/>
             public ICancellation Produce(IConsumption<TSignal> consumption)
             {
                 if (consumption == null)
@@ -69,7 +68,6 @@ namespace YggdrAshill.Nuadha.Conduction
                 return propagation.Produce(consumption);
             }
 
-            /// <inheritdoc/>
             public void Emit()
             {
                 var signal = generation.Generate();
@@ -77,7 +75,6 @@ namespace YggdrAshill.Nuadha.Conduction
                 propagation.Consume(signal);
             }
 
-            /// <inheritdoc/>
             public void Dispose()
             {
                 propagation.Dispose();

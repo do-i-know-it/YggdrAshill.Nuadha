@@ -68,7 +68,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.mediumToOutput = mediumToOutput;
             }
 
-            /// <inheritdoc/>
             public TOutput Translate(TInput signal)
             {
                 var translated = inputToMedium.Translate(signal);

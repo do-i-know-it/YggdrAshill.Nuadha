@@ -49,7 +49,6 @@ namespace YggdrAshill.Nuadha.Transformation
                 this.onTranslated = onTranslated;
             }
 
-            /// <inheritdoc/>
             public TOutput Translate(TInput signal)
             {
                 return onTranslated.Invoke(signal);
