@@ -1,8 +1,7 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
 using System;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
     /// Defines implementations for <see cref="ICondition{TSignal}"/>.

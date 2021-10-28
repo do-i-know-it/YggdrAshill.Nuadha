@@ -11,7 +11,7 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// Converts <see cref="Touch"/> into <see cref="Signals.Push"/>.
         /// </summary>
-        public static ITranslation<Touch, Push> Push { get; } = SignalIntoSignal.Signal<Touch, Push>(signal => signal.ToBoolean().ToPush());
+        public static ITranslation<Touch, Push> Push { get; } = SignalInto.Signal<Touch, Push>(signal => signal.ToBoolean().ToPush());
 
         /// <summary>
         /// Converts <see cref="Touch"/> into <see cref="Transformation.Pulse"/>.

@@ -48,7 +48,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(translation));
             }
 
-            return production.Convert(SignalIntoSignal.Signal(translation));
+            return production.Convert(SignalInto.Signal(translation));
         }
 
         #endregion
