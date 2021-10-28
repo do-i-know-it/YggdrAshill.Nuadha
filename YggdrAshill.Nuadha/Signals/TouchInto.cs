@@ -16,6 +16,6 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// Converts <see cref="Touch"/> into <see cref="Transformation.Pulse"/>.
         /// </summary>
-        public static ITranslation<Touch, Pulse> Pulse { get; } = PulseFrom.Signal(TouchIs.Enabled);
+        public static ITranslation<Touch, Pulse> Pulse { get; } = PulseOf.Signal(TouchIs.Enabled);
     }
 }

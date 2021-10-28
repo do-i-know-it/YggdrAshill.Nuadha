@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Transformation
@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha.Transformation
     /// <summary>
     /// Defines implementation of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Pulse"/>.
     /// </summary>
-    public static class PulseFrom
+    public static class PulseOf
     {
         /// <summary>
         /// Converts <typeparamref name="TSignal"/> into <see cref="Pulse"/>.
