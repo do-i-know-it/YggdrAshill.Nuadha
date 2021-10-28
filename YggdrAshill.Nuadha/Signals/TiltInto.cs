@@ -5,12 +5,12 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> for <see cref="Tilt"/>.
+    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Tilt"/>.
     /// </summary>
     public static class TiltInto
     {
         public sealed class PullBy :
-            IConversion<Tilt, Pull>
+            ITranslation<Tilt, Pull>
         {
             /// <summary>
             /// Converts <see cref="Tilt.Distance"/> into <see cref="Pull"/>.
@@ -65,7 +65,7 @@ namespace YggdrAshill.Nuadha
             }
 
             /// <inheritdoc/>
-            public Pull Convert(Tilt signal)
+            public Pull Translate(Tilt signal)
             {
                 return onConverted.Invoke(signal);
             }
@@ -80,12 +80,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Distance"/> into <see cref="Push"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Distance"/> into <see cref="Push"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Push> Distance(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Push> Distance(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -102,12 +102,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Push"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Push"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Push> Left(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Push> Left(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -124,12 +124,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Push"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Push"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Push> Right(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Push> Right(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -146,12 +146,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Push"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Push"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Push> Forward(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Push> Forward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -168,12 +168,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Push"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Push"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Push> Backward(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Push> Backward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -193,12 +193,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Distance"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Distance"/> into <see cref="Pulse"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Pulse> Distance(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Pulse> Distance(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -215,12 +215,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Pulse> Left(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Pulse> Left(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -237,12 +237,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Pulse> Right(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Pulse> Right(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -259,12 +259,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Pulse> Forward(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Pulse> Forward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
@@ -281,12 +281,12 @@ namespace YggdrAshill.Nuadha
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static IConversion<Tilt, Pulse> Backward(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Pulse> Backward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {

@@ -23,7 +23,7 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TInput"/>.
         /// </param>
-        /// <param name="conversion">
+        /// <param name="translation">
         /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
@@ -33,9 +33,9 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="conversion"/> is null.
+        /// Thrown if <paramref name="translation"/> is null.
         /// </exception>
-        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, Func<TInput, TOutput> conversion)
+        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, Func<TInput, TOutput> translation)
             where TInput : ISignal
             where TOutput : ISignal
         {
@@ -43,12 +43,12 @@ namespace YggdrAshill.Nuadha
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (conversion == null)
+            if (translation == null)
             {
-                throw new ArgumentNullException(nameof(conversion));
+                throw new ArgumentNullException(nameof(translation));
             }
 
-            return production.Convert(SignalInto.Signal(conversion));
+            return production.Convert(SignalInto.Signal(translation));
         }
 
         #endregion
