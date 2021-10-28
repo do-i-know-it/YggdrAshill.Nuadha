@@ -28,31 +28,31 @@ namespace YggdrAshill.Nuadha.Specification
 
             // When previous pulse is disabled and condition is not satisfied, current pulse is disabled.
             expected = false;
-            Assert.AreEqual(Pulse.IsDisabled, conversion.Convert(new Signal()));
+            Assert.AreEqual(Pulse.IsDisabled, conversion.Translate(new Signal()));
 
             // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
             expected = true;
-            Assert.AreEqual(Pulse.HasEnabled, conversion.Convert(new Signal()));
+            Assert.AreEqual(Pulse.HasEnabled, conversion.Translate(new Signal()));
 
             // When previous pulse has enabled and condition is satisfied, current pulse is enabled.
             expected = true;
-            Assert.AreEqual(Pulse.IsEnabled, conversion.Convert(new Signal()));
+            Assert.AreEqual(Pulse.IsEnabled, conversion.Translate(new Signal()));
 
             // When previous pulse is enabled and condition is not satisfied, current pulse has disabled.
             expected = false;
-            Assert.AreEqual(Pulse.HasDisabled, conversion.Convert(new Signal()));
+            Assert.AreEqual(Pulse.HasDisabled, conversion.Translate(new Signal()));
 
             // When previous pulse has disabled and condition is not satisfied, current pulse is disabled.
             expected = false;
-            Assert.AreEqual(Pulse.IsDisabled, conversion.Convert(new Signal()));
+            Assert.AreEqual(Pulse.IsDisabled, conversion.Translate(new Signal()));
 
             // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
             expected = true;
-            Assert.AreEqual(Pulse.HasEnabled, conversion.Convert(new Signal()));
+            Assert.AreEqual(Pulse.HasEnabled, conversion.Translate(new Signal()));
 
             // When previous pulse has enabled and condition is not satisfied, current pulse has disabled.
             expected = false;
-            Assert.AreEqual(Pulse.HasDisabled, conversion.Convert(new Signal()));
+            Assert.AreEqual(Pulse.HasDisabled, conversion.Translate(new Signal()));
         }
     }
 }

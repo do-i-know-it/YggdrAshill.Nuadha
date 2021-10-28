@@ -6,7 +6,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> and <see cref="ICalibration{TSignal}"/> for <see cref="ToCorrectSpace3D"/>.
+    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> and <see cref="ICalibration{TSignal}"/> for <see cref="ToCorrectSpace3D"/>.
     /// </summary>
     public static class ToCorrectSpace3D
     {
@@ -31,9 +31,9 @@ namespace YggdrAshill.Nuadha
             /// <see cref="IGeneration{TSignal}"/> to generate offset of <see cref="Space3D.Position"/>.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to correct <see cref="Space3D.Position"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to correct <see cref="Space3D.Position"/>.
             /// </returns>
-            public static IConversion<Space3D.Position, Space3D.Position> Calibrate(IGeneration<Space3D.Position> generation)
+            public static ITranslation<Space3D.Position, Space3D.Position> Calibrate(IGeneration<Space3D.Position> generation)
             {
                 if (generation == null)
                 {
@@ -78,9 +78,9 @@ namespace YggdrAshill.Nuadha
             /// <see cref="IGeneration{TSignal}"/> to generate offset of <see cref="Space3D.Rotation"/>.
             /// </param>
             /// <returns>
-            /// <see cref="IConversion{TInput, TOutput}"/> to correct <see cref="Space3D.Rotation"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to correct <see cref="Space3D.Rotation"/>.
             /// </returns>
-            public static IConversion<Space3D.Rotation, Space3D.Rotation> Calibrate(IGeneration<Space3D.Rotation> generation)
+            public static ITranslation<Space3D.Rotation, Space3D.Rotation> Calibrate(IGeneration<Space3D.Rotation> generation)
             {
                 if (generation == null)
                 {

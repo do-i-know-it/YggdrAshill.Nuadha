@@ -7,9 +7,7 @@ namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(ConversionExtension))]
     internal class ConversionExtensionSpecification :
-        IConversion<InputSignal, Signal>,
-        IConversion<Signal, OutputSignal>,
-        IConversion<InputSignal, OutputSignal>,
+        ITranslation<InputSignal, OutputSignal>,
         IProduction<InputSignal>,
         IConsumption<OutputSignal>,
         ICancellation
@@ -47,27 +45,7 @@ namespace YggdrAshill.Nuadha.Specification
             consumed = signal;
         }
 
-        Signal IConversion<InputSignal, Signal>.Convert(InputSignal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            return new Signal();
-        }
-
-        OutputSignal IConversion<Signal, OutputSignal>.Convert(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            return expected;
-        }
-
-        OutputSignal IConversion<InputSignal, OutputSignal>.Convert(InputSignal signal)
+        OutputSignal ITranslation<InputSignal, OutputSignal>.Translate(InputSignal signal)
         {
             if (signal == null)
             {
@@ -79,11 +57,7 @@ namespace YggdrAshill.Nuadha.Specification
 
         private IProduction<InputSignal> production;
 
-        private IConversion<InputSignal, Signal> inputToSignal;
-
-        private IConversion<Signal, OutputSignal> signalToOutput;
-
-        private IConversion<InputSignal, OutputSignal> inputToOutput;
+        private ITranslation<InputSignal, OutputSignal> inputToOutput;
 
         [SetUp]
         public void SetUp()
@@ -93,10 +67,6 @@ namespace YggdrAshill.Nuadha.Specification
             consumed = null;
 
             production = this;
-
-            inputToSignal = this;
-
-            signalToOutput = this;
 
             inputToOutput = this;
         }
@@ -114,40 +84,16 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldCombineConversion()
-        {
-            var conversion = inputToSignal.Then(signalToOutput);
-
-            var converted = conversion.Convert(new InputSignal());
-
-            Assert.AreEqual(expected, converted);
-        }
-
-        [Test]
         public void CannotConvertWithNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var converted = default(IProduction<InputSignal>).Convert(inputToOutput);
+                var translated = default(IProduction<InputSignal>).Convert(inputToOutput);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var converted = production.Convert(default(IConversion<InputSignal, OutputSignal>));
-            });
-        }
-
-        [Test]
-        public void CannotCombineWithNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var conversion = default(IConversion<InputSignal, Signal>).Then(signalToOutput);
-            });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var conversion = inputToSignal.Then(default(IConversion<Signal, OutputSignal>));
+                var translated = production.Convert(default(ITranslation<InputSignal, OutputSignal>));
             });
         }
     }
