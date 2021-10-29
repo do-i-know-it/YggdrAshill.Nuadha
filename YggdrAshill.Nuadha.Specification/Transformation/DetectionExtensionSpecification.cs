@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using System;
@@ -6,82 +6,38 @@ using System;
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(DetectionExtension))]
-    internal class DetectionExtensionSpecification :
-        ICondition<Signal>,
-        IProduction<Signal>,
-        IConsumption<Notice>,
-        ICancellation
+    internal class DetectionExtensionSpecification
     {
-        private bool expected;
+        private PropagateSignal propagation;
 
-        private bool consumed;
+        private SignalCondition condition;
 
-        private IConsumption<Signal> consumption;
-
-        void ICancellation.Cancel()
-        {
-
-        }
-
-        ICancellation IProduction<Signal>.Produce(IConsumption<Signal> consumption)
-        {
-            if (consumption == null)
-            {
-                throw new ArgumentNullException(nameof(consumption));
-            }
-
-            this.consumption = consumption;
-
-            return this;
-        }
-
-        void IConsumption<Notice>.Consume(Notice signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            consumed = true;
-        }
-
-        bool ICondition<Signal>.IsSatisfiedBy(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            return expected;
-        }
-
-        private IProduction<Signal> production;
-
-        private ICondition<Signal> condition;
+        private ConsumeNotice consumption;
 
         [SetUp]
         public void SetUp()
         {
-            expected = false;
+            propagation = new PropagateSignal();
 
-            consumed = false;
+            condition = new SignalCondition();
 
-            production = this;
-
-            condition = this;
+            consumption = new ConsumeNotice();
         }
 
         [TestCase(true)]
         [TestCase(false)]
         public void ShouldDetectSignal(bool expected)
         {
-            this.expected = expected;
+            condition.Previous = expected;
 
-            var cancellation = production.Detect(condition).Produce(this);
+            var cancellation
+                = propagation
+                .Detect(condition)
+                .Produce(consumption);
 
-            consumption.Consume(new Signal());
+            propagation.Consume(new Signal());
 
-            Assert.AreEqual(expected, consumed);
+            Assert.AreEqual(expected, consumption.Consumed);
 
             cancellation.Cancel();
         }
@@ -96,7 +52,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detected = production.Detect(default(ICondition<Signal>));
+                var detected = propagation.Detect(default(ICondition<Signal>));
             });
         }
     }

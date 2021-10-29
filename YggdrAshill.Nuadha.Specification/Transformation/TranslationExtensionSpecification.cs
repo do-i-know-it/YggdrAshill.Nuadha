@@ -1,71 +1,45 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using YggdrAshill.Nuadha.Transformation;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(TranslationExtension))]
-    internal class TranslationExtensionSpecification :
-        ITranslation<InputSignal, Signal>,
-        ITranslation<Signal, OutputSignal>
+    internal class TranslationExtensionSpecification
     {
-        private OutputSignal expected;
+        private InputSignalIntoSignal inputSignalToSignal;
 
-        Signal ITranslation<InputSignal, Signal>.Translate(InputSignal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            return new Signal();
-        }
-
-        OutputSignal ITranslation<Signal, OutputSignal>.Translate(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            return expected;
-        }
-
-        private ITranslation<InputSignal, Signal> inputToSignal;
-
-        private ITranslation<Signal, OutputSignal> signalToOutput;
+        private SignalIntoOutputSignal signalToOutputSignal;
 
         [SetUp]
         public void SetUp()
         {
-            expected = new OutputSignal();
+            inputSignalToSignal = new InputSignalIntoSignal();
 
-            inputToSignal = this;
-
-            signalToOutput = this;
+            signalToOutputSignal = new SignalIntoOutputSignal();
         }
 
         [Test]
-        public void ShouldCombineTranslation()
+        public void ShouldBeCombined()
         {
-            var translation = inputToSignal.Then(signalToOutput);
+            var translation = inputSignalToSignal.Then(signalToOutputSignal);
 
             var translated = translation.Translate(new InputSignal());
 
-            Assert.AreEqual(expected, translated);
+            Assert.AreEqual(signalToOutputSignal.Translated, translated);
         }
 
         [Test]
-        public void CannotCombineTranslationWithNull()
+        public void CannotBeCombinedWithNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var translation = default(ITranslation<InputSignal, Signal>).Then(signalToOutput);
+                var translation = default(ITranslation<InputSignal, Signal>).Then(signalToOutputSignal);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var translation = inputToSignal.Then(default(ITranslation<Signal, OutputSignal>));
+                var translation = inputSignalToSignal.Then(default(ITranslation<Signal, OutputSignal>));
             });
         }
     }

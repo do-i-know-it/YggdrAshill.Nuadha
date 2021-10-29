@@ -48,13 +48,13 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldBeAlwaysSatisfied()
         {
-            Assert.IsTrue(NoticeOf.All<Signal>().IsSatisfiedBy(null));
+            Assert.IsTrue(NoticeOf.All<Signal>().IsSatisfiedBy(default));
         }
 
         [Test]
         public void ShouldBeNeverSatisfied()
         {
-            Assert.IsFalse(NoticeOf.None<Signal>().IsSatisfiedBy(null));
+            Assert.IsFalse(NoticeOf.None<Signal>().IsSatisfiedBy(default));
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var generation = NoticeOf.Signal<Signal>(default);
+                var condition = NoticeOf.Signal<Signal>(default);
             });
         }
     }

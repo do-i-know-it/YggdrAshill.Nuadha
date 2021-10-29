@@ -5,50 +5,79 @@ using System;
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(ConditionExtension))]
-    internal class ConditionExtensionSpecification :
-        ICondition<Signal>
+    internal class ConditionExtensionSpecification
     {
-        private bool expected;
-
-        bool ICondition<Signal>.IsSatisfiedBy(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            return expected;
-        }
-
-        private ICondition<Signal> condition;
+        private SignalCondition condition;
 
         [SetUp]
         public void SetUp()
         {
-            expected = false;
-
-            condition = this;
+            condition = new SignalCondition();
         }
-        
+
         [TestCase(true)]
         [TestCase(false)]
-        public void ShouldInverseCondition(bool expected)
+        public void ShouldBeInversed(bool expected)
         {
-            this.expected = expected;
+            condition.Previous = expected;
 
             var detected = condition.Not().IsSatisfiedBy(new Signal());
 
             Assert.AreNotEqual(expected, detected);
         }
 
+        [TestCase(true, true, true)]
+        [TestCase(false, true, false)]
+        [TestCase(true, false, false)]
+        [TestCase(false, false, false)]
+        public void ShouldBeMultiplied(bool one, bool another, bool expected)
+        {
+            var oneCondition = new SignalCondition()
+            {
+                Previous = one
+            };
+            var anotherCondition = new SignalCondition()
+            {
+                Previous = another
+            };
+
+            var detected = oneCondition.And(anotherCondition).IsSatisfiedBy(new Signal());
+
+            Assert.AreEqual(expected, detected);
+        }
+
+        [TestCase(true, true, true)]
+        [TestCase(false, true, true)]
+        [TestCase(true, false, true)]
+        [TestCase(false, false, false)]
+        public void ShouldBeAdded(bool one, bool another, bool expected)
+        {
+            var oneCondition = new SignalCondition()
+            {
+                Previous = one
+            };
+            var anotherCondition = new SignalCondition()
+            {
+                Previous = another
+            };
+
+            var detected = oneCondition.Or(anotherCondition).IsSatisfiedBy(new Signal());
+
+            Assert.AreEqual(expected, detected);
+        }
+
         [Test]
-        public void CannotCombineWithNull()
+        public void CannotBeInversedWithNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var inversed = default(ICondition<Signal>).Not();
             });
+        }
 
+        [Test]
+        public void CannotBeMultipliedWithNull()
+        {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var multiplied = default(ICondition<Signal>).And(condition);
@@ -57,7 +86,11 @@ namespace YggdrAshill.Nuadha.Specification
             {
                 var multiplied = condition.And(default);
             });
+        }
 
+        [Test]
+        public void CannotBeAddedWithNull()
+        {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var added = default(ICondition<Signal>).Or(condition);

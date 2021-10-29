@@ -6,79 +6,35 @@ using System;
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(ConversionExtension))]
-    internal class ConversionExtensionSpecification :
-        ITranslation<InputSignal, OutputSignal>,
-        IProduction<InputSignal>,
-        IConsumption<OutputSignal>,
-        ICancellation
+    internal class ConversionExtensionSpecification
     {
-        private OutputSignal expected;
+        private PropagateInputSignal propagation;
 
-        private OutputSignal consumed;
+        private InputSignalIntoOutputSignal  translation;
 
-        private IConsumption<InputSignal> consumption;
-
-        void ICancellation.Cancel()
-        {
-
-        }
-
-        ICancellation IProduction<InputSignal>.Produce(IConsumption<InputSignal> consumption)
-        {
-            if (consumption == null)
-            {
-                throw new ArgumentNullException(nameof(consumption));
-            }
-
-            this.consumption = consumption;
-
-            return this;
-        }
-
-        void IConsumption<OutputSignal>.Consume(OutputSignal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            consumed = signal;
-        }
-
-        OutputSignal ITranslation<InputSignal, OutputSignal>.Translate(InputSignal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            return expected;
-        }
-
-        private IProduction<InputSignal> production;
-
-        private ITranslation<InputSignal, OutputSignal> inputToOutput;
+        private ConsumeOutputSignal consumption;
 
         [SetUp]
         public void SetUp()
         {
-            expected = new OutputSignal();
+            propagation = new PropagateInputSignal();
 
-            consumed = null;
+            translation = new InputSignalIntoOutputSignal();
 
-            production = this;
-
-            inputToOutput = this;
+            consumption = new ConsumeOutputSignal();
         }
 
         [Test]
         public void ShouldConvertSignal()
         {
-            var cancellation = production.Convert(inputToOutput).Produce(this);
+            var cancellation
+                = propagation
+                .Convert(translation)
+                .Produce(consumption);
 
-            consumption.Consume(new InputSignal());
+            propagation.Consume(new InputSignal());
 
-            Assert.AreEqual(expected, consumed);
+            Assert.AreEqual(translation.Translated, consumption.Consumed);
 
             cancellation.Cancel();
         }
@@ -88,12 +44,12 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var translated = default(IProduction<InputSignal>).Convert(inputToOutput);
+                var translated = default(IProduction<InputSignal>).Convert(translation);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var translated = production.Convert(default(ITranslation<InputSignal, OutputSignal>));
+                var translated = propagation.Convert(default(ITranslation<InputSignal, OutputSignal>));
             });
         }
     }
