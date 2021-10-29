@@ -1,55 +1,32 @@
 # Implementation of YggdrAshill.Nuadha
 
-This module provides
-
-- implementations
-- extensions
-
-for modules below.
-
-- [Signalization](./Signalization.md)
-- [Transformation](./Transformation.md)
-- [Unitization](./Unitization.md)
-- [Signals](./Signals.md)
-- [Units](./Units.md)
+This module is an entry point of this framework, helping developers to use it in ease.
 
 ## Dependencies
 
-This module depends on
+This module depends on all of other modules:
 
 - [Signalization](./Signalization.md)
 - [Transformation](./Transformation.md)
 - [Unitization](./Unitization.md)
+- [Conduction](./Conduction.md)
 - [Signals](./Signals.md)
 - [Units](./Units.md)
 
 ## Architecture
 
-This module implements
+This module provides
 
-- interfaces
-- extensions
+- simple implementations
+- useful extensions
 
-in order developers to use this framework in ease.
+for other modules.
 
 ## Implementation
 
-This module provides simple implementations for
+This module makes developers use
 
-- [Signalization](./Signalization.md)
-- [Transformation](./Transformation.md)
-- [Unitization](./Unitization.md)
-- [Signals](./Signals.md)
-- [Units](./Units.md)
+- `System.Action`
+- `System.Function`
 
-generated with `System.Action` or `System.Function`.
-
-Also, this module provides useful extensions for
-
-- [Signalization](./Signalization.md)
-- [Transformation](./Transformation.md)
-- [Unitization](./Unitization.md)
-- [Signals](./Signals.md)
-- [Units](./Units.md)
-
-to use `System.Action` or `System.Function`.
+to implement interfaces of the modules.
