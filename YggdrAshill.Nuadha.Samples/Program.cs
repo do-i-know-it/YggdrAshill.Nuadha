@@ -16,9 +16,9 @@ namespace YggdrAshill.Nuadha.Samples
 
             }
 
-            public IGeneration<Touch> Touch => Generation.Of(() => Signals.Touch.Enabled);
+            public IGeneration<Touch> Touch => Generate.Signal(() => Signals.Touch.Enabled);
 
-            public IGeneration<Push> Push => Generation.Of(() => Signals.Push.Disabled);
+            public IGeneration<Push> Push => Generate.Signal(() => Signals.Push.Disabled);
         }
 
         private static void Main(string[] arguments)

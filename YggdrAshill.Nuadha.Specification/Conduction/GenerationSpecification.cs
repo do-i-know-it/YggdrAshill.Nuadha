@@ -3,14 +3,14 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Generation))]
+    [TestFixture(TestOf = typeof(Generate))]
     internal class GenerationSpecification
     {
         [Test]
         public void ShouldExecuteFunctionWhenHasGenerated()
         {
             var expected = false;
-            var generation = Generation.Of(() =>
+            var generation = Generate.Signal(() =>
             {
                 expected = true;
 
@@ -26,7 +26,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldGenerateSignal()
         {
             var expected = new Signal();
-            var generation = Generation.Of(expected);
+            var generation = Generate.Signal(expected);
 
             var generated = generation.Generate();
 
@@ -38,7 +38,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var generation = Generation.Of(default(Func<Signal>));
+                var generation = Generate.Signal(default(Func<Signal>));
             });
         }
     }

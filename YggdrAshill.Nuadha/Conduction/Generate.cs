@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Defines implementation of <see cref="IGeneration{TSignal}"/>.
     /// </summary>
-    public static class Generation
+    public static class Generate
     {
         /// <summary>
         /// Executes <see cref="Func{TResult}"/>.
@@ -24,7 +24,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="generation"/> is null.
         /// </exception>
-        public static IGeneration<TSignal> Of<TSignal>(Func<TSignal> generation)
+        public static IGeneration<TSignal> Signal<TSignal>(Func<TSignal> generation)
             where TSignal : ISignal
         {
             if (generation == null)
@@ -32,15 +32,15 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return new Created<TSignal>(generation);
+            return new Generation<TSignal>(generation);
         }
-        private sealed class Created<TSignal> :
+        private sealed class Generation<TSignal> :
             IGeneration<TSignal>
             where TSignal : ISignal
         {
             private readonly Func<TSignal> onGenerated;
 
-            internal Created(Func<TSignal> onGenerated)
+            internal Generation(Func<TSignal> onGenerated)
             {
                 this.onGenerated = onGenerated;
             }
@@ -64,10 +64,10 @@ namespace YggdrAshill.Nuadha
         /// <returns>
         /// <see cref="IGeneration{TSignal}"/> created.
         /// </returns>
-        public static IGeneration<TSignal> Of<TSignal>(TSignal signal)
+        public static IGeneration<TSignal> Signal<TSignal>(TSignal signal)
             where TSignal : ISignal
         {
-            return Of(() => signal);
+            return Signal(() => signal);
         }
     }
 }
