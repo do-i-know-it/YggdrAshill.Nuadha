@@ -57,17 +57,17 @@ namespace YggdrAshill.Nuadha
                     return Math.Max(-signal.Vertical, 0).ToPull();
                 });
 
-            private readonly Func<Tilt, Pull> onConverted;
+            private readonly Func<Tilt, Pull> onTranslated;
 
-            private PullBy(Func<Tilt, Pull> onConverted)
+            private PullBy(Func<Tilt, Pull> onTranslated)
             {
-                this.onConverted = onConverted;
+                this.onTranslated = onTranslated;
             }
 
             /// <inheritdoc/>
             public Pull Translate(Tilt signal)
             {
-                return onConverted.Invoke(signal);
+                return onTranslated.Invoke(signal);
             }
         }
 

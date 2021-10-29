@@ -8,7 +8,7 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> with <see cref="ICalibration{TSignal}"/> or <see cref="IFiltration{TSignal}"/>.
     /// </summary>
-    public static class SignalIntoSignalTo
+    public static class SignalTo
     {
         /// <summary>
         /// Calibrates <typeparamref name="TSignal"/> to correct.

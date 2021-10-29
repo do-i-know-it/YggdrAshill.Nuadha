@@ -5,7 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines implementation of <see cref="IGeneration{TSignal}"/>.
+    /// Defines implementations of <see cref="IGeneration{TSignal}"/>.
     /// </summary>
     public static class Generate
     {
