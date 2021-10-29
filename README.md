@@ -1,22 +1,20 @@
-# YggdrAshill.Nuadha: a device system framework
+# YggdrAshill.Nuadha: a device management framework
 
-Nuadha defines how to
+Nuadha is a framework defining how to
 
+- generate
 - send
 - receive
 - convert
 
-data for I/O of applications for mainly XR (VR/AR/MR).  
-This framework is able to isolate definitions from implementations for specific platforms like below,
+I/O data of applications, for mainly XR (VR/AR/MR).  
+This framework is able to isolate definitions from implementations for specific platforms like:
 
-- ex) [Unity](https://unity.com/ja)
-- ex) [Xamarin](https://docs.microsoft.com/ja-jp/xamarin/get-started/what-is-xamarin)
-- ex) [Windows Presentation Foundation (WPF)](https://docs.microsoft.com/ja-jp/visualstudio/designers/getting-started-with-wpf?view=vs-2019)
-
-or devices like below.
-
-- ex) [Oculus store](https://www.oculus.com/)
-- ex) [Steam VR](https://store.steampowered.com/steamvr)
+- [Unity](https://unity.com/ja)
+- [Xamarin](https://docs.microsoft.com/ja-jp/xamarin/get-started/what-is-xamarin)
+- [Windows Presentation Foundation (WPF)](https://docs.microsoft.com/ja-jp/visualstudio/designers/getting-started-with-wpf?view=vs-2019)
+- [Oculus Store](https://www.oculus.com/)
+- [Steam VR](https://store.steampowered.com/steamvr)
 
 ## Dependencies
 
@@ -27,13 +25,14 @@ This framework depends on .NET Standard 2.0.
 Developers should
 
 1. Go to [Release pages](https://github.com/do-i-know-it/YggdrAshill.Nuadha/releases).
-1. Download the latest version.
+1. Download DLLs in the latest version.
+1. Put the DLLs in C# projects.
 
 to use this framework.
 
 ## Usage
 
-Please see [sample application](https://github.com/do-i-know-it/YggdrAshill.Nuadha/blob/main/YggdrAshill.Nuadha.Samples/Program.cs).
+Please see [sample applications](https://github.com/do-i-know-it/YggdrAshill.Nuadha/blob/main/YggdrAshill.Nuadha.Samples).
 
 ## Architecture
 
@@ -42,15 +41,17 @@ This framework consists of core modules below.
 - [Signalization](./Documentation/Signalization.md)
 - [Transformation](./Documentation/Transformation.md)
 - [Unitization](./Documentation/Unitization.md)
+- [Conduction](./Documentation/Conduction.md)
 
 This framework also includes sub modules below.
 
 - [Signals](./Documentation/Signals.md)
 - [Units](./Documentation/Units.md)
+- [Implementation](./Documentation/Implementation.md)
 
-### Implementation
+[Implementation](./Documentation/Implementation.md) module is an entry point of this framework.
 
-This module includes [Implementation](./Documentation/Implementation.md) to provide implementations and extensions for above.
+![Image not found.](./Documentation/Resources/FrameworkArchitecture.jpg "Architecture of this framework.")
 
 ## Known issues
 

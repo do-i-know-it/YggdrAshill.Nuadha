@@ -45,7 +45,6 @@ namespace YggdrAshill.Nuadha
                 this.condition = condition;
             }
 
-            /// <inheritdoc/>
             public bool IsSatisfiedBy(TSignal signal)
             {
                 return condition.Invoke(signal);

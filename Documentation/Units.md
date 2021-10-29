@@ -13,23 +13,23 @@ This module depends on
 
 ## Architecture
 
-No architecture because this module defines some types of `Handler` for hardware and software.
-
-## Implementation
-
 This module defines
 
 - `Button`
 - `Trigger`
 - `Stick`
 - `PoseTracker`
-- `HandController`
 - `HeadTracker`
+- `HandController`
 
-and `Handler` for event below.
+and event below.
 
 - `Tilt`
 - `Button`
 - `Trigger`
 - `Stick`
 - `HandController`
+
+## Implementation
+
+Nothing.

@@ -12,78 +12,78 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldConvertTiltIntoPull()
         {
             // Distance
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Distance.Convert(Tilt.Origin));
-            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Distance.Convert(Tilt.Left));
-            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Distance.Convert(Tilt.Right));
-            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Distance.Convert(Tilt.Upward));
-            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Distance.Convert(Tilt.Downward));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Distance.Translate(Tilt.Origin));
+            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Distance.Translate(Tilt.Left));
+            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Distance.Translate(Tilt.Right));
+            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Distance.Translate(Tilt.Upward));
+            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Distance.Translate(Tilt.Downward));
 
             // Left
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Left.Convert(Tilt.Origin));
-            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Left.Convert(Tilt.Left));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Left.Convert(Tilt.Right));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Left.Convert(Tilt.Upward));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Left.Convert(Tilt.Downward));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Left.Translate(Tilt.Origin));
+            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Left.Translate(Tilt.Left));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Left.Translate(Tilt.Right));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Left.Translate(Tilt.Upward));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Left.Translate(Tilt.Downward));
 
             // Right
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Right.Convert(Tilt.Origin));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Right.Convert(Tilt.Left));
-            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Right.Convert(Tilt.Right));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Right.Convert(Tilt.Upward));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Right.Convert(Tilt.Downward));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Right.Translate(Tilt.Origin));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Right.Translate(Tilt.Left));
+            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Right.Translate(Tilt.Right));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Right.Translate(Tilt.Upward));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Right.Translate(Tilt.Downward));
 
             // Forward
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Forward.Convert(Tilt.Origin));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Forward.Convert(Tilt.Left));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Forward.Convert(Tilt.Right));
-            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Forward.Convert(Tilt.Upward));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Forward.Convert(Tilt.Downward));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Forward.Translate(Tilt.Origin));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Forward.Translate(Tilt.Left));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Forward.Translate(Tilt.Right));
+            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Forward.Translate(Tilt.Upward));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Forward.Translate(Tilt.Downward));
 
             // Backward
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Backward.Convert(Tilt.Origin));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Backward.Convert(Tilt.Left));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Backward.Convert(Tilt.Right));
-            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Backward.Convert(Tilt.Upward));
-            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Backward.Convert(Tilt.Downward));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Backward.Translate(Tilt.Origin));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Backward.Translate(Tilt.Left));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Backward.Translate(Tilt.Right));
+            Assert.AreEqual(new Pull(0.0f), TiltInto.PullBy.Backward.Translate(Tilt.Upward));
+            Assert.AreEqual(new Pull(1.0f), TiltInto.PullBy.Backward.Translate(Tilt.Downward));
         }
 
         [Test]
         public void ShouldConvertTiltIntoPush()
         {
             // Distance
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Convert(Tilt.Origin));
-            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Convert(Tilt.Left));
-            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Convert(Tilt.Right));
-            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Convert(Tilt.Upward));
-            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Convert(Tilt.Downward));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Translate(Tilt.Origin));
+            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Translate(Tilt.Left));
+            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Translate(Tilt.Right));
+            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Translate(Tilt.Upward));
+            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Distance(new HysteresisThreshold()).Translate(Tilt.Downward));
 
             // Left
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Convert(Tilt.Origin));
-            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Convert(Tilt.Left));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Convert(Tilt.Right));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Convert(Tilt.Upward));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Convert(Tilt.Downward));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Translate(Tilt.Origin));
+            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Translate(Tilt.Left));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Translate(Tilt.Right));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Translate(Tilt.Upward));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Left(new HysteresisThreshold()).Translate(Tilt.Downward));
 
             // Right
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Convert(Tilt.Origin));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Convert(Tilt.Left));
-            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Convert(Tilt.Right));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Convert(Tilt.Upward));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Convert(Tilt.Downward));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Translate(Tilt.Origin));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Translate(Tilt.Left));
+            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Translate(Tilt.Right));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Translate(Tilt.Upward));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Right(new HysteresisThreshold()).Translate(Tilt.Downward));
 
             // Forward
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Convert(Tilt.Origin));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Convert(Tilt.Left));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Convert(Tilt.Right));
-            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Convert(Tilt.Upward));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Convert(Tilt.Downward));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Translate(Tilt.Origin));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Translate(Tilt.Left));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Translate(Tilt.Right));
+            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Translate(Tilt.Upward));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Forward(new HysteresisThreshold()).Translate(Tilt.Downward));
 
             // Left
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Convert(Tilt.Origin));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Convert(Tilt.Left));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Convert(Tilt.Right));
-            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Convert(Tilt.Upward));
-            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Convert(Tilt.Downward));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Translate(Tilt.Origin));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Translate(Tilt.Left));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Translate(Tilt.Right));
+            Assert.AreEqual(Push.Disabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Translate(Tilt.Upward));
+            Assert.AreEqual(Push.Enabled, TiltInto.PushBy.Backward(new HysteresisThreshold()).Translate(Tilt.Downward));
         }
 
         [Test]

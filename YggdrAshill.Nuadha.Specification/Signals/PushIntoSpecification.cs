@@ -12,9 +12,9 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var conversion = PushInto.Touch;
 
-            Assert.AreEqual(Touch.Disabled, conversion.Convert(Push.Disabled));
+            Assert.AreEqual(Touch.Disabled, conversion.Translate(Push.Disabled));
 
-            Assert.AreEqual(Touch.Enabled, conversion.Convert(Push.Enabled));
+            Assert.AreEqual(Touch.Enabled, conversion.Translate(Push.Enabled));
         }
 
         [Test]
@@ -24,25 +24,25 @@ namespace YggdrAshill.Nuadha.Specification
             var conversion = PushInto.Pulse;
 
             // When previous pulse is disabled and condition is not satisfied, current pulse is disabled.
-            Assert.AreEqual(Pulse.IsDisabled, conversion.Convert(Push.Disabled));
+            Assert.AreEqual(Pulse.IsDisabled, conversion.Translate(Push.Disabled));
 
             // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
-            Assert.AreEqual(Pulse.HasEnabled, conversion.Convert(Push.Enabled));
+            Assert.AreEqual(Pulse.HasEnabled, conversion.Translate(Push.Enabled));
 
             // When previous pulse has enabled and condition is satisfied, current pulse is enabled.
-            Assert.AreEqual(Pulse.IsEnabled, conversion.Convert(Push.Enabled));
+            Assert.AreEqual(Pulse.IsEnabled, conversion.Translate(Push.Enabled));
 
             // When previous pulse is enabled and condition is not satisfied, current pulse has disabled.
-            Assert.AreEqual(Pulse.HasDisabled, conversion.Convert(Push.Disabled));
+            Assert.AreEqual(Pulse.HasDisabled, conversion.Translate(Push.Disabled));
 
             // When previous pulse has disabled and condition is not satisfied, current pulse is disabled.
-            Assert.AreEqual(Pulse.IsDisabled, conversion.Convert(Push.Disabled));
+            Assert.AreEqual(Pulse.IsDisabled, conversion.Translate(Push.Disabled));
 
             // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
-            Assert.AreEqual(Pulse.HasEnabled, conversion.Convert(Push.Enabled));
+            Assert.AreEqual(Pulse.HasEnabled, conversion.Translate(Push.Enabled));
 
             // When previous pulse has enabled and condition is not satisfied, current pulse has disabled.
-            Assert.AreEqual(Pulse.HasDisabled, conversion.Convert(Push.Disabled));
+            Assert.AreEqual(Pulse.HasDisabled, conversion.Translate(Push.Disabled));
         }
     }
 }

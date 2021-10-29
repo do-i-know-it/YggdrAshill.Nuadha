@@ -1,126 +1,83 @@
 using NUnit.Framework;
-using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(ConditionExtension))]
-    internal class ConditionExtensionSpecification :
-        ICondition<Signal>,
-        IProduction<Signal>,
-        IConsumption<Notice>,
-        ICancellation
+    internal class ConditionExtensionSpecification
     {
-        private bool expected;
-
-        private bool consumed;
-
-        private IConsumption<Signal> consumption;
-
-        void ICancellation.Cancel()
-        {
-
-        }
-
-        ICancellation IProduction<Signal>.Produce(IConsumption<Signal> consumption)
-        {
-            if (consumption == null)
-            {
-                throw new ArgumentNullException(nameof(consumption));
-            }
-
-            this.consumption = consumption;
-
-            return this;
-        }
-
-        void IConsumption<Notice>.Consume(Notice signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            consumed = true;
-        }
-
-        bool ICondition<Signal>.IsSatisfiedBy(Signal signal)
-        {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
-            return expected;
-        }
-
-        private IProduction<Signal> production;
-
-        private ICondition<Signal> condition;
+        private SignalCondition condition;
 
         [SetUp]
         public void SetUp()
         {
-            expected = false;
-
-            consumed = false;
-
-            production = this;
-
-            condition = this;
+            condition = new SignalCondition();
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void ShouldDetectSignal(bool expected)
+        public void ShouldBeInversed(bool expected)
         {
-            this.expected = expected;
+            condition.Previous = expected;
 
-            var cancellation = production.Detect(condition).Produce(this);
-
-            consumption.Consume(new Signal());
-
-            Assert.AreEqual(expected, consumed);
-
-            cancellation.Cancel();
-        }
-
-        [Test]
-        public void CannotDetectWithNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var detected = default(IProduction<Signal>).Detect(condition);
-            });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var detected = production.Detect(default(ICondition<Signal>));
-            });
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void ShouldInverseCondition(bool expected)
-        {
-            this.expected = expected;
-
-            var inversed = condition.Not();
-
-            var detected = inversed.IsSatisfiedBy(new Signal());
+            var detected = condition.Not().IsSatisfiedBy(new Signal());
 
             Assert.AreNotEqual(expected, detected);
         }
 
+        [TestCase(true, true, true)]
+        [TestCase(false, true, false)]
+        [TestCase(true, false, false)]
+        [TestCase(false, false, false)]
+        public void ShouldBeMultiplied(bool one, bool another, bool expected)
+        {
+            var oneCondition = new SignalCondition()
+            {
+                Previous = one
+            };
+            var anotherCondition = new SignalCondition()
+            {
+                Previous = another
+            };
+
+            var detected = oneCondition.And(anotherCondition).IsSatisfiedBy(new Signal());
+
+            Assert.AreEqual(expected, detected);
+        }
+
+        [TestCase(true, true, true)]
+        [TestCase(false, true, true)]
+        [TestCase(true, false, true)]
+        [TestCase(false, false, false)]
+        public void ShouldBeAdded(bool one, bool another, bool expected)
+        {
+            var oneCondition = new SignalCondition()
+            {
+                Previous = one
+            };
+            var anotherCondition = new SignalCondition()
+            {
+                Previous = another
+            };
+
+            var detected = oneCondition.Or(anotherCondition).IsSatisfiedBy(new Signal());
+
+            Assert.AreEqual(expected, detected);
+        }
+
         [Test]
-        public void CannotCombineWithNull()
+        public void CannotBeInversedWithNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var inversed = default(ICondition<Signal>).Not();
             });
+        }
 
+        [Test]
+        public void CannotBeMultipliedWithNull()
+        {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var multiplied = default(ICondition<Signal>).And(condition);
@@ -129,7 +86,11 @@ namespace YggdrAshill.Nuadha.Specification
             {
                 var multiplied = condition.And(default);
             });
+        }
 
+        [Test]
+        public void CannotBeAddedWithNull()
+        {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var added = default(ICondition<Signal>).Or(condition);

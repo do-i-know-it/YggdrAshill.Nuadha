@@ -8,7 +8,7 @@ This module depends on [Signalization](./Signalization.md).
 
 ## Architecture
 
-No architecture because this module defines some types of `Signal`.
+Nothing.
 
 ## Implementation
 

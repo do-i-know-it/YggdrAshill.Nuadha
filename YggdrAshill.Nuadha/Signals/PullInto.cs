@@ -5,7 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> for <see cref="Pull"/>.
+    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Pull"/>.
     /// </summary>
     public static class PullInto
     {
@@ -16,12 +16,12 @@ namespace YggdrAshill.Nuadha
         /// <see cref="HysteresisThreshold"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Signals.Push"/>.
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Signals.Push"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConversion<Pull, Push> Push(HysteresisThreshold threshold)
+        public static ITranslation<Pull, Push> Push(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
@@ -64,12 +64,12 @@ namespace YggdrAshill.Nuadha
         /// <see cref="HysteresisThreshold"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Transformation.Pulse"/>.
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Transformation.Pulse"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConversion<Pull, Pulse> Pulse(HysteresisThreshold threshold)
+        public static ITranslation<Pull, Pulse> Pulse(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
