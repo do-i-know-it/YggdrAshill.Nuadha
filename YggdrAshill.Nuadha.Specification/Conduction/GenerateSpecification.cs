@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Specification
 {
     [TestFixture(TestOf = typeof(Generate))]
-    internal class GenerationSpecification
+    internal class GenerateSpecification
     {
         [Test]
         public void ShouldExecuteFunctionWhenHasGenerated()
