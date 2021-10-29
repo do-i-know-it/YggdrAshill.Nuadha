@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha.Specification
     {
         private Signal expected;
 
-        private IPropagation<Signal> propagation;
+        private PropagateSignal propagation;
 
         private FakeCancellation cancellation;
 
@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             expected = new Signal();
 
-            propagation = Propagation.WithoutCache.Of<Signal>();
+            propagation = new PropagateSignal();
 
             cancellation = new FakeCancellation();
 
@@ -126,10 +126,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = default(IPropagation<Signal>).Transmit(() =>
-                {
-                    return expected;
-                });
+                var transmission = default(IPropagation<Signal>).Transmit(() => expected);
             });
 
             Assert.Throws<ArgumentNullException>(() =>

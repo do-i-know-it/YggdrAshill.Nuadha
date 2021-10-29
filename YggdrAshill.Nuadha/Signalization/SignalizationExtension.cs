@@ -41,7 +41,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return production.Produce(Consumption.Of(consumption));
+            return production.Produce(Consume.Signal(consumption));
         }
 
         /// <summary>

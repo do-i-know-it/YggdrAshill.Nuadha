@@ -20,11 +20,11 @@ namespace YggdrAshill.Nuadha
         public static PulsatedTilt WithoutCache()
         {
             return new PulsatedTilt(
-                Propagation.WithoutCache.Of<Pulse>(),
-                Propagation.WithoutCache.Of<Pulse>(),
-                Propagation.WithoutCache.Of<Pulse>(),
-                Propagation.WithoutCache.Of<Pulse>(),
-                Propagation.WithoutCache.Of<Pulse>());
+                Propagate.WithoutCache<Pulse>(),
+                Propagate.WithoutCache<Pulse>(),
+                Propagate.WithoutCache<Pulse>(),
+                Propagate.WithoutCache<Pulse>(),
+                Propagate.WithoutCache<Pulse>());
         }
 
         /// <summary>
@@ -36,11 +36,11 @@ namespace YggdrAshill.Nuadha
         public static PulsatedTilt WithLatestCache()
         {
             return new PulsatedTilt(
-                Propagation.WithLatestCache.Of(Initialize.Pulse),
-                Propagation.WithLatestCache.Of(Initialize.Pulse),
-                Propagation.WithLatestCache.Of(Initialize.Pulse),
-                Propagation.WithLatestCache.Of(Initialize.Pulse),
-                Propagation.WithLatestCache.Of(Initialize.Pulse));
+                Propagate.WithLatestCache(Initialize.Pulse),
+                Propagate.WithLatestCache(Initialize.Pulse),
+                Propagate.WithLatestCache(Initialize.Pulse),
+                Propagate.WithLatestCache(Initialize.Pulse),
+                Propagate.WithLatestCache(Initialize.Pulse));
         }
 
         private readonly IPropagation<Pulse> distance;

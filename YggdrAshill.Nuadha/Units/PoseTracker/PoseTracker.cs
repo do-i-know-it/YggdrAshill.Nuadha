@@ -20,8 +20,8 @@ namespace YggdrAshill.Nuadha
         public static PoseTracker WithoutCache()
         {
             return new PoseTracker(
-                Propagation.WithoutCache.Of<Space3D.Position>(),
-                Propagation.WithoutCache.Of<Space3D.Rotation>());
+                Propagate.WithoutCache<Space3D.Position>(),
+                Propagate.WithoutCache<Space3D.Rotation>());
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace YggdrAshill.Nuadha
         public static PoseTracker WithLatestCache()
         {
             return new PoseTracker(
-                Propagation.WithLatestCache.Of(Initialize.Space3D.Position),
-                Propagation.WithLatestCache.Of(Initialize.Space3D.Rotation));
+                Propagate.WithLatestCache(Initialize.Space3D.Position),
+                Propagate.WithLatestCache(Initialize.Space3D.Rotation));
         }
 
         internal IPropagation<Space3D.Position> Position { get; }

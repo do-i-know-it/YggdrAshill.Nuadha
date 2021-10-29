@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static PulsatedTrigger WithoutCache()
         {
-            return new PulsatedTrigger(Propagation.WithoutCache.Of<Pulse>(), Propagation.WithoutCache.Of<Pulse>());
+            return new PulsatedTrigger(Propagate.WithoutCache<Pulse>(), Propagate.WithoutCache<Pulse>());
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static PulsatedTrigger WithLatestCache()
         {
-            return new PulsatedTrigger(Propagation.WithLatestCache.Of(Initialize.Pulse), Propagation.WithLatestCache.Of(Initialize.Pulse));
+            return new PulsatedTrigger(Propagate.WithLatestCache(Initialize.Pulse), Propagate.WithLatestCache(Initialize.Pulse));
         }
 
         private readonly IPropagation<Pulse> touch;

@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Stick WithoutCache()
         {
-            return new Stick(Propagation.WithoutCache.Of<Touch>(), Propagation.WithoutCache.Of<Tilt>());
+            return new Stick(Propagate.WithoutCache<Touch>(), Propagate.WithoutCache<Tilt>());
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Stick WithLatestCache()
         {
-            return new Stick(Propagation.WithLatestCache.Of(Initialize.Touch), Propagation.WithLatestCache.Of(Initialize.Tilt));
+            return new Stick(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Tilt));
         }
 
         internal IPropagation<Touch> Touch { get; }

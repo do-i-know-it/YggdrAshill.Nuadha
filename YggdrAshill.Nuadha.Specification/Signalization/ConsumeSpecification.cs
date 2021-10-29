@@ -3,14 +3,14 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Consumption))]
-    internal class ConsumptionSpecification
+    [TestFixture(TestOf = typeof(Consume))]
+    internal class ConsumeSpecification
     {
         [Test]
         public void ShouldExecuteActionWhenHasConsumed()
         {
             var expected = false;
-            var consumption = Consumption.Of<Signal>(signal =>
+            var consumption = Consume.Signal<Signal>(signal =>
             {
                 if (signal == null)
                 {
@@ -29,7 +29,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldConsumeSignal()
         {
             var consumed = default(Signal);
-            var consumption = Consumption.Of<Signal>(signal =>
+            var consumption = Consume.Signal<Signal>(signal =>
             {
                 if (signal == null)
                 {
@@ -50,7 +50,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var consumption = Consumption.Of<Signal>(default);
+                var consumption = Consume.Signal<Signal>(default);
             });
         }
     }

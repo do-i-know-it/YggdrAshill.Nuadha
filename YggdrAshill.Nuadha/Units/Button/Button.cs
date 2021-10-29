@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Button WithoutCache()
         {
-            return new Button(Propagation.WithoutCache.Of<Touch>(), Propagation.WithoutCache.Of<Push>());
+            return new Button(Propagate.WithoutCache<Touch>(), Propagate.WithoutCache<Push>());
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Button WithLatestCache()
         {
-            return new Button(Propagation.WithLatestCache.Of(Initialize.Touch), Propagation.WithLatestCache.Of(Initialize.Push));
+            return new Button(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Push));
         }
 
         internal IPropagation<Touch> Touch { get; }

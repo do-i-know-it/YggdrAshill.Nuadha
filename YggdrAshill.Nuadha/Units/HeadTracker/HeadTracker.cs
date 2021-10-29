@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static HeadTracker WithoutCache()
         {
-            return new HeadTracker(PoseTracker.WithoutCache(), Propagation.WithoutCache.Of<Space3D.Direction>());
+            return new HeadTracker(PoseTracker.WithoutCache(), Propagate.WithoutCache<Space3D.Direction>());
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static HeadTracker WithLatestCache()
         {
-            return new HeadTracker(PoseTracker.WithLatestCache(), Propagation.WithLatestCache.Of(Initialize.Space3D.Direction));
+            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(Initialize.Space3D.Direction));
         }
 
         internal PoseTracker Pose { get; }

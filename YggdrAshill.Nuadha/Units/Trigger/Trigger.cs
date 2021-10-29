@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Trigger WithoutCache()
         {
-            return new Trigger(Propagation.WithoutCache.Of<Touch>(), Propagation.WithoutCache.Of<Pull>());
+            return new Trigger(Propagate.WithoutCache<Touch>(), Propagate.WithoutCache<Pull>());
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Trigger WithLatestCache()
         {
-            return new Trigger(Propagation.WithLatestCache.Of(Initialize.Touch), Propagation.WithLatestCache.Of(Initialize.Pull));
+            return new Trigger(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Pull));
         }
 
         internal IPropagation<Touch> Touch { get; }

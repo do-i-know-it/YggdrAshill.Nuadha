@@ -19,7 +19,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static PulsatedButton WithoutCache()
         {
-            return new PulsatedButton(Propagation.WithoutCache.Of<Pulse>(), Propagation.WithoutCache.Of<Pulse>());
+            return new PulsatedButton(Propagate.WithoutCache<Pulse>(), Propagate.WithoutCache<Pulse>());
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static PulsatedButton WithLatestCache()
         {
-            return new PulsatedButton(Propagation.WithLatestCache.Of(Initialize.Pulse), Propagation.WithLatestCache.Of(Initialize.Pulse));
+            return new PulsatedButton(Propagate.WithLatestCache(Initialize.Pulse), Propagate.WithLatestCache(Initialize.Pulse));
         }
 
         private readonly IPropagation<Pulse> touch;

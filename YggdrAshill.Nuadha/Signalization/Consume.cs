@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Defines implementations of <see cref="IConsumption{TSignal}"/>.
     /// </summary>
-    public static class Consumption
+    public static class Consume
     {
         /// <summary>
         /// Executes <see cref="Action{T}"/>.
@@ -23,7 +23,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="consumption"/> is null.
         /// </exception>
-        public static IConsumption<TSignal> Of<TSignal>(Action<TSignal> consumption)
+        public static IConsumption<TSignal> Signal<TSignal>(Action<TSignal> consumption)
             where TSignal : ISignal
         {
             if (consumption == null)
@@ -31,15 +31,15 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return new Created<TSignal>(consumption);
+            return new Consumption<TSignal>(consumption);
         }
-        private sealed class Created<TSignal> :
+        private sealed class Consumption<TSignal> :
             IConsumption<TSignal>
             where TSignal : ISignal
         {
             private readonly Action<TSignal> onConsumed;
 
-            internal Created(Action<TSignal> onConsumed)
+            internal Consumption(Action<TSignal> onConsumed)
             {
                 this.onConsumed = onConsumed;
             }
@@ -63,7 +63,7 @@ namespace YggdrAshill.Nuadha
         public static IConsumption<TSignal> None<TSignal>()
             where TSignal : ISignal
         {
-            return Of<TSignal>(_ => { });
+            return Signal<TSignal>(_ => { });
         }
     }
 }
