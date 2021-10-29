@@ -3,10 +3,10 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <inheritdoc/>
+    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IHandControllerHardware"/> and <see cref="IHandControllerSoftware"/>.
     public sealed class HandController :
-        IHandControllerSoftware,
         IHandControllerHardware,
+        IHandControllerSoftware,
         IProtocol<IHandControllerSoftware, IHandControllerHardware>
     {
         /// <summary>
@@ -76,28 +76,20 @@ namespace YggdrAshill.Nuadha
             HandGrip.Dispose();
         }
 
-        /// <inheritdoc/>
-        IPoseTrackerSoftware IHandControllerSoftware.Pose => Pose.Hardware;
-
-        /// <inheritdoc/>
-        IStickSoftware IHandControllerSoftware.Thumb => Thumb.Hardware;
-
-        /// <inheritdoc/>
-        ITriggerSoftware IHandControllerSoftware.IndexFinger => IndexFinger.Hardware;
-
-        /// <inheritdoc/>
-        ITriggerSoftware IHandControllerSoftware.HandGrip => HandGrip.Hardware;
-
-        /// <inheritdoc/>
         IPoseTrackerHardware IHandControllerHardware.Pose => Pose.Software;
 
-        /// <inheritdoc/>
         IStickHardware IHandControllerHardware.Thumb => Thumb.Software;
 
-        /// <inheritdoc/>
         ITriggerHardware IHandControllerHardware.IndexFinger => IndexFinger.Software;
 
-        /// <inheritdoc/>
         ITriggerHardware IHandControllerHardware.HandGrip => HandGrip.Software;
+
+        IPoseTrackerSoftware IHandControllerSoftware.Pose => Pose.Hardware;
+
+        IStickSoftware IHandControllerSoftware.Thumb => Thumb.Hardware;
+
+        ITriggerSoftware IHandControllerSoftware.IndexFinger => IndexFinger.Hardware;
+
+        ITriggerSoftware IHandControllerSoftware.HandGrip => HandGrip.Hardware;
     }
 }

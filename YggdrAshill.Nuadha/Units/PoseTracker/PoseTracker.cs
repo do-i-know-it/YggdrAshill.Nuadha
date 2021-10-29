@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <inheritdoc/>
+    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPoseTrackerHardware"/> and <see cref="IPoseTrackerSoftware"/>.
     public sealed class PoseTracker :
-        IPoseTrackerSoftware,
         IPoseTrackerHardware,
+        IPoseTrackerSoftware,
         IProtocol<IPoseTrackerSoftware, IPoseTrackerHardware>
     {
         /// <summary>
@@ -62,16 +62,12 @@ namespace YggdrAshill.Nuadha
             Rotation.Dispose();
         }
 
-        /// <inheritdoc/>
-        IConsumption<Space3D.Position> IPoseTrackerSoftware.Position => Position;
-
-        /// <inheritdoc/>
-        IConsumption<Space3D.Rotation> IPoseTrackerSoftware.Rotation => Rotation;
-
-        /// <inheritdoc/>
         IProduction<Space3D.Position> IPoseTrackerHardware.Position => Position;
 
-        /// <inheritdoc/>
         IProduction<Space3D.Rotation> IPoseTrackerHardware.Rotation => Rotation;
+
+        IConsumption<Space3D.Position> IPoseTrackerSoftware.Position => Position;
+
+        IConsumption<Space3D.Rotation> IPoseTrackerSoftware.Rotation => Rotation;
     }
 }

@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <inheritdoc/>
+    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedTriggerHardware"/> and <see cref="IPulsatedTriggerSoftware"/>.
     public sealed class PulsatedTrigger :
-        IPulsatedTriggerSoftware,
         IPulsatedTriggerHardware,
+        IPulsatedTriggerSoftware,
         IProtocol<IPulsatedTriggerSoftware, IPulsatedTriggerHardware>
     {
         /// <summary>
@@ -58,16 +58,12 @@ namespace YggdrAshill.Nuadha
             pull.Dispose();
         }
 
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedTriggerSoftware.Touch => touch;
-
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedTriggerSoftware.Pull => pull;
-
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTriggerHardware.Touch => touch;
 
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTriggerHardware.Pull => pull;
+
+        IConsumption<Pulse> IPulsatedTriggerSoftware.Touch => touch;
+
+        IConsumption<Pulse> IPulsatedTriggerSoftware.Pull => pull;
     }
 }

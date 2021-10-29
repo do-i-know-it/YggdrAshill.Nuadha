@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <inheritdoc/>
+    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedTiltHardware"/> and <see cref="IPulsatedTiltSoftware"/>.
     public sealed class PulsatedTilt :
-        IPulsatedTiltSoftware,
         IPulsatedTiltHardware,
+        IPulsatedTiltSoftware,
         IProtocol<IPulsatedTiltSoftware, IPulsatedTiltHardware>
     {
         /// <summary>
@@ -89,34 +89,24 @@ namespace YggdrAshill.Nuadha
             backward.Dispose();
         }
 
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedTiltSoftware.Distance => distance;
-
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedTiltSoftware.Left => left;
-
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedTiltSoftware.Right => right;
-
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedTiltSoftware.Forward => forward;
-
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedTiltSoftware.Backward => backward;
-
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltHardware.Distance => distance;
 
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltHardware.Left => left;
 
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltHardware.Right => right;
 
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltHardware.Forward => forward;
 
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedTiltHardware.Backward => backward;
+
+        IConsumption<Pulse> IPulsatedTiltSoftware.Distance => distance;
+
+        IConsumption<Pulse> IPulsatedTiltSoftware.Left => left;
+
+        IConsumption<Pulse> IPulsatedTiltSoftware.Right => right;
+
+        IConsumption<Pulse> IPulsatedTiltSoftware.Forward => forward;
+
+        IConsumption<Pulse> IPulsatedTiltSoftware.Backward => backward;
     }
 }

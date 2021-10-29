@@ -24,7 +24,7 @@ namespace YggdrAshill.Nuadha.Samples
         private static void Main(string[] arguments)
         {
             using (var protocol = Button.WithoutCache())
-            using (var ignition = Button.WithoutCache().Convert(FixedButton.Instance))
+            using (var ignition = Button.WithoutCache().Ignite(FixedButton.Instance))
             using (var composite = new CompositeCancellation())
             {
                 protocol

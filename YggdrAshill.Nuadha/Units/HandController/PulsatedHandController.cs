@@ -3,10 +3,10 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <inheritdoc/>
+    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedHandControllerHardware"/> and <see cref="IPulsatedHandControllerSoftware"/>.
     public sealed class PulsatedHandController :
-        IPulsatedHandControllerSoftware,
         IPulsatedHandControllerHardware,
+        IPulsatedHandControllerSoftware,
         IProtocol<IPulsatedHandControllerSoftware, IPulsatedHandControllerHardware>
     {
         /// <summary>
@@ -68,22 +68,16 @@ namespace YggdrAshill.Nuadha
             handGrip.Dispose();
         }
 
-        /// <inheritdoc/>
-        IPulsatedStickSoftware IPulsatedHandControllerSoftware.Thumb => thumb.Hardware;
-
-        /// <inheritdoc/>
-        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.IndexFinger => indexFinger.Hardware;
-
-        /// <inheritdoc/>
-        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.HandGrip => handGrip.Hardware;
-
-        /// <inheritdoc/>
         IPulsatedStickHardware IPulsatedHandControllerHardware.Thumb => thumb.Software;
 
-        /// <inheritdoc/>
         IPulsatedTriggerHardware IPulsatedHandControllerHardware.IndexFinger => indexFinger.Software;
 
-        /// <inheritdoc/>
         IPulsatedTriggerHardware IPulsatedHandControllerHardware.HandGrip => handGrip.Software;
+
+        IPulsatedStickSoftware IPulsatedHandControllerSoftware.Thumb => thumb.Hardware;
+
+        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.IndexFinger => indexFinger.Hardware;
+
+        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.HandGrip => handGrip.Hardware;
     }
 }

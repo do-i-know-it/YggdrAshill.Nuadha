@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <inheritdoc/>
+    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedButtonHardware"/> and <see cref="IPulsatedButtonSoftware"/>.
     public sealed class PulsatedButton :
-        IPulsatedButtonSoftware,
         IPulsatedButtonHardware,
+        IPulsatedButtonSoftware,
         IProtocol<IPulsatedButtonSoftware, IPulsatedButtonHardware>
     {
         /// <summary>
@@ -58,16 +58,12 @@ namespace YggdrAshill.Nuadha
             push.Dispose();
         }
 
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedButtonSoftware.Touch => touch;
-
-        /// <inheritdoc/>
-        IConsumption<Pulse> IPulsatedButtonSoftware.Push => push;
-
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedButtonHardware.Touch => touch;
 
-        /// <inheritdoc/>
         IProduction<Pulse> IPulsatedButtonHardware.Push => push;
+
+        IConsumption<Pulse> IPulsatedButtonSoftware.Touch => touch;
+
+        IConsumption<Pulse> IPulsatedButtonSoftware.Push => push;
     }
 }

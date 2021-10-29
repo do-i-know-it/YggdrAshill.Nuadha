@@ -5,10 +5,10 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <inheritdoc/>
+    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IStickHardware"/> and <see cref="IStickHardware"/>.
     public sealed class Stick :
-        IStickSoftware,
         IStickHardware,
+        IStickSoftware,
         IProtocol<IStickSoftware, IStickHardware>
     {
         /// <summary>
@@ -58,16 +58,12 @@ namespace YggdrAshill.Nuadha
             Tilt.Dispose();
         }
 
-        /// <inheritdoc/>
-        IConsumption<Touch> IStickSoftware.Touch => Touch;
-
-        /// <inheritdoc/>
-        IConsumption<Tilt> IStickSoftware.Tilt => Tilt;
-
-        /// <inheritdoc/>
         IProduction<Touch> IStickHardware.Touch => Touch;
 
-        /// <inheritdoc/>
         IProduction<Tilt> IStickHardware.Tilt => Tilt;
+
+        IConsumption<Touch> IStickSoftware.Touch => Touch;
+
+        IConsumption<Tilt> IStickSoftware.Tilt => Tilt;
     }
 }
