@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class Stick :
         IStickHardware,
         IStickSoftware,
-        IProtocol<IStickSoftware, IStickHardware>
+        IProtocol<IStickHardware, IStickSoftware>
     {
         /// <summary>
         /// <see cref="Stick"/> without cache.
@@ -45,10 +45,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IStickSoftware Hardware => this;
+        public IStickHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IStickHardware Software => this;
+        public IStickSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()

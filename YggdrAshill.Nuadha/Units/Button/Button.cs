@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class Button :
         IButtonHardware,
         IButtonSoftware,
-        IProtocol<IButtonSoftware, IButtonHardware>
+        IProtocol<IButtonHardware, IButtonSoftware>
     {
         /// <summary>
         /// <see cref="Button"/> without cache.
@@ -45,10 +45,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IButtonSoftware Hardware => this;
+        public IButtonHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IButtonHardware Software => this;
+        public IButtonSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()

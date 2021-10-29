@@ -1,52 +1,40 @@
+using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha.Samples
 {
     internal class Program
     {
-        private sealed class FixedButton :
-            IButtonConfiguration
-        {
-            internal static FixedButton Instance { get; } = new FixedButton();
+        private static IProtocol<IButtonHardware, IButtonSoftware> Device { get; } = Button.WithLatestCache();
 
-            private FixedButton()
-            {
-
-            }
-
-            public IGeneration<Touch> Touch => Generate.Signal(() => Signals.Touch.Enabled);
-
-            public IGeneration<Push> Push => Generate.Signal(() => Signals.Push.Disabled);
-        }
+        private static IProtocol<IPulsatedButtonHardware, IPulsatedButtonSoftware> DeviceEvent { get; } = PulsatedButton.WithLatestCache();
 
         private static void Main(string[] arguments)
         {
-            using (var protocol = Button.WithoutCache())
-            using (var ignition = Button.WithoutCache().Ignite(FixedButton.Instance))
-            using (var composite = new CompositeCancellation())
-            {
-                protocol
-                    .Software
-                    .Touch
-                    .Produce(signal =>
-                    {
-                        Console.WriteLine(signal);
-                    })
-                    .Synthesize(composite);
-                protocol
-                    .Software
-                    .Push
-                    .Produce(signal =>
-                    {
-                        Console.WriteLine(signal);
-                    })
-                    .Synthesize(composite);
+            // Device
+            var configuration = new ToggleButton();
 
-                ignition
-                    .Connect(protocol.Hardware)
-                    .Synthesize(composite);
+            // System
+            var connection = new ShowInConsole();
+
+            // Button to pulsated button
+            var conversion = Device.Hardware.Convert();
+
+            using (var composite = new CompositeCancellation())
+            using (var button = Button.WithoutCache().Ignite(configuration))
+            {
+                button.Connect(Device.Software).Synthesize(composite);
+
+                connection.Connect(Device.Hardware).Synthesize(composite);
+
+                conversion.Connect(DeviceEvent.Software).Synthesize(composite);
+
+                connection.Connect(DeviceEvent.Hardware).Synthesize(composite);
 
                 while (true)
                 {
@@ -61,11 +49,85 @@ namespace YggdrAshill.Nuadha.Samples
                         return;
                     }
 
-                    ignition.Emit();
+                    button.Emit();
 
                     Console.WriteLine($"{input}");
                     Console.WriteLine();
                 }
+            }
+        }
+
+        private sealed class ToggleButton :
+            IButtonConfiguration
+        {
+            private bool touch;
+
+            private bool push;
+
+            public IGeneration<Touch> Touch => Generate.Signal(() =>
+            {
+                touch = !touch;
+
+                return touch.ToTouch();
+            });
+
+            public IGeneration<Push> Push => Generate.Signal(() =>
+            {
+                push = !push;
+
+                return push.ToPush();
+            });
+        }
+
+        private sealed class ShowInConsole :
+            IConnection<IButtonHardware>,
+            IConnection<IPulsatedButtonHardware>
+        {
+            public ICancellation Connect(IButtonHardware module)
+            {
+                var composite = new CompositeCancellation();
+
+                module
+                    .Touch
+                    .Produce(signal =>
+                    {
+                        Console.WriteLine(signal);
+                    })
+                    .Synthesize(composite);
+
+                module
+                    .Push
+                    .Produce(signal =>
+                    {
+                        Console.WriteLine(signal);
+                    })
+                    .Synthesize(composite);
+
+                return composite;
+            }
+
+            public ICancellation Connect(IPulsatedButtonHardware module)
+            {
+                var composite = new CompositeCancellation();
+
+                module
+                    .Touch
+                    .Detect(PulseIs.Enabled)
+                    .Produce(() =>
+                    {
+                        Console.WriteLine("Touched.");
+                    })
+                    .Synthesize(composite);
+                module
+                    .Push
+                    .Detect(PulseIs.Enabled)
+                    .Produce(() =>
+                    {
+                        Console.WriteLine("Pushed.");
+                    })
+                    .Synthesize(composite);
+
+                return composite;
             }
         }
     }

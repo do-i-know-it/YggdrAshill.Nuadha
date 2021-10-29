@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class PulsatedButton :
         IPulsatedButtonHardware,
         IPulsatedButtonSoftware,
-        IProtocol<IPulsatedButtonSoftware, IPulsatedButtonHardware>
+        IProtocol<IPulsatedButtonHardware, IPulsatedButtonSoftware>
     {
         /// <summary>
         /// <see cref="PulsatedButton"/> without cache.
@@ -45,10 +45,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IPulsatedButtonSoftware Hardware => this;
+        public IPulsatedButtonHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IPulsatedButtonHardware Software => this;
+        public IPulsatedButtonSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()

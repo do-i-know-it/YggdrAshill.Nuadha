@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class HeadTracker :
         IHeadTrackerHardware,
         IHeadTrackerSoftware,
-        IProtocol<IHeadTrackerSoftware, IHeadTrackerHardware>
+        IProtocol<IHeadTrackerHardware, IHeadTrackerSoftware>
     {
         /// <summary>
         /// <see cref="HeadTracker"/> without cache.
@@ -45,10 +45,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IHeadTrackerSoftware Hardware => this;
+        public IHeadTrackerHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IHeadTrackerHardware Software => this;
+        public IHeadTrackerSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()
@@ -58,11 +58,11 @@ namespace YggdrAshill.Nuadha
             Direction.Dispose();
         }
 
-        IPoseTrackerHardware IHeadTrackerHardware.Pose => Pose.Software;
+        IPoseTrackerHardware IHeadTrackerHardware.Pose => Pose.Hardware;
 
         IProduction<Space3D.Direction> IHeadTrackerHardware.Direction => Direction;
 
-        IPoseTrackerSoftware IHeadTrackerSoftware.Pose => Pose.Hardware;
+        IPoseTrackerSoftware IHeadTrackerSoftware.Pose => Pose.Software;
 
         IConsumption<Space3D.Direction> IHeadTrackerSoftware.Direction => Direction;
     }

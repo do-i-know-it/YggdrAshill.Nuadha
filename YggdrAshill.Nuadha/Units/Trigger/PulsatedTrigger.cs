@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class PulsatedTrigger :
         IPulsatedTriggerHardware,
         IPulsatedTriggerSoftware,
-        IProtocol<IPulsatedTriggerSoftware, IPulsatedTriggerHardware>
+        IProtocol<IPulsatedTriggerHardware, IPulsatedTriggerSoftware>
     {
         /// <summary>
         /// <see cref="PulsatedTrigger"/> without cache.
@@ -45,10 +45,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IPulsatedTriggerSoftware Hardware => this;
+        public IPulsatedTriggerHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IPulsatedTriggerHardware Software => this;
+        public IPulsatedTriggerSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()

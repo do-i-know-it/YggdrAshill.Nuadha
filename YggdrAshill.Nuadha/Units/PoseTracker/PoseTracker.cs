@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class PoseTracker :
         IPoseTrackerHardware,
         IPoseTrackerSoftware,
-        IProtocol<IPoseTrackerSoftware, IPoseTrackerHardware>
+        IProtocol<IPoseTrackerHardware, IPoseTrackerSoftware>
     {
         /// <summary>
         /// <see cref="PoseTracker"/> without cache.
@@ -49,10 +49,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IPoseTrackerSoftware Hardware => this;
+        public IPoseTrackerHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IPoseTrackerHardware Software => this;
+        public IPoseTrackerSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()

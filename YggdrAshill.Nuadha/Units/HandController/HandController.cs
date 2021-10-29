@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
     public sealed class HandController :
         IHandControllerHardware,
         IHandControllerSoftware,
-        IProtocol<IHandControllerSoftware, IHandControllerHardware>
+        IProtocol<IHandControllerHardware, IHandControllerSoftware>
     {
         /// <summary>
         /// <see cref="HandController"/> without cache.
@@ -59,10 +59,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IHandControllerSoftware Hardware => this;
+        public IHandControllerHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IHandControllerHardware Software => this;
+        public IHandControllerSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()
@@ -76,20 +76,20 @@ namespace YggdrAshill.Nuadha
             HandGrip.Dispose();
         }
 
-        IPoseTrackerHardware IHandControllerHardware.Pose => Pose.Software;
+        IPoseTrackerHardware IHandControllerHardware.Pose => Pose.Hardware;
 
-        IStickHardware IHandControllerHardware.Thumb => Thumb.Software;
+        IStickHardware IHandControllerHardware.Thumb => Thumb.Hardware;
 
-        ITriggerHardware IHandControllerHardware.IndexFinger => IndexFinger.Software;
+        ITriggerHardware IHandControllerHardware.IndexFinger => IndexFinger.Hardware;
 
-        ITriggerHardware IHandControllerHardware.HandGrip => HandGrip.Software;
+        ITriggerHardware IHandControllerHardware.HandGrip => HandGrip.Hardware;
 
-        IPoseTrackerSoftware IHandControllerSoftware.Pose => Pose.Hardware;
+        IPoseTrackerSoftware IHandControllerSoftware.Pose => Pose.Software;
 
-        IStickSoftware IHandControllerSoftware.Thumb => Thumb.Hardware;
+        IStickSoftware IHandControllerSoftware.Thumb => Thumb.Software;
 
-        ITriggerSoftware IHandControllerSoftware.IndexFinger => IndexFinger.Hardware;
+        ITriggerSoftware IHandControllerSoftware.IndexFinger => IndexFinger.Software;
 
-        ITriggerSoftware IHandControllerSoftware.HandGrip => HandGrip.Hardware;
+        ITriggerSoftware IHandControllerSoftware.HandGrip => HandGrip.Software;
     }
 }

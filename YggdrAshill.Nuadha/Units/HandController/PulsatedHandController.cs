@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
     public sealed class PulsatedHandController :
         IPulsatedHandControllerHardware,
         IPulsatedHandControllerSoftware,
-        IProtocol<IPulsatedHandControllerSoftware, IPulsatedHandControllerHardware>
+        IProtocol<IPulsatedHandControllerHardware, IPulsatedHandControllerSoftware>
     {
         /// <summary>
         /// <see cref="PulsatedHandController"/> without cache.
@@ -53,10 +53,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IPulsatedHandControllerSoftware Hardware => this;
+        public IPulsatedHandControllerHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IPulsatedHandControllerHardware Software => this;
+        public IPulsatedHandControllerSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()
@@ -68,16 +68,16 @@ namespace YggdrAshill.Nuadha
             handGrip.Dispose();
         }
 
-        IPulsatedStickHardware IPulsatedHandControllerHardware.Thumb => thumb.Software;
+        IPulsatedStickHardware IPulsatedHandControllerHardware.Thumb => thumb.Hardware;
 
-        IPulsatedTriggerHardware IPulsatedHandControllerHardware.IndexFinger => indexFinger.Software;
+        IPulsatedTriggerHardware IPulsatedHandControllerHardware.IndexFinger => indexFinger.Hardware;
 
-        IPulsatedTriggerHardware IPulsatedHandControllerHardware.HandGrip => handGrip.Software;
+        IPulsatedTriggerHardware IPulsatedHandControllerHardware.HandGrip => handGrip.Hardware;
 
-        IPulsatedStickSoftware IPulsatedHandControllerSoftware.Thumb => thumb.Hardware;
+        IPulsatedStickSoftware IPulsatedHandControllerSoftware.Thumb => thumb.Software;
 
-        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.IndexFinger => indexFinger.Hardware;
+        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.IndexFinger => indexFinger.Software;
 
-        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.HandGrip => handGrip.Hardware;
+        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.HandGrip => handGrip.Software;
     }
 }

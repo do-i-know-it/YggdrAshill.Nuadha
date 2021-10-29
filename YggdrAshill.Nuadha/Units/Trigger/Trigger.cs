@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class Trigger :
         ITriggerHardware,
         ITriggerSoftware,
-        IProtocol<ITriggerSoftware, ITriggerHardware>
+        IProtocol<ITriggerHardware, ITriggerSoftware>
     {
         /// <summary>
         /// <see cref="Trigger"/> without cache.
@@ -45,10 +45,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public ITriggerSoftware Hardware => this;
+        public ITriggerHardware Hardware => this;
 
         /// <inheritdoc/>
-        public ITriggerHardware Software => this;
+        public ITriggerSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()

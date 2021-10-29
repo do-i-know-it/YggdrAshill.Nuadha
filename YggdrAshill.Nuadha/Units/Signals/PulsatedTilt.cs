@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class PulsatedTilt :
         IPulsatedTiltHardware,
         IPulsatedTiltSoftware,
-        IProtocol<IPulsatedTiltSoftware, IPulsatedTiltHardware>
+        IProtocol<IPulsatedTiltHardware, IPulsatedTiltSoftware>
     {
         /// <summary>
         /// <see cref="PulsatedTilt"/> without cache.
@@ -70,10 +70,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IPulsatedTiltSoftware Hardware => this;
+        public IPulsatedTiltHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IPulsatedTiltHardware Software => this;
+        public IPulsatedTiltSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()

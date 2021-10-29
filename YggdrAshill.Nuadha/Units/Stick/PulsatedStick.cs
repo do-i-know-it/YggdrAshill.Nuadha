@@ -9,7 +9,7 @@ namespace YggdrAshill.Nuadha
     public sealed class PulsatedStick :
         IPulsatedStickHardware,
         IPulsatedStickSoftware,
-        IProtocol<IPulsatedStickSoftware, IPulsatedStickHardware>
+        IProtocol<IPulsatedStickHardware, IPulsatedStickSoftware>
     {
         /// <summary>
         /// <see cref="PulsatedStick"/> without cache.
@@ -45,10 +45,10 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IPulsatedStickSoftware Hardware => this;
+        public IPulsatedStickHardware Hardware => this;
 
         /// <inheritdoc/>
-        public IPulsatedStickHardware Software => this;
+        public IPulsatedStickSoftware Software => this;
 
         /// <inheritdoc/>
         public void Dispose()
@@ -60,10 +60,10 @@ namespace YggdrAshill.Nuadha
 
         IProduction<Pulse> IPulsatedStickHardware.Touch => touch;
 
-        IPulsatedTiltHardware IPulsatedStickHardware.Tilt => tilt.Software;
+        IPulsatedTiltHardware IPulsatedStickHardware.Tilt => tilt.Hardware;
 
         IConsumption<Pulse> IPulsatedStickSoftware.Touch => touch;
 
-        IPulsatedTiltSoftware IPulsatedStickSoftware.Tilt => tilt.Hardware;
+        IPulsatedTiltSoftware IPulsatedStickSoftware.Tilt => tilt.Software;
     }
 }
