@@ -9,9 +9,6 @@ namespace YggdrAshill.Nuadha.Signalization
     /// Type of <see cref="ISignal"/> to propagate.
     /// </typeparam>
     /// <remarks>
-    /// Can be combined with <see cref="IGeneration{TSignal}"/> to generate <see cref="ITransmission{TSignal}"/>.
-    /// In detail, please see <see cref="PropagationExtension.ToTransmit{TSignal}(IPropagation{TSignal}, IGeneration{TSignal})"/>.
-    /// </remarks>
     public interface IPropagation<TSignal> :
         IProduction<TSignal>,
         IConsumption<TSignal>,

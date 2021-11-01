@@ -1,7 +1,7 @@
 namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Produces <typeparamref name="TSignal"/>.
+    /// Produces <typeparamref name="TSignal"/> to send.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to produce.
@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha.Signalization
         where TSignal : ISignal
     {
         /// <summary>
-        /// Sends <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
+        /// Sends produced <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
         /// </summary>
         /// <param name="consumption">
         /// <see cref="IConsumption{TSignal}"/> to receive <typeparamref name="TSignal"/>.

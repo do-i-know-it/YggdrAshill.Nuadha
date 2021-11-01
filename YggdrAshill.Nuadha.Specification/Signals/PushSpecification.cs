@@ -29,5 +29,29 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreNotEqual(one, another);
             Assert.IsTrue(one != another);
         }
+
+        private static object[] TestSuiteForConversion => new[]
+        {
+            new object[] { Push.Disabled, false },
+            new object[] { Push.Enabled, true },
+        };
+        [TestCaseSource("TestSuiteForConversion")]
+        public void ShouldBeConverted(Push signal, bool expected)
+        {
+            var converted = (bool)signal;
+
+            Assert.AreEqual(expected, converted);
+        }
+
+        private static object[] TestSuiteForInversion => new[]
+        {
+            new object[] { Push.Disabled, Push.Enabled },
+            new object[] { Push.Enabled, Push.Disabled },
+        };
+        [TestCaseSource("TestSuiteForInversion")]
+        public void ShouldBeInversed(Push signal, Push expected)
+        {
+            Assert.AreEqual(expected, -signal);
+        }
     }
 }

@@ -87,7 +87,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Constructs an instance.
+            /// Constructs instance.
             /// </summary>
             /// <param name="horizontal">
             /// <see cref="float"/> for <see cref="Horizontal"/>.
@@ -119,6 +119,29 @@ namespace YggdrAshill.Nuadha.Signals
                 initialized = false;
 
                 distance = 0f;
+            }
+
+            /// <summary>
+            /// <see cref="Direction"/> from <see cref="Position"/>.
+            /// </summary>
+            /// <param name="signal"></param>
+            /// <returns>
+            /// <see cref="Direction"/> calculated.
+            /// </returns>
+            public Direction DirectionFrom(Position signal)
+            {
+                if (this == signal)
+                {
+                    return Direction.Upward;
+                }
+
+                var difference = this - signal;
+
+                var horizontal = difference.Horizontal / difference.Distance;
+
+                var vertical = difference.Vertical / difference.Distance;
+
+                return new Direction(horizontal, vertical);
             }
 
             /// <inheritdoc/>
@@ -161,42 +184,19 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// <see cref="Direction"/> from <see cref="Position"/>.
-            /// </summary>
-            /// <param name="position"></param>
-            /// <returns>
-            /// <see cref="Direction"/> calculated.
-            /// </returns>
-            public Direction DirectionFrom(Position position)
-            {
-                if (this == position)
-                {
-                    return Direction.Upward;
-                }
-
-                var difference = this - position;
-
-                var horizontal = difference.Horizontal / difference.Distance;
-
-                var vertical = difference.Vertical / difference.Distance;
-
-                return new Direction(horizontal, vertical);
-            }
-
-            /// <summary>
             /// Inverses <see cref="Position"/>.
             /// </summary>
-            /// <param name="position">
+            /// <param name="signal">
             /// <see cref="Position"/> to inverse.
             /// </param>
             /// <returns>
             /// <see cref="Position"/> inversed.
             /// </returns>
-            public static Position operator -(Position position)
+            public static Position operator -(Position signal)
             {
-                var horizontal = -position.Horizontal;
+                var horizontal = -signal.Horizontal;
 
-                var vertical = -position.Vertical;
+                var vertical = -signal.Vertical;
 
                 return new Position(horizontal, vertical);
             }
@@ -335,11 +335,12 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Reversed <see cref="Direction"/>.
             /// </summary>
+            [Obsolete("Please use \"operator -\" instead of this.")]
             public Direction Reversed
-                => new Direction(-Horizontal, -Vertical);
+                => -this;
 
             /// <summary>
-            /// Constructs an instance.
+            /// Constructs instance.
             /// </summary>
             /// <param name="horizontal">
             /// <see cref="float"/> for <see cref="Horizontal"/>.
@@ -390,6 +391,26 @@ namespace YggdrAshill.Nuadha.Signals
                 initialized = true;
             }
 
+            /// <summary>
+            /// <see cref="Rotation"/> from <see cref="Direction"/>.
+            /// </summary>
+            /// <param name="direction"></param>
+            /// <returns>
+            /// <see cref="Rotation"/> calculated.
+            /// </returns>
+            public Rotation RotationFrom(Direction direction)
+            {
+                var horizontal
+                    = Horizontal * direction.Vertical
+                    - direction.Vertical * Vertical;
+
+                var vertical
+                    = Horizontal * direction.Horizontal
+                    + Vertical * direction.Vertical;
+
+                return new Rotation(horizontal, vertical);
+            }
+
             /// <inheritdoc/>
             public override string ToString()
             {
@@ -430,23 +451,21 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// <see cref="Rotation"/> from <see cref="Direction"/>.
+            /// Inverses <see cref="Direction"/>.
             /// </summary>
-            /// <param name="direction"></param>
+            /// <param name="signal">
+            /// <see cref="Direction"/> to inverse.
+            /// </param>
             /// <returns>
-            /// <see cref="Rotation"/> calculated.
+            /// <see cref="Direction"/> inversed.
             /// </returns>
-            public Rotation RotationFrom(Direction direction)
+            public static Direction operator -(Direction signal)
             {
-                var horizontal
-                    = Horizontal * direction.Vertical
-                    - direction.Vertical * Vertical;
+                var horizontal = -signal.Horizontal;
 
-                var vertical
-                    = Horizontal * direction.Horizontal
-                    + Vertical * direction.Vertical;
+                var vertical = -signal.Vertical;
 
-                return new Rotation(horizontal, vertical);
+                return new Direction(horizontal, vertical);
             }
 
             /// <summary>
@@ -526,7 +545,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Constructs an instance.
+            /// Constructs instance.
             /// </summary>
             /// <param name="horizontal">
             /// <see cref="float"/> for <see cref="Rotation"/>.

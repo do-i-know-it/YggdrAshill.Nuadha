@@ -44,7 +44,7 @@ namespace YggdrAshill.Nuadha.Signals
             private readonly float value;
 
             /// <summary>
-            /// Constructs an instance.
+            /// Constructs instance.
             /// </summary>
             /// <param name="value">
             /// <see cref="float"/> for <see cref="Radian"/>.
@@ -121,29 +121,29 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Converts explicitly <see cref="Radian"/> to <see cref="float"/>.
             /// </summary>
-            /// <param name="radian">
+            /// <param name="signal">
             /// <see cref="Radian"/> to covert.
             /// </param>
             /// <returns>
             /// <see cref="float"/> converted.
             /// </returns>
-            public static explicit operator float(Radian radian)
+            public static explicit operator float(Radian signal)
             {
-                return radian.value;
+                return signal.value;
             }
 
             /// <summary>
             /// Converts explicitly <see cref="Radian"/> to <see cref="Degree"/>.
             /// </summary>
-            /// <param name="radian">
+            /// <param name="signal">
             /// <see cref="Radian"/> to covert.
             /// </param>
             /// <returns>
             /// <see cref="Degree"/> converted.
             /// </returns>
-            public static explicit operator Degree(Radian radian)
+            public static explicit operator Degree(Radian signal)
             {
-                var value = radian.value * RadianToDegree;
+                var value = signal.value * RadianToDegree;
 
                 return new Degree(value);
             }
@@ -151,15 +151,15 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Inverses <see cref="Radian"/>.
             /// </summary>
-            /// <param name="radian">
+            /// <param name="signal">
             /// <see cref="Radian"/> to inverse.
             /// </param>
             /// <returns>
             /// <see cref="Radian"/> inversed.
             /// </returns>
-            public static Radian operator -(Radian radian)
+            public static Radian operator -(Radian signal)
             {
-                return new Radian(-radian.value);
+                return new Radian(-signal.value);
             }
 
             /// <summary>
@@ -248,7 +248,7 @@ namespace YggdrAshill.Nuadha.Signals
             private readonly float value;
 
             /// <summary>
-            /// Constructs an instance.
+            /// Constructs instance.
             /// </summary>
             /// <param name="value"></param>
             /// <exception cref="ArgumentException">
@@ -276,6 +276,12 @@ namespace YggdrAshill.Nuadha.Signals
             public override string ToString()
             {
                 return $"{value}";
+            }
+
+            /// <inheritdoc/>
+            public override int GetHashCode()
+            {
+                return value.GetHashCode();
             }
 
             /// <inheritdoc/>
@@ -317,29 +323,29 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Converts explicitly <see cref="Degree"/> to <see cref="float"/>.
             /// </summary>
-            /// <param name="degree">
+            /// <param name="signal">
             /// <see cref="Degree"/> to covert.
             /// </param>
             /// <returns>
             /// <see cref="float"/> converted.
             /// </returns>
-            public static explicit operator float(Degree degree)
+            public static explicit operator float(Degree signal)
             {
-                return degree.value;
+                return signal.value;
             }
 
             /// <summary>
             /// Converts explicitly <see cref="Degree"/> to <see cref="Radian"/>.
             /// </summary>
-            /// <param name="degree">
+            /// <param name="signal">
             /// <see cref="Degree"/> to covert.
             /// </param>
             /// <returns>
             /// <see cref="Radian"/> converted.
             /// </returns>
-            public static explicit operator Radian(Degree degree)
+            public static explicit operator Radian(Degree signal)
             {
-                var value = degree.value * DegreeToRadian;
+                var value = signal.value * DegreeToRadian;
 
                 return new Radian(value);
             }
@@ -347,15 +353,15 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Inverses <see cref="Degree"/>.
             /// </summary>
-            /// <param name="degree">
+            /// <param name="signal">
             /// <see cref="Degree"/> to inverse.
             /// </param>
             /// <returns>
             /// <see cref="Degree"/> inversed.
             /// </returns>
-            public static Degree operator -(Degree degree)
+            public static Degree operator -(Degree signal)
             {
-                return new Degree(-degree.value);
+                return new Degree(-signal.value);
             }
 
             /// <summary>

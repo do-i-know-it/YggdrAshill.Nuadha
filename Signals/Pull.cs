@@ -23,7 +23,7 @@ namespace YggdrAshill.Nuadha.Signals
         private readonly float value;
 
         /// <summary>
-        /// Constructs an instance.
+        /// Constructs instance.
         /// </summary>
         /// <param name="value">
         /// <see cref="float"/> for <see cref="Pull"/>.

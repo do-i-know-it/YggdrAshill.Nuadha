@@ -40,9 +40,12 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.0f, 1.0f)]
         [TestCase(1.0f, 0.0f)]
         [TestCase(0.0f, 0.0f)]
-        public void ShouldBeReversed(float horizontal, float vertical)
+        public void ShouldBeInversed(float horizontal, float vertical)
         {
-            Assert.AreEqual(new Tilt(-horizontal, -vertical), new Tilt(horizontal, vertical).Reversed);
+            var expected = new Tilt(-horizontal, -vertical);
+            var signal = new Tilt(horizontal, vertical);
+
+            Assert.AreEqual(expected, -signal);
         }
 
         [Test]

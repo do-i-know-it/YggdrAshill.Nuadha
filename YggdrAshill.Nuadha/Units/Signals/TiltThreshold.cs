@@ -35,7 +35,7 @@ namespace YggdrAshill.Nuadha
         #region Constructor
 
         /// <summary>
-        /// Constructs an instance.
+        /// Constructs instance.
         /// </summary>
         /// <param name="distance">
         /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Distance"/>.
@@ -101,7 +101,7 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Constructs an instance.
+        /// Constructs instance.
         /// </summary>
         /// <param name="threshold">
         /// <see cref="HysteresisThreshold"/> for all.

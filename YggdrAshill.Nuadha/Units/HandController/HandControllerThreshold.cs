@@ -23,7 +23,7 @@ namespace YggdrAshill.Nuadha
         public HysteresisThreshold HandGrip { get; }
 
         /// <summary>
-        /// Constructs an instance.
+        /// Constructs instance.
         /// </summary>
         /// <param name="thumb">
         /// <see cref="TiltThreshold"/> for <see cref="Thumb"/>.

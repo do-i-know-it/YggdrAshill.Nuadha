@@ -1,5 +1,4 @@
-# Release notes for version 1.0.0
+# Release notes for version 1.0.1
 
-- Modified architecture of framework.
-- Modified documents for framework.
-- Added samples for framework.
+- Fixed implementations of signals for 3D space.
+- Fixed document comments for framework.
