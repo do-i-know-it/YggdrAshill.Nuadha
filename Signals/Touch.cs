@@ -92,7 +92,15 @@ namespace YggdrAshill.Nuadha.Signals
         /// </returns>
         public static explicit operator bool(Touch signal)
         {
-            return signal == Enabled;
+            switch (signal.state)
+            {
+                case State.Disabled:
+                    return false;
+                case State.Enabled:
+                    return true;
+                default:
+                    throw new NotSupportedException(nameof(Touch));
+            }
         }
 
         /// <summary>
@@ -121,6 +129,28 @@ namespace YggdrAshill.Nuadha.Signals
         public static bool operator false(Touch signal)
         {
             return !(bool)signal;
+        }
+
+        /// <summary>
+        /// Inverses <see cref="Touch"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Touch"/> to inverse.
+        /// </param>
+        /// <returns>
+        /// <see cref="Touch"/> inversed.
+        /// </returns>
+        public static Touch operator -(Touch signal)
+        {
+            switch (signal.state)
+            {
+                case State.Disabled:
+                    return Enabled;
+                case State.Enabled:
+                    return Disabled;
+                default:
+                    throw new NotSupportedException(nameof(Touch));
+            }
         }
 
         /// <summary>

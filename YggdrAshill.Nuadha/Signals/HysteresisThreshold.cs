@@ -31,7 +31,7 @@ namespace YggdrAshill.Nuadha
         #region Constructor
 
         /// <summary>
-        /// Constructs an instance.
+        /// Constructs instance.
         /// </summary>
         /// <param name="lower">
         /// Threshold for <see cref="Lower"/>.
@@ -84,7 +84,7 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Constructs an instance.
+        /// Constructs instance.
         /// </summary>
         /// <param name="threshold">
         /// Threshold for <see cref="Lower"/> and <see cref="Upper"/>.

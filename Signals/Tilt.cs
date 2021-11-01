@@ -94,11 +94,12 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// <see cref="Reversed"/> <see cref="Tilt"/>.
         /// </summary>
+        [Obsolete("Please use \"operator -\" instead of this.")]
         public Tilt Reversed
-            => new Tilt(-Horizontal, -Vertical);
+            => -this;
 
         /// <summary>
-        /// Constructs an instance.
+        /// Constructs instance.
         /// </summary>
         /// <param name="horizontal">
         /// <see cref="float"/> for <see cref="Horizontal"/>.
@@ -153,9 +154,9 @@ namespace YggdrAshill.Nuadha.Signals
 
             Vertical = vertical;
 
-            initialized = false;
+            distance = (float)Math.Sqrt(dotted);
 
-            distance = 0f;
+            initialized = true;
         }
 
         /// <inheritdoc/>
@@ -195,6 +196,24 @@ namespace YggdrAshill.Nuadha.Signals
         {
             return Horizontal.Equals(other.Horizontal)
                 && Vertical.Equals(other.Vertical);
+        }
+
+        /// <summary>
+        /// Inverses <see cref="Tilt"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Tilt"/> to inverse.
+        /// </param>
+        /// <returns>
+        /// <see cref="Tilt"/> inversed.
+        /// </returns>
+        public static Tilt operator -(Tilt signal)
+        {
+            var horizontal = -signal.Horizontal;
+
+            var vertical = -signal.Vertical;
+
+            return new Tilt(horizontal, vertical);
         }
 
         /// <summary>

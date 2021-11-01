@@ -92,7 +92,15 @@ namespace YggdrAshill.Nuadha.Signals
         /// </returns>
         public static explicit operator bool(Push signal)
         {
-            return signal == Enabled;
+            switch (signal.state)
+            {
+                case State.Disabled:
+                    return false;
+                case State.Enabled:
+                    return true;
+                default:
+                    throw new NotSupportedException(nameof(Push));
+            }
         }
 
         /// <summary>
@@ -121,6 +129,28 @@ namespace YggdrAshill.Nuadha.Signals
         public static bool operator false(Push signal)
         {
             return !(bool)signal;
+        }
+
+        /// <summary>
+        /// Inverses <see cref="Push"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Push"/> to inverse.
+        /// </param>
+        /// <returns>
+        /// <see cref="Push"/> inversed.
+        /// </returns>
+        public static Push operator -(Push signal)
+        {
+            switch (signal.state)
+            {
+                case State.Disabled:
+                    return Enabled;
+                case State.Enabled:
+                    return Disabled;
+                default:
+                    throw new NotSupportedException(nameof(Push));
+            }
         }
 
         /// <summary>

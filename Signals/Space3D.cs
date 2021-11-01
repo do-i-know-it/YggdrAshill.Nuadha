@@ -103,7 +103,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Constructs an instance.
+            /// Constructs instance.
             /// </summary>
             /// <param name="horizontal">
             /// <see cref="float"/> for <see cref="Horizontal"/>.
@@ -149,6 +149,31 @@ namespace YggdrAshill.Nuadha.Signals
                 distance = 0f;
             }
 
+            /// <summary>
+            /// <see cref="Direction"/> from <see cref="Position"/>.
+            /// </summary>
+            /// <param name="position"></param>
+            /// <returns>
+            /// <see cref="Direction"/> calculated.
+            /// </returns>
+            public Direction DirectionFrom(Position position)
+            {
+                if (this == position)
+                {
+                    return Direction.Forward;
+                }
+
+                var difference = this - position;
+
+                var horizontal = difference.Horizontal / difference.Distance;
+
+                var vertical = difference.Vertical / difference.Distance;
+
+                var frontal = difference.Frontal / difference.Distance;
+
+                return new Direction(horizontal, vertical, frontal);
+            }
+
             /// <inheritdoc/>
             public override string ToString()
             {
@@ -191,46 +216,21 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// <see cref="Direction"/> from <see cref="Position"/>.
-            /// </summary>
-            /// <param name="position"></param>
-            /// <returns>
-            /// <see cref="Direction"/> calculated.
-            /// </returns>
-            public Direction DirectionFrom(Position position)
-            {
-                if (this == position)
-                {
-                    return Direction.Forward;
-                }
-
-                var difference = this - position;
-
-                var horizontal = difference.Horizontal / difference.Distance;
-
-                var vertical = difference.Vertical / difference.Distance;
-
-                var frontal = difference.Frontal / difference.Distance;
-
-                return new Direction(horizontal, vertical, frontal);
-            }
-
-            /// <summary>
             /// Inverses <see cref="Position"/>.
             /// </summary>
-            /// <param name="position">
+            /// <param name="signal">
             /// <see cref="Position"/> to inverse.
             /// </param>
             /// <returns>
             /// <see cref="Position"/> inversed.
             /// </returns>
-            public static Position operator -(Position position)
+            public static Position operator -(Position signal)
             {
-                var horizontal = -position.Horizontal;
+                var horizontal = -signal.Horizontal;
 
-                var vertical = -position.Vertical;
+                var vertical = -signal.Vertical;
 
-                var frontal = -position.Frontal;
+                var frontal = -signal.Frontal;
 
                 return new Position(horizontal, vertical, frontal);
             }
@@ -409,11 +409,12 @@ namespace YggdrAshill.Nuadha.Signals
             /// <summary>
             /// Reversed <see cref="Direction"/>.
             /// </summary>
+            [Obsolete("Please use \"operator -\" instead of this.")]
             public Direction Reversed
-                => new Direction(-Horizontal, -Vertical, -Frontal);
+                => -this;
 
             /// <summary>
-            /// Constructs an instance.
+            /// Constructs instance.
             /// </summary>
             /// <param name="horizontal">
             /// <see cref="float"/> for <see cref="Horizontal"/>.
@@ -490,47 +491,6 @@ namespace YggdrAshill.Nuadha.Signals
                 initialized = true;
             }
 
-            /// <inheritdoc/>
-            public override string ToString()
-            {
-                return $"{Horizontal}, {Vertical}, {Frontal}";
-            }
-
-            /// <inheritdoc/>
-            public override int GetHashCode()
-            {
-                // Visual Studio auto generated.
-                var hashCode = -55840831;
-                hashCode = hashCode * -1521134295 + Horizontal.GetHashCode();
-                hashCode = hashCode * -1521134295 + Vertical.GetHashCode();
-                hashCode = hashCode * -1521134295 + Frontal.GetHashCode();
-                return hashCode;
-            }
-
-            /// <inheritdoc/>
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(this, obj))
-                {
-                    return true;
-                }
-
-                if (obj is Direction signal)
-                {
-                    return Equals(signal);
-                }
-
-                return false;
-            }
-
-            /// <inheritdoc/>
-            public bool Equals(Direction other)
-            {
-                return Horizontal.Equals(other.Horizontal)
-                    && Vertical.Equals(other.Vertical)
-                    && Frontal.Equals(other.Frontal);
-            }
-
             /// <summary>
             /// <see cref="Rotation"/> from <see cref="Direction"/>.
             /// </summary>
@@ -592,6 +552,68 @@ namespace YggdrAshill.Nuadha.Signals
                 return new Rotation(horizontal, vertical, frontal, real);
             }
 
+            /// <inheritdoc/>
+            public override string ToString()
+            {
+                return $"{Horizontal}, {Vertical}, {Frontal}";
+            }
+
+            /// <inheritdoc/>
+            public override int GetHashCode()
+            {
+                // Visual Studio auto generated.
+                var hashCode = -55840831;
+                hashCode = hashCode * -1521134295 + Horizontal.GetHashCode();
+                hashCode = hashCode * -1521134295 + Vertical.GetHashCode();
+                hashCode = hashCode * -1521134295 + Frontal.GetHashCode();
+                return hashCode;
+            }
+
+            /// <inheritdoc/>
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(this, obj))
+                {
+                    return true;
+                }
+
+                if (obj is Direction signal)
+                {
+                    return Equals(signal);
+                }
+
+                return false;
+            }
+
+            /// <inheritdoc/>
+            public bool Equals(Direction other)
+            {
+                return Horizontal.Equals(other.Horizontal)
+                    && Vertical.Equals(other.Vertical)
+                    && Frontal.Equals(other.Frontal);
+            }
+
+            /// <summary>
+            /// Inverses <see cref="Direction"/>.
+            /// </summary>
+            /// <param name="signal">
+            /// <see cref="Direction"/> to inverse.
+            /// </param>
+            /// <returns>
+            /// <see cref="Direction"/> inversed.
+            /// </returns>
+            public static Direction operator -(Direction signal)
+            {
+                var horizontal = -signal.Horizontal;
+
+                var vertical = -signal.Vertical;
+
+                var frontal = -signal.Frontal;
+
+                return new Direction(horizontal, vertical, frontal);
+            }
+
+
             /// <summary>
             /// Checks if <see cref="Direction"/> and <see cref="Direction"/> are equal.
             /// </summary>
@@ -632,7 +654,10 @@ namespace YggdrAshill.Nuadha.Signals
             public static Rotation None { get; } = new Rotation(0.0f, 0.0f, 0.0f, 1.0f);
 
             private float horizontal;
-            private float Horizontal
+            /// <summary>
+            /// <see cref="Horizontal"/> of the coordinate.
+            /// </summary>
+            public float Horizontal
             {
                 get
                 {
@@ -643,7 +668,10 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             private float vertical;
-            private float Vertical
+            /// <summary>
+            /// <see cref="Vertical"/> of the coordinate.
+            /// </summary>
+            public float Vertical
             {
                 get
                 {
@@ -654,7 +682,10 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             private float frontal;
-            private float Frontal
+            /// <summary>
+            /// <see cref="Frontal"/> of the coordinate.
+            /// </summary>
+            public float Frontal
             {
                 get
                 {
@@ -665,7 +696,10 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             private float real;
-            private float Real
+            /// <summary>
+            /// <see cref="Real"/> of the coordinate.
+            /// </summary>
+            public float Real
             {
                 get
                 {
@@ -695,7 +729,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Constructs an instance.
+            /// Constructs instance.
             /// </summary>
             /// <param name="horizontal">
             /// <see cref="float"/> for <see cref="Rotation"/>.

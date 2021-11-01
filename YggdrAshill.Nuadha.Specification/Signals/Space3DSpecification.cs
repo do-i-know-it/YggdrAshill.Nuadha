@@ -159,9 +159,11 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.0f, 0.0f, 1.0f)]
         [TestCase(0.0f, 1.0f, 0.0f)]
         [TestCase(1.0f, 0.0f, 0.0f)]
-        public void DirectionShouldBeReversed(float horizontal, float vertical, float frontal)
+        public void DirectionShouldBeInversed(float horizontal, float vertical, float frontal)
         {
-            Assert.AreEqual(new Space3D.Direction(-horizontal, -vertical, -frontal), new Space3D.Direction(horizontal, vertical, frontal).Reversed);
+            var signal = new Space3D.Direction(horizontal, vertical, frontal);
+            var expected = new Space3D.Direction(-horizontal, -vertical, -frontal);
+            Assert.AreEqual(expected, -signal);
         }
 
         [Test]
