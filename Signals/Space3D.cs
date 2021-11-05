@@ -8,7 +8,8 @@ namespace YggdrAshill.Nuadha.Signals
     /// </summary>
     public static class Space3D
     {
-        private const float Tolerance = float.Epsilon;
+        private const float Tolerance = 1e-5f;
+
         private const float Length = 1.0f;
 
         #region Position
@@ -318,6 +319,11 @@ namespace YggdrAshill.Nuadha.Signals
             public const float Maximum = Length;
 
             /// <summary>
+            /// <see cref="Tolerance"/> for <see cref="Direction"/>.
+            /// </summary>
+            public static float Tolerance { get; } = Space3D.Tolerance;
+
+            /// <summary>
             /// <see cref="Right"/> in the coordinate.
             /// </summary>
             public static Direction Right { get; } = Position.Right.DirectionFrom(Position.Origin);
@@ -434,14 +440,17 @@ namespace YggdrAshill.Nuadha.Signals
             /// <exception cref="ArgumentException">
             /// Thrown if <paramref name="frontal"/> is <see cref="float.NaN"/>.
             /// </exception>
-            /// <exception cref="ArgumentException">
-            /// Thrown if <paramref name="horizontal"/> out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="horizontal"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
             /// </exception>
-            /// <exception cref="ArgumentException">
-            /// Thrown if <paramref name="vertical"/> out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="vertical"/> is  out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
             /// </exception>
-            /// <exception cref="ArgumentException">
-            /// Thrown if <paramref name="frontal"/> out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="frontal"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
+            /// </exception>
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="horizontal"/>^2 + <paramref name="vertical"/>^2 + <paramref name="frontal"/>^2 is larger than <see cref="Tolerance"/>.
             /// </exception>
             public Direction(float horizontal, float vertical, float frontal)
             {
@@ -479,7 +488,7 @@ namespace YggdrAshill.Nuadha.Signals
 
                 if (difference > Tolerance)
                 {
-                    throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 + {nameof(frontal)}^2");
+                    throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 + {nameof(frontal)}^2 > {Tolerance}");
                 }
 
                 this.horizontal = horizontal;
@@ -649,6 +658,21 @@ namespace YggdrAshill.Nuadha.Signals
             IEquatable<Rotation>
         {
             /// <summary>
+            /// <see cref="Minimum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/> and <see cref="Frontal"/> and <see cref="Real"/>.
+            /// </summary>
+            public const float Minimum = -Length;
+
+            /// <summary>
+            /// <see cref="Maximum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/> and <see cref="Frontal"/> and <see cref="Real"/>.
+            /// </summary>
+            public const float Maximum = Length;
+
+            /// <summary>
+            /// <see cref="Tolerance"/> for <see cref="Rotation"/>.
+            /// </summary>
+            public static float Tolerance { get; } = Space3D.Tolerance;
+
+            /// <summary>
             /// <see cref="Rotation"/> not rotated.
             /// </summary>
             public static Rotation None { get; } = new Rotation(0.0f, 0.0f, 0.0f, 1.0f);
@@ -755,6 +779,21 @@ namespace YggdrAshill.Nuadha.Signals
             /// <exception cref="ArgumentException">
             /// Thrown if <paramref name="real"/> is <see cref="float.NaN"/>.
             /// </exception>
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="horizontal"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
+            /// </exception>
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="vertical"/> is  out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
+            /// </exception>
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="frontal"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
+            /// </exception>
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="real"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
+            /// </exception>
+            /// <exception cref="ArgumentOutOfRangeException">
+            /// Thrown if <paramref name="horizontal"/>^2 + <paramref name="vertical"/>^2 + <paramref name="frontal"/>^2 + <paramref name="real"/>^2 is larger than <see cref="Tolerance"/>.
+            /// </exception>
             public Rotation(float horizontal, float vertical, float frontal, float real)
             {
                 if (float.IsNaN(horizontal))
@@ -774,21 +813,21 @@ namespace YggdrAshill.Nuadha.Signals
                     throw new ArgumentException($"{nameof(real)} is NaN.");
                 }
 
-                if (horizontal < -Length || Length < horizontal)
+                if (horizontal < Minimum || Maximum < horizontal)
                 {
                     throw new ArgumentOutOfRangeException(nameof(horizontal));
                 }
-                if (vertical < -Length || Length < vertical)
+                if (vertical < Minimum || Maximum < vertical)
                 {
                     throw new ArgumentOutOfRangeException(nameof(vertical));
                 }
-                if (frontal < -Length || Length < frontal)
+                if (frontal < Minimum || Maximum < frontal)
                 {
                     throw new ArgumentOutOfRangeException(nameof(frontal));
                 }
-                if (real < -Length || Length < real)
+                if (real < Minimum || Maximum < real)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(frontal));
+                    throw new ArgumentOutOfRangeException(nameof(real));
                 }
 
                 var dotted
@@ -800,7 +839,7 @@ namespace YggdrAshill.Nuadha.Signals
 
                 if (difference > Tolerance)
                 {
-                    throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 + {nameof(frontal)}^2 + {nameof(real)}^2");
+                    throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 + {nameof(frontal)}^2 + {nameof(real)}^2 > {Tolerance}");
                 }
 
                 this.horizontal = horizontal;

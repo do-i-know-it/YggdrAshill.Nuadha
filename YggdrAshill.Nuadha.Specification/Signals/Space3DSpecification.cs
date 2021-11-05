@@ -64,10 +64,10 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(1.0f, 0.0f, 0.0f)]
         public void PositionShouldHaveIdentity(float horizontal, float vertical, float frontal)
         {
-            var position = new Space3D.Position(horizontal, vertical, frontal);
+            var signal = new Space3D.Position(horizontal, vertical, frontal);
 
-            Assert.AreEqual(position, Space3D.Position.Origin + position);
-            Assert.AreEqual(position, position + Space3D.Position.Origin);
+            Assert.AreEqual(signal, Space3D.Position.Origin + signal);
+            Assert.AreEqual(signal, signal + Space3D.Position.Origin);
         }
 
         [TestCase(0.0f, 0.0f, -1.0f, 1.0f)]
@@ -91,10 +91,10 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(1.0f, 0.0f, 0.0f)]
         public void PositionShouldHaveInverse(float horizontal, float vertical, float frontal)
         {
-            var position = new Space3D.Position(horizontal, vertical, frontal);
+            var signal = new Space3D.Position(horizontal, vertical, frontal);
 
-            Assert.AreEqual(Space3D.Position.Origin, -position + position);
-            Assert.AreEqual(Space3D.Position.Origin, position - position);
+            Assert.AreEqual(Space3D.Position.Origin, -signal + signal);
+            Assert.AreEqual(Space3D.Position.Origin, signal - signal);
         }
 
         [Test]
@@ -102,17 +102,17 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Space3D.Position(float.NaN, 0.0f, 0.0f);
+                var signal = new Space3D.Position(float.NaN, 0.0f, 0.0f);
             });
 
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Space3D.Position(0.0f, float.NaN, 0.0f);
+                var signal = new Space3D.Position(0.0f, float.NaN, 0.0f);
             });
 
             Assert.Throws<ArgumentException>(() =>
             {
-                var position = new Space3D.Position(0.0f, 0.0f, float.NaN);
+                var signal = new Space3D.Position(0.0f, 0.0f, float.NaN);
             });
         }
 
@@ -143,6 +143,17 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
+        public void DirectionShouldBeGeneratedWithinValidLength()
+        {
+            var value = MathF.Sqrt(Space3D.Direction.Maximum / 3);
+
+            Assert.DoesNotThrow(() =>
+            {
+                var signal = new Space3D.Direction(value, value, value);
+            });
+        }
+
+        [Test]
         public void DirectionShouldHaveCoordinate()
         {
             Assert.AreEqual(new Space3D.Direction(1f, 0f, 0f), Space3D.Direction.Right);
@@ -162,7 +173,9 @@ namespace YggdrAshill.Nuadha.Specification
         public void DirectionShouldBeInversed(float horizontal, float vertical, float frontal)
         {
             var signal = new Space3D.Direction(horizontal, vertical, frontal);
+
             var expected = new Space3D.Direction(-horizontal, -vertical, -frontal);
+
             Assert.AreEqual(expected, -signal);
         }
 
@@ -171,17 +184,193 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var direction = new Space3D.Direction(float.NaN, 0.0f, 0.0f);
+                var signal = new Space3D.Direction(float.NaN, 0.0f, 0.0f);
             });
 
             Assert.Throws<ArgumentException>(() =>
             {
-                var direction = new Space3D.Direction(0.0f, float.NaN, 0.0f);
+                var signal = new Space3D.Direction(0.0f, float.NaN, 0.0f);
             });
 
             Assert.Throws<ArgumentException>(() =>
             {
-                var direction = new Space3D.Direction(0.0f, 0.0f, float.NaN);
+                var signal = new Space3D.Direction(0.0f, 0.0f, float.NaN);
+            });
+        }
+
+        [Test]
+        public void DirectionCannotBeGeneratedWithValueOutOfRange()
+        {
+            // Horizontal lower than minimum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Direction(Space3D.Direction.Minimum - 0.1f, 0.0f, 0.0f);
+            });
+
+            // Horizontal higher than maximum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Direction(Space3D.Direction.Maximum + 0.1f, 0.0f, 0.0f);
+            });
+
+            // Vertical lower than minimum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Direction(0.0f, Space3D.Direction.Minimum - 0.1f, 0.0f);
+            });
+
+            // Vertical higher than maximum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Direction(0.0f, Space3D.Direction.Maximum + 0.1f, 0.0f);
+            });
+
+            // Frontal lower than minimum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Direction(0.0f, 0.0f, Space3D.Direction.Minimum - 0.1f);
+            });
+
+            // Frontal higher than maximum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Direction(0.0f, 0.0f, Space3D.Direction.Maximum + 0.1f);
+            });
+        }
+
+        #endregion
+
+        #region Rotation
+
+        [TestCase(0.0f, 0.0f, 0.0f, -1.0f)]
+        [TestCase(0.0f, 0.0f, -1.0f, 0.0f)]
+        [TestCase(0.0f, -1.0f, 0.0f, 0.0f)]
+        [TestCase(-1.0f, 0.0f, 0.0f, 0.0f)]
+        [TestCase(0.0f, 0.0f, 0.0f, 1.0f)]
+        [TestCase(0.0f, 0.0f, 1.0f, 0.0f)]
+        [TestCase(0.0f, 1.0f, 0.0f, 0.0f)]
+        [TestCase(1.0f, 0.0f, 0.0f, 0.0f)]
+        public void RotationShouldBeEqualToSameOne(float horizontal, float vertical, float frontal, float real)
+        {
+            Assert.AreEqual(new Space3D.Rotation(horizontal, vertical, frontal, real), new Space3D.Rotation(horizontal, vertical, frontal, real));
+        }
+
+        [Test]
+        public void RotationShouldBeGeneratedWithinValidLength()
+        {
+            var value = MathF.Sqrt(Space3D.Direction.Maximum / 4);
+
+            Assert.DoesNotThrow(() =>
+            {
+                var signal = new Space3D.Rotation(value, value, value, value);
+            });
+        }
+
+        [TestCase(0.0f, 0.0f, 0.0f, -1.0f)]
+        [TestCase(0.0f, 0.0f, -1.0f, 0.0f)]
+        [TestCase(0.0f, -1.0f, 0.0f, 0.0f)]
+        [TestCase(-1.0f, 0.0f, 0.0f, 0.0f)]
+        [TestCase(0.0f, 0.0f, 0.0f, 1.0f)]
+        [TestCase(0.0f, 0.0f, 1.0f, 0.0f)]
+        [TestCase(0.0f, 1.0f, 0.0f, 0.0f)]
+        [TestCase(1.0f, 0.0f, 0.0f, 0.0f)]
+        public void RotationShouldHaveIdentity(float horizontal, float vertical, float frontal, float real)
+        {
+            var signal = new Space3D.Rotation(horizontal, vertical, frontal, real);
+
+            Assert.AreEqual(signal, Space3D.Rotation.None + signal);
+            Assert.AreEqual(signal, signal + Space3D.Rotation.None);
+        }
+
+        [TestCase(0.0f, 0.0f, 0.0f, -1.0f)]
+        [TestCase(0.0f, 0.0f, -1.0f, 0.0f)]
+        [TestCase(0.0f, -1.0f, 0.0f, 0.0f)]
+        [TestCase(-1.0f, 0.0f, 0.0f, 0.0f)]
+        [TestCase(0.0f, 0.0f, 0.0f, 1.0f)]
+        [TestCase(0.0f, 0.0f, 1.0f, 0.0f)]
+        [TestCase(0.0f, 1.0f, 0.0f, 0.0f)]
+        [TestCase(1.0f, 0.0f, 0.0f, 0.0f)]
+        public void RotationShouldHaveInverse(float horizontal, float vertical, float frontal, float real)
+        {
+            var signal = new Space3D.Rotation(horizontal, vertical, frontal, real);
+
+            Assert.AreEqual(Space3D.Rotation.None, signal - signal);
+            Assert.AreEqual(Space3D.Rotation.None, -signal + signal);
+        }
+
+        [Test]
+        public void RotationCannotBeGeneratedWithNaN()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var signal = new Space3D.Rotation(float.NaN, 0.0f, 0.0f, 0.0f);
+            });
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, float.NaN, 0.0f, 0.0f);
+            });
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, 0.0f, float.NaN, 0.0f);
+            });
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, 0.0f, 0.0f, float.NaN);
+            });
+        }
+
+        [Test]
+        public void RotationCannotBeGeneratedWithValueOutOfRange()
+        {
+            // Horizontal lower than minimum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Rotation(Space3D.Rotation.Minimum - 0.1f, 0.0f, 0.0f, 0.0f);
+            });
+
+            // Horizontal higher than maximum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Rotation(Space3D.Rotation.Maximum + 0.1f, 0.0f, 0.0f, 0.0f);
+            });
+
+            // Vertical lower than minimum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, Space3D.Rotation.Minimum - 0.1f, 0.0f, 0.0f);
+            });
+
+            // Vertical higher than maximum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, Space3D.Rotation.Maximum + 0.1f, 0.0f, 0.0f);
+            });
+
+            // Frontal lower than minimum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, 0.0f, Space3D.Rotation.Minimum - 0.1f, 0.0f);
+            });
+
+            // Frontal higher than maximum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, 0.0f, Space3D.Rotation.Maximum + 0.1f, 0.0f);
+            });
+
+            // Real lower than minimum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, 0.0f, 0.0f, Space3D.Rotation.Minimum - 0.1f);
+            });
+
+            // Real higher than maximum.
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var signal = new Space3D.Rotation(0.0f, 0.0f, 0.0f, Space3D.Rotation.Maximum + 0.1f);
             });
         }
 
