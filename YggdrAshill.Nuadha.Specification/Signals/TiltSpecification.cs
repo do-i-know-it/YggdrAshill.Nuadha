@@ -35,6 +35,17 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreEqual(new Tilt(0f, -1f), Tilt.Downward);
         }
 
+        [Test]
+        public void ShouldBeGeneratedWithinValidLength()
+        {
+            var value = MathF.Sqrt(Space3D.Direction.Maximum / 2);
+
+            Assert.DoesNotThrow(() =>
+            {
+                var signal = new Tilt(value, value);
+            });
+        }
+
         [TestCase(0.0f, -1.0f)]
         [TestCase(-1.0f, 0.0f)]
         [TestCase(0.0f, 1.0f)]
@@ -68,31 +79,25 @@ namespace YggdrAshill.Nuadha.Specification
             // Horizontal lower than minimum.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var signal = new Tilt(-1.1f, 0.0f);
+                var signal = new Tilt(Tilt.Minimum - 0.1f, 0.0f);
             });
 
             // Horizontal higher than maximum.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var signal = new Tilt(1.1f, 0.0f);
+                var signal = new Tilt(Tilt.Maximum + 0.1f, 0.0f);
             });
 
             // Vertical lower than minimum.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var signal = new Tilt(0.0f, -1.1f);
+                var signal = new Tilt(0.0f, Tilt.Minimum - 0.1f);
             });
 
             // Vertical higher than maximum.
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var signal = new Tilt(0.0f, 1.1f);
-            });
-
-            // Distance larger than length.
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var signal = new Tilt(1.0f, 1.0f);
+                var signal = new Tilt(0.0f, Tilt.Maximum + 0.1f);
             });
         }
     }
