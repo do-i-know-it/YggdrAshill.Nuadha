@@ -88,6 +88,12 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        [Obsolete("Please use StickExtension.Pulsate instead.")]
+        public static IConnection<IPulsatedStickSoftware> Convert(this IStickHardware module, TiltThreshold threshold)
+        {
+            return module.Pulsate(threshold);
+        }
+
         /// <summary>
         /// Converts <see cref="IStickHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedStickSoftware"/>.
         /// </summary>
@@ -106,7 +112,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedStickSoftware> Convert(this IStickHardware module, TiltThreshold threshold)
+        public static IConnection<IPulsatedStickSoftware> Pulsate(this IStickHardware module, TiltThreshold threshold)
         {
             if (module == null)
             {

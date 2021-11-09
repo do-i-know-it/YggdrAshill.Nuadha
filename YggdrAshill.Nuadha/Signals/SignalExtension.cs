@@ -1,4 +1,8 @@
+using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -187,6 +191,66 @@ namespace YggdrAshill.Nuadha
         public static Angle.Degree ToDegree(Angle.Radian signal)
         {
             return (Angle.Degree)signal;
+        }
+
+        #endregion
+
+        #region Space3D
+
+        public static IProduction<Space3D.Position> Calibrate(this IProduction<Space3D.Position> production, IGeneration<Space3D.Position> generation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return production.Convert(Space3DPositionTo.Calibrate(generation));
+        }
+
+        public static IProduction<Space3D.Position> Calibrate(this IProduction<Space3D.Position> production, Func<Space3D.Position> generation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return production.Calibrate(Generate.Signal(generation));
+        }
+
+        public static IProduction<Space3D.Rotation> Calibrate(this IProduction<Space3D.Rotation> production, IGeneration<Space3D.Rotation> generation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return production.Convert(Space3DRotationTo.Calibrate(generation));
+        }
+
+        public static IProduction<Space3D.Rotation> Calibrate(this IProduction<Space3D.Rotation> production, Func<Space3D.Rotation> generation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return production.Calibrate(Generate.Signal(generation));
         }
 
         #endregion

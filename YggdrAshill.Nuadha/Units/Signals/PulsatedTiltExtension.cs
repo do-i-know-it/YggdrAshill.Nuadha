@@ -12,6 +12,12 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PulsatedTiltExtension
     {
+        [Obsolete("Please use PulsatedTiltExtension.Pulsate instead.")]
+        public static IConnection<IPulsatedTiltSoftware> Convert(this IProduction<Tilt> production, TiltThreshold threshold)
+        {
+            return production.Pulsate(threshold);
+        }
+
         /// <summary>
         /// Converts <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltSoftware"/>.
         /// </summary>
@@ -30,7 +36,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedTiltSoftware> Convert(this IProduction<Tilt> production, TiltThreshold threshold)
+        public static IConnection<IPulsatedTiltSoftware> Pulsate(this IProduction<Tilt> production, TiltThreshold threshold)
         {
             if (production == null)
             {
