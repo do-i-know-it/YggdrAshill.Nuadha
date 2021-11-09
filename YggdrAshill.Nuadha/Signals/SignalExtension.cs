@@ -88,6 +88,15 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Pull ToPull(this float signal)
         {
+            if (signal < Pull.Minimum)
+            {
+                signal = Pull.Minimum;
+            }
+            if (signal > Pull.Maximum)
+            {
+                signal = Pull.Maximum;
+            }
+
             return (Pull)signal;
         }
 
@@ -120,6 +129,15 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Angle.Radian ToRadian(this float signal)
         {
+            if (signal < Angle.Radian.Minimum)
+            {
+                signal = Angle.Radian.Minimum;
+            }
+            if (signal > Angle.Radian.Maximum)
+            {
+                signal = Angle.Radian.Maximum;
+            }
+
             return (Angle.Radian)signal;
         }
 
@@ -148,6 +166,15 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Angle.Degree ToDegree(float signal)
         {
+            if (signal < Angle.Degree.Minimum)
+            {
+                signal = Angle.Degree.Minimum;
+            }
+            if (signal > Angle.Degree.Maximum)
+            {
+                signal = Angle.Degree.Maximum;
+            }
+
             return (Angle.Degree)signal;
         }
 
