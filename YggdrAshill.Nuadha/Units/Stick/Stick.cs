@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IStickHardware"/> and <see cref="IStickHardware"/>.
+    /// </summary>
     public sealed class Stick :
         IStickHardware,
         IStickSoftware,

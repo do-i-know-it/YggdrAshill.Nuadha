@@ -1,8 +1,14 @@
-﻿namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Imitation of <see cref="IHandControllerConfiguration"/>.
+    /// </summary>
     public sealed class ImitatedHandController :
         IHandControllerConfiguration
     {
+        /// <summary>
+        /// <see cref="ImitatedHandController"/> singleton.
+        /// </summary>
         public static ImitatedHandController Instance { get; } = new ImitatedHandController();
 
         private ImitatedHandController()

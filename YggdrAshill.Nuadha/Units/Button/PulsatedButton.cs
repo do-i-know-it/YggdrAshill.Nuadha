@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedButtonHardware"/> and <see cref="IPulsatedButtonSoftware"/>.
+    /// </summary>
     public sealed class PulsatedButton :
         IPulsatedButtonHardware,
         IPulsatedButtonSoftware,

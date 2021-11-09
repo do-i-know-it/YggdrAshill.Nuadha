@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IHeadTrackerHardware"/> and <see cref="IHeadTrackerSoftware"/>.
+    /// </summary>
     public sealed class HeadTracker :
         IHeadTrackerHardware,
         IHeadTrackerSoftware,

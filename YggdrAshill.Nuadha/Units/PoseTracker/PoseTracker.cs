@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPoseTrackerHardware"/> and <see cref="IPoseTrackerSoftware"/>.
+    /// </summary>
     public sealed class PoseTracker :
         IPoseTrackerHardware,
         IPoseTrackerSoftware,

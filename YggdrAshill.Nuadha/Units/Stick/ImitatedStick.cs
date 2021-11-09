@@ -1,11 +1,17 @@
-﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Imitation of <see cref="IStickConfiguration"/>.
+    /// </summary>
     public sealed class ImitatedStick :
         IStickConfiguration
     {
+        /// <summary>
+        /// <see cref="ImitatedStick"/> singleton.
+        /// </summary>
         public static ImitatedStick Instance { get; } = new ImitatedStick();
 
         private ImitatedStick()

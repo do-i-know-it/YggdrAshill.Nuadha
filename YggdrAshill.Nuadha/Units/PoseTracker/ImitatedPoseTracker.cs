@@ -1,11 +1,17 @@
-﻿using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Imitation of <see cref="IPoseTrackerConfiguration"/>.
+    /// </summary>
     public sealed class ImitatedPoseTracker :
         IPoseTrackerConfiguration
     {
+        /// <summary>
+        /// <see cref="ImitatedPoseTracker"/> singleton.
+        /// </summary>
         public static ImitatedPoseTracker Instance { get; } = new ImitatedPoseTracker();
 
         private ImitatedPoseTracker()

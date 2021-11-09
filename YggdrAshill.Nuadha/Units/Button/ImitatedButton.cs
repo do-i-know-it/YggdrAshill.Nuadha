@@ -3,9 +3,15 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Imitation of <see cref="IButtonConfiguration"/>.
+    /// </summary>
     public sealed class ImitatedButton :
         IButtonConfiguration
     {
+        /// <summary>
+        /// <see cref="ImitatedButton"/> singleton.
+        /// </summary>
         public static ImitatedButton Instance { get; } = new ImitatedButton();
 
         private ImitatedButton()
