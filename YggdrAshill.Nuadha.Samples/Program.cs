@@ -23,7 +23,7 @@ namespace YggdrAshill.Nuadha.Samples
             var connection = new ShowInConsole();
 
             // Button to pulsated button
-            var conversion = Device.Hardware.Convert();
+            var conversion = Device.Hardware.Pulsate();
 
             using (var composite = new CompositeCancellation())
             using (var button = Button.WithoutCache().Ignite(configuration))
