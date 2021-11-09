@@ -44,7 +44,6 @@ namespace YggdrAshill.Nuadha
                 this.onConsumed = onConsumed;
             }
 
-            /// <inheritdoc/>
             public void Consume(TSignal signal)
             {
                 onConsumed.Invoke(signal);

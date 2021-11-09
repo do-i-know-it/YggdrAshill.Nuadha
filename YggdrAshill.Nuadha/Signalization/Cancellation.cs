@@ -48,7 +48,6 @@ namespace YggdrAshill.Nuadha
             this.onCancelled = cancellation;
         }
 
-        /// <inheritdoc/>
         public void Cancel()
         {
             onCancelled.Invoke();

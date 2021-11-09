@@ -45,7 +45,6 @@ namespace YggdrAshill.Nuadha
                 this.onGenerated = onGenerated;
             }
 
-            /// <inheritdoc/>
             public TSignal Generate()
             {
                 return onGenerated.Invoke();
