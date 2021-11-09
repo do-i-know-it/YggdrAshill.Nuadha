@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IHeadTrackerHardware"/> and <see cref="IHeadTrackerSoftware"/>.
+    /// </summary>
     public sealed class HeadTracker :
         IHeadTrackerHardware,
         IHeadTrackerSoftware,
@@ -30,7 +32,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static HeadTracker WithLatestCache()
         {
-            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(Initialize.Space3D.Direction));
+            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(ImitatedHeadTracker.Instance.Direction));
         }
 
         internal PoseTracker Pose { get; }

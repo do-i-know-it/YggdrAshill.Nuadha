@@ -282,7 +282,12 @@ namespace YggdrAshill.Nuadha.Signals
             /// <returns></returns>
             public static bool operator ==(Position left, Position right)
             {
-                return left.Equals(right);
+                if (left.Equals(right))
+                {
+                    return true;
+                }
+
+                return (left - right).Distance <= Tolerance;
             }
 
             /// <summary>
@@ -484,9 +489,8 @@ namespace YggdrAshill.Nuadha.Signals
                     = horizontal * horizontal
                     + vertical * vertical
                     + frontal * frontal;
-                var difference = Math.Abs(Length - dotted);
 
-                if (difference > Tolerance)
+                if (Math.Abs(Length - dotted) > Tolerance)
                 {
                     throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 + {nameof(frontal)}^2 > {Tolerance}");
                 }
@@ -631,7 +635,16 @@ namespace YggdrAshill.Nuadha.Signals
             /// <returns></returns>
             public static bool operator ==(Direction left, Direction right)
             {
-                return left.Equals(right);
+                if (left.Equals(right))
+                {
+                    return true;
+                }
+
+                var dotted
+                    = left.Horizontal * right.Horizontal
+                    + left.Vertical * right.Vertical;
+
+                return Math.Abs(Length - dotted) <= Tolerance;
             }
 
             /// <summary>
@@ -835,9 +848,8 @@ namespace YggdrAshill.Nuadha.Signals
                     + vertical * vertical
                     + frontal * frontal
                     + real * real;
-                var difference = Math.Abs(Length - dotted);
 
-                if (difference > Tolerance)
+                if (Math.Abs(Length - dotted) > Tolerance)
                 {
                     throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 + {nameof(frontal)}^2 + {nameof(real)}^2 > {Tolerance}");
                 }
@@ -1041,9 +1053,7 @@ namespace YggdrAshill.Nuadha.Signals
                     + left.Frontal * right.Frontal
                     + left.Real * right.Real;
 
-                var difference = Length - Math.Abs(dotted);
-
-                return difference <= Tolerance;
+                return Length - Math.Abs(dotted) <= Tolerance;
             }
 
             /// <summary>

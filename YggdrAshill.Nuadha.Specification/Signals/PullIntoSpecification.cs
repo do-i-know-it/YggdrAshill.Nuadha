@@ -25,11 +25,11 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.2f)]
         public void ShouldConvertPullIntoPush(float threshold)
         {
-            var conversion = PullInto.Push(new HysteresisThreshold(threshold));
+            var translation = PullInto.Push(new HysteresisThreshold(threshold));
 
-            Assert.AreEqual(Push.Disabled, conversion.Translate(Under(threshold)));
+            Assert.AreEqual(Push.Disabled, translation.Translate(Under(threshold)));
 
-            Assert.AreEqual(Push.Enabled, conversion.Translate(Over(threshold)));
+            Assert.AreEqual(Push.Enabled, translation.Translate(Over(threshold)));
         }
 
         [TestCase(0.8f)]
@@ -38,28 +38,28 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldConvertPullIntoPulse(float threshold)
         {
             // When condition is generated, initial pulse is disabled.
-            var conversion = PullInto.Pulse(new HysteresisThreshold(threshold));
+            var translation = PullInto.Pulse(new HysteresisThreshold(threshold));
 
             // When previous pulse is disabled and condition is not satisfied, current pulse is disabled.
-            Assert.AreEqual(Pulse.IsDisabled, conversion.Translate(Under(threshold)));
+            Assert.AreEqual(Pulse.IsDisabled, translation.Translate(Under(threshold)));
 
             // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
-            Assert.AreEqual(Pulse.HasEnabled, conversion.Translate(Over(threshold)));
+            Assert.AreEqual(Pulse.HasEnabled, translation.Translate(Over(threshold)));
 
             // When previous pulse has enabled and condition is satisfied, current pulse is enabled.
-            Assert.AreEqual(Pulse.IsEnabled, conversion.Translate(Over(threshold)));
+            Assert.AreEqual(Pulse.IsEnabled, translation.Translate(Over(threshold)));
 
             // When previous pulse is enabled and condition is not satisfied, current pulse has disabled.
-            Assert.AreEqual(Pulse.HasDisabled, conversion.Translate(Under(threshold)));
+            Assert.AreEqual(Pulse.HasDisabled, translation.Translate(Under(threshold)));
 
             // When previous pulse has disabled and condition is not satisfied, current pulse is disabled.
-            Assert.AreEqual(Pulse.IsDisabled, conversion.Translate(Under(threshold)));
+            Assert.AreEqual(Pulse.IsDisabled, translation.Translate(Under(threshold)));
 
             // When previous pulse is disabled and condition is satisfied, current pulse has enabled.
-            Assert.AreEqual(Pulse.HasEnabled, conversion.Translate(Over(threshold)));
+            Assert.AreEqual(Pulse.HasEnabled, translation.Translate(Over(threshold)));
 
             // When previous pulse has enabled and condition is not satisfied, current pulse has disabled.
-            Assert.AreEqual(Pulse.HasDisabled, conversion.Translate(Under(threshold)));
+            Assert.AreEqual(Pulse.HasDisabled, translation.Translate(Under(threshold)));
         }
 
         [Test]
@@ -67,12 +67,12 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var conversion = PullInto.Push(default);
+                var translation = PullInto.Push(default);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var conversion = PullInto.Pulse(default);
+                var translation = PullInto.Pulse(default);
             });
         }
     }

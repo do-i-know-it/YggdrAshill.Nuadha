@@ -18,6 +18,8 @@ namespace YggdrAshill.Nuadha.Specification
         public void PositionShouldBeEqualToSameOne(float horizontal, float vertical, float frontal)
         {
             Assert.AreEqual(new Space3D.Position(horizontal, vertical, frontal), new Space3D.Position(horizontal, vertical, frontal));
+
+            Assert.IsTrue(new Space3D.Position(horizontal, vertical, frontal) == new Space3D.Position(horizontal, vertical, frontal));
         }
 
         [TestCase(0.0f, 0.0f, -1.0f)]
@@ -29,6 +31,8 @@ namespace YggdrAshill.Nuadha.Specification
         public void PositionShouldNotBeEqualToDifferentOne(float horizontal, float vertical, float frontal)
         {
             Assert.AreNotEqual(new Space3D.Position(horizontal, vertical, frontal), new Space3D.Position(-horizontal, -vertical, -frontal));
+
+            Assert.IsTrue(new Space3D.Position(horizontal, vertical, frontal) != new Space3D.Position(-horizontal, -vertical, -frontal));
         }
 
         [Test]
@@ -129,6 +133,8 @@ namespace YggdrAshill.Nuadha.Specification
         public void DirectionShouldBeEqualToSameOne(float horizontal, float vertical, float frontal)
         {
             Assert.AreEqual(new Space3D.Direction(horizontal, vertical, frontal), new Space3D.Direction(horizontal, vertical, frontal));
+
+            Assert.IsTrue(new Space3D.Direction(horizontal, vertical, frontal) == new Space3D.Direction(horizontal, vertical, frontal));
         }
 
         [TestCase(0.0f, 0.0f, -1.0f)]
@@ -140,6 +146,8 @@ namespace YggdrAshill.Nuadha.Specification
         public void DirectionShouldNotBeEqualToDifferentOne(float horizontal, float vertical, float frontal)
         {
             Assert.AreNotEqual(new Space3D.Direction(horizontal, vertical, frontal), new Space3D.Direction(-horizontal, -vertical, -frontal));
+
+            Assert.IsTrue(new Space3D.Direction(horizontal, vertical, frontal) != new Space3D.Direction(-horizontal, -vertical, -frontal));
         }
 
         [Test]
@@ -253,6 +261,25 @@ namespace YggdrAshill.Nuadha.Specification
         public void RotationShouldBeEqualToSameOne(float horizontal, float vertical, float frontal, float real)
         {
             Assert.AreEqual(new Space3D.Rotation(horizontal, vertical, frontal, real), new Space3D.Rotation(horizontal, vertical, frontal, real));
+
+            Assert.IsTrue(new Space3D.Rotation(horizontal, vertical, frontal, real) == new Space3D.Rotation(horizontal, vertical, frontal, real));
+
+            Assert.IsTrue(new Space3D.Rotation(horizontal, vertical, frontal, real) == new Space3D.Rotation(-horizontal, -vertical, -frontal, -real));
+        }
+
+        [TestCase(0.0f, 0.0f, 0.0f, -1.0f)]
+        [TestCase(0.0f, 0.0f, -1.0f, 0.0f)]
+        [TestCase(0.0f, -1.0f, 0.0f, 0.0f)]
+        [TestCase(-1.0f, 0.0f, 0.0f, 0.0f)]
+        [TestCase(0.0f, 0.0f, 0.0f, 1.0f)]
+        [TestCase(0.0f, 0.0f, 1.0f, 0.0f)]
+        [TestCase(0.0f, 1.0f, 0.0f, 0.0f)]
+        [TestCase(1.0f, 0.0f, 0.0f, 0.0f)]
+        public void RotationShouldNotBeEqualToDifferentOne(float horizontal, float vertical, float frontal, float real)
+        {
+            Assert.AreNotEqual(new Space3D.Rotation(horizontal, vertical, frontal, real), new Space3D.Rotation(real, frontal, vertical, horizontal));
+
+            Assert.IsTrue(new Space3D.Rotation(horizontal, vertical, frontal, real) != new Space3D.Rotation(real, frontal, vertical, horizontal));
         }
 
         [Test]

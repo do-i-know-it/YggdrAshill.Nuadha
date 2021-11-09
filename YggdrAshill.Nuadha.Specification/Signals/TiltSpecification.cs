@@ -31,8 +31,8 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreEqual(new Tilt(0f, 0f), Tilt.Origin);
             Assert.AreEqual(new Tilt(1f, 0f), Tilt.Right);
             Assert.AreEqual(new Tilt(-1f, 0f), Tilt.Left);
-            Assert.AreEqual(new Tilt(0f, 1f), Tilt.Upward);
-            Assert.AreEqual(new Tilt(0f, -1f), Tilt.Downward);
+            Assert.AreEqual(new Tilt(0f, 1f), Tilt.Forward);
+            Assert.AreEqual(new Tilt(0f, -1f), Tilt.Backward);
         }
 
         [Test]

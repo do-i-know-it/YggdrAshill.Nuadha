@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IButtonHardware"/> and <see cref="IButtonSoftware"/>.
+    /// </summary>
     public sealed class Button :
         IButtonHardware,
         IButtonSoftware,
@@ -30,7 +32,9 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Button WithLatestCache()
         {
-            return new Button(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Push));
+            var configuration = ImitatedButton.Instance;
+
+            return new Button(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Push));
         }
 
         internal IPropagation<Touch> Touch { get; }

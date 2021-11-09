@@ -23,12 +23,12 @@ namespace YggdrAshill.Nuadha
         public HysteresisThreshold Right { get; }
 
         /// <summary>
-        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Upward"/>.
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Forward"/>.
         /// </summary>
         public HysteresisThreshold Forward { get; }
 
         /// <summary>
-        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Downward"/>.
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Backward"/>.
         /// </summary>
         public HysteresisThreshold Backward { get; }
 
@@ -47,10 +47,10 @@ namespace YggdrAshill.Nuadha
         /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Right"/>.
         /// </param>
         /// <param name="forward">
-        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Upward"/>.
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Forward"/>.
         /// </param>
         /// <param name="backward">
-        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Downward"/>.
+        /// <see cref="HysteresisThreshold"/> for <see cref="Signals.Tilt.Backward"/>.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="distance"/> is null.

@@ -1,5 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
@@ -88,6 +87,12 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        [Obsolete("Please use PoseTrackerExtension.Pulsate instead.")]
+        public static IConnection<IPoseTrackerSoftware> Convert(this IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
+        {
+            return module.Calibrate(configuration);
+        }
+
         /// <summary>
         /// Converts <see cref="IPoseTrackerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
         /// </summary>
@@ -106,7 +111,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IConnection<IPoseTrackerSoftware> Convert(this IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
+        public static IConnection<IPoseTrackerSoftware> Calibrate(this IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
         {
             if (module == null)
             {
@@ -124,9 +129,9 @@ namespace YggdrAshill.Nuadha
 
             internal ConnectCalibratedPoseTracker(IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
             {
-                position = module.Position.Convert(Space3DPositionTo.Calibrate(configuration.Position));
+                position = module.Position.Calibrate(configuration.Position);
 
-                rotation = module.Rotation.Convert(Space3DRotationTo.Calibrate(configuration.Rotation));
+                rotation = module.Rotation.Calibrate(configuration.Rotation);
             }
 
             public ICancellation Connect(IPoseTrackerSoftware module)

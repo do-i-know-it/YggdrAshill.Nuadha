@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedButtonHardware"/> and <see cref="IPulsatedButtonSoftware"/>.
+    /// </summary>
     public sealed class PulsatedButton :
         IPulsatedButtonHardware,
         IPulsatedButtonSoftware,
@@ -30,7 +32,9 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static PulsatedButton WithLatestCache()
         {
-            return new PulsatedButton(Propagate.WithLatestCache(Initialize.Pulse), Propagate.WithLatestCache(Initialize.Pulse));
+            var generation = Generate.Signal(() => Pulse.IsDisabled);
+
+            return new PulsatedButton(Propagate.WithLatestCache(generation), Propagate.WithLatestCache(generation));
         }
 
         private readonly IPropagation<Pulse> touch;

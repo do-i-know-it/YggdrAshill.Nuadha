@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="ITriggerHardware"/> and <see cref="ITriggerSoftware"/>.
+    /// </summary>
     public sealed class Trigger :
         ITriggerHardware,
         ITriggerSoftware,
@@ -30,7 +32,9 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Trigger WithLatestCache()
         {
-            return new Trigger(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Pull));
+            var configuration = ImitatedTrigger.Instance;
+
+            return new Trigger(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Pull));
         }
 
         internal IPropagation<Touch> Touch { get; }

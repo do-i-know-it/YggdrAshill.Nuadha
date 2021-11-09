@@ -1,4 +1,8 @@
+using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -84,6 +88,15 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Pull ToPull(this float signal)
         {
+            if (signal < Pull.Minimum)
+            {
+                signal = Pull.Minimum;
+            }
+            if (signal > Pull.Maximum)
+            {
+                signal = Pull.Maximum;
+            }
+
             return (Pull)signal;
         }
 
@@ -116,6 +129,15 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Angle.Radian ToRadian(this float signal)
         {
+            if (signal < Angle.Radian.Minimum)
+            {
+                signal = Angle.Radian.Minimum;
+            }
+            if (signal > Angle.Radian.Maximum)
+            {
+                signal = Angle.Radian.Maximum;
+            }
+
             return (Angle.Radian)signal;
         }
 
@@ -144,6 +166,15 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Angle.Degree ToDegree(float signal)
         {
+            if (signal < Angle.Degree.Minimum)
+            {
+                signal = Angle.Degree.Minimum;
+            }
+            if (signal > Angle.Degree.Maximum)
+            {
+                signal = Angle.Degree.Maximum;
+            }
+
             return (Angle.Degree)signal;
         }
 
@@ -187,6 +218,66 @@ namespace YggdrAshill.Nuadha
         public static Angle.Degree ToDegree(Angle.Radian signal)
         {
             return (Angle.Degree)signal;
+        }
+
+        #endregion
+
+        #region Space3D
+
+        public static IProduction<Space3D.Position> Calibrate(this IProduction<Space3D.Position> production, IGeneration<Space3D.Position> generation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return production.Convert(Space3DPositionTo.Calibrate(generation));
+        }
+
+        public static IProduction<Space3D.Position> Calibrate(this IProduction<Space3D.Position> production, Func<Space3D.Position> generation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return production.Calibrate(Generate.Signal(generation));
+        }
+
+        public static IProduction<Space3D.Rotation> Calibrate(this IProduction<Space3D.Rotation> production, IGeneration<Space3D.Rotation> generation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return production.Convert(Space3DRotationTo.Calibrate(generation));
+        }
+
+        public static IProduction<Space3D.Rotation> Calibrate(this IProduction<Space3D.Rotation> production, Func<Space3D.Rotation> generation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return production.Calibrate(Generate.Signal(generation));
         }
 
         #endregion

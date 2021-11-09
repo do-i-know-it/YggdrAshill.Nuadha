@@ -3,7 +3,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedHandControllerHardware"/> and <see cref="IPulsatedHandControllerSoftware"/>.
+    /// </summary>
     public sealed class PulsatedHandController :
         IPulsatedHandControllerHardware,
         IPulsatedHandControllerSoftware,

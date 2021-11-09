@@ -88,6 +88,12 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        [Obsolete("Please use TriggerExtension.Pulsate instead.")]
+        public static IConnection<IPulsatedTriggerSoftware> Convert(this ITriggerHardware module, HysteresisThreshold threshold)
+        {
+            return module.Pulsate(threshold);
+        }
+
         /// <summary>
         /// Converts <see cref="ITriggerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTriggerSoftware"/>.
         /// </summary>
@@ -106,7 +112,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedTriggerSoftware> Convert(this ITriggerHardware module, HysteresisThreshold threshold)
+        public static IConnection<IPulsatedTriggerSoftware> Pulsate(this ITriggerHardware module, HysteresisThreshold threshold)
         {
             if (module == null)
             {

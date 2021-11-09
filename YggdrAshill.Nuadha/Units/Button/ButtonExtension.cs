@@ -88,6 +88,12 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        [Obsolete("Please use ButtonExtension.Pulsate instead.")]
+        public static IConnection<IPulsatedButtonSoftware> Convert(this IButtonHardware module)
+        {
+            return module.Pulsate();
+        }
+
         /// <summary>
         /// Converts <see cref="IButtonHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedButtonSoftware"/>.
         /// </summary>
@@ -100,7 +106,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="module"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedButtonSoftware> Convert(this IButtonHardware module)
+        public static IConnection<IPulsatedButtonSoftware> Pulsate(this IButtonHardware module)
         {
             if (module == null)
             {

@@ -104,6 +104,12 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        [Obsolete("Please use HandControllerExtension.Pulsate instead.")]
+        public static IConnection<IPulsatedHandControllerSoftware> Convert(this IHandControllerHardware module, HandControllerThreshold threshold)
+        {
+            return module.Pulsate(threshold);
+        }
+
         /// <summary>
         /// Converts <see cref="IHandControllerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedHandControllerSoftware"/>.
         /// </summary>
@@ -122,7 +128,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedHandControllerSoftware> Convert(this IHandControllerHardware module, HandControllerThreshold threshold)
+        public static IConnection<IPulsatedHandControllerSoftware> Pulsate(this IHandControllerHardware module, HandControllerThreshold threshold)
         {
             if (module == null)
             {

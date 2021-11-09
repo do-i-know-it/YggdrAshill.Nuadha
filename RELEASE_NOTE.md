@@ -1,4 +1,13 @@
-# Release notes for version 1.0.2
+# Release notes for version 1.0.3
 
-- Fixed implementations of signals for 3D space.
-- Fixed document comments for framework.
+- Modified Signals.
+  - definitions
+  - extensions
+  - implementations
+  - specifications
+- Modified Units.
+  - extensions
+  - implementations
+  - document comments
+- Added imitations for Units.
+- Modified specifications for Transformation.

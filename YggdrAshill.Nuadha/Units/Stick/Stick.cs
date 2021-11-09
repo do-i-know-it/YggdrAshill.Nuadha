@@ -5,7 +5,9 @@ using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
     /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IStickHardware"/> and <see cref="IStickHardware"/>.
+    /// </summary>
     public sealed class Stick :
         IStickHardware,
         IStickSoftware,
@@ -30,7 +32,9 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Stick WithLatestCache()
         {
-            return new Stick(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Tilt));
+            var configuration = ImitatedStick.Instance;
+
+            return new Stick(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Tilt));
         }
 
         internal IPropagation<Touch> Touch { get; }
