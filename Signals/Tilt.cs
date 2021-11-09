@@ -40,15 +40,22 @@ namespace YggdrAshill.Nuadha.Signals
         /// </summary>
         public static Tilt Left { get; } = new Tilt(-1.0f, 0.0f);
 
-        /// <summary>
-        /// <see cref="Upward"/> in the coordinate.
-        /// </summary>
-        public static Tilt Upward { get; } = new Tilt(0.0f, 1.0f);
+        [Obsolete("Please use Tilt.Forward instead.")]
+        public static Tilt Upward { get; } = Forward;
 
         /// <summary>
-        /// <see cref="Downward"/> in the coordinate.
+        /// <see cref="Forward"/> in the coordinate.
         /// </summary>
-        public static Tilt Downward { get; } = new Tilt(0.0f, -1.0f);
+        public static Tilt Forward { get; } = new Tilt(0.0f, 1.0f);
+
+
+        [Obsolete("Please use Tilt.Backward instead.")]
+        public static Tilt Downward { get; } = Backward;
+
+        /// <summary>
+        /// <see cref="Backward"/> in the coordinate.
+        /// </summary>
+        public static Tilt Backward { get; } = new Tilt(0.0f, -1.0f);
 
         /// <summary>
         /// <see cref="Horizontal"/> of the coordinate.

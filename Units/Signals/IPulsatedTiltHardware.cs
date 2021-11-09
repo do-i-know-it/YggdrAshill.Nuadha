@@ -26,12 +26,12 @@ namespace YggdrAshill.Nuadha.Units
         IProduction<Pulse> Right { get; }
 
         /// <summary>
-        /// Sends <see cref="Pulse"/> of <see cref="Signals.Tilt.Upward"/> to software.
+        /// Sends <see cref="Pulse"/> of <see cref="Signals.Tilt.Forward"/> to software.
         /// </summary>
         IProduction<Pulse> Forward { get; }
 
         /// <summary>
-        /// Sends <see cref="Pulse"/> of <see cref="Signals.Tilt.Downward"/> to software.
+        /// Sends <see cref="Pulse"/> of <see cref="Signals.Tilt.Backward"/> to software.
         /// </summary>
         IProduction<Pulse> Backward { get; }
     }

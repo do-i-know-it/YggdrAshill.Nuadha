@@ -26,12 +26,12 @@ namespace YggdrAshill.Nuadha.Units
         IConsumption<Pulse> Right { get; }
 
         /// <summary>
-        /// Receives <see cref="Pulse"/> of <see cref="Signals.Tilt.Upward"/> sent from hardware.
+        /// Receives <see cref="Pulse"/> of <see cref="Signals.Tilt.Forward"/> sent from hardware.
         /// </summary>
         IConsumption<Pulse> Forward { get; }
 
         /// <summary>
-        /// Receives <see cref="Pulse"/> of <see cref="Signals.Tilt.Downward"/> sent from hardware.
+        /// Receives <see cref="Pulse"/> of <see cref="Signals.Tilt.Backward"/> sent from hardware.
         /// </summary>
         IConsumption<Pulse> Backward { get; }
     }
