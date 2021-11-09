@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static HeadTracker WithLatestCache()
         {
-            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(Initialize.Space3D.Direction));
+            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(ImitatedHeadTracker.Instance.Direction));
         }
 
         internal PoseTracker Pose { get; }

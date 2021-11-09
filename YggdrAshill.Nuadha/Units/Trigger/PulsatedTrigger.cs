@@ -30,7 +30,9 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static PulsatedTrigger WithLatestCache()
         {
-            return new PulsatedTrigger(Propagate.WithLatestCache(Initialize.Pulse), Propagate.WithLatestCache(Initialize.Pulse));
+            var generation = Generate.Signal(() => Pulse.IsDisabled);
+
+            return new PulsatedTrigger(Propagate.WithLatestCache(generation), Propagate.WithLatestCache(generation));
         }
 
         private readonly IPropagation<Pulse> touch;

@@ -30,7 +30,9 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Trigger WithLatestCache()
         {
-            return new Trigger(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Pull));
+            var configuration = ImitatedTrigger.Instance;
+
+            return new Trigger(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Pull));
         }
 
         internal IPropagation<Touch> Touch { get; }

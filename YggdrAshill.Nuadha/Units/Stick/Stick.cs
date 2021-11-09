@@ -30,7 +30,9 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Stick WithLatestCache()
         {
-            return new Stick(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Tilt));
+            var configuration = ImitatedStick.Instance;
+
+            return new Stick(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Tilt));
         }
 
         internal IPropagation<Touch> Touch { get; }

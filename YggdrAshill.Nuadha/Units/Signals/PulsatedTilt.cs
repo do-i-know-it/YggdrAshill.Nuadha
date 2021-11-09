@@ -35,12 +35,14 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static PulsatedTilt WithLatestCache()
         {
+            var generation = Generate.Signal(() => Pulse.IsDisabled);
+
             return new PulsatedTilt(
-                Propagate.WithLatestCache(Initialize.Pulse),
-                Propagate.WithLatestCache(Initialize.Pulse),
-                Propagate.WithLatestCache(Initialize.Pulse),
-                Propagate.WithLatestCache(Initialize.Pulse),
-                Propagate.WithLatestCache(Initialize.Pulse));
+                Propagate.WithLatestCache(generation),
+                Propagate.WithLatestCache(generation),
+                Propagate.WithLatestCache(generation),
+                Propagate.WithLatestCache(generation),
+                Propagate.WithLatestCache(generation));
         }
 
         private readonly IPropagation<Pulse> distance;

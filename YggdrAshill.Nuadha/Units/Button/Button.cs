@@ -30,7 +30,9 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Button WithLatestCache()
         {
-            return new Button(Propagate.WithLatestCache(Initialize.Touch), Propagate.WithLatestCache(Initialize.Push));
+            var configuration = ImitatedButton.Instance;
+
+            return new Button(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Push));
         }
 
         internal IPropagation<Touch> Touch { get; }

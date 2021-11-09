@@ -32,9 +32,11 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static PoseTracker WithLatestCache()
         {
+            var configuration = ImitatedPoseTracker.Instance;
+
             return new PoseTracker(
-                Propagate.WithLatestCache(Initialize.Space3D.Position),
-                Propagate.WithLatestCache(Initialize.Space3D.Rotation));
+                Propagate.WithLatestCache(configuration.Position),
+                Propagate.WithLatestCache(configuration.Rotation));
         }
 
         internal IPropagation<Space3D.Position> Position { get; }
