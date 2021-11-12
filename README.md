@@ -1,5 +1,11 @@
 # YggdrAshill.Nuadha: a device management framework
 
+[![Deployment](https://github.com/do-i-know-it/YggdrAshill.Nuadha/actions/workflows/Deployment.yml/badge.svg)](https://github.com/do-i-know-it/YggdrAshill.Nuadha/actions/workflows/Deployment.yml)
+[![GitHub](https://img.shields.io/github/license/do-i-know-it/YggdrAshill.Nuadha)](https://github.com/do-i-know-it/YggdrAshill.Nuadha/blob/main/LICENSE.md)
+[![GitHub Release Date](https://img.shields.io/github/release-date/do-i-know-it/YggdrAshill.Nuadha)](https://github.com/do-i-know-it/YggdrAshill.Nuadha/releases)
+![GitHub repo size](https://img.shields.io/github/repo-size/do-i-know-it/YggdrAshill.Nuadha)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/do-i-know-it/YggdrAshill.Nuadha)
+
 Nuadha is a framework defining how to
 
 - generate
@@ -65,6 +71,10 @@ Please see [GitHub Project for road map](https://github.com/do-i-know-it/YggdrAs
   - ex) Blink
   - ex) Pupil
   - ex) Vibration
+- Adds definitions for diagnostics to Signals.
+  - ex) Battery
+  - ex) MemoryUsage
+- Adds definitions Notation to Transformation.
 - Adds definitions for Units.
   - ex) Tablet
   - ex) Gamepad
@@ -76,7 +86,7 @@ Please see [GitHub Project for road map](https://github.com/do-i-know-it/YggdrAs
 
 ## License
 
-This framework is under the MIT License, see [LICENSE](./LICENSE.txt).
+This framework is under the MIT License, see [LICENSE](./LICENSE.md).
 
 ## Remarks
 
