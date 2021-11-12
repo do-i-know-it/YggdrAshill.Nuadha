@@ -76,7 +76,7 @@ Please see [GitHub Project for road map](https://github.com/do-i-know-it/YggdrAs
 
 ## License
 
-This framework is under the MIT License, see [LICENSE](./LICENSE.txt).
+This framework is under the MIT License, see [LICENSE](./LICENSE.md).
 
 ## Remarks
 
