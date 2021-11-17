@@ -66,7 +66,18 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return new Transmission<TSignal>(generation, Propagate.WithoutCache<TSignal>());
+            return Signal(generation, Propagate.WithoutCache<TSignal>());
+        }
+
+        public static ITransmission<TSignal> Signal<TSignal>(Func<TSignal> generation)
+            where TSignal : ISignal
+        {
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return Signal(Generate.Signal(generation));
         }
     }
 }
