@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha.Transformation
     /// <summary>
     /// Defines <see cref="IProduction{TSignal}"/> and <see cref="ICondition{TSignal}"/> for <see cref="ITranslation{TInput, TOutput}"/>.
     /// </summary>
-    public static class Conversion
+    public static class ConvertTo
     {
         /// <summary>
         /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.

@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Transformation
@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha.Transformation
     /// <summary>
     /// Defines <see cref="IProduction{TSignal}"/> and <see cref="ICondition{TSignal}"/> for <see cref="ICondition{TSignal}"/>.
     /// </summary>
-    public static class Detection
+    public static class DetectTo
     {
         /// <summary>
         /// Detects <see cref="Notice"/> of <typeparamref name="TSignal"/>.

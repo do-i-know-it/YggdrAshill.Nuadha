@@ -48,7 +48,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(translation));
             }
 
-            return Conversion.Produce(production, translation);
+            return ConvertTo.Produce(production, translation);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(condition));
             }
 
-            return Detection.Produce(production, condition);
+            return DetectTo.Produce(production, condition);
         }
 
         /// <summary>

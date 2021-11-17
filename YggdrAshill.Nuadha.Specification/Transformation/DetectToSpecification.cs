@@ -1,12 +1,12 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Detection))]
-    internal class DetectionSpecification
+    [TestFixture(TestOf = typeof(DetectTo))]
+    internal class DetectToSpecification
     {
         private PropagateSignal propagateSignal;
 
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             condition.Previous = expected;
 
-            var consumption = Detection.Consume(condition, consumeSignal);
+            var consumption = DetectTo.Consume(condition, consumeSignal);
 
             consumption.Consume(new Signal());
 
@@ -43,7 +43,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             condition.Previous = expected;
 
-            var production = Detection.Produce(propagateSignal, condition);
+            var production = DetectTo.Produce(propagateSignal, condition);
 
             var cancellation = production.Produce(consumeSignal);
 
@@ -59,12 +59,12 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var consumption = Detection.Consume(condition, default(IConsumption<Notice>));
+                var consumption = DetectTo.Consume(condition, default(IConsumption<Notice>));
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var consumption = Detection.Consume(default(ICondition<Signal>), consumeSignal);
+                var consumption = DetectTo.Consume(default(ICondition<Signal>), consumeSignal);
             });
         }
 
@@ -73,12 +73,12 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var production = Detection.Produce(propagateSignal, default(ICondition<Signal>));
+                var production = DetectTo.Produce(propagateSignal, default(ICondition<Signal>));
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var production = Detection.Produce(default(IProduction<Signal>), condition);
+                var production = DetectTo.Produce(default(IProduction<Signal>), condition);
             });
         }
     }

@@ -5,8 +5,8 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Conversion))]
-    internal class ConversionSpecification
+    [TestFixture(TestOf = typeof(ConvertTo))]
+    internal class ConvertToSpecification
     {
         private PropagateInputSignal propagateInputSignal;
 
@@ -27,7 +27,7 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldConsumeSignalToConvert()
         {
-            var consumption = Conversion.Consume(inputSignalIntoOutputSignal, consumeOutputSignal);
+            var consumption = ConvertTo.Consume(inputSignalIntoOutputSignal, consumeOutputSignal);
 
             consumption.Consume(new InputSignal());
 
@@ -37,7 +37,7 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldProduceSignalToConvert()
         {
-            var production = Conversion.Produce(propagateInputSignal, inputSignalIntoOutputSignal);
+            var production = ConvertTo.Produce(propagateInputSignal, inputSignalIntoOutputSignal);
 
             var cancellation = production.Produce(consumeOutputSignal);
 
@@ -53,12 +53,12 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var consumption = Conversion.Consume(inputSignalIntoOutputSignal, default(IConsumption<OutputSignal>));
+                var consumption = ConvertTo.Consume(inputSignalIntoOutputSignal, default(IConsumption<OutputSignal>));
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var consumption = Conversion.Consume(default(ITranslation<InputSignal, OutputSignal>), consumeOutputSignal);
+                var consumption = ConvertTo.Consume(default(ITranslation<InputSignal, OutputSignal>), consumeOutputSignal);
             });
         }
 
@@ -67,12 +67,12 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var production = Conversion.Produce(propagateInputSignal, default(ITranslation<InputSignal, OutputSignal>));
+                var production = ConvertTo.Produce(propagateInputSignal, default(ITranslation<InputSignal, OutputSignal>));
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var production = Conversion.Produce(default(IProduction<InputSignal>), inputSignalIntoOutputSignal);
+                var production = ConvertTo.Produce(default(IProduction<InputSignal>), inputSignalIntoOutputSignal);
             });
         }
     }
