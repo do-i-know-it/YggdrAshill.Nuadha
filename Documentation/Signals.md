@@ -22,5 +22,7 @@ This module defines
 - `Rotation`
 - `Direction`
 - `Angle`
+- `Battery`
+- `MemoryUsage`
 
 as `Signal`.
