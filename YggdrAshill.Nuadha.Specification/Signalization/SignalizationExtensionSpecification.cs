@@ -49,32 +49,6 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldTransmitSignal()
-        {
-            var transmission = propagation.Transmit(() =>
-            {
-                return expected;
-            });
-
-            var consumed = default(Signal);
-            var cancellation = transmission.Produce(signal =>
-            {
-                if (signal == null)
-                {
-                    throw new ArgumentNullException(nameof(signal));
-                }
-
-                consumed = signal;
-            });
-
-            transmission.Emit();
-
-            Assert.AreEqual(expected, consumed);
-
-            cancellation.Cancel();
-        }
-
-        [Test]
         public void ShouldSynthesizeCancellation()
         {
             var composite = new CompositeCancellation();
@@ -118,20 +92,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var cancellation = propagation.Produce(default);
-            });
-        }
-
-        [Test]
-        public void CannotTransmitWithNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var transmission = default(IPropagation<Signal>).Transmit(() => expected);
-            });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var transmission = propagation.Transmit(default);
             });
         }
 

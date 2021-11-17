@@ -13,10 +13,10 @@ namespace YggdrAshill.Nuadha
     public static class PoseTrackerExtension
     {
         /// <summary>
-        /// Converts <see cref="PoseTracker"/> into <see cref="IIgnition{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
+        /// Converts <see cref="IPoseTrackerProtocol"/> into <see cref="IIgnition{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
         /// </summary>
         /// <param name="protocol">
-        /// <see cref="PoseTracker"/> to convert.
+        /// <see cref="IPoseTrackerProtocol"/> to convert.
         /// </param>
         /// <param name="configuration">
         /// <see cref="IPoseTrackerConfiguration"/> to ignite.
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IPoseTrackerSoftware> Ignite(this PoseTracker protocol, IPoseTrackerConfiguration configuration)
+        public static IIgnition<IPoseTrackerSoftware> Ignite(this IPoseTrackerProtocol protocol, IPoseTrackerConfiguration configuration)
         {
             if (protocol == null)
             {
@@ -50,11 +50,11 @@ namespace YggdrAshill.Nuadha
 
             private readonly ITransmission<Space3D.Rotation> rotation;
 
-            internal IgnitePoseTracker(PoseTracker protocol, IPoseTrackerConfiguration configuration)
+            internal IgnitePoseTracker(IPoseTrackerProtocol protocol, IPoseTrackerConfiguration configuration)
             {
-                position = protocol.Position.Transmit(configuration.Position);
+                position = protocol.Position.Ignite(configuration.Position);
 
-                rotation = protocol.Rotation.Transmit(configuration.Rotation);
+                rotation = protocol.Rotation.Ignite(configuration.Rotation);
             }
 
             public ICancellation Connect(IPoseTrackerSoftware module)
@@ -129,9 +129,9 @@ namespace YggdrAshill.Nuadha
 
             internal ConnectCalibratedPoseTracker(IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
             {
-                position = module.Position.Calibrate(configuration.Position);
+                position = module.Position.Convert(Space3DPositionTo.Calibrate(configuration.Position));
 
-                rotation = module.Rotation.Calibrate(configuration.Rotation);
+                rotation = module.Rotation.Convert(Space3DRotationTo.Calibrate(configuration.Rotation));
             }
 
             public ICancellation Connect(IPoseTrackerSoftware module)

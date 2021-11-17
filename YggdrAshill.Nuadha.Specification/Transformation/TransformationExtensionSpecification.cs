@@ -8,8 +8,70 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(TransformationExtension))]
     internal class TransformationExtensionSpecification
     {
+        private PropagateInputSignal propagateInputSignal;
+
+        private InputSignalIntoOutputSignal inputSignalIntoOutputSignal;
+
+        private ConsumeOutputSignal consumeOutputSignal;
+
+        private PropagateSignal propagateSignal;
+
+        private SignalCondition condition;
+
+        private ConsumeNotice consumeSignal;
+
+        [SetUp]
+        public void SetUp()
+        {
+            propagateInputSignal = new PropagateInputSignal();
+
+            inputSignalIntoOutputSignal = new InputSignalIntoOutputSignal();
+
+            consumeOutputSignal = new ConsumeOutputSignal();
+
+            propagateSignal = new PropagateSignal();
+
+            condition = new SignalCondition();
+
+            consumeSignal = new ConsumeNotice();
+        }
+
         [Test]
-        public void ShouldConvertSignal()
+        public void ShouldConvertSignalWithTranslation()
+        {
+            var cancellation
+                = propagateInputSignal
+                .Convert(inputSignalIntoOutputSignal)
+                .Produce(consumeOutputSignal);
+
+            propagateInputSignal.Consume(new InputSignal());
+
+            Assert.AreEqual(inputSignalIntoOutputSignal.Translated, consumeOutputSignal.Consumed);
+
+            cancellation.Cancel();
+        }
+
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ShouldDetectSignalWithCondition(bool expected)
+        {
+            condition.Previous = expected;
+
+            var cancellation
+                = propagateSignal
+                .Detect(condition)
+                .Produce(consumeSignal);
+
+            propagateSignal.Consume(new Signal());
+
+            Assert.AreEqual(expected, consumeSignal.Consumed);
+
+            cancellation.Cancel();
+        }
+
+        [Test]
+        public void ShouldConvertSignalWithFunction()
         {
             var propagation = new PropagateInputSignal();
 
@@ -45,13 +107,11 @@ namespace YggdrAshill.Nuadha.Specification
 
         [TestCase(true)]
         [TestCase(false)]
-        public void ShouldDetectSignal(bool expected)
+        public void ShouldDetectSignalWithFunction(bool expected)
         {
-            var propagation = new PropagateSignal();
-
             var consumed = false;
             var cancellation
-                = propagation
+                = propagateSignal
                 .Detect(signal =>
                 {
                     if (signal == null)
@@ -66,7 +126,7 @@ namespace YggdrAshill.Nuadha.Specification
                     consumed = true;
                 });
 
-            propagation.Consume(new Signal());
+            propagateSignal.Consume(new Signal());
 
             Assert.AreEqual(expected, consumed);
 
@@ -74,8 +134,18 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotConvertWithNull()
+        public void CannotConvertSignalWithNull()
         {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var translated = default(IProduction<InputSignal>).Convert(inputSignalIntoOutputSignal);
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var translated = propagateInputSignal.Convert(default(ITranslation<InputSignal, OutputSignal>));
+            });
+
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var translated = default(IProduction<InputSignal>).Convert(_ => new OutputSignal());
@@ -89,9 +159,17 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotDetectWithNull()
+        public void CannotDetectSignalWithNull()
         {
-            var propagation = new PropagateSignal();
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var detected = default(IProduction<Signal>).Detect(condition);
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var detected = propagateSignal.Detect(default(ICondition<Signal>));
+            });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
@@ -100,7 +178,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detected = propagation.Detect(default(Func<Signal, bool>));
+                var detected = propagateSignal.Detect(default(Func<Signal, bool>));
             });
 
             Assert.Throws<ArgumentNullException>(() =>
@@ -110,7 +188,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detected = propagation.Detect(_ => false).Produce(default(Action));
+                var detected = propagateSignal.Detect(_ => false).Produce(default(Action));
             });
         }
     }

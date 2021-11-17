@@ -4,16 +4,16 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Pull))]
-    internal class PullSpecification
+    [TestFixture(TestOf = typeof(Battery))]
+    internal class BatterySpecification
     {
         [TestCase(1.0f)]
         [TestCase(0.5f)]
         [TestCase(0.0f)]
         public void ShouldBeEqualToSameValue(float expected)
         {
-            Assert.AreEqual(new Pull(expected), new Pull(expected));
-            Assert.IsTrue(new Pull(expected) == new Pull(expected));
+            Assert.AreEqual(new Battery(expected), new Battery(expected));
+            Assert.IsTrue(new Battery(expected) == new Battery(expected));
         }
 
         [TestCase(1.0f, 0.0f)]
@@ -21,8 +21,8 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.0f, 0.5f)]
         public void ShouldNotBeEqualToDiffrentOne(float one, float another)
         {
-            Assert.AreNotEqual(new Pull(one), new Pull(another));
-            Assert.IsTrue(new Pull(one) != new Pull(another));
+            Assert.AreNotEqual(new Battery(one), new Battery(another));
+            Assert.IsTrue(new Battery(one) != new Battery(another));
         }
 
         [TestCase(1.0f)]
@@ -30,7 +30,7 @@ namespace YggdrAshill.Nuadha.Specification
         [TestCase(0.0f)]
         public void ShouldBeConverted(float expected)
         {
-            var signal = new Pull(expected);
+            var signal = new Battery(expected);
 
             var converted = (float)signal;
 
@@ -38,25 +38,29 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void CannotBeGeneratedWithNaN()
+        public void CannotBeGeneratedWithNaNLevel()
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var signal = new Pull(float.NaN);
+                var signal = new Battery(float.NaN);
             });
         }
 
         [Test]
-        public void CannotBeGeneratedWithValueOutOfRange()
+        public void CannotBeGeneratedWithLevelLowerThanZero()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var signal = new Pull(-0.1f);
+                var signal = new Battery(-0.1f);
             });
+        }
 
+        [Test]
+        public void CannotBeGeneratedWithLevelHigherThanOne()
+        {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var signal = new Pull(1.1f);
+                var signal = new Battery(1.1f);
             });
         }
     }

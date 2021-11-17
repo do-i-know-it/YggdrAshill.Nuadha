@@ -1,13 +1,6 @@
-# Release notes for version 1.0.3
+# Release notes for version 1.1.0
 
-- Modified Signals.
-  - definitions
-  - extensions
-  - implementations
-  - specifications
-- Modified Units.
-  - extensions
-  - implementations
-  - document comments
-- Added imitations for Units.
-- Modified specifications for Transformation.
+- Added definitions for diagnostics to Signals.
+  - Battery
+  - MemoryUsage
+- Added definitions Notation to Transformation.

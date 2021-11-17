@@ -14,6 +14,7 @@ This module depends on [Signalization](./Signalization.md).
 | Pulse | `Signal` to explain state of `Signal` change. |
 | Detection | Detects `Signal`. |
 | Notice | `Signal` to send when `Signal` is detected. |
+| Note | `Signal` to describe value of `Signal`. |
 
 This module provides operations on `Signal` like:
 
@@ -22,4 +23,4 @@ This module provides operations on `Signal` like:
 
 ## Implementation
 
-Nothing except internal implementations for [Signalization](./Signalization.md).
+This module has internal implementations for [Signalization](./Signalization.md) in order to provide features of it.

@@ -9,6 +9,8 @@ namespace YggdrAshill.Nuadha.Specification
     {
         private PropagateSignal propagation;
 
+        private GenerateSignal generation;
+
         private ConsumeSignal consumption;
 
         [SetUp]
@@ -16,14 +18,30 @@ namespace YggdrAshill.Nuadha.Specification
         {
             propagation = new PropagateSignal();
 
+            generation = new GenerateSignal();
+
             consumption = new ConsumeSignal();
         }
 
         [Test]
-        public void ShouldTransmitSignal()
+        public void ShouldTransmitSignalWithGeneration()
+        {
+            var transmission = propagation.Ignite(generation);
+
+            var cancellation = transmission.Produce(consumption);
+
+            transmission.Emit();
+
+            Assert.AreEqual(generation.Generated, consumption.Consumed);
+
+            cancellation.Cancel();
+        }
+
+        [Test]
+        public void ShouldTransmitSignalWithFunction()
         {
             var expected = new Signal();
-            var transmission = propagation.Transmit(() =>
+            var transmission = propagation.Ignite(() =>
             {
                 return expected;
             });
@@ -42,13 +60,24 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = default(IPropagation<Signal>).Transmit(() => new Signal());
+                var transmission = default(IPropagation<Signal>).Ignite(generation);
 
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = propagation.Transmit(default(Func<Signal>));
+                var transmission = propagation.Ignite(default(IGeneration<Signal>));
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var transmission = default(IPropagation<Signal>).Ignite(() => new Signal());
+
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var transmission = propagation.Ignite(default(Func<Signal>));
             });
         }
     }

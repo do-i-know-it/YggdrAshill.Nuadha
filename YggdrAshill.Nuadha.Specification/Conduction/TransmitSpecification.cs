@@ -1,15 +1,11 @@
 using NUnit.Framework;
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(PropagationExtension))]
-    internal class PropagationExtensionSpecification
+    [TestFixture(TestOf = typeof(Transmit))]
+    internal class TransmitSpecification
     {
-        private PropagateSignal propagation;
-
         private GenerateSignal generation;
 
         private ConsumeSignal consumption;
@@ -17,8 +13,6 @@ namespace YggdrAshill.Nuadha.Specification
         [SetUp]
         public void SetUp()
         {
-            propagation = new PropagateSignal();
-
             generation = new GenerateSignal();
 
             consumption = new ConsumeSignal();
@@ -27,7 +21,7 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldTransmitSignal()
         {
-            var transmission = propagation.Transmit(generation);
+            var transmission = Transmit.Signal(generation);
 
             var cancellation = transmission.Produce(consumption);
 
@@ -43,13 +37,8 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = default(IPropagation<Signal>).Transmit(generation);
+                var transmission = Transmit.Signal(default(IGeneration<Signal>));
 
-            });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var transmission = propagation.Transmit(default(IGeneration<Signal>));
             });
         }
     }

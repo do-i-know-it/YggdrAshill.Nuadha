@@ -1,8 +1,4 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -222,62 +218,43 @@ namespace YggdrAshill.Nuadha
 
         #endregion
 
-        #region Space3D
+        #region Battery
 
-        public static IProduction<Space3D.Position> Calibrate(this IProduction<Space3D.Position> production, IGeneration<Space3D.Position> generation)
+        /// <summary>
+        /// Converts <see cref="float"/> to <see cref="Battery"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="float"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Battery"/> converted.
+        /// </returns>
+        public static Battery ToBattery(this float signal)
         {
-            if (production == null)
+            if (signal < Battery.Empty)
             {
-                throw new ArgumentNullException(nameof(production));
+                signal = Battery.Empty;
             }
-            if (generation == null)
+            if (signal > Battery.Full)
             {
-                throw new ArgumentNullException(nameof(generation));
+                signal = Battery.Full;
             }
 
-            return production.Convert(Space3DPositionTo.Calibrate(generation));
+            return (Battery)signal;
         }
 
-        public static IProduction<Space3D.Position> Calibrate(this IProduction<Space3D.Position> production, Func<Space3D.Position> generation)
+        /// <summary>
+        /// Converts <see cref="Battery"/> to <see cref="float"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Battery"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="float"/> converted.
+        /// </returns>
+        public static float ToSingle(this Battery signal)
         {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-
-            return production.Calibrate(Generate.Signal(generation));
-        }
-
-        public static IProduction<Space3D.Rotation> Calibrate(this IProduction<Space3D.Rotation> production, IGeneration<Space3D.Rotation> generation)
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-
-            return production.Convert(Space3DRotationTo.Calibrate(generation));
-        }
-
-        public static IProduction<Space3D.Rotation> Calibrate(this IProduction<Space3D.Rotation> production, Func<Space3D.Rotation> generation)
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-
-            return production.Calibrate(Generate.Signal(generation));
+            return (float)signal;
         }
 
         #endregion

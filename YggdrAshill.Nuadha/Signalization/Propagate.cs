@@ -1,5 +1,4 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using System;
 using System.Collections.Generic;
 
@@ -128,6 +127,32 @@ namespace YggdrAshill.Nuadha
             {
                 propagation.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Propagates <typeparamref name="TSignal"/> with latest cache.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to propagate.
+        /// </typeparam>
+        /// <param name="generation">
+        /// <see cref="Func{TResult}"/> to initialize cache of <typeparamref name="TSignal"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPropagation{TSignal}"/> created.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="generation"/> is null.
+        /// </exception>
+        public static IPropagation<TSignal> WithLatestCache<TSignal>(Func<TSignal> generation)
+            where TSignal : ISignal
+        {
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return WithLatestCache(Generate.Signal(generation));
         }
     }
 }

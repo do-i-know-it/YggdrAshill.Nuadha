@@ -1,45 +1,68 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IStickHardware"/> and <see cref="IStickHardware"/>.
+    /// Implementation of <see cref="IStickProtocol"/>.
     /// </summary>
     public sealed class Stick :
         IStickHardware,
         IStickSoftware,
-        IProtocol<IStickHardware, IStickSoftware>
+        IStickProtocol
     {
         /// <summary>
-        /// <see cref="Stick"/> without cache.
+        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="IStickSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IStickConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IStickSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<IStickSoftware> Ignite(IStickConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return WithoutCache().Ignite(configuration);
+        }
+
+        /// <summary>
+        /// <see cref="IStickProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="Stick"/> without cache.
+        /// <see cref="IStickProtocol"/> without cache.
         /// </returns>
-        public static Stick WithoutCache()
+        public static IStickProtocol WithoutCache()
         {
             return new Stick(Propagate.WithoutCache<Touch>(), Propagate.WithoutCache<Tilt>());
         }
 
         /// <summary>
-        /// <see cref="Stick"/> with latest cache.
+        /// <see cref="IStickProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="Stick"/> with latest cache.
+        /// <see cref="IStickProtocol"/> with latest cache.
         /// </returns>
-        public static Stick WithLatestCache()
+        public static IStickProtocol WithLatestCache()
         {
-            var configuration = ImitatedStick.Instance;
-
-            return new Stick(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Tilt));
+            return new Stick(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Tilt));
         }
 
-        internal IPropagation<Touch> Touch { get; }
+        /// <inheritdoc/>
+        public IPropagation<Touch> Touch { get; }
 
-        internal IPropagation<Tilt> Tilt { get; }
+        /// <inheritdoc/>
+        public IPropagation<Tilt> Tilt { get; }
 
         private Stick(IPropagation<Touch> touch, IPropagation<Tilt> tilt)
         {
@@ -62,12 +85,16 @@ namespace YggdrAshill.Nuadha
             Tilt.Dispose();
         }
 
+        /// <inheritdoc/>
         IProduction<Touch> IStickHardware.Touch => Touch;
 
+        /// <inheritdoc/>
         IProduction<Tilt> IStickHardware.Tilt => Tilt;
 
+        /// <inheritdoc/>
         IConsumption<Touch> IStickSoftware.Touch => Touch;
 
+        /// <inheritdoc/>
         IConsumption<Tilt> IStickSoftware.Tilt => Tilt;
     }
 }

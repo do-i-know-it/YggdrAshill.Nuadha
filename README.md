@@ -24,13 +24,13 @@ This framework is able to isolate definitions from implementations for specific 
 
 ## Dependencies
 
-This framework depends on .NET Standard 2.0.
+This framework depends on [.NET Standard](https://docs.microsoft.com/ja-jp/dotnet/standard/net-standard) 2.0.
 
 ## Installation
 
 Developers should
 
-1. Go to [Release pages](https://github.com/do-i-know-it/YggdrAshill.Nuadha/releases).
+1. Go to [release pages](https://github.com/do-i-know-it/YggdrAshill.Nuadha/releases).
 1. Download DLLs in the latest version.
 1. Put the DLLs in C# projects.
 
@@ -53,9 +53,9 @@ This framework also includes sub modules below.
 
 - [Signals](./Documentation/Signals.md)
 - [Units](./Documentation/Units.md)
-- [Implementation](./Documentation/Implementation.md)
+- [Nuadha](./Documentation/Nuadha.md)
 
-[Implementation](./Documentation/Implementation.md) module is an entry point of this framework.
+[Nuadha](./Documentation/Nuadha.md) module is an entry point of this framework.
 
 ![Image not found.](./Documentation/Resources/FrameworkArchitecture.jpg "Architecture of this framework.")
 
@@ -71,10 +71,6 @@ Please see [GitHub Project for road map](https://github.com/do-i-know-it/YggdrAs
   - ex) Blink
   - ex) Pupil
   - ex) Vibration
-- Adds definitions for diagnostics to Signals.
-  - ex) Battery
-  - ex) MemoryUsage
-- Adds definitions Notation to Transformation.
 - Adds definitions for Units.
   - ex) Tablet
   - ex) Gamepad
@@ -91,4 +87,7 @@ This framework is under the MIT License, see [LICENSE](./LICENSE.md).
 ## Remarks
 
 This framework is a part of YggdrAshill framework.
-Other frameworks will be produced soon for YggdrAshill.
+We also provides framework below.
+
+- [YggdrAshill.Ragnarok](https://github.com/do-i-know-it/YggdrAshill.Ragnarok)
+- [YggdrAshill.Unity](https://github.com/do-i-know-it/YggdrAshill.Unity)

@@ -1,7 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -26,7 +25,7 @@ namespace YggdrAshill.Nuadha.Samples
             var conversion = Device.Hardware.Pulsate();
 
             using (var composite = new CompositeCancellation())
-            using (var button = Button.WithoutCache().Ignite(configuration))
+            using (var button = Button.Ignite(configuration))
             {
                 button.Connect(Device.Software).Synthesize(composite);
 
