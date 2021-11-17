@@ -129,9 +129,9 @@ namespace YggdrAshill.Nuadha
 
             internal ConnectCalibratedPoseTracker(IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
             {
-                position = module.Position.Calibrate(configuration.Position);
+                position = module.Position.Convert(Space3DPositionTo.Calibrate(configuration.Position));
 
-                rotation = module.Rotation.Calibrate(configuration.Rotation);
+                rotation = module.Rotation.Convert(Space3DRotationTo.Calibrate(configuration.Rotation));
             }
 
             public ICancellation Connect(IPoseTrackerSoftware module)
