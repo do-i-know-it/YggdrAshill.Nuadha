@@ -21,13 +21,53 @@ namespace YggdrAshill.Nuadha
         /// Type of <see cref="ISignal"/> converted.
         /// </typeparam>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TInput"/>.
+        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TInput"/>.
+        /// </param>
+        /// <param name="translation">
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TOutput"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="translation"/> is null.
+        /// </exception>
+        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, ITranslation<TInput, TOutput> translation)
+            where TInput : ISignal
+            where TOutput : ISignal
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (translation == null)
+            {
+                throw new ArgumentNullException(nameof(translation));
+            }
+
+            return Conversion.Produce(production, translation);
+        }
+
+        /// <summary>
+        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// </summary>
+        /// <typeparam name="TInput">
+        /// Type of <see cref="ISignal"/> to convert.
+        /// </typeparam>
+        /// <typeparam name="TOutput">
+        /// Type of <see cref="ISignal"/> converted.
+        /// </typeparam>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TInput"/>.
         /// </param>
         /// <param name="translation">
         /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TOutput"/>.
+        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TOutput"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
@@ -62,13 +102,49 @@ namespace YggdrAshill.Nuadha
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> to send <typeparamref name="TSignal"/>.
+        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TSignal"/>.
+        /// </param>
+        /// <param name="condition">
+        /// <see cref="ICondition{TSignal}"/> to detect.
+        /// </param>
+        /// <returns>
+        /// <see cref="IProduction{TSignal}"/> to produce <see cref="Notice"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="condition"/> is null.
+        /// </exception>
+        public static IProduction<Notice> Detect<TSignal>(this IProduction<TSignal> production, ICondition<TSignal> condition)
+            where TSignal : ISignal
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (condition == null)
+            {
+                throw new ArgumentNullException(nameof(condition));
+            }
+
+            return Detection.Produce(production, condition);
+        }
+
+        /// <summary>
+        /// Detects <see cref="Notice"/> of <typeparamref name="TSignal"/>.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to detect.
+        /// </typeparam>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="condition">
         /// <see cref="Func{T, TResult}"/> to detect <see cref="Notice"/> of <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> to send <see cref="Notice"/>.
+        /// <see cref="IProduction{TSignal}"/> to produce <see cref="Notice"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
