@@ -53,9 +53,9 @@ namespace YggdrAshill.Nuadha
 
             internal IgniteStick(Stick protocol, IStickConfiguration configuration)
             {
-                touch = protocol.Touch.Transmit(configuration.Touch);
+                touch = protocol.Touch.Ignite(configuration.Touch);
 
-                tilt = protocol.Tilt.Transmit(configuration.Tilt);
+                tilt = protocol.Tilt.Ignite(configuration.Tilt);
             }
 
             public ICancellation Connect(IStickSoftware module)

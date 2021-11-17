@@ -53,7 +53,7 @@ namespace YggdrAshill.Nuadha
             {
                 pose = protocol.Pose.Ignite(configuration.Pose);
 
-                direction = protocol.Direction.Transmit(configuration.Direction);
+                direction = protocol.Direction.Ignite(configuration.Direction);
             }
 
             public ICancellation Connect(IHeadTrackerSoftware module)

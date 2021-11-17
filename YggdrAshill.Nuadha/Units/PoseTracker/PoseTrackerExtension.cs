@@ -52,9 +52,9 @@ namespace YggdrAshill.Nuadha
 
             internal IgnitePoseTracker(PoseTracker protocol, IPoseTrackerConfiguration configuration)
             {
-                position = protocol.Position.Transmit(configuration.Position);
+                position = protocol.Position.Ignite(configuration.Position);
 
-                rotation = protocol.Rotation.Transmit(configuration.Rotation);
+                rotation = protocol.Rotation.Ignite(configuration.Rotation);
             }
 
             public ICancellation Connect(IPoseTrackerSoftware module)

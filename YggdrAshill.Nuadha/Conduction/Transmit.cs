@@ -1,11 +1,12 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
-namespace YggdrAshill.Nuadha.Conduction
+namespace YggdrAshill.Nuadha
 {
-    public static class TransmissionOf
+    public static class Transmit
     {
-        public static ITransmission<TSignal> Signal<TSignal>(IGeneration<TSignal> generation, IPropagation<TSignal> propagation)
+        internal static ITransmission<TSignal> Signal<TSignal>(IGeneration<TSignal> generation, IPropagation<TSignal> propagation)
             where TSignal : ISignal
         {
             if (generation == null)
@@ -17,9 +18,9 @@ namespace YggdrAshill.Nuadha.Conduction
                 throw new ArgumentNullException(nameof(propagation));
             }
 
-            return new Transmit<TSignal>(generation, propagation);
+            return new Transmission<TSignal>(generation, propagation);
         }
-        private sealed class Transmit<TSignal> :
+        private sealed class Transmission<TSignal> :
             ITransmission<TSignal>
             where TSignal : ISignal
         {
@@ -27,7 +28,7 @@ namespace YggdrAshill.Nuadha.Conduction
 
             private readonly IPropagation<TSignal> propagation;
 
-            internal Transmit(IGeneration<TSignal> generation, IPropagation<TSignal> propagation)
+            internal Transmission(IGeneration<TSignal> generation, IPropagation<TSignal> propagation)
             {
                 this.generation = generation;
 
@@ -55,6 +56,17 @@ namespace YggdrAshill.Nuadha.Conduction
             {
                 propagation.Dispose();
             }
+        }
+
+        public static ITransmission<TSignal> Signal<TSignal>(IGeneration<TSignal> generation)
+            where TSignal : ISignal
+        {
+            if (generation == null)
+            {
+                throw new ArgumentNullException(nameof(generation));
+            }
+
+            return new Transmission<TSignal>(generation, Propagate.WithoutCache<TSignal>());
         }
     }
 }

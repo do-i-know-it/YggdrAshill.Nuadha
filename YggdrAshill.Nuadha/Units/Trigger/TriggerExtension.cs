@@ -53,9 +53,9 @@ namespace YggdrAshill.Nuadha
 
             internal IgniteTrigger(Trigger protocol, ITriggerConfiguration configuration)
             {
-                touch = protocol.Touch.Transmit(configuration.Touch);
+                touch = protocol.Touch.Ignite(configuration.Touch);
 
-                pull = protocol.Pull.Transmit(configuration.Pull);
+                pull = protocol.Pull.Ignite(configuration.Pull);
             }
 
             public ICancellation Connect(ITriggerSoftware handler)

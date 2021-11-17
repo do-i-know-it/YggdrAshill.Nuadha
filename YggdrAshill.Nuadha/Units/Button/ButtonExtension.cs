@@ -53,9 +53,9 @@ namespace YggdrAshill.Nuadha
 
             internal IgniteButton(Button protocol, IButtonConfiguration configuration)
             {
-                touch = protocol.Touch.Transmit(configuration.Touch);
+                touch = protocol.Touch.Ignite(configuration.Touch);
 
-                push = protocol.Push.Transmit(configuration.Push);
+                push = protocol.Push.Ignite(configuration.Push);
             }
 
             public ICancellation Connect(IButtonSoftware module)

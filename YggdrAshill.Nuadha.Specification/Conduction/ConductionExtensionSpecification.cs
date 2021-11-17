@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -27,7 +26,7 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldTransmitSignalWithGeneration()
         {
-            var transmission = propagation.Transmit(generation);
+            var transmission = propagation.Ignite(generation);
 
             var cancellation = transmission.Produce(consumption);
 
@@ -42,7 +41,7 @@ namespace YggdrAshill.Nuadha.Specification
         public void ShouldTransmitSignalWithFunction()
         {
             var expected = new Signal();
-            var transmission = propagation.Transmit(() =>
+            var transmission = propagation.Ignite(() =>
             {
                 return expected;
             });
@@ -61,24 +60,24 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = default(IPropagation<Signal>).Transmit(generation);
+                var transmission = default(IPropagation<Signal>).Ignite(generation);
 
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = propagation.Transmit(default(IGeneration<Signal>));
+                var transmission = propagation.Ignite(default(IGeneration<Signal>));
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = default(IPropagation<Signal>).Transmit(() => new Signal());
+                var transmission = default(IPropagation<Signal>).Ignite(() => new Signal());
 
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = propagation.Transmit(default(Func<Signal>));
+                var transmission = propagation.Ignite(default(Func<Signal>));
             });
         }
     }
