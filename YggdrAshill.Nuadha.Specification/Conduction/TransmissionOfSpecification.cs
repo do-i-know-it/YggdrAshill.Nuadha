@@ -5,8 +5,8 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(PropagationExtension))]
-    internal class PropagationExtensionSpecification
+    [TestFixture(TestOf = typeof(TransmissionOf))]
+    internal class TransmissionOfSpecification
     {
         private PropagateSignal propagation;
 
@@ -27,7 +27,7 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldTransmitSignal()
         {
-            var transmission = propagation.Transmit(generation);
+            var transmission = TransmissionOf.Signal(generation, propagation);
 
             var cancellation = transmission.Produce(consumption);
 
@@ -43,13 +43,13 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = default(IPropagation<Signal>).Transmit(generation);
+                var transmission = TransmissionOf.Signal(generation, default(IPropagation<Signal>));
 
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var transmission = propagation.Transmit(default(IGeneration<Signal>));
+                var transmission = TransmissionOf.Signal(default(IGeneration<Signal>), propagation);
             });
         }
     }
