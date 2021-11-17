@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -15,7 +15,7 @@ namespace YggdrAshill.Nuadha
         /// Converts <see cref="HeadTracker"/> into <see cref="IIgnition{TModule}"/> for <see cref="IHeadTrackerSoftware"/>.
         /// </summary>
         /// <param name="protocol">
-        /// <see cref="HeadTracker"/> to convert.
+        /// <see cref="IHeadTrackerProtocol"/> to convert.
         /// </param>
         /// <param name="configuration">
         /// <see cref="IHeadTrackerConfiguration"/> to ignite.
@@ -29,7 +29,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IHeadTrackerSoftware> Ignite(this HeadTracker protocol, IHeadTrackerConfiguration configuration)
+        public static IIgnition<IHeadTrackerSoftware> Ignite(this IHeadTrackerProtocol protocol, IHeadTrackerConfiguration configuration)
         {
             if (protocol == null)
             {
@@ -49,7 +49,7 @@ namespace YggdrAshill.Nuadha
 
             private readonly ITransmission<Space3D.Direction> direction;
 
-            internal IgniteHeadTracker(HeadTracker protocol, IHeadTrackerConfiguration configuration)
+            internal IgniteHeadTracker(IHeadTrackerProtocol protocol, IHeadTrackerConfiguration configuration)
             {
                 pose = protocol.Pose.Ignite(configuration.Pose);
 

@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
@@ -15,7 +15,7 @@ namespace YggdrAshill.Nuadha
         /// Converts <see cref="HandController"/> into <see cref="IIgnition{TModule}"/> for <see cref="IHandControllerSoftware"/>.
         /// </summary>
         /// <param name="protocol">
-        /// <see cref="HandController"/> to convert.
+        /// <see cref="IHandControllerProtocol"/> to convert.
         /// </param>
         /// <param name="configuration">
         /// <see cref="IHandControllerConfiguration"/> to ignite.
@@ -29,7 +29,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IHandControllerSoftware> Ignite(this HandController protocol, IHandControllerConfiguration configuration)
+        public static IIgnition<IHandControllerSoftware> Ignite(this IHandControllerProtocol protocol, IHandControllerConfiguration configuration)
         {
             if (protocol == null)
             {
@@ -53,7 +53,7 @@ namespace YggdrAshill.Nuadha
 
             private readonly IIgnition<ITriggerSoftware> handGrip;
 
-            internal IgniteHandController(HandController protocol, IHandControllerConfiguration configuration)
+            internal IgniteHandController(IHandControllerProtocol protocol, IHandControllerConfiguration configuration)
             {
                 pose = protocol.Pose.Ignite(configuration.Pose);
 

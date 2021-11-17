@@ -1,45 +1,70 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="ITriggerHardware"/> and <see cref="ITriggerSoftware"/>.
+    /// Implementation of <see cref="ITriggerProtocol"/>.
     /// </summary>
     public sealed class Trigger :
         ITriggerHardware,
         ITriggerSoftware,
-        IProtocol<ITriggerHardware, ITriggerSoftware>
+        ITriggerProtocol
     {
         /// <summary>
-        /// <see cref="Trigger"/> without cache.
+        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="ITriggerConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="ITriggerSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<ITriggerSoftware> Ignite(ITriggerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return WithoutCache().Ignite(configuration);
+        }
+
+        /// <summary>
+        /// <see cref="ITriggerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="Trigger"/> without cache.
+        /// <see cref="ITriggerProtocol"/> without cache.
         /// </returns>
-        public static Trigger WithoutCache()
+        public static ITriggerProtocol WithoutCache()
         {
             return new Trigger(Propagate.WithoutCache<Touch>(), Propagate.WithoutCache<Pull>());
         }
 
         /// <summary>
-        /// <see cref="Trigger"/> with latest cache.
+        /// <see cref="ITriggerProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="Trigger"/> with latest cache.
+        /// <see cref="ITriggerProtocol"/> with latest cache.
         /// </returns>
-        public static Trigger WithLatestCache()
+        public static ITriggerProtocol WithLatestCache()
         {
             var configuration = ImitatedTrigger.Instance;
 
             return new Trigger(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Pull));
         }
 
-        internal IPropagation<Touch> Touch { get; }
+        /// <inheritdoc/>
+        public IPropagation<Touch> Touch { get; }
 
-        internal IPropagation<Pull> Pull { get; }
+        /// <inheritdoc/>
+        public IPropagation<Pull> Pull { get; }
 
         private Trigger(IPropagation<Touch> touch, IPropagation<Pull> pull)
         {
@@ -62,12 +87,16 @@ namespace YggdrAshill.Nuadha
             Pull.Dispose();
         }
 
+        /// <inheritdoc/>
         IProduction<Touch> ITriggerHardware.Touch => Touch;
 
+        /// <inheritdoc/>
         IProduction<Pull> ITriggerHardware.Pull => Pull;
 
+        /// <inheritdoc/>
         IConsumption<Touch> ITriggerSoftware.Touch => Touch;
 
+        /// <inheritdoc/>
         IConsumption<Pull> ITriggerSoftware.Pull => Pull;
     }
 }

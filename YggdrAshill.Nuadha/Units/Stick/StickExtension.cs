@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Conduction;
@@ -14,10 +14,10 @@ namespace YggdrAshill.Nuadha
     public static class StickExtension
     {
         /// <summary>
-        /// Converts <see cref="Stick"/> into <see cref="IIgnition{TModule}"/> for <see cref="IStickSoftware"/>.
+        /// Converts <see cref="IStickProtocol"/> into <see cref="IIgnition{TModule}"/> for <see cref="IStickSoftware"/>.
         /// </summary>
         /// <param name="protocol">
-        /// <see cref="Stick"/> to convert.
+        /// <see cref="IStickProtocol"/> to convert.
         /// </param>
         /// <param name="configuration">
         /// <see cref="IStickConfiguration"/> to ignite.
@@ -31,7 +31,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IStickSoftware> Ignite(this Stick protocol, IStickConfiguration configuration)
+        public static IIgnition<IStickSoftware> Ignite(this IStickProtocol protocol, IStickConfiguration configuration)
         {
             if (protocol == null)
             {
@@ -51,7 +51,7 @@ namespace YggdrAshill.Nuadha
 
             private readonly ITransmission<Tilt> tilt;
 
-            internal IgniteStick(Stick protocol, IStickConfiguration configuration)
+            internal IgniteStick(IStickProtocol protocol, IStickConfiguration configuration)
             {
                 touch = protocol.Touch.Ignite(configuration.Touch);
 

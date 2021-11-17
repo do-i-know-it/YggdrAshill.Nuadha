@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Conduction;
@@ -17,7 +17,7 @@ namespace YggdrAshill.Nuadha
         /// Converts <see cref="Trigger"/> into <see cref="IIgnition{TModule}"/> for <see cref="ITriggerSoftware"/>.
         /// </summary>
         /// <param name="protocol">
-        /// <see cref="Trigger"/> to convert.
+        /// <see cref="ITriggerProtocol"/> to convert.
         /// </param>
         /// <param name="configuration">
         /// <see cref="ITriggerConfiguration"/> to ignite.
@@ -31,7 +31,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<ITriggerSoftware> Ignite(this Trigger protocol, ITriggerConfiguration configuration)
+        public static IIgnition<ITriggerSoftware> Ignite(this ITriggerProtocol protocol, ITriggerConfiguration configuration)
         {
             if (protocol == null)
             {
@@ -51,7 +51,7 @@ namespace YggdrAshill.Nuadha
 
             private readonly ITransmission<Pull> pull;
 
-            internal IgniteTrigger(Trigger protocol, ITriggerConfiguration configuration)
+            internal IgniteTrigger(ITriggerProtocol protocol, ITriggerConfiguration configuration)
             {
                 touch = protocol.Touch.Ignite(configuration.Touch);
 

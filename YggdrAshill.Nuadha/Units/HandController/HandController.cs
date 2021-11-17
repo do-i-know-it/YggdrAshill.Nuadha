@@ -1,23 +1,46 @@
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IHandControllerHardware"/> and <see cref="IHandControllerSoftware"/>.
+    /// Implementation of <see cref="IHandControllerProtocol"/>.
     /// </summary>
     public sealed class HandController :
         IHandControllerHardware,
         IHandControllerSoftware,
-        IProtocol<IHandControllerHardware, IHandControllerSoftware>
+        IHandControllerProtocol
     {
         /// <summary>
-        /// <see cref="HandController"/> without cache.
+        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="IHandControllerSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IHandControllerConfiguration"/> to ignite.
+        /// </param>
+        /// <returns>
+        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IHandControllerSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IIgnition<IHandControllerSoftware> Ignite(IHandControllerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return WithoutCache().Ignite(configuration);
+        }
+
+        /// <summary>
+        /// <see cref="IHandControllerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="HandController"/> without cache.
+        /// <see cref="IHandControllerProtocol"/> without cache.
         /// </returns>
-        public static HandController WithoutCache()
+        public static IHandControllerProtocol WithoutCache()
         {
             return new HandController(
                 PoseTracker.WithoutCache(),
@@ -27,12 +50,12 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// <see cref="HandController"/> with latest cache.
+        /// <see cref="IHandControllerProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="HandController"/> with latest cache.
+        /// <see cref="IHandControllerProtocol"/> with latest cache.
         /// </returns>
-        public static HandController WithLatestCache()
+        public static IHandControllerProtocol WithLatestCache()
         {
             return new HandController(
                 PoseTracker.WithLatestCache(),
@@ -41,15 +64,19 @@ namespace YggdrAshill.Nuadha
                 Trigger.WithLatestCache());
         }
 
-        internal PoseTracker Pose { get; }
+        /// <inheritdoc/>
+        public IPoseTrackerProtocol Pose { get; }
 
-        internal Stick Thumb { get; }
+        /// <inheritdoc/>
+        public IStickProtocol Thumb { get; }
 
-        internal Trigger IndexFinger { get; }
+        /// <inheritdoc/>
+        public ITriggerProtocol IndexFinger { get; }
 
-        internal Trigger HandGrip { get; }
+        /// <inheritdoc/>
+        public ITriggerProtocol HandGrip { get; }
 
-        private HandController(PoseTracker pose, Stick thumb, Trigger indexFinger, Trigger handGrip)
+        private HandController(IPoseTrackerProtocol pose, IStickProtocol thumb, ITriggerProtocol indexFinger, ITriggerProtocol handGrip)
         {
             Pose = pose;
 
@@ -78,20 +105,28 @@ namespace YggdrAshill.Nuadha
             HandGrip.Dispose();
         }
 
+        /// <inheritdoc/>
         IPoseTrackerHardware IHandControllerHardware.Pose => Pose.Hardware;
 
+        /// <inheritdoc/>
         IStickHardware IHandControllerHardware.Thumb => Thumb.Hardware;
 
+        /// <inheritdoc/>
         ITriggerHardware IHandControllerHardware.IndexFinger => IndexFinger.Hardware;
 
+        /// <inheritdoc/>
         ITriggerHardware IHandControllerHardware.HandGrip => HandGrip.Hardware;
 
+        /// <inheritdoc/>
         IPoseTrackerSoftware IHandControllerSoftware.Pose => Pose.Software;
 
+        /// <inheritdoc/>
         IStickSoftware IHandControllerSoftware.Thumb => Thumb.Software;
 
+        /// <inheritdoc/>
         ITriggerSoftware IHandControllerSoftware.IndexFinger => IndexFinger.Software;
 
+        /// <inheritdoc/>
         ITriggerSoftware IHandControllerSoftware.HandGrip => HandGrip.Software;
     }
 }

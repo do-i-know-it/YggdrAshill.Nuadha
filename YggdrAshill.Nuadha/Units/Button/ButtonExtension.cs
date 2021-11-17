@@ -14,10 +14,10 @@ namespace YggdrAshill.Nuadha
     public static class ButtonExtension
     {
         /// <summary>
-        /// Converts <see cref="Button"/> into <see cref="IIgnition{TModule}"/> for <see cref="IButtonSoftware"/>.
+        /// Converts <see cref="IButtonProtocol"/> into <see cref="IIgnition{TModule}"/> for <see cref="IButtonSoftware"/>.
         /// </summary>
         /// <param name="protocol">
-        /// <see cref="Button"/> to convert.
+        /// <see cref="IButtonProtocol"/> to convert.
         /// </param>
         /// <param name="configuration">
         /// <see cref="IButtonConfiguration"/> to ignite.
@@ -31,7 +31,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IButtonSoftware> Ignite(this Button protocol, IButtonConfiguration configuration)
+        public static IIgnition<IButtonSoftware> Ignite(this IButtonProtocol protocol, IButtonConfiguration configuration)
         {
             if (protocol == null)
             {
@@ -51,7 +51,7 @@ namespace YggdrAshill.Nuadha
 
             private readonly ITransmission<Push> push;
 
-            internal IgniteButton(Button protocol, IButtonConfiguration configuration)
+            internal IgniteButton(IButtonProtocol protocol, IButtonConfiguration configuration)
             {
                 touch = protocol.Touch.Ignite(configuration.Touch);
 
