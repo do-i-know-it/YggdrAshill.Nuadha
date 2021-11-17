@@ -55,9 +55,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static ITriggerProtocol WithLatestCache()
         {
-            var configuration = ImitatedTrigger.Instance;
-
-            return new Trigger(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Pull));
+            return new Trigger(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Pull));
         }
 
         /// <inheritdoc/>

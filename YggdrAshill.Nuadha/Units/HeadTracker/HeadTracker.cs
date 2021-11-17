@@ -55,7 +55,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IHeadTrackerProtocol WithLatestCache()
         {
-            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(ImitatedHeadTracker.Instance.Direction));
+            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(Imitate.Direction));
         }
 
         /// <inheritdoc/>

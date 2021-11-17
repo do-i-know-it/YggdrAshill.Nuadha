@@ -55,9 +55,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IButtonProtocol WithLatestCache()
         {
-            var configuration = ImitatedButton.Instance;
-
-            return new Button(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Push));
+            return new Button(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Push));
         }
 
         /// <inheritdoc/>

@@ -55,9 +55,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IStickProtocol WithLatestCache()
         {
-            var configuration = ImitatedStick.Instance;
-
-            return new Stick(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Tilt));
+            return new Stick(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Tilt));
         }
 
         /// <inheritdoc/>

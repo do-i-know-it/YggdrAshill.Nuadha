@@ -57,11 +57,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IPoseTrackerProtocol WithLatestCache()
         {
-            var configuration = ImitatedPoseTracker.Instance;
-
-            return new PoseTracker(
-                Propagate.WithLatestCache(configuration.Position),
-                Propagate.WithLatestCache(configuration.Rotation));
+            return new PoseTracker(Propagate.WithLatestCache(Imitate.Position), Propagate.WithLatestCache(Imitate.Rotation));
         }
 
         /// <inheritdoc/>
