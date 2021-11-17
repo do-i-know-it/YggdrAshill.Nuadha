@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> <see cref="Notice"/>.
+    /// Implementation of <see cref="ISignal"/> for <see cref="Notice"/>.
     /// </summary>
     public sealed class Notice :
         ISignal

@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha
     public static class SignalInto
     {
         /// <summary>
-        /// Executes <see cref="Func{T, TResult}"/>.
+        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </summary>
         /// <typeparam name="TInput">
         /// Type of <see cref="ISignal"/> to convert.
@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha
         /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
-        /// <see cref="ITranslation{TInput, TOutput}"/> created.
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="translation"/> is null.
