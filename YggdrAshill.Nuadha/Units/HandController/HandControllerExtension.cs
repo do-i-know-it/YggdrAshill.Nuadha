@@ -152,11 +152,11 @@ namespace YggdrAshill.Nuadha
 
             internal ConnectPulsatedHandController(IHandControllerHardware module, HandControllerThreshold threshold)
             {
-                thumb = module.Thumb.Convert(threshold.Thumb);
+                thumb = module.Thumb.Pulsate(threshold.Thumb);
 
-                indexFinger = module.IndexFinger.Convert(threshold.IndexFinger);
+                indexFinger = module.IndexFinger.Pulsate(threshold.IndexFinger);
 
-                handGrip = module.HandGrip.Convert(threshold.HandGrip);
+                handGrip = module.HandGrip.Pulsate(threshold.HandGrip);
             }
 
             public ICancellation Connect(IPulsatedHandControllerSoftware module)

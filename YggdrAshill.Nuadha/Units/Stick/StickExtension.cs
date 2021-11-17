@@ -136,7 +136,7 @@ namespace YggdrAshill.Nuadha
             {
                 touch = module.Touch.Convert(TouchInto.Pulse);
 
-                tilt = module.Tilt.Convert(threshold);
+                tilt = module.Tilt.Pulsate(threshold);
             }
 
             public ICancellation Connect(IPulsatedStickSoftware module)
