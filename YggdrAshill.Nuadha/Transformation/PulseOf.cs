@@ -1,7 +1,8 @@
+using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Signalization;
 using System;
 
-namespace YggdrAshill.Nuadha.Transformation
+namespace YggdrAshill.Nuadha
 {
     /// <summary>
     /// Defines implementation of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Pulse"/>.
@@ -59,6 +60,32 @@ namespace YggdrAshill.Nuadha.Transformation
 
                 return previous;
             }
+        }
+
+        /// <summary>
+        /// Converts <typeparamref name="TSignal"/> into <see cref="Pulse"/>.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to be converted into <see cref="Pulse"/>.
+        /// </typeparam>
+        /// <param name="condition">
+        /// <see cref="Func{T, TResult}"/> to detect <typeparamref name="TSignal"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <typeparamref name="TSignal"/> into <see cref="Pulse"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="condition"/> is null.
+        /// </exception>
+        public static ITranslation<TSignal, Pulse> Signal<TSignal>(Func<TSignal, bool> condition)
+            where TSignal : ISignal
+        {
+            if (condition == null)
+            {
+                throw new ArgumentNullException(nameof(condition));
+            }
+
+            return Signal(NoticeOf.Signal(condition));
         }
     }
 }
