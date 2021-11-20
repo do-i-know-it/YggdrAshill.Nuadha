@@ -104,6 +104,67 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        /// <summary>
+        /// Converts <see cref="IHandControllerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IHandControllerHardware"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="IHandControllerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> to connect <see cref="IHandControllerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        public static IConnection<IHandControllerHardware> Connect(this IHandControllerSoftware module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ConnectHandController(module);
+        }
+        private sealed class ConnectHandController :
+            IConnection<IHandControllerHardware>
+        {
+            private readonly IConnection<IPoseTrackerHardware> pose;
+
+            private readonly IConnection<IStickHardware> thumb;
+
+            private readonly IConnection<ITriggerHardware> indexFinger;
+
+            private readonly IConnection<ITriggerHardware> handGrip;
+
+            internal ConnectHandController(IHandControllerSoftware module)
+            {
+                pose = module.Pose.Connect();
+
+                thumb = module.Thumb.Connect();
+
+                indexFinger = module.IndexFinger.Connect();
+
+                handGrip = module.HandGrip.Connect();
+            }
+
+            public ICancellation Connect(IHandControllerHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                pose.Connect(module.Pose).Synthesize(composite);
+                thumb.Connect(module.Thumb).Synthesize(composite);
+                indexFinger.Connect(module.IndexFinger).Synthesize(composite);
+                handGrip.Connect(module.HandGrip).Synthesize(composite);
+
+                return composite;
+            }
+        }
+
         [Obsolete("Please use HandControllerExtension.Pulsate instead.")]
         public static IConnection<IPulsatedHandControllerSoftware> Convert(this IHandControllerHardware module, HandControllerThreshold threshold)
         {
@@ -139,9 +200,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new ConnectPulsatedHandController(module, threshold);
+            return new ConnectPulsatedHandControllerSoftware(module, threshold);
         }
-        private sealed class ConnectPulsatedHandController :
+        private sealed class ConnectPulsatedHandControllerSoftware :
             IConnection<IPulsatedHandControllerSoftware>
         {
             private readonly IConnection<IPulsatedStickSoftware> thumb;
@@ -150,7 +211,7 @@ namespace YggdrAshill.Nuadha
 
             private readonly IConnection<IPulsatedTriggerSoftware> handGrip;
 
-            internal ConnectPulsatedHandController(IHandControllerHardware module, HandControllerThreshold threshold)
+            internal ConnectPulsatedHandControllerSoftware(IHandControllerHardware module, HandControllerThreshold threshold)
             {
                 thumb = module.Thumb.Pulsate(threshold.Thumb);
 
@@ -160,6 +221,62 @@ namespace YggdrAshill.Nuadha
             }
 
             public ICancellation Connect(IPulsatedHandControllerSoftware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                thumb.Connect(module.Thumb).Synthesize(composite);
+                indexFinger.Connect(module.IndexFinger).Synthesize(composite);
+                handGrip.Connect(module.HandGrip).Synthesize(composite);
+
+                return composite;
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="IPulsatedHandControllerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedHandControllerHardware"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="IPulsatedHandControllerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedHandControllerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        public static IConnection<IPulsatedHandControllerHardware> Connect(this IPulsatedHandControllerSoftware module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ConnectPulsatedHandControllerHardware(module);
+        }
+        private sealed class ConnectPulsatedHandControllerHardware :
+            IConnection<IPulsatedHandControllerHardware>
+        {
+            private readonly IConnection<IPulsatedStickHardware> thumb;
+
+            private readonly IConnection<IPulsatedTriggerHardware> indexFinger;
+
+            private readonly IConnection<IPulsatedTriggerHardware> handGrip;
+
+            internal ConnectPulsatedHandControllerHardware(IPulsatedHandControllerSoftware module)
+            {
+                thumb = module.Thumb.Connect();
+
+                indexFinger = module.IndexFinger.Connect();
+
+                handGrip = module.HandGrip.Connect();
+            }
+
+            public ICancellation Connect(IPulsatedHandControllerHardware module)
             {
                 if (module == null)
                 {

@@ -88,6 +88,57 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        /// <summary>
+        /// Converts <see cref="IStickSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IStickHardware"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="IStickSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> to connect <see cref="IStickHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        public static IConnection<IStickHardware> Connect(this IStickSoftware module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ConnectStickHardware(module);
+        }
+        private sealed class ConnectStickHardware :
+            IConnection<IStickHardware>
+        {
+            private readonly IConsumption<Touch> touch;
+
+            private readonly IConsumption<Tilt> tilt;
+
+            internal ConnectStickHardware(IStickSoftware module)
+            {
+                touch = module.Touch;
+
+                tilt = module.Tilt;
+            }
+
+            public ICancellation Connect(IStickHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                module.Touch.Produce(touch).Synthesize(composite);
+                module.Tilt.Produce(tilt).Synthesize(composite);
+
+                return composite;
+            }
+        }
+
         [Obsolete("Please use StickExtension.Pulsate instead.")]
         public static IConnection<IPulsatedStickSoftware> Convert(this IStickHardware module, TiltThreshold threshold)
         {
@@ -123,16 +174,16 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new ConnectPulsatedStick(module, threshold);
+            return new ConnectPulsatedStickSoftware(module, threshold);
         }
-        private sealed class ConnectPulsatedStick :
+        private sealed class ConnectPulsatedStickSoftware :
             IConnection<IPulsatedStickSoftware>
         {
             private readonly IProduction<Pulse> touch;
 
             private readonly IConnection<IPulsatedTiltSoftware> tilt;
 
-            internal ConnectPulsatedStick(IStickHardware module, TiltThreshold threshold)
+            internal ConnectPulsatedStickSoftware(IStickHardware module, TiltThreshold threshold)
             {
                 touch = module.Touch.Convert(TouchInto.Pulse);
 
@@ -149,6 +200,57 @@ namespace YggdrAshill.Nuadha
                 var composite = new CompositeCancellation();
 
                 touch.Produce(module.Touch).Synthesize(composite);
+                tilt.Connect(module.Tilt).Synthesize(composite);
+
+                return composite;
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="IPulsatedStickSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedStickHardware"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="IPulsatedStickSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedStickHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        public static IConnection<IPulsatedStickHardware> Connect(this IPulsatedStickSoftware module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ConnectPulsatedStickHardware(module);
+        }
+        private sealed class ConnectPulsatedStickHardware :
+            IConnection<IPulsatedStickHardware>
+        {
+            private readonly IConsumption<Pulse> touch;
+
+            private readonly IConnection<IPulsatedTiltHardware> tilt;
+
+            internal ConnectPulsatedStickHardware(IPulsatedStickSoftware module)
+            {
+                touch = module.Touch;
+
+                tilt = module.Tilt.Connect();
+            }
+
+            public ICancellation Connect(IPulsatedStickHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                module.Touch.Produce(touch).Synthesize(composite);
                 tilt.Connect(module.Tilt).Synthesize(composite);
 
                 return composite;
