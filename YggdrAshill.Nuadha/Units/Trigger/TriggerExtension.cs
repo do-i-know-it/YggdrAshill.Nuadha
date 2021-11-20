@@ -88,6 +88,57 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        /// <summary>
+        /// Converts <see cref="ITriggerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="ITriggerHardware"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="ITriggerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> to connect <see cref="ITriggerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        public static IConnection<ITriggerHardware> Connect(this ITriggerSoftware module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ConnectTrigger(module);
+        }
+        private sealed class ConnectTrigger :
+            IConnection<ITriggerHardware>
+        {
+            private readonly IConsumption<Touch> touch;
+
+            private readonly IConsumption<Pull> push;
+
+            internal ConnectTrigger(ITriggerSoftware module)
+            {
+                touch = module.Touch;
+
+                push = module.Pull;
+            }
+
+            public ICancellation Connect(ITriggerHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                module.Touch.Produce(touch).Synthesize(composite);
+                module.Pull.Produce(push).Synthesize(composite);
+
+                return composite;
+            }
+        }
+
         [Obsolete("Please use TriggerExtension.Pulsate instead.")]
         public static IConnection<IPulsatedTriggerSoftware> Convert(this ITriggerHardware module, HysteresisThreshold threshold)
         {
@@ -123,16 +174,16 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new ConnectPulsatedTrigger(module, threshold);
+            return new ConnectPulsatedTriggerSoftware(module, threshold);
         }
-        private sealed class ConnectPulsatedTrigger :
+        private sealed class ConnectPulsatedTriggerSoftware :
             IConnection<IPulsatedTriggerSoftware>
         {
             private readonly IProduction<Pulse> touch;
 
             private readonly IProduction<Pulse> pull;
 
-            internal ConnectPulsatedTrigger(ITriggerHardware module, HysteresisThreshold threshold)
+            internal ConnectPulsatedTriggerSoftware(ITriggerHardware module, HysteresisThreshold threshold)
             {
                 touch = module.Touch.Convert(TouchInto.Pulse);
 
@@ -150,6 +201,57 @@ namespace YggdrAshill.Nuadha
 
                 touch.Produce(module.Touch).Synthesize(composite);
                 pull.Produce(module.Pull).Synthesize(composite);
+
+                return composite;
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="IPulsatedTriggerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTriggerHardware"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="IPulsatedTriggerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedTriggerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        public static IConnection<IPulsatedTriggerHardware> Connect(this IPulsatedTriggerSoftware module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ConnectPulsatedTriggerHardware(module);
+        }
+        private sealed class ConnectPulsatedTriggerHardware :
+            IConnection<IPulsatedTriggerHardware>
+        {
+            private readonly IConsumption<Pulse> touch;
+
+            private readonly IConsumption<Pulse> pull;
+
+            internal ConnectPulsatedTriggerHardware(IPulsatedTriggerSoftware module)
+            {
+                touch = module.Touch;
+
+                pull = module.Pull;
+            }
+
+            public ICancellation Connect(IPulsatedTriggerHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                module.Touch.Produce(touch).Synthesize(composite);
+                module.Pull.Produce(pull).Synthesize(composite);
 
                 return composite;
             }

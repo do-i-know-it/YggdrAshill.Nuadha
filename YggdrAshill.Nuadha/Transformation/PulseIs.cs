@@ -1,6 +1,7 @@
+using YggdrAshill.Nuadha.Transformation;
 using System;
 
-namespace YggdrAshill.Nuadha.Transformation
+namespace YggdrAshill.Nuadha
 {
     /// <summary>
     /// Defines implementations of <see cref="ICondition{TSignal}"/> for <see cref="Pulse"/>.

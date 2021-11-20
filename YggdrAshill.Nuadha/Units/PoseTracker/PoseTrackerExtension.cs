@@ -87,6 +87,57 @@ namespace YggdrAshill.Nuadha
             }
         }
 
+        /// <summary>
+        /// Converts <see cref="IPoseTrackerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPoseTrackerHardware"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="IPoseTrackerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPoseTrackerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        public static IConnection<IPoseTrackerHardware> Connect(this IPoseTrackerSoftware module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ConnectPoseTrackerHardware(module);
+        }
+        private sealed class ConnectPoseTrackerHardware :
+            IConnection<IPoseTrackerHardware>
+        {
+            private readonly IConsumption<Space3D.Position> position;
+
+            private readonly IConsumption<Space3D.Rotation> rotation;
+
+            internal ConnectPoseTrackerHardware(IPoseTrackerSoftware module)
+            {
+                position = module.Position;
+
+                rotation = module.Rotation;
+            }
+
+            public ICancellation Connect(IPoseTrackerHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                module.Position.Produce(position).Synthesize(composite);
+                module.Rotation.Produce(rotation).Synthesize(composite);
+
+                return composite;
+            }
+        }
+
         [Obsolete("Please use PoseTrackerExtension.Pulsate instead.")]
         public static IConnection<IPoseTrackerSoftware> Convert(this IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
         {
@@ -118,16 +169,16 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(module));
             }
 
-            return new ConnectCalibratedPoseTracker(module, configuration);
+            return new ConnectPoseTrackerSoftware(module, configuration);
         }
-        private sealed class ConnectCalibratedPoseTracker :
+        private sealed class ConnectPoseTrackerSoftware :
             IConnection<IPoseTrackerSoftware>
         {
             private readonly IProduction<Space3D.Position> position;
 
             private readonly IProduction<Space3D.Rotation> rotation;
 
-            internal ConnectCalibratedPoseTracker(IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
+            internal ConnectPoseTrackerSoftware(IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
             {
                 position = module.Position.Convert(Space3DPositionTo.Calibrate(configuration.Position));
 

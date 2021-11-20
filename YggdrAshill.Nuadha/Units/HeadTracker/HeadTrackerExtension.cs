@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -83,6 +84,57 @@ namespace YggdrAshill.Nuadha
                 pose.Dispose();
 
                 direction.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="IHeadTrackerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IHeadTrackerHardware"/>.
+        /// </summary>
+        /// <param name="module">
+        /// <see cref="IHeadTrackerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> to connect <see cref="IHeadTrackerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="module"/> is null.
+        /// </exception>
+        public static IConnection<IHeadTrackerHardware> Connect(this IHeadTrackerSoftware module)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return new ConnectHeadTracker(module);
+        }
+        private sealed class ConnectHeadTracker :
+            IConnection<IHeadTrackerHardware>
+        {
+            private readonly IConnection<IPoseTrackerHardware> pose;
+
+            private readonly IConsumption<Space3D.Direction> direction;
+
+            internal ConnectHeadTracker(IHeadTrackerSoftware module)
+            {
+                pose = module.Pose.Connect();
+
+                direction = module.Direction;
+            }
+
+            public ICancellation Connect(IHeadTrackerHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                pose.Connect(module.Pose).Synthesize(composite);
+                module.Direction.Produce(direction).Synthesize(composite);
+
+                return composite;
             }
         }
     }
