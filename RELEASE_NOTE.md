@@ -1,6 +1,4 @@
-# Release notes for version 1.1.0
+# Release notes for version 1.1.1
 
-- Added definitions for diagnostics to Signals.
-  - Battery
-  - MemoryUsage
-- Added definitions Notation to Transformation.
+- Added definitions for Units.
+- Moved implementations for Transformation.
