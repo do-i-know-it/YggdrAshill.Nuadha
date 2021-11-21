@@ -1,5 +1,4 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -22,7 +21,7 @@ namespace YggdrAshill.Nuadha.Samples
             var connection = new ShowInConsole();
 
             // Button to pulsated button
-            var conversion = Device.Hardware.Pulsate();
+            var conversion = Device.Hardware.Pulsate().Connect();
 
             using (var composite = new CompositeCancellation())
             using (var button = Button.Ignite(configuration))

@@ -8,7 +8,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="HeadTracker"/>.
+    /// Defines extensions for <see cref="IHeadTrackerHardware"/> and <see cref="IHeadTrackerSoftware"/>.
     /// </summary>
     public static class HeadTrackerExtension
     {
@@ -90,36 +90,36 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// Converts <see cref="IHeadTrackerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IHeadTrackerHardware"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="software">
         /// <see cref="IHeadTrackerSoftware"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IHeadTrackerHardware"/>.
+        /// <see cref="IConnection{TModule}"/> for <see cref="IHeadTrackerHardware"/> converted from <see cref="IHeadTrackerSoftware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="software"/> is null.
         /// </exception>
-        public static IConnection<IHeadTrackerHardware> Connect(this IHeadTrackerSoftware module)
+        public static IConnection<IHeadTrackerHardware> Connect(this IHeadTrackerSoftware software)
         {
-            if (module == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            return new ConnectHeadTracker(module);
+            return new ConnectHeadTrackerHardware(software);
         }
-        private sealed class ConnectHeadTracker :
+        private sealed class ConnectHeadTrackerHardware :
             IConnection<IHeadTrackerHardware>
         {
             private readonly IConnection<IPoseTrackerHardware> pose;
 
             private readonly IConsumption<Space3D.Direction> direction;
 
-            internal ConnectHeadTracker(IHeadTrackerSoftware module)
+            internal ConnectHeadTrackerHardware(IHeadTrackerSoftware software)
             {
-                pose = module.Pose.Connect();
+                pose = software.Pose.Connect();
 
-                direction = module.Direction;
+                direction = software.Direction;
             }
 
             public ICancellation Connect(IHeadTrackerHardware module)
@@ -136,6 +136,89 @@ namespace YggdrAshill.Nuadha
 
                 return composite;
             }
+        }
+
+        /// <summary>
+        /// Converts <see cref="IHeadTrackerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IHeadTrackerSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IHeadTrackerHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IHeadTrackerSoftware"/> converted from <see cref="IHeadTrackerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IConnection<IHeadTrackerSoftware> Connect(this IHeadTrackerHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return new ConnectHeadTrackerSoftware(hardware);
+        }
+        private sealed class ConnectHeadTrackerSoftware :
+            IConnection<IHeadTrackerSoftware>
+        {
+            private readonly IConnection<IPoseTrackerSoftware> pose;
+
+            private readonly IProduction<Space3D.Direction> direction;
+
+            internal ConnectHeadTrackerSoftware(IHeadTrackerHardware hardware)
+            {
+                direction = hardware.Direction;
+
+                pose = hardware.Pose.Connect();
+            }
+
+            public ICancellation Connect(IHeadTrackerSoftware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                pose.Connect(module.Pose).Synthesize(composite);
+                direction.Produce(module.Direction).Synthesize(composite);
+
+                return composite;
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="IHeadTrackerHardware"/> into <see cref="IPoseTrackerHardware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IHeadTrackerHardware"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IPoseTrackerConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPoseTrackerHardware"/> converted from <see cref="IHeadTrackerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IPoseTrackerHardware ToPoseTracker(this IHeadTrackerHardware hardware, IPoseTrackerConfiguration configuration)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return hardware.Pose.Calibrate(configuration);
         }
     }
 }

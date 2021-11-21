@@ -9,7 +9,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="Button"/>.
+    /// Defines extensions for <see cref="IButtonHardware"/> and <see cref="IButtonSoftware"/>.
     /// </summary>
     public static class ButtonExtension
     {
@@ -91,36 +91,32 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// Converts <see cref="IButtonSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IButtonHardware"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="software">
         /// <see cref="IButtonSoftware"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IButtonHardware"/>.
+        /// <see cref="IConnection{TModule}"/> for <see cref="IButtonHardware"/> converted from <see cref="IButtonSoftware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="software"/> is null.
         /// </exception>
-        public static IConnection<IButtonHardware> Connect(this IButtonSoftware module)
+        public static IConnection<IButtonHardware> Connect(this IButtonSoftware software)
         {
-            if (module == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            return new ConnectButton(module);
+            return new ConnectButtonHardware(software);
         }
-        private sealed class ConnectButton :
+        private sealed class ConnectButtonHardware :
             IConnection<IButtonHardware>
         {
-            private readonly IConsumption<Touch> touch;
+            private readonly IButtonSoftware software;
 
-            private readonly IConsumption<Push> push;
-
-            internal ConnectButton(IButtonSoftware module)
+            internal ConnectButtonHardware(IButtonSoftware software)
             {
-                touch = module.Touch;
-
-                push = module.Push;
+                this.software = software;
             }
 
             public ICancellation Connect(IButtonHardware module)
@@ -132,55 +128,45 @@ namespace YggdrAshill.Nuadha
 
                 var composite = new CompositeCancellation();
 
-                module.Touch.Produce(touch).Synthesize(composite);
-                module.Push.Produce(push).Synthesize(composite);
+                module.Touch.Produce(software.Touch).Synthesize(composite);
+                module.Push.Produce(software.Push).Synthesize(composite);
 
                 return composite;
             }
         }
 
-        [Obsolete("Please use ButtonExtension.Pulsate instead.")]
-        public static IConnection<IPulsatedButtonSoftware> Convert(this IButtonHardware module)
-        {
-            return module.Pulsate();
-        }
-
         /// <summary>
-        /// Converts <see cref="IButtonHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedButtonSoftware"/>.
+        /// Converts <see cref="IButtonHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IButtonSoftware"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="hardware">
         /// <see cref="IButtonHardware"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedButtonSoftware"/>.
+        /// <see cref="IConnection{TModule}"/> for <see cref="IButtonSoftware"/> converted from <see cref="IButtonHardware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="hardware"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedButtonSoftware> Pulsate(this IButtonHardware module)
+        public static IConnection<IButtonSoftware> Connect(this IButtonHardware hardware)
         {
-            if (module == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(hardware));
             }
 
-            return new ConnectPulsatedButtonSoftware(module);
+            return new ConnectButtonSoftware(hardware);
         }
-        private sealed class ConnectPulsatedButtonSoftware :
-            IConnection<IPulsatedButtonSoftware>
+        private sealed class ConnectButtonSoftware :
+            IConnection<IButtonSoftware>
         {
-            private readonly IProduction<Pulse> touch;
+            private readonly IButtonHardware hardware;
 
-            private readonly IProduction<Pulse> push;
-
-            internal ConnectPulsatedButtonSoftware(IButtonHardware module)
+            internal ConnectButtonSoftware(IButtonHardware hardware)
             {
-                touch = module.Touch.Convert(TouchInto.Pulse);
-
-                push = module.Push.Convert(PushInto.Pulse);
+                this.hardware = hardware;
             }
 
-            public ICancellation Connect(IPulsatedButtonSoftware module)
+            public ICancellation Connect(IButtonSoftware module)
             {
                 if (module == null)
                 {
@@ -189,62 +175,129 @@ namespace YggdrAshill.Nuadha
 
                 var composite = new CompositeCancellation();
 
-                touch.Produce(module.Touch).Synthesize(composite);
-                push.Produce(module.Push).Synthesize(composite);
+                hardware.Touch.Produce(module.Touch).Synthesize(composite);
+                hardware.Push.Produce(module.Push).Synthesize(composite);
 
                 return composite;
             }
         }
 
         /// <summary>
-        /// Converts <see cref="IPulsatedButtonSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedButtonHardware"/>.
+        /// Converts <see cref="IButtonHardware"/> into <see cref="IPulsatedButtonHardware"/>.
         /// </summary>
-        /// <param name="module">
-        /// <see cref="IPulsatedButtonSoftware"/> to convert.
+        /// <param name="hardware">
+        /// <see cref="IButtonHardware"/> to convert.
+        /// </param>
+        /// <param name="pulsation">
+        /// <see cref="IButtonPulsation"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedButtonHardware"/>.
+        /// <see cref="IPulsatedButtonHardware"/> converted from <see cref="IButtonHardware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="hardware"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedButtonHardware> Connect(this IPulsatedButtonSoftware module)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
+        public static IPulsatedButtonHardware Pulsate(this IButtonHardware hardware, IButtonPulsation pulsation)
         {
-            if (module == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (pulsation == null)
+            {
+                throw new ArgumentNullException(nameof(pulsation));
             }
 
-            return new ConnectPulsatedButtonHardware(module);
+            return ConvertButtonInto.PulsatedButton(hardware, pulsation);
         }
-        private sealed class ConnectPulsatedButtonHardware :
-            IConnection<IPulsatedButtonHardware>
+
+        /// <summary>
+        /// Converts <see cref="IButtonHardware"/> into <see cref="IPulsatedButtonHardware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IButtonHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPulsatedButtonHardware"/> converted from <see cref="IButtonHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IPulsatedButtonHardware Pulsate(this IButtonHardware hardware)
         {
-            private readonly IConsumption<Pulse> touch;
-
-            private readonly IConsumption<Pulse> push;
-
-            internal ConnectPulsatedButtonHardware(IPulsatedButtonSoftware module)
+            if (hardware == null)
             {
-                touch = module.Touch;
-
-                push = module.Push;
+                throw new ArgumentNullException(nameof(hardware));
             }
 
-            public ICancellation Connect(IPulsatedButtonHardware module)
+            return hardware.Pulsate(Nuadha.Pulsate.Button);
+        }
+        
+        /// <summary>
+        /// Converts <see cref="IButtonSoftware"/> into <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IButtonSoftware"/> to convert.
+        /// </param>
+        /// <param name="translation">
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Push"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITriggerSoftware"/> converted from <see cref="IButtonSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="translation"/> is null.
+        /// </exception>
+        public static ITriggerSoftware ToTrigger(this IButtonSoftware software, ITranslation<Pull, Push> translation)
+        {
+            if (software == null)
             {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                module.Touch.Produce(touch).Synthesize(composite);
-                module.Push.Produce(push).Synthesize(composite);
-
-                return composite;
+                throw new ArgumentNullException(nameof(software));
             }
+            if (translation == null)
+            {
+                throw new ArgumentNullException(nameof(translation));
+            }
+
+            return ConvertButtonInto.Trigger(software, translation);
+        }
+
+        /// <summary>
+        /// Converts <see cref="IButtonSoftware"/> into <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IButtonSoftware"/> to convert.
+        /// </param>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITriggerSoftware"/> converted from <see cref="IButtonSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
+        public static ITriggerSoftware ToTrigger(this IButtonSoftware software, HysteresisThreshold threshold)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
+            }
+
+            return software.ToTrigger(PullInto.Push(threshold));
         }
     }
 }

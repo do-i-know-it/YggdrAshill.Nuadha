@@ -9,7 +9,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="Trigger"/>.
+    /// Defines extensions for <see cref="ITriggerHardware"/> and <see cref="ITriggerSoftware"/>.
     /// </summary>
     public static class TriggerExtension
     {
@@ -91,36 +91,32 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// Converts <see cref="ITriggerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="ITriggerHardware"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="software">
         /// <see cref="ITriggerSoftware"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="ITriggerHardware"/>.
+        /// <see cref="IConnection{TModule}"/> for <see cref="ITriggerHardware"/> converted from <see cref="ITriggerSoftware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="software"/> is null.
         /// </exception>
-        public static IConnection<ITriggerHardware> Connect(this ITriggerSoftware module)
+        public static IConnection<ITriggerHardware> Connect(this ITriggerSoftware software)
         {
-            if (module == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            return new ConnectTrigger(module);
+            return new ConnectTriggerHardware(software);
         }
-        private sealed class ConnectTrigger :
+        private sealed class ConnectTriggerHardware :
             IConnection<ITriggerHardware>
         {
-            private readonly IConsumption<Touch> touch;
+            private readonly ITriggerSoftware software;
 
-            private readonly IConsumption<Pull> push;
-
-            internal ConnectTrigger(ITriggerSoftware module)
+            internal ConnectTriggerHardware(ITriggerSoftware software)
             {
-                touch = module.Touch;
-
-                push = module.Pull;
+                this.software = software;
             }
 
             public ICancellation Connect(ITriggerHardware module)
@@ -132,129 +128,218 @@ namespace YggdrAshill.Nuadha
 
                 var composite = new CompositeCancellation();
 
-                module.Touch.Produce(touch).Synthesize(composite);
-                module.Pull.Produce(push).Synthesize(composite);
+                module.Touch.Produce(software.Touch).Synthesize(composite);
+                module.Pull.Produce(software.Pull).Synthesize(composite);
 
                 return composite;
             }
         }
 
-        [Obsolete("Please use TriggerExtension.Pulsate instead.")]
-        public static IConnection<IPulsatedTriggerSoftware> Convert(this ITriggerHardware module, HysteresisThreshold threshold)
+        /// <summary>
+        /// Converts <see cref="ITriggerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="ITriggerHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="ITriggerSoftware"/> converted from <see cref="ITriggerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IConnection<ITriggerSoftware> Connect(this ITriggerHardware hardware)
         {
-            return module.Pulsate(threshold);
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return new ConnectTriggerSoftware(hardware);
+        }
+        private sealed class ConnectTriggerSoftware :
+            IConnection<ITriggerSoftware>
+        {
+            private readonly ITriggerHardware hardware;
+
+            internal ConnectTriggerSoftware(ITriggerHardware hardware)
+            {
+                this.hardware = hardware;
+            }
+
+            public ICancellation Connect(ITriggerSoftware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                var composite = new CompositeCancellation();
+
+                hardware.Touch.Produce(module.Touch).Synthesize(composite);
+                hardware.Pull.Produce(module.Pull).Synthesize(composite);
+
+                return composite;
+            }
         }
 
         /// <summary>
-        /// Converts <see cref="ITriggerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTriggerSoftware"/>.
+        /// Converts <see cref="ITriggerHardware"/> into <see cref="IPulsatedTriggerHardware"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="hardware">
+        /// <see cref="ITriggerHardware"/> to convert.
+        /// </param>
+        /// <param name="pulsation">
+        /// <see cref="ITriggerPulsation"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPulsatedTriggerHardware"/> converted from <see cref="ITriggerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
+        public static IPulsatedTriggerHardware Pulsate(this ITriggerHardware hardware, ITriggerPulsation pulsation)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (pulsation == null)
+            {
+                throw new ArgumentNullException(nameof(pulsation));
+            }
+
+            return ConvertTriggerInto.PulsatedTrigger(hardware, pulsation);
+        }
+
+        /// <summary>
+        /// Converts <see cref="ITriggerHardware"/> into <see cref="IPulsatedTriggerHardware"/>.
+        /// </summary>
+        /// <param name="hardware">
         /// <see cref="ITriggerHardware"/> to convert.
         /// </param>
         /// <param name="threshold">
         /// <see cref="HysteresisThreshold"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedTriggerSoftware"/>.
+        /// <see cref="IPulsatedTriggerHardware"/> converted from <see cref="ITriggerHardware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="hardware"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedTriggerSoftware> Pulsate(this ITriggerHardware module, HysteresisThreshold threshold)
+        public static IPulsatedTriggerHardware Pulsate(this ITriggerHardware hardware, HysteresisThreshold threshold)
         {
-            if (module == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(hardware));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new ConnectPulsatedTriggerSoftware(module, threshold);
-        }
-        private sealed class ConnectPulsatedTriggerSoftware :
-            IConnection<IPulsatedTriggerSoftware>
-        {
-            private readonly IProduction<Pulse> touch;
-
-            private readonly IProduction<Pulse> pull;
-
-            internal ConnectPulsatedTriggerSoftware(ITriggerHardware module, HysteresisThreshold threshold)
-            {
-                touch = module.Touch.Convert(TouchInto.Pulse);
-
-                pull = module.Pull.Convert(PullInto.Pulse(threshold));
-            }
-
-            public ICancellation Connect(IPulsatedTriggerSoftware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                touch.Produce(module.Touch).Synthesize(composite);
-                pull.Produce(module.Pull).Synthesize(composite);
-
-                return composite;
-            }
+            return hardware.Pulsate(Nuadha.Pulsate.Trigger(threshold));
         }
 
         /// <summary>
-        /// Converts <see cref="IPulsatedTriggerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTriggerHardware"/>.
+        /// Converts <see cref="ITriggerHardware"/> into <see cref="IButtonHardware"/>.
         /// </summary>
-        /// <param name="module">
-        /// <see cref="IPulsatedTriggerSoftware"/> to convert.
+        /// <param name="hardware">
+        /// <see cref="ITriggerHardware"/> to convert.
+        /// </param>
+        /// <param name="translation">
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Push"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedTriggerHardware"/>.
+        /// <see cref="IButtonHardware"/> converted from <see cref="ITriggerHardware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="hardware"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedTriggerHardware> Connect(this IPulsatedTriggerSoftware module)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="translation"/> is null.
+        /// </exception>
+        public static IButtonHardware ToButton(this ITriggerHardware hardware, ITranslation<Pull, Push> translation)
         {
-            if (module == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (translation == null)
+            {
+                throw new ArgumentNullException(nameof(translation));
             }
 
-            return new ConnectPulsatedTriggerHardware(module);
+            return ConvertTriggerInto.Button(hardware, translation);
         }
-        private sealed class ConnectPulsatedTriggerHardware :
-            IConnection<IPulsatedTriggerHardware>
+
+        /// <summary>
+        /// Converts <see cref="ITriggerHardware"/> into <see cref="IButtonHardware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="ITriggerHardware"/> to convert.
+        /// </param>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IButtonHardware"/> converted from <see cref="ITriggerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
+        public static IButtonHardware ToButton(this ITriggerHardware hardware, HysteresisThreshold threshold)
         {
-            private readonly IConsumption<Pulse> touch;
-
-            private readonly IConsumption<Pulse> pull;
-
-            internal ConnectPulsatedTriggerHardware(IPulsatedTriggerSoftware module)
+            if (hardware == null)
             {
-                touch = module.Touch;
-
-                pull = module.Pull;
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
             }
 
-            public ICancellation Connect(IPulsatedTriggerHardware module)
+            return hardware.ToButton(PullInto.Push(threshold));
+        }
+
+        /// <summary>
+        /// Converts <see cref="ITriggerSoftware"/> into <see cref="IStickSoftware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="ITriggerSoftware"/> to convert.
+        /// </param>
+        /// <param name="translation">
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt"/> into <see cref="Pull"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="IStickSoftware"/> converted from <see cref="ITriggerSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="translation"/> is null.
+        /// </exception>
+        public static IStickSoftware ToStick(this ITriggerSoftware software, ITranslation<Tilt, Pull> translation)
+        {
+            if (software == null)
             {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                module.Touch.Produce(touch).Synthesize(composite);
-                module.Pull.Produce(pull).Synthesize(composite);
-
-                return composite;
+                throw new ArgumentNullException(nameof(software));
             }
+            if (translation == null)
+            {
+                throw new ArgumentNullException(nameof(translation));
+            }
+
+            return ConvertTriggerInto.Stick(software, translation);
         }
     }
 }
