@@ -1,6 +1,8 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -12,11 +14,21 @@ namespace YggdrAshill.Nuadha
         IPoseTrackerSoftware,
         IPoseTrackerProtocol
     {
+        public static ITransmission<IPoseTrackerSoftware> Transmit(IPoseTrackerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return WithoutCache().Transmit(configuration);
+        }
+
         /// <summary>
         /// <see cref="IPoseTrackerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="IPoseTrackerProtocol"/> without cache.
+        /// <see cref="IPoseTrackerProtocol"/> initialized.
         /// </returns>
         public static IPoseTrackerProtocol WithoutCache()
         {
@@ -28,12 +40,34 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="IPoseTrackerProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IPoseTrackerConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="IPoseTrackerProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IPoseTrackerProtocol WithLatestCache(IPoseTrackerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new PoseTracker(Propagate.WithLatestCache(configuration.Position), Propagate.WithLatestCache(configuration.Rotation));
+        }
+
+        /// <summary>
         /// <see cref="IPoseTrackerProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IPoseTrackerProtocol"/> initialized.
         /// </returns>
         public static IPoseTrackerProtocol WithLatestCache()
         {
-            return new PoseTracker(Propagate.WithLatestCache(Imitate.Position), Propagate.WithLatestCache(Imitate.Rotation));
+            return WithLatestCache(Imitate.PoseTracker);
         }
 
         private PoseTracker(IPropagation<Space3D.Position> position, IPropagation<Space3D.Rotation> rotation)

@@ -1,4 +1,6 @@
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -10,6 +12,54 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class TriggerExtension
     {
+        public static IEmission Conduct(this ITriggerSoftware software, ITriggerConfiguration configuration)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Conduct.Trigger(configuration, software);
+        }
+
+        public static ITransmission<ITriggerSoftware> Transmit(this ITriggerProtocol protocol, ITriggerConfiguration configuration)
+        {
+            if (protocol == null)
+            {
+                throw new ArgumentNullException(nameof(protocol));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Transmit.Trigger(configuration, protocol);
+        }
+
+        public static IConnection<ITriggerHardware> Connect(this ITriggerSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return Nuadha.Connect.Trigger(software);
+        }
+
+        public static IConnection<ITriggerSoftware> Connect(this ITriggerHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return Nuadha.Connect.Trigger(hardware);
+        }
+
         /// <summary>
         /// Converts <see cref="ITriggerHardware"/> into <see cref="IPulsatedTriggerHardware"/>.
         /// </summary>

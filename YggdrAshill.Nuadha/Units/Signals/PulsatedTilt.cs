@@ -13,12 +13,12 @@ namespace YggdrAshill.Nuadha
         IPulsatedTiltProtocol
     {
         /// <summary>
-        /// <see cref="PulsatedTilt"/> without cache.
+        /// <see cref="IPulsatedTiltProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedTilt"/> without cache.
+        /// <see cref="IPulsatedTiltProtocol"/> initialized.
         /// </returns>
-        public static PulsatedTilt WithoutCache()
+        public static IPulsatedTiltProtocol WithoutCache()
         {
             return new PulsatedTilt(
                 Propagate.WithoutCache<Pulse>(),
@@ -29,21 +29,19 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// <see cref="PulsatedTilt"/> with latest cache.
+        /// <see cref="IPulsatedTiltProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedTilt"/> with latest cache.
+        /// <see cref="IPulsatedTiltProtocol"/> initialized.
         /// </returns>
-        public static PulsatedTilt WithLatestCache()
+        public static IPulsatedTiltProtocol WithLatestCache()
         {
-            var generation = Generate.Signal(() => Pulse.IsDisabled);
-
             return new PulsatedTilt(
-                Propagate.WithLatestCache(generation),
-                Propagate.WithLatestCache(generation),
-                Propagate.WithLatestCache(generation),
-                Propagate.WithLatestCache(generation),
-                Propagate.WithLatestCache(generation));
+                Propagate.WithLatestCache(Imitate.Pulse),
+                Propagate.WithLatestCache(Imitate.Pulse),
+                Propagate.WithLatestCache(Imitate.Pulse),
+                Propagate.WithLatestCache(Imitate.Pulse),
+                Propagate.WithLatestCache(Imitate.Pulse));
         }
 
         private PulsatedTilt(IPropagation<Pulse> distance, IPropagation<Pulse> left, IPropagation<Pulse> right, IPropagation<Pulse> forward, IPropagation<Pulse> backward)

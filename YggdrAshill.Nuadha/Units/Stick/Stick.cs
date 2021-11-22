@@ -1,6 +1,8 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -12,11 +14,21 @@ namespace YggdrAshill.Nuadha
         IStickSoftware,
         IStickProtocol
     {
+        public static ITransmission<IStickSoftware> Transmit(IStickConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return WithoutCache().Transmit(configuration);
+        }
+
         /// <summary>
         /// <see cref="IStickProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="IStickProtocol"/> without cache.
+        /// <see cref="IStickProtocol"/> initialized.
         /// </returns>
         public static IStickProtocol WithoutCache()
         {
@@ -26,12 +38,34 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="IStickProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IStickConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="IStickProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IStickProtocol WithLatestCache(IStickConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new Stick(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Tilt));
+        }
+
+        /// <summary>
         /// <see cref="IStickProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IStickProtocol"/> initialized.
         /// </returns>
         public static IStickProtocol WithLatestCache()
         {
-            return new Stick(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Tilt));
+            return WithLatestCache(Imitate.Stick);
         }
 
         private Stick(IPropagation<Touch> touch, IPropagation<Tilt> tilt)

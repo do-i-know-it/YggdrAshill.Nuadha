@@ -1,4 +1,6 @@
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -10,6 +12,54 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class ButtonExtension
     {
+        public static IEmission Conduct(this IButtonSoftware software, IButtonConfiguration configuration)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Conduct.Button(configuration, software);
+        }
+
+        public static ITransmission<IButtonSoftware> Transmit(this IButtonProtocol protocol, IButtonConfiguration configuration)
+        {
+            if (protocol == null)
+            {
+                throw new ArgumentNullException(nameof(protocol));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Transmit.Button(configuration, protocol);
+        }
+
+        public static IConnection<IButtonHardware> Connect(this IButtonSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return Nuadha.Connect.Button(software);
+        }
+
+        public static IConnection<IButtonSoftware> Connect(this IButtonHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return Nuadha.Connect.Button(hardware);
+        }
+
         /// <summary>
         /// Converts <see cref="IButtonHardware"/> into <see cref="IPulsatedButtonHardware"/>.
         /// </summary>

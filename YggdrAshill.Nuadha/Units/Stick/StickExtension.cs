@@ -1,4 +1,6 @@
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -10,6 +12,54 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class StickExtension
     {
+        public static IEmission Conduct(this IStickSoftware software, IStickConfiguration configuration)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Conduct.Stick(configuration, software);
+        }
+
+        public static ITransmission<IStickSoftware> Transmit(this IStickProtocol protocol, IStickConfiguration configuration)
+        {
+            if (protocol == null)
+            {
+                throw new ArgumentNullException(nameof(protocol));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Transmit.Stick(configuration, protocol);
+        }
+
+        public static IConnection<IStickHardware> Connect(this IStickSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return Nuadha.Connect.Stick(software);
+        }
+
+        public static IConnection<IStickSoftware> Connect(this IStickHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return Nuadha.Connect.Stick(hardware);
+        }
+
         /// <summary>
         /// Converts <see cref="IStickHardware"/> into <see cref="IPulsatedStickHardware"/>.
         /// </summary>

@@ -22,38 +22,39 @@ namespace YggdrAshill.Nuadha.Samples
             var connection = new ShowInConsole();
 
             // Button to pulsated button
-            var conversion = ConnectPulsatedButton.Software(Device.Hardware.Pulsate());
+            var conversion = Device.Hardware.Pulsate().Connect();
 
-            //using (var composite = new CompositeCancellation())
-            //using (var button = Button.Ignite(configuration))
-            //{
-            //    button.Connect(Device.Software).Synthesize(composite);
+            using (var composite = new CompositeCancellation())
+            {
+                var button = Button.Transmit(configuration);
 
-            //    connection.Connect(Device.Hardware).Synthesize(composite);
+                button.Connect(Device.Software).Synthesize(composite);
 
-            //    conversion.Connect(DeviceEvent.Software).Synthesize(composite);
+                connection.Connect(Device.Hardware).Synthesize(composite);
 
-            //    connection.Connect(DeviceEvent.Hardware).Synthesize(composite);
+                conversion.Connect(DeviceEvent.Software).Synthesize(composite);
 
-            //    while (true)
-            //    {
-            //        Console.WriteLine("Please enter any key to emit signals.");
-            //        Console.WriteLine("Please enter \"q\" to quit this program.");
-            //        Console.Write("Key: ");
+                connection.Connect(DeviceEvent.Hardware).Synthesize(composite);
 
-            //        var input = Console.ReadLine();
-            //        if (input == "q")
-            //        {
-            //            Console.WriteLine("quit.");
-            //            return;
-            //        }
+                while (true)
+                {
+                    Console.WriteLine("Please enter any key to emit signals.");
+                    Console.WriteLine("Please enter \"q\" to quit this program.");
+                    Console.Write("Key: ");
 
-            //        button.Emit();
+                    var input = Console.ReadLine();
+                    if (input == "q")
+                    {
+                        Console.WriteLine("quit.");
+                        return;
+                    }
 
-            //        Console.WriteLine($"{input}");
-            //        Console.WriteLine();
-            //    }
-            //}
+                    button.Emit();
+
+                    Console.WriteLine($"{input}");
+                    Console.WriteLine();
+                }
+            }
         }
 
         private sealed class ToggleButton :

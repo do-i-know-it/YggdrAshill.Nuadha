@@ -1,3 +1,5 @@
+using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
 using System;
 
@@ -8,6 +10,54 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class HandControllerExtension
     {
+        public static IEmission Conduct(this IHandControllerSoftware software, IHandControllerConfiguration configuration)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Conduct.HandController(configuration, software);
+        }
+
+        public static ITransmission<IHandControllerSoftware> Transmit(this IHandControllerProtocol protocol, IHandControllerConfiguration configuration)
+        {
+            if (protocol == null)
+            {
+                throw new ArgumentNullException(nameof(protocol));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Transmit.HandController(configuration, protocol);
+        }
+
+        public static IConnection<IHandControllerHardware> Connect(this IHandControllerSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return Nuadha.Connect.HandController(software);
+        }
+
+        public static IConnection<IHandControllerSoftware> Connect(this IHandControllerHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return Nuadha.Connect.HandController(hardware);
+        }
+
         /// <summary>
         /// Converts <see cref="IHandControllerHardware"/> into <see cref="IPulsatedHandControllerHardware"/>.
         /// </summary>

@@ -1,4 +1,6 @@
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -10,11 +12,21 @@ namespace YggdrAshill.Nuadha
         IHandControllerSoftware,
         IHandControllerProtocol
     {
+        public static ITransmission<IHandControllerSoftware> Transmit(IHandControllerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return WithoutCache().Transmit(configuration);
+        }
+
         /// <summary>
         /// <see cref="IHandControllerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="IHandControllerProtocol"/> without cache.
+        /// <see cref="IHandControllerProtocol"/> initialized.
         /// </returns>
         public static IHandControllerProtocol WithoutCache()
         {
@@ -28,16 +40,38 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="IHandControllerProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IHandControllerConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="IHandControllerProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IHandControllerProtocol WithLatestCache(IHandControllerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new HandController(
+                PoseTracker.WithLatestCache(configuration.Pose),
+                Stick.WithLatestCache(configuration.Thumb),
+                Trigger.WithLatestCache(configuration.IndexFinger),
+                Trigger.WithLatestCache(configuration.HandGrip));
+        }
+
+        /// <summary>
         /// <see cref="IHandControllerProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IHandControllerProtocol"/> initialized.
         /// </returns>
         public static IHandControllerProtocol WithLatestCache()
         {
-            return new HandController(
-                PoseTracker.WithLatestCache(),
-                Stick.WithLatestCache(),
-                Trigger.WithLatestCache(),
-                Trigger.WithLatestCache());
+            return WithLatestCache(Imitate.HandController);
         }
 
         /// <inheritdoc/>

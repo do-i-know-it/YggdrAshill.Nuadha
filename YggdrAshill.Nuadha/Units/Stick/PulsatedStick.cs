@@ -13,23 +13,23 @@ namespace YggdrAshill.Nuadha
         IPulsatedStickProtocol
     {
         /// <summary>
-        /// <see cref="PulsatedStick"/> without cache.
+        /// <see cref="IPulsatedStickProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedStick"/> without cache.
+        /// <see cref="IPulsatedStickProtocol"/> initialized.
         /// </returns>
-        public static PulsatedStick WithoutCache()
+        public static IPulsatedStickProtocol WithoutCache()
         {
             return new PulsatedStick(Propagate.WithoutCache<Pulse>(), PulsatedTilt.WithoutCache());
         }
 
         /// <summary>
-        /// <see cref="PulsatedStick"/> with latest cache.
+        /// <see cref="IPulsatedStickProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedStick"/> with latest cache.
+        /// <see cref="IPulsatedStickProtocol"/> initialized.
         /// </returns>
-        public static PulsatedStick WithLatestCache()
+        public static IPulsatedStickProtocol WithLatestCache()
         {
             var generation = Generate.Signal(() => Pulse.IsDisabled);
 

@@ -13,27 +13,25 @@ namespace YggdrAshill.Nuadha
         IPulsatedTriggerProtocol
     {
         /// <summary>
-        /// <see cref="PulsatedTrigger"/> without cache.
+        /// <see cref="IPulsatedTriggerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedTrigger"/> without cache.
+        /// <see cref="IPulsatedTriggerProtocol"/> initialized.
         /// </returns>
-        public static PulsatedTrigger WithoutCache()
+        public static IPulsatedTriggerProtocol WithoutCache()
         {
             return new PulsatedTrigger(Propagate.WithoutCache<Pulse>(), Propagate.WithoutCache<Pulse>());
         }
 
         /// <summary>
-        /// <see cref="PulsatedTrigger"/> with latest cache.
+        /// <see cref="IPulsatedTriggerProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedTrigger"/> with latest cache.
+        /// <see cref="IPulsatedTriggerProtocol"/> initialized.
         /// </returns>
-        public static PulsatedTrigger WithLatestCache()
+        public static IPulsatedTriggerProtocol WithLatestCache()
         {
-            var generation = Generate.Signal(() => Pulse.IsDisabled);
-
-            return new PulsatedTrigger(Propagate.WithLatestCache(generation), Propagate.WithLatestCache(generation));
+            return new PulsatedTrigger(Propagate.WithLatestCache(Imitate.Pulse), Propagate.WithLatestCache(Imitate.Pulse));
         }
 
         private PulsatedTrigger(IPropagation<Pulse> touch, IPropagation<Pulse> pull)

@@ -13,27 +13,25 @@ namespace YggdrAshill.Nuadha
         IPulsatedButtonProtocol
     {
         /// <summary>
-        /// <see cref="PulsatedButton"/> without cache.
+        /// <see cref="IPulsatedButtonProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedButton"/> without cache.
+        /// <see cref="IPulsatedButtonProtocol"/> initialized.
         /// </returns>
-        public static PulsatedButton WithoutCache()
+        public static IPulsatedButtonProtocol WithoutCache()
         {
             return new PulsatedButton(Propagate.WithoutCache<Pulse>(), Propagate.WithoutCache<Pulse>());
         }
 
         /// <summary>
-        /// <see cref="PulsatedButton"/> with latest cache.
+        /// <see cref="IPulsatedButtonProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedButton"/> with latest cache.
+        /// <see cref="IPulsatedButtonProtocol"/> initialized.
         /// </returns>
-        public static PulsatedButton WithLatestCache()
+        public static IPulsatedButtonProtocol WithLatestCache()
         {
-            var generation = Generate.Signal(() => Pulse.IsDisabled);
-
-            return new PulsatedButton(Propagate.WithLatestCache(generation), Propagate.WithLatestCache(generation));
+            return new PulsatedButton(Propagate.WithLatestCache(Imitate.Pulse), Propagate.WithLatestCache(Imitate.Pulse));
         }
 
         private PulsatedButton(IPropagation<Pulse> touch, IPropagation<Pulse> push)

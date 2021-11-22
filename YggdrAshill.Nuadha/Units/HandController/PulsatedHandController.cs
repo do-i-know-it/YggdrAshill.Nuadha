@@ -11,12 +11,12 @@ namespace YggdrAshill.Nuadha
         IPulsatedHandControllerProtocol
     {
         /// <summary>
-        /// <see cref="PulsatedHandController"/> without cache.
+        /// <see cref="IPulsatedHandControllerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedHandController"/> without cache.
+        /// <see cref="IPulsatedHandControllerProtocol"/> initialized.
         /// </returns>
-        public static PulsatedHandController WithoutCache()
+        public static IPulsatedHandControllerProtocol WithoutCache()
         {
             return new PulsatedHandController(
                 PulsatedStick.WithoutCache(),
@@ -25,12 +25,12 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// <see cref="PulsatedHandController"/> with latest cache.
+        /// <see cref="IPulsatedHandControllerProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedHandController"/> with latest cache.
+        /// <see cref="IPulsatedHandControllerProtocol"/> initialized.
         /// </returns>
-        public static PulsatedHandController WithLatestCache()
+        public static IPulsatedHandControllerProtocol WithLatestCache()
         {
             return new PulsatedHandController(
                 PulsatedStick.WithLatestCache(),

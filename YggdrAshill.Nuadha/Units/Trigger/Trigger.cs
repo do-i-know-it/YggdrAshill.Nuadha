@@ -1,6 +1,8 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -12,11 +14,21 @@ namespace YggdrAshill.Nuadha
         ITriggerSoftware,
         ITriggerProtocol
     {
+        public static ITransmission<ITriggerSoftware> Transmit(ITriggerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return WithoutCache().Transmit(configuration);
+        }
+
         /// <summary>
         /// <see cref="ITriggerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="ITriggerProtocol"/> without cache.
+        /// <see cref="ITriggerProtocol"/> initialized.
         /// </returns>
         public static ITriggerProtocol WithoutCache()
         {
@@ -26,12 +38,34 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="ITriggerProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="ITriggerConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="ITriggerProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static ITriggerProtocol WithLatestCache(ITriggerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new Trigger(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Pull));
+        }
+
+        /// <summary>
         /// <see cref="ITriggerProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="ITriggerProtocol"/> initialized.
         /// </returns>
         public static ITriggerProtocol WithLatestCache()
         {
-            return new Trigger(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Pull));
+            return WithLatestCache(Imitate.Trigger);
         }
 
         private Trigger(IPropagation<Touch> touch, IPropagation<Pull> pull)

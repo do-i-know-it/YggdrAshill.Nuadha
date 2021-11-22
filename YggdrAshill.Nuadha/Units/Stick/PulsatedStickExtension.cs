@@ -1,3 +1,4 @@
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
@@ -8,6 +9,26 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PulsatedStickExtension
     {
+        public static IConnection<IPulsatedStickHardware> Connect(this IPulsatedStickSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return Nuadha.Connect.PulsatedStick(software);
+        }
+
+        public static IConnection<IPulsatedStickSoftware> Connect(this IPulsatedStickHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return Nuadha.Connect.PulsatedStick(hardware);
+        }
+
         /// <summary>
         /// Converts <see cref="IStickHardware"/> into <see cref="IStickSoftware"/>.
         /// </summary>

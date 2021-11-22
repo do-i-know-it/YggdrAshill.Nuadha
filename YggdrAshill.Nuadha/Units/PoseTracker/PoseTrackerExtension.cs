@@ -1,5 +1,7 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -11,6 +13,54 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PoseTrackerExtension
     {
+        public static IEmission Conduct(this IPoseTrackerSoftware software, IPoseTrackerConfiguration configuration)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Conduct.PoseTracker(configuration, software);
+        }
+
+        public static ITransmission<IPoseTrackerSoftware> Transmit(this IPoseTrackerProtocol protocol, IPoseTrackerConfiguration configuration)
+        {
+            if (protocol == null)
+            {
+                throw new ArgumentNullException(nameof(protocol));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return Nuadha.Transmit.PoseTracker(configuration, protocol);
+        }
+
+        public static IConnection<IPoseTrackerHardware> Connect(this IPoseTrackerSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return Nuadha.Connect.PoseTracker(software);
+        }
+
+        public static IConnection<IPoseTrackerSoftware> Connect(this IPoseTrackerHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return Nuadha.Connect.PoseTracker(hardware);
+        }
+
         /// <summary>
         /// Calibrates <see cref="IPoseTrackerHardware"/>.
         /// </summary>

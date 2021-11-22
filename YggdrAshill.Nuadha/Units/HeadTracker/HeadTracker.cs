@@ -1,6 +1,8 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
+using System;
 
 namespace YggdrAshill.Nuadha
 {
@@ -12,11 +14,21 @@ namespace YggdrAshill.Nuadha
         IHeadTrackerSoftware,
         IHeadTrackerProtocol
     {
+        public static ITransmission<IHeadTrackerSoftware> Transmit(IHeadTrackerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return WithoutCache().Transmit(configuration);
+        }
+
         /// <summary>
         /// <see cref="IHeadTrackerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="IHeadTrackerProtocol"/> without cache.
+        /// <see cref="IHeadTrackerProtocol"/> initialized.
         /// </returns>
         public static IHeadTrackerProtocol WithoutCache()
         {
@@ -26,12 +38,34 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="IHeadTrackerProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IHeadTrackerConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="IHeadTrackerProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IHeadTrackerProtocol WithLatestCache(IHeadTrackerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new HeadTracker(PoseTracker.WithLatestCache(configuration.Pose), Propagate.WithLatestCache(configuration.Direction));
+        }
+
+        /// <summary>
         /// <see cref="IHeadTrackerProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IHeadTrackerProtocol"/> initialized.
         /// </returns>
         public static IHeadTrackerProtocol WithLatestCache()
         {
-            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(Imitate.Direction));
+            return WithLatestCache(Imitate.HeadTracker);
         }
 
         private HeadTracker(IPoseTrackerProtocol pose, IPropagation<Space3D.Direction> direction)

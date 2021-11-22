@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -10,6 +11,26 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PulsatedTiltExtension
     {
+        public static IConnection<IPulsatedTiltHardware> Connect(this IPulsatedTiltSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return Nuadha.Connect.PulsatedTilt(software);
+        }
+
+        public static IConnection<IPulsatedTiltSoftware> Connect(this IPulsatedTiltHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return Nuadha.Connect.PulsatedTilt(hardware);
+        }
+
         /// <summary>
         /// Converts <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/> into <see cref="IPulsatedTiltHardware"/>.
         /// </summary>

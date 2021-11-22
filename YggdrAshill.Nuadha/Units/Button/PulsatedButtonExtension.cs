@@ -1,3 +1,4 @@
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 using System;
 
@@ -8,6 +9,26 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PulsatedButtonExtension
     {
+        public static IConnection<IPulsatedButtonHardware> Connect(this IPulsatedButtonSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return Nuadha.Connect.PulsatedButton(software);
+        }
+
+        public static IConnection<IPulsatedButtonSoftware> Connect(this IPulsatedButtonHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return Nuadha.Connect.PulsatedButton(hardware);
+        }
+
         /// <summary>
         /// Converts <see cref="IPulsatedButtonSoftware"/> into <see cref="IButtonSoftware"/>.
         /// </summary>
