@@ -1,11 +1,10 @@
-using YggdrAshill.Nuadha.Signalization;
 using System;
 
-namespace YggdrAshill.Nuadha.Conduction
+namespace YggdrAshill.Nuadha.Signalization
 {
-    public static class Conduct
+    public static class ConductTo
     {
-        public static IEmission Signal<TSignal>(IGeneration<TSignal> generation, IConsumption<TSignal> consumption)
+        public static IEmission Consume<TSignal>(IGeneration<TSignal> generation, IConsumption<TSignal> consumption)
             where TSignal : ISignal
         {
             if (generation == null)

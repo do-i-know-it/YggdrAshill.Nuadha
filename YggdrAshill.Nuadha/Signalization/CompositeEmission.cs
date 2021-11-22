@@ -1,4 +1,4 @@
-using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 using System.Collections.Generic;
 

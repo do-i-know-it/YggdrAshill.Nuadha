@@ -1,7 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
 
-namespace YggdrAshill.Nuadha.Conduction
+namespace YggdrAshill.Nuadha.Unitization
 {
     /// <summary>
     /// Transmits <see cref="ISignal"/>s to <typeparamref name="TModule"/>.

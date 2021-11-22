@@ -1,5 +1,4 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -10,16 +9,16 @@ namespace YggdrAshill.Nuadha
     public static class Generate
     {
         /// <summary>
-        /// Executes <see cref="Func{TResult}"/>.
+        /// Converts <see cref="Func{TResult}"/> into <see cref="IGeneration{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to generate.
         /// </typeparam>
         /// <param name="generation">
-        /// <see cref="Func{TResult}"/> to generate <typeparamref name="TSignal"/>.
+        /// <see cref="Func{TResult}"/> for <typeparamref name="TSignal"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IGeneration{TSignal}"/> created.
+        /// <see cref="IGeneration{TSignal}"/> converted from <see cref="Func{TResult}"/> for <typeparamref name="TSignal"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="generation"/> is null.
@@ -52,7 +51,7 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Generates same <typeparamref name="TSignal"/>.
+        /// Generates fixed <typeparamref name="TSignal"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to generate.
@@ -61,7 +60,7 @@ namespace YggdrAshill.Nuadha
         /// <typeparamref name="TSignal"/> to generate.
         /// </param>
         /// <returns>
-        /// <see cref="IGeneration{TSignal}"/> created.
+        /// <see cref="IGeneration{TSignal}"/> to generate fixed <typeparamref name="TSignal"/>.
         /// </returns>
         public static IGeneration<TSignal> Signal<TSignal>(TSignal signal)
             where TSignal : ISignal
