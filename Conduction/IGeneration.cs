@@ -1,6 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
     /// Generates <typeparamref name="TSignal"/>.

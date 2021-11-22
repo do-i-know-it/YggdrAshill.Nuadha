@@ -1,41 +1,17 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IStickProtocol"/>.
+    /// Defines implementations of <see cref="IStickProtocol"/>.
     /// </summary>
     public sealed class Stick :
         IStickHardware,
         IStickSoftware,
         IStickProtocol
     {
-        /// <summary>
-        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="IStickSoftware"/>.
-        /// </summary>
-        /// <param name="configuration">
-        /// <see cref="IStickConfiguration"/> to ignite.
-        /// </param>
-        /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IStickSoftware"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="configuration"/> is null.
-        /// </exception>
-        public static IIgnition<IStickSoftware> Ignite(IStickConfiguration configuration)
-        {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            return WithoutCache().Ignite(configuration);
-        }
-
         /// <summary>
         /// <see cref="IStickProtocol"/> without cache.
         /// </summary>
@@ -58,12 +34,6 @@ namespace YggdrAshill.Nuadha
             return new Stick(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Tilt));
         }
 
-        /// <inheritdoc/>
-        public IPropagation<Touch> Touch { get; }
-
-        /// <inheritdoc/>
-        public IPropagation<Tilt> Tilt { get; }
-
         private Stick(IPropagation<Touch> touch, IPropagation<Tilt> tilt)
         {
             Touch = touch;
@@ -72,18 +42,16 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
+        public IPropagation<Touch> Touch { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Tilt> Tilt { get; }
+
+        /// <inheritdoc/>
         public IStickHardware Hardware => this;
 
         /// <inheritdoc/>
         public IStickSoftware Software => this;
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Touch.Dispose();
-
-            Tilt.Dispose();
-        }
 
         /// <inheritdoc/>
         IProduction<Touch> IStickHardware.Touch => Touch;

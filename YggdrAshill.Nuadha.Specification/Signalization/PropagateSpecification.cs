@@ -50,20 +50,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreNotEqual(expected, consumption.Consumed);
         }
 
-        [TestCaseSource("TestSuiteForPropagation")]
-        public void ShouldNotSendSignalAfterHasDisposed(IPropagation<Signal> propagation)
-        {
-            var cancellation = propagation.Produce(consumption);
-
-            propagation.Dispose();
-
-            propagation.Consume(expected);
-
-            Assert.AreNotEqual(expected, consumption.Consumed);
-
-            cancellation.Cancel();
-        }
-
         [Test]
         public void ShouldSendCachedSignalToProducedWhenHasProduced()
         {

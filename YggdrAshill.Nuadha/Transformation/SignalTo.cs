@@ -1,5 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -42,9 +43,9 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return new Calibrator<TSignal>(generation, calibration);
+            return new TranslateToCalibrate<TSignal>(generation, calibration);
         }
-        private sealed class Calibrator<TSignal> :
+        private sealed class TranslateToCalibrate<TSignal> :
             ITranslation<TSignal, TSignal>
                 where TSignal : ISignal
         {
@@ -52,7 +53,7 @@ namespace YggdrAshill.Nuadha
 
             private readonly ICalibration<TSignal> calibration;
 
-            internal Calibrator(IGeneration<TSignal> generation, ICalibration<TSignal> calibration)
+            internal TranslateToCalibrate(IGeneration<TSignal> generation, ICalibration<TSignal> calibration)
             {
                 this.generation = generation;
 
@@ -100,7 +101,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return new Filtrater<TSignal>(filtration, generation);
+            return new Filtrater<TSignal>(filtration, generation.Generate());
         }
         private sealed class Filtrater<TSignal> :
             ITranslation<TSignal, TSignal>
@@ -110,11 +111,11 @@ namespace YggdrAshill.Nuadha
 
             private TSignal previous;
 
-            internal Filtrater(IFiltration<TSignal> filtration, IGeneration<TSignal> generation)
+            internal Filtrater(IFiltration<TSignal> filtration, TSignal previous)
             {
                 this.filtration = filtration;
 
-                previous = generation.Generate();
+                this.previous = previous;
             }
 
             public TSignal Translate(TSignal signal)

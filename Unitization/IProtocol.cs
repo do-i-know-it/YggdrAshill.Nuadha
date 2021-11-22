@@ -1,5 +1,3 @@
-using System;
-
 namespace YggdrAshill.Nuadha.Unitization
 {
     /// <summary>
@@ -12,7 +10,7 @@ namespace YggdrAshill.Nuadha.Unitization
     /// Type of <see cref="IModule"/> for software.
     /// </typeparam>
     public interface IProtocol<THardware, TSoftware> :
-        IDisposable
+        IModule
         where THardware : IModule
         where TSoftware : IModule
     {

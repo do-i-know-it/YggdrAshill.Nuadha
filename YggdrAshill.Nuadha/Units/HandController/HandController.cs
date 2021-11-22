@@ -1,39 +1,15 @@
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IHandControllerProtocol"/>.
+    /// Defines implementations of <see cref="IHandControllerProtocol"/>.
     /// </summary>
     public sealed class HandController :
         IHandControllerHardware,
         IHandControllerSoftware,
         IHandControllerProtocol
     {
-        /// <summary>
-        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="IHandControllerSoftware"/>.
-        /// </summary>
-        /// <param name="configuration">
-        /// <see cref="IHandControllerConfiguration"/> to ignite.
-        /// </param>
-        /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IHandControllerSoftware"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="configuration"/> is null.
-        /// </exception>
-        public static IIgnition<IHandControllerSoftware> Ignite(IHandControllerConfiguration configuration)
-        {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            return WithoutCache().Ignite(configuration);
-        }
-
         /// <summary>
         /// <see cref="IHandControllerProtocol"/> without cache.
         /// </summary>
@@ -92,18 +68,6 @@ namespace YggdrAshill.Nuadha
 
         /// <inheritdoc/>
         public IHandControllerSoftware Software => this;
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Pose.Dispose();
-
-            Thumb.Dispose();
-
-            IndexFinger.Dispose();
-
-            HandGrip.Dispose();
-        }
 
         /// <inheritdoc/>
         IPoseTrackerHardware IHandControllerHardware.Pose => Pose.Hardware;

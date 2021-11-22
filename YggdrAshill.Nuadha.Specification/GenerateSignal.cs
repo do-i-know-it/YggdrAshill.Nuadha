@@ -1,3 +1,5 @@
+using YggdrAshill.Nuadha.Conduction;
+
 namespace YggdrAshill.Nuadha.Specification
 {
     internal sealed class GenerateSignal :

@@ -1,17 +1,16 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedTriggerHardware"/> and <see cref="IPulsatedTriggerSoftware"/>.
+    /// Defines implementations of <see cref="IPulsatedTriggerProtocol"/>.
     /// </summary>
     public sealed class PulsatedTrigger :
         IPulsatedTriggerHardware,
         IPulsatedTriggerSoftware,
-        IProtocol<IPulsatedTriggerHardware, IPulsatedTriggerSoftware>
+        IPulsatedTriggerProtocol
     {
         /// <summary>
         /// <see cref="PulsatedTrigger"/> without cache.
@@ -37,16 +36,18 @@ namespace YggdrAshill.Nuadha
             return new PulsatedTrigger(Propagate.WithLatestCache(generation), Propagate.WithLatestCache(generation));
         }
 
-        private readonly IPropagation<Pulse> touch;
-
-        private readonly IPropagation<Pulse> pull;
-
         private PulsatedTrigger(IPropagation<Pulse> touch, IPropagation<Pulse> pull)
         {
-            this.touch = touch;
+            Touch = touch;
 
-            this.pull = pull;
+            Pull = pull;
         }
+
+        /// <inheritdoc/>
+        public IPropagation<Pulse> Touch { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Pulse> Pull { get; }
 
         /// <inheritdoc/>
         public IPulsatedTriggerHardware Hardware => this;
@@ -55,19 +56,15 @@ namespace YggdrAshill.Nuadha
         public IPulsatedTriggerSoftware Software => this;
 
         /// <inheritdoc/>
-        public void Dispose()
-        {
-            touch.Dispose();
+        IProduction<Pulse> IPulsatedTriggerHardware.Touch => Touch;
 
-            pull.Dispose();
-        }
+        /// <inheritdoc/>
+        IProduction<Pulse> IPulsatedTriggerHardware.Pull => Pull;
 
-        IProduction<Pulse> IPulsatedTriggerHardware.Touch => touch;
+        /// <inheritdoc/>
+        IConsumption<Pulse> IPulsatedTriggerSoftware.Touch => Touch;
 
-        IProduction<Pulse> IPulsatedTriggerHardware.Pull => pull;
-
-        IConsumption<Pulse> IPulsatedTriggerSoftware.Touch => touch;
-
-        IConsumption<Pulse> IPulsatedTriggerSoftware.Pull => pull;
+        /// <inheritdoc/>
+        IConsumption<Pulse> IPulsatedTriggerSoftware.Pull => Pull;
     }
 }

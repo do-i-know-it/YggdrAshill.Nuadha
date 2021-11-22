@@ -3,19 +3,19 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Cancellation))]
-    internal class CancellationSpecification
+    [TestFixture(TestOf = typeof(Emission))]
+    internal class EmissionSpecification
     {
         [Test]
-        public void ShouldExecuteActionWhenHasCancelled()
+        public void ShouldExecuteActionWhenHasEmitted()
         {
             var expected = false;
-            var cancellation = Cancellation.Of(() =>
+            var emission = Emission.Of(() =>
             {
                 expected = true;
             });
 
-            cancellation.Cancel();
+            emission.Emit();
 
             Assert.IsTrue(expected);
         }
@@ -25,7 +25,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var cancellation = Cancellation.Of(default(Action));
+                var emission = Emission.Of(default(Action));
             });
         }
     }

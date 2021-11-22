@@ -1,17 +1,16 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedStickHardware"/> and <see cref="IPulsatedStickSoftware"/>.
+    /// Defines implementations of <see cref="IPulsatedStickProtocol"/>.
     /// </summary>
     public sealed class PulsatedStick :
         IPulsatedStickHardware,
         IPulsatedStickSoftware,
-        IProtocol<IPulsatedStickHardware, IPulsatedStickSoftware>
+        IPulsatedStickProtocol
     {
         /// <summary>
         /// <see cref="PulsatedStick"/> without cache.
@@ -37,16 +36,18 @@ namespace YggdrAshill.Nuadha
             return new PulsatedStick(Propagate.WithLatestCache(generation), PulsatedTilt.WithLatestCache());
         }
 
-        private readonly IPropagation<Pulse> touch;
-
-        private readonly PulsatedTilt tilt;
-
-        private PulsatedStick(IPropagation<Pulse> touch, PulsatedTilt tilt)
+        private PulsatedStick(IPropagation<Pulse> touch, IPulsatedTiltProtocol tilt)
         {
-            this.touch = touch;
+            Touch = touch;
 
-            this.tilt = tilt;
+            Tilt = tilt;
         }
+
+        /// <inheritdoc/>
+        public IPropagation<Pulse> Touch { get; }
+
+        /// <inheritdoc/>
+        public IPulsatedTiltProtocol Tilt { get; }
 
         /// <inheritdoc/>
         public IPulsatedStickHardware Hardware => this;
@@ -55,19 +56,15 @@ namespace YggdrAshill.Nuadha
         public IPulsatedStickSoftware Software => this;
 
         /// <inheritdoc/>
-        public void Dispose()
-        {
-            touch.Dispose();
+        IProduction<Pulse> IPulsatedStickHardware.Touch => Touch;
 
-            tilt.Dispose();
-        }
+        /// <inheritdoc/>
+        IPulsatedTiltHardware IPulsatedStickHardware.Tilt => Tilt.Hardware;
 
-        IProduction<Pulse> IPulsatedStickHardware.Touch => touch;
+        /// <inheritdoc/>
+        IConsumption<Pulse> IPulsatedStickSoftware.Touch => Touch;
 
-        IPulsatedTiltHardware IPulsatedStickHardware.Tilt => tilt.Hardware;
-
-        IConsumption<Pulse> IPulsatedStickSoftware.Touch => touch;
-
-        IPulsatedTiltSoftware IPulsatedStickSoftware.Tilt => tilt.Software;
+        /// <inheritdoc/>
+        IPulsatedTiltSoftware IPulsatedStickSoftware.Tilt => Tilt.Software;
     }
 }

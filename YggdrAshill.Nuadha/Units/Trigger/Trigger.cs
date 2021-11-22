@@ -1,41 +1,17 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
-using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="ITriggerProtocol"/>.
+    /// Defines implementations of <see cref="ITriggerProtocol"/>.
     /// </summary>
     public sealed class Trigger :
         ITriggerHardware,
         ITriggerSoftware,
         ITriggerProtocol
     {
-        /// <summary>
-        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="ITriggerSoftware"/>.
-        /// </summary>
-        /// <param name="configuration">
-        /// <see cref="ITriggerConfiguration"/> to ignite.
-        /// </param>
-        /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="ITriggerSoftware"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="configuration"/> is null.
-        /// </exception>
-        public static IIgnition<ITriggerSoftware> Ignite(ITriggerConfiguration configuration)
-        {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            return WithoutCache().Ignite(configuration);
-        }
-
         /// <summary>
         /// <see cref="ITriggerProtocol"/> without cache.
         /// </summary>
@@ -58,12 +34,6 @@ namespace YggdrAshill.Nuadha
             return new Trigger(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Pull));
         }
 
-        /// <inheritdoc/>
-        public IPropagation<Touch> Touch { get; }
-
-        /// <inheritdoc/>
-        public IPropagation<Pull> Pull { get; }
-
         private Trigger(IPropagation<Touch> touch, IPropagation<Pull> pull)
         {
             Touch = touch;
@@ -72,18 +42,16 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
+        public IPropagation<Touch> Touch { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Pull> Pull { get; }
+        
+        /// <inheritdoc/>
         public ITriggerHardware Hardware => this;
 
         /// <inheritdoc/>
         public ITriggerSoftware Software => this;
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Touch.Dispose();
-
-            Pull.Dispose();
-        }
 
         /// <inheritdoc/>
         IProduction<Touch> ITriggerHardware.Touch => Touch;

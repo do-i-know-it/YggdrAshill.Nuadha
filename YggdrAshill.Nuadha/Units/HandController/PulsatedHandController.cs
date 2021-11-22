@@ -1,15 +1,14 @@
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedHandControllerHardware"/> and <see cref="IPulsatedHandControllerSoftware"/>.
+    /// Defines implementations of <see cref="IPulsatedHandControllerProtocol"/>.
     /// </summary>
     public sealed class PulsatedHandController :
         IPulsatedHandControllerHardware,
         IPulsatedHandControllerSoftware,
-        IProtocol<IPulsatedHandControllerHardware, IPulsatedHandControllerSoftware>
+        IPulsatedHandControllerProtocol
     {
         /// <summary>
         /// <see cref="PulsatedHandController"/> without cache.
@@ -39,20 +38,23 @@ namespace YggdrAshill.Nuadha
                 PulsatedTrigger.WithLatestCache());
         }
 
-        private readonly PulsatedStick thumb;
-
-        private readonly PulsatedTrigger indexFinger;
-
-        private readonly PulsatedTrigger handGrip;
-
-        private PulsatedHandController(PulsatedStick thumb, PulsatedTrigger indexFinger, PulsatedTrigger handGrip)
+        private PulsatedHandController(IPulsatedStickProtocol thumb, IPulsatedTriggerProtocol indexFinger, IPulsatedTriggerProtocol handGrip)
         {
-            this.thumb = thumb;
+            Thumb = thumb;
 
-            this.indexFinger = indexFinger;
+            IndexFinger = indexFinger;
 
-            this.handGrip = handGrip;
+            HandGrip = handGrip;
         }
+
+        /// <inheritdoc/>
+        public IPulsatedStickProtocol Thumb { get; }
+
+        /// <inheritdoc/>
+        public IPulsatedTriggerProtocol IndexFinger { get; }
+
+        /// <inheritdoc/>
+        public IPulsatedTriggerProtocol HandGrip { get; }
 
         /// <inheritdoc/>
         public IPulsatedHandControllerHardware Hardware => this;
@@ -61,25 +63,21 @@ namespace YggdrAshill.Nuadha
         public IPulsatedHandControllerSoftware Software => this;
 
         /// <inheritdoc/>
-        public void Dispose()
-        {
-            thumb.Dispose();
+        IPulsatedStickHardware IPulsatedHandControllerHardware.Thumb => Thumb.Hardware;
 
-            indexFinger.Dispose();
+        /// <inheritdoc/>
+        IPulsatedTriggerHardware IPulsatedHandControllerHardware.IndexFinger => IndexFinger.Hardware;
 
-            handGrip.Dispose();
-        }
+        /// <inheritdoc/>
+        IPulsatedTriggerHardware IPulsatedHandControllerHardware.HandGrip => HandGrip.Hardware;
 
-        IPulsatedStickHardware IPulsatedHandControllerHardware.Thumb => thumb.Hardware;
+        /// <inheritdoc/>
+        IPulsatedStickSoftware IPulsatedHandControllerSoftware.Thumb => Thumb.Software;
 
-        IPulsatedTriggerHardware IPulsatedHandControllerHardware.IndexFinger => indexFinger.Hardware;
+        /// <inheritdoc/>
+        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.IndexFinger => IndexFinger.Software;
 
-        IPulsatedTriggerHardware IPulsatedHandControllerHardware.HandGrip => handGrip.Hardware;
-
-        IPulsatedStickSoftware IPulsatedHandControllerSoftware.Thumb => thumb.Software;
-
-        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.IndexFinger => indexFinger.Software;
-
-        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.HandGrip => handGrip.Software;
+        /// <inheritdoc/>
+        IPulsatedTriggerSoftware IPulsatedHandControllerSoftware.HandGrip => HandGrip.Software;
     }
 }

@@ -5,10 +5,7 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <summary>
-    /// Defines extensions for <see cref="IPulsatedHandControllerHardware"/> and <see cref="IPulsatedHandControllerSoftware"/>.
-    /// </summary>
-    public static class PulsatedHandControllerExtension
+    public static class ConnectPulsatedHandController
     {
         /// <summary>
         /// Converts <see cref="IPulsatedHandControllerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedHandControllerHardware"/>.
@@ -22,31 +19,23 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="software"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedHandControllerHardware> Connect(this IPulsatedHandControllerSoftware software)
+        public static IConnection<IPulsatedHandControllerHardware> Hardware(this IPulsatedHandControllerSoftware software)
         {
             if (software == null)
             {
                 throw new ArgumentNullException(nameof(software));
             }
 
-            return new ConnectPulsatedHandControllerHardware(software);
+            return new ConnectHardware(software);
         }
-        private sealed class ConnectPulsatedHandControllerHardware :
+        private sealed class ConnectHardware :
             IConnection<IPulsatedHandControllerHardware>
         {
-            private readonly IConnection<IPulsatedStickHardware> thumb;
+            private readonly IPulsatedHandControllerSoftware software;
 
-            private readonly IConnection<IPulsatedTriggerHardware> indexFinger;
-
-            private readonly IConnection<IPulsatedTriggerHardware> handGrip;
-
-            internal ConnectPulsatedHandControllerHardware(IPulsatedHandControllerSoftware software)
+            internal ConnectHardware(IPulsatedHandControllerSoftware software)
             {
-                thumb = software.Thumb.Connect();
-
-                indexFinger = software.IndexFinger.Connect();
-
-                handGrip = software.HandGrip.Connect();
+                this.software = software;
             }
 
             public ICancellation Connect(IPulsatedHandControllerHardware module)
@@ -58,9 +47,18 @@ namespace YggdrAshill.Nuadha
 
                 var composite = new CompositeCancellation();
 
-                thumb.Connect(module.Thumb).Synthesize(composite);
-                indexFinger.Connect(module.IndexFinger).Synthesize(composite);
-                handGrip.Connect(module.HandGrip).Synthesize(composite);
+                module.IndexFinger.Touch.Produce(software.IndexFinger.Touch).Synthesize(composite);
+                module.IndexFinger.Pull.Produce(software.IndexFinger.Pull).Synthesize(composite);
+
+                module.HandGrip.Touch.Produce(software.HandGrip.Touch).Synthesize(composite);
+                module.HandGrip.Pull.Produce(software.HandGrip.Pull).Synthesize(composite);
+
+                module.Thumb.Touch.Produce(software.Thumb.Touch).Synthesize(composite);
+                module.Thumb.Tilt.Distance.Produce(software.Thumb.Tilt.Distance).Synthesize(composite);
+                module.Thumb.Tilt.Left.Produce(software.Thumb.Tilt.Left).Synthesize(composite);
+                module.Thumb.Tilt.Right.Produce(software.Thumb.Tilt.Right).Synthesize(composite);
+                module.Thumb.Tilt.Forward.Produce(software.Thumb.Tilt.Forward).Synthesize(composite);
+                module.Thumb.Tilt.Backward.Produce(software.Thumb.Tilt.Backward).Synthesize(composite);
 
                 return composite;
             }
@@ -85,24 +83,16 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(hardware));
             }
 
-            return new ConnectPulsatedHandControllerSoftware(hardware);
+            return new ConnectSoftware(hardware);
         }
-        private sealed class ConnectPulsatedHandControllerSoftware :
+        private sealed class ConnectSoftware :
             IConnection<IPulsatedHandControllerSoftware>
         {
-            private readonly IConnection<IPulsatedStickSoftware> thumb;
+            private readonly IPulsatedHandControllerHardware hardware;
 
-            private readonly IConnection<IPulsatedTriggerSoftware> indexFinger;
-
-            private readonly IConnection<IPulsatedTriggerSoftware> handGrip;
-
-            internal ConnectPulsatedHandControllerSoftware(IPulsatedHandControllerHardware hardware)
+            internal ConnectSoftware(IPulsatedHandControllerHardware hardware)
             {
-                thumb = hardware.Thumb.Connect();
-
-                indexFinger = hardware.IndexFinger.Connect();
-
-                handGrip = hardware.HandGrip.Connect();
+                this.hardware = hardware;
             }
 
             public ICancellation Connect(IPulsatedHandControllerSoftware module)
@@ -114,9 +104,18 @@ namespace YggdrAshill.Nuadha
 
                 var composite = new CompositeCancellation();
 
-                thumb.Connect(module.Thumb).Synthesize(composite);
-                indexFinger.Connect(module.IndexFinger).Synthesize(composite);
-                handGrip.Connect(module.HandGrip).Synthesize(composite);
+                hardware.IndexFinger.Touch.Produce(module.IndexFinger.Touch).Synthesize(composite);
+                hardware.IndexFinger.Pull.Produce(module.IndexFinger.Pull).Synthesize(composite);
+
+                hardware.HandGrip.Touch.Produce(module.HandGrip.Touch).Synthesize(composite);
+                hardware.HandGrip.Pull.Produce(module.HandGrip.Pull).Synthesize(composite);
+
+                hardware.Thumb.Touch.Produce(module.Thumb.Touch).Synthesize(composite);
+                hardware.Thumb.Tilt.Distance.Produce(module.Thumb.Tilt.Distance).Synthesize(composite);
+                hardware.Thumb.Tilt.Left.Produce(module.Thumb.Tilt.Left).Synthesize(composite);
+                hardware.Thumb.Tilt.Right.Produce(module.Thumb.Tilt.Right).Synthesize(composite);
+                hardware.Thumb.Tilt.Forward.Produce(module.Thumb.Tilt.Forward).Synthesize(composite);
+                hardware.Thumb.Tilt.Backward.Produce(module.Thumb.Tilt.Backward).Synthesize(composite);
 
                 return composite;
             }

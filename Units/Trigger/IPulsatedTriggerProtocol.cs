@@ -8,7 +8,6 @@ namespace YggdrAshill.Nuadha.Units
     /// Defines <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedTriggerHardware"/> and <see cref="IPulsatedTriggerSoftware"/>.
     /// </summary>
     public interface IPulsatedTriggerProtocol :
-        IModule,
         IProtocol<IPulsatedTriggerHardware, IPulsatedTriggerSoftware>
 
     {

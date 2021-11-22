@@ -8,7 +8,6 @@ namespace YggdrAshill.Nuadha.Units
     /// Defines <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedButtonHardware"/> and <see cref="IPulsatedButtonSoftware"/>.
     /// </summary>
     public interface IPulsatedButtonProtocol :
-        IModule,
         IProtocol<IPulsatedButtonHardware, IPulsatedButtonSoftware>
     {
         /// <summary>
