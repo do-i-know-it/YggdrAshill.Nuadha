@@ -5,7 +5,7 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(TransformationExtension))]
+    [TestFixture(TestOf = typeof(DetectionExtension))]
     internal class TransformationExtensionSpecification
     {
         private PropagateInputSignal propagateInputSignal;
@@ -168,7 +168,7 @@ namespace YggdrAshill.Nuadha.Specification
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var detected = propagateSignal.Detect(default(ICondition<Signal>));
+                var detected = propagateSignal.Detect(default(INotification<Signal>));
             });
 
             Assert.Throws<ArgumentNullException>(() =>

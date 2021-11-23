@@ -92,9 +92,9 @@ namespace YggdrAshill.Nuadha
         {
             internal CalibratedPoseTrackerHardware(IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
             {
-                Position = ConvertTo.Produce(module.Position, Space3DPositionTo.Calibrate(configuration.Position));
+                Position = ProduceSignalTo.Convert(module.Position, Space3DPositionTo.Calibrate(configuration.Position));
 
-                Rotation = ConvertTo.Produce(module.Rotation, Space3DRotationTo.Calibrate(configuration.Rotation));
+                Rotation = ProduceSignalTo.Convert(module.Rotation, Space3DRotationTo.Calibrate(configuration.Rotation));
             }
 
             public IProduction<Space3D.Position> Position { get; }

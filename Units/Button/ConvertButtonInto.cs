@@ -43,9 +43,9 @@ namespace YggdrAshill.Nuadha.Units
         {
             internal PulsatedButtonHardware(IButtonHardware hardware, IButtonPulsation pulsation)
             {
-                Touch = ConvertTo.Produce(hardware.Touch, pulsation.Touch);
+                Touch = ProduceSignalTo.Convert(hardware.Touch, pulsation.Touch);
 
-                Push = ConvertTo.Produce(hardware.Push, pulsation.Push);
+                Push = ProduceSignalTo.Convert(hardware.Push, pulsation.Push);
             }
 
             public IProduction<Pulse> Touch { get; }
@@ -91,7 +91,7 @@ namespace YggdrAshill.Nuadha.Units
             {
                 Touch = software.Touch;
 
-                Pull = ConvertTo.Consume(translation, software.Push);
+                Pull = ConsumeSignalTo.Convert(translation, software.Push);
             }
 
             public IConsumption<Touch> Touch { get; }

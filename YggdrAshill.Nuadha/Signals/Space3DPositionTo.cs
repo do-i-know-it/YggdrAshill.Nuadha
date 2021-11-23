@@ -10,16 +10,6 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class Space3DPositionTo
     {
-        /// <summary>
-        /// Calibrates <see cref="Space3D.Position"/>.
-        /// </summary>
-        /// <returns>
-        /// <see cref="ICalibration{TSignal}"/> to correct <see cref="Space3D.Position"/>.
-        /// </returns>
-        public static ICalibration<Space3D.Position> Calibrate()
-        {
-            return calibration;
-        }
         private static readonly Calibration calibration = new Calibration();
         private sealed class Calibration :
             ICalibration<Space3D.Position>
@@ -46,7 +36,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return SignalTo.Correct(Calibrate(), generation);
+            return SignalTo.Correct(calibration, generation);
         }
     }
 }

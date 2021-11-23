@@ -1,79 +1,79 @@
-using NUnit.Framework;
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
-using System;
+//using NUnit.Framework;
+//using YggdrAshill.Nuadha.Signalization;
+//using YggdrAshill.Nuadha.Transformation;
+//using System;
 
-namespace YggdrAshill.Nuadha.Specification
-{
-    [TestFixture(TestOf = typeof(ConvertTo))]
-    internal class ConvertToSpecification
-    {
-        private PropagateInputSignal propagateInputSignal;
+//namespace YggdrAshill.Nuadha.Specification
+//{
+//    [TestFixture(TestOf = typeof(ConvertTo))]
+//    internal class ConvertToSpecification
+//    {
+//        private PropagateInputSignal propagateInputSignal;
 
-        private InputSignalIntoOutputSignal inputSignalIntoOutputSignal;
+//        private InputSignalIntoOutputSignal inputSignalIntoOutputSignal;
 
-        private ConsumeOutputSignal consumeOutputSignal;
+//        private ConsumeOutputSignal consumeOutputSignal;
 
-        [SetUp]
-        public void SetUp()
-        {
-            propagateInputSignal = new PropagateInputSignal();
+//        [SetUp]
+//        public void SetUp()
+//        {
+//            propagateInputSignal = new PropagateInputSignal();
 
-            inputSignalIntoOutputSignal = new InputSignalIntoOutputSignal();
+//            inputSignalIntoOutputSignal = new InputSignalIntoOutputSignal();
 
-            consumeOutputSignal = new ConsumeOutputSignal();
-        }
+//            consumeOutputSignal = new ConsumeOutputSignal();
+//        }
 
-        [Test]
-        public void ShouldConsumeSignalToConvert()
-        {
-            var consumption = ConvertTo.Consume(inputSignalIntoOutputSignal, consumeOutputSignal);
+//        [Test]
+//        public void ShouldConsumeSignalToConvert()
+//        {
+//            var consumption = ConvertTo.Consume(inputSignalIntoOutputSignal, consumeOutputSignal);
 
-            consumption.Consume(new InputSignal());
+//            consumption.Consume(new InputSignal());
 
-            Assert.AreEqual(inputSignalIntoOutputSignal.Translated, consumeOutputSignal.Consumed);
-        }
+//            Assert.AreEqual(inputSignalIntoOutputSignal.Translated, consumeOutputSignal.Consumed);
+//        }
 
-        [Test]
-        public void ShouldProduceSignalToConvert()
-        {
-            var production = ConvertTo.Produce(propagateInputSignal, inputSignalIntoOutputSignal);
+//        [Test]
+//        public void ShouldProduceSignalToConvert()
+//        {
+//            var production = ConvertTo.Produce(propagateInputSignal, inputSignalIntoOutputSignal);
 
-            var cancellation = production.Produce(consumeOutputSignal);
+//            var cancellation = production.Produce(consumeOutputSignal);
 
-            propagateInputSignal.Consume(new InputSignal());
+//            propagateInputSignal.Consume(new InputSignal());
 
-            Assert.AreEqual(inputSignalIntoOutputSignal.Translated, consumeOutputSignal.Consumed);
+//            Assert.AreEqual(inputSignalIntoOutputSignal.Translated, consumeOutputSignal.Consumed);
 
-            cancellation.Cancel();
-        }
+//            cancellation.Cancel();
+//        }
 
-        [Test]
-        public void CannotConsumeSignalToConvertWithNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var consumption = ConvertTo.Consume(inputSignalIntoOutputSignal, default(IConsumption<OutputSignal>));
-            });
+//        [Test]
+//        public void CannotConsumeSignalToConvertWithNull()
+//        {
+//            Assert.Throws<ArgumentNullException>(() =>
+//            {
+//                var consumption = ConvertTo.Consume(inputSignalIntoOutputSignal, default(IConsumption<OutputSignal>));
+//            });
 
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var consumption = ConvertTo.Consume(default(ITranslation<InputSignal, OutputSignal>), consumeOutputSignal);
-            });
-        }
+//            Assert.Throws<ArgumentNullException>(() =>
+//            {
+//                var consumption = ConvertTo.Consume(default(ITranslation<InputSignal, OutputSignal>), consumeOutputSignal);
+//            });
+//        }
 
-        [Test]
-        public void CannotProduceSignalToConvertWithNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var production = ConvertTo.Produce(propagateInputSignal, default(ITranslation<InputSignal, OutputSignal>));
-            });
+//        [Test]
+//        public void CannotProduceSignalToConvertWithNull()
+//        {
+//            Assert.Throws<ArgumentNullException>(() =>
+//            {
+//                var production = ConvertTo.Produce(propagateInputSignal, default(ITranslation<InputSignal, OutputSignal>));
+//            });
 
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var production = ConvertTo.Produce(default(IProduction<InputSignal>), inputSignalIntoOutputSignal);
-            });
-        }
-    }
-}
+//            Assert.Throws<ArgumentNullException>(() =>
+//            {
+//                var production = ConvertTo.Produce(default(IProduction<InputSignal>), inputSignalIntoOutputSignal);
+//            });
+//        }
+//    }
+//}

@@ -4,11 +4,11 @@ using System;
 namespace YggdrAshill.Nuadha.Specification
 {
     internal sealed class SignalCondition :
-        ICondition<Signal>
+        INotification<Signal>
     {
         internal bool Previous { get; set; }
 
-        public bool IsSatisfiedBy(Signal signal)
+        public bool Notify(Signal signal)
         {
             if (signal == null)
             {

@@ -43,7 +43,7 @@ namespace YggdrAshill.Nuadha.Units
         {
             internal PulsatedStickHardware(IStickHardware hardware, IStickPulsation pulsation)
             {
-                Touch = ConvertTo.Produce(hardware.Touch, pulsation.Touch);
+                Touch = ProduceSignalTo.Convert(hardware.Touch, pulsation.Touch);
 
                 Tilt = ConvertTiltInto.PulsatedTilt(hardware.Tilt, pulsation.Tilt);
             }
@@ -91,7 +91,7 @@ namespace YggdrAshill.Nuadha.Units
             {
                 Touch = hardware.Touch;
 
-                Pull = ConvertTo.Produce(hardware.Tilt, translation);
+                Pull = ProduceSignalTo.Convert(hardware.Tilt, translation);
             }
 
             public IProduction<Touch> Touch { get; }

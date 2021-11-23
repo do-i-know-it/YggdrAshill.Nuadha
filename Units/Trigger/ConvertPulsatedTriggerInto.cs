@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Signals;
 using System;
@@ -43,9 +43,9 @@ namespace YggdrAshill.Nuadha.Units
         {
             internal TriggerSoftware(IPulsatedTriggerSoftware software, ITriggerPulsation pulsation)
             {
-                Touch = ConvertTo.Consume(pulsation.Touch, software.Touch);
+                Touch = ConsumeSignalTo.Convert(pulsation.Touch, software.Touch);
 
-                Pull = ConvertTo.Consume(pulsation.Pull, software.Pull);
+                Pull = ConsumeSignalTo.Convert(pulsation.Pull, software.Pull);
             }
 
             public IConsumption<Touch> Touch { get; }

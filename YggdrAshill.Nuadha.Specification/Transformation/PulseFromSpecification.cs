@@ -3,15 +3,16 @@ using YggdrAshill.Nuadha.Transformation;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(PulseOf))]
-    internal class PulseOfSpecification
+    [TestFixture(TestOf = typeof(PulseFrom))]
+    internal class PulseFromSpecification
     {
         [Test]
         public void ShouldTranslateSignalIntoPulse()
         {
             var condition = new SignalCondition();
+
             // When condition is generated, initial pulse is disabled.
-            var translation = PulseOf.Signal(condition);
+            var translation = PulseFrom.Signal(condition);
 
             // When previous pulse is disabled and condition is not satisfied, current pulse is disabled.
             condition.Previous = false;

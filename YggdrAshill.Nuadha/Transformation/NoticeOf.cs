@@ -5,7 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines implementations for <see cref="ICondition{TSignal}"/>.
+    /// Defines implementations for <see cref="INotification{TSignal}"/>.
     /// </summary>
     public static class NoticeOf
     {
@@ -19,12 +19,12 @@ namespace YggdrAshill.Nuadha
         /// <see cref="Func{T, TResult}"/> to detect <see cref="Notice"/> of <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="ICondition{TSignal}"/> created.
+        /// <see cref="INotification{TSignal}"/> created.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="condition"/> is null.
         /// </exception>
-        public static ICondition<TSignal> Signal<TSignal>(Func<TSignal, bool> condition)
+        public static INotification<TSignal> Signal<TSignal>(Func<TSignal, bool> condition)
             where TSignal : ISignal
         {
             if (condition == null)
@@ -35,7 +35,7 @@ namespace YggdrAshill.Nuadha
             return new Condition<TSignal>(condition);
         }
         private sealed class Condition<TSignal> :
-            ICondition<TSignal>
+            INotification<TSignal>
             where TSignal : ISignal
         {
             private readonly Func<TSignal, bool> condition;
@@ -45,7 +45,7 @@ namespace YggdrAshill.Nuadha
                 this.condition = condition;
             }
 
-            public bool IsSatisfiedBy(TSignal signal)
+            public bool Notify(TSignal signal)
             {
                 return condition.Invoke(signal);
             }
@@ -58,9 +58,9 @@ namespace YggdrAshill.Nuadha
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
         /// <returns>
-        /// <see cref="ICondition{TSignal}"/> created.
+        /// <see cref="INotification{TSignal}"/> created.
         /// </returns>
-        public static ICondition<TSignal> All<TSignal>()
+        public static INotification<TSignal> All<TSignal>()
             where TSignal : ISignal
         {
             return Signal<TSignal>(_ => true);
@@ -73,9 +73,9 @@ namespace YggdrAshill.Nuadha
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
         /// <returns>
-        /// <see cref="ICondition{TSignal}"/> created.
+        /// <see cref="INotification{TSignal}"/> created.
         /// </returns>
-        public static ICondition<TSignal> None<TSignal>()
+        public static INotification<TSignal> None<TSignal>()
             where TSignal : ISignal
         {
             return Signal<TSignal>(_ => false);

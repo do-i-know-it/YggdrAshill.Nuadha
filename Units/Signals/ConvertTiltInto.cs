@@ -43,11 +43,11 @@ namespace YggdrAshill.Nuadha.Units
         {
             internal PulsatedTiltHardware(IProduction<Tilt> production, ITiltPulsation pulsation)
             {
-                Distance = ConvertTo.Produce(production, pulsation.Distance);
-                Left = ConvertTo.Produce(production, pulsation.Left);
-                Right = ConvertTo.Produce(production, pulsation.Right);
-                Forward = ConvertTo.Produce(production, pulsation.Forward);
-                Backward = ConvertTo.Produce(production, pulsation.Backward);
+                Distance = ProduceSignalTo.Convert(production, pulsation.Distance);
+                Left = ProduceSignalTo.Convert(production, pulsation.Left);
+                Right = ProduceSignalTo.Convert(production, pulsation.Right);
+                Forward = ProduceSignalTo.Convert(production, pulsation.Forward);
+                Backward = ProduceSignalTo.Convert(production, pulsation.Backward);
             }
 
             public IProduction<Pulse> Distance { get; }

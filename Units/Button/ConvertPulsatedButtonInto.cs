@@ -43,9 +43,9 @@ namespace YggdrAshill.Nuadha.Units
         {
             internal ButtonSoftware(IPulsatedButtonSoftware software, IButtonPulsation pulsation)
             {
-                Touch = ConvertTo.Consume(pulsation.Touch, software.Touch);
+                Touch = ConsumeSignalTo.Convert(pulsation.Touch, software.Touch);
 
-                Push = ConvertTo.Consume(pulsation.Push, software.Push);
+                Push = ConsumeSignalTo.Convert(pulsation.Push, software.Push);
             }
 
             public IConsumption<Touch> Touch { get; }

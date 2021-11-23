@@ -29,10 +29,10 @@ namespace YggdrAshill.Nuadha
             }
 
             var condition = new Condition(threshold);
-            return SignalInto.Signal<Pull, Push>(signal => condition.IsSatisfiedBy(signal).ToPush());
+            return SignalInto.Signal<Pull, Push>(signal => condition.Notify(signal).ToPush());
         }
         private sealed class Condition :
-            ICondition<Pull>
+            INotification<Pull>
         {
             private readonly HysteresisThreshold threshold;
 
@@ -44,7 +44,7 @@ namespace YggdrAshill.Nuadha
             }
 
             /// <inheritdoc/>
-            public bool IsSatisfiedBy(Pull signal)
+            public bool Notify(Pull signal)
             {
                 if (previous)
                 {

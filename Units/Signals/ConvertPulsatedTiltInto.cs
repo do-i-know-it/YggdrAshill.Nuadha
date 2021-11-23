@@ -53,11 +53,11 @@ namespace YggdrAshill.Nuadha.Units
 
             internal ConsumeTilt(IPulsatedTiltSoftware software, ITiltPulsation pulsation)
             {
-                distance = ConvertTo.Consume(pulsation.Distance, software.Distance);
-                left = ConvertTo.Consume(pulsation.Left, software.Left);
-                right = ConvertTo.Consume(pulsation.Right, software.Right);
-                forward = ConvertTo.Consume(pulsation.Forward, software.Forward);
-                backward = ConvertTo.Consume(pulsation.Backward, software.Backward);
+                distance = ConsumeSignalTo.Convert(pulsation.Distance, software.Distance);
+                left = ConsumeSignalTo.Convert(pulsation.Left, software.Left);
+                right = ConsumeSignalTo.Convert(pulsation.Right, software.Right);
+                forward = ConsumeSignalTo.Convert(pulsation.Forward, software.Forward);
+                backward = ConsumeSignalTo.Convert(pulsation.Backward, software.Backward);
             }
 
             public void Consume(Tilt signal)

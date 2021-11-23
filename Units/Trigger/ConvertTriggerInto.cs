@@ -43,9 +43,9 @@ namespace YggdrAshill.Nuadha.Units
         {
             internal PulsatedTriggerHardware(ITriggerHardware hardware, ITriggerPulsation pulsation)
             {
-                Touch = ConvertTo.Produce(hardware.Touch, pulsation.Touch);
+                Touch = ProduceSignalTo.Convert(hardware.Touch, pulsation.Touch);
 
-                Pull = ConvertTo.Produce(hardware.Pull, pulsation.Pull);
+                Pull = ProduceSignalTo.Convert(hardware.Pull, pulsation.Pull);
             }
 
             public IProduction<Pulse> Touch { get; }
@@ -91,7 +91,7 @@ namespace YggdrAshill.Nuadha.Units
             {
                 Touch = hardware.Touch;
 
-                Push = ConvertTo.Produce(hardware.Pull, translation);
+                Push = ProduceSignalTo.Convert(hardware.Pull, translation);
             }
 
             public IProduction<Touch> Touch { get; }
@@ -137,7 +137,7 @@ namespace YggdrAshill.Nuadha.Units
             {
                 Touch = software.Touch;
 
-                Tilt = ConvertTo.Consume(translation, software.Pull);
+                Tilt = ConsumeSignalTo.Convert(translation, software.Pull);
             }
 
             public IConsumption<Touch> Touch { get; }

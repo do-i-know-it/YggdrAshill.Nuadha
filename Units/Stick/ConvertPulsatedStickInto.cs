@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Signals;
 using System;
@@ -43,7 +43,7 @@ namespace YggdrAshill.Nuadha.Units
         {
             internal StickSoftware(IPulsatedStickSoftware software, IStickPulsation pulsation)
             {
-                Touch = ConvertTo.Consume(pulsation.Touch, software.Touch);
+                Touch = ConsumeSignalTo.Convert(pulsation.Touch, software.Touch);
 
                 Tilt = ConvertPulsatedTiltInto.Tilt(software.Tilt, pulsation.Tilt);
             }
