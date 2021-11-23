@@ -3,19 +3,24 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
-    /// <summary>
-    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Touch"/>
-    /// </summary>
     public static class TouchInto
     {
         /// <summary>
         /// Converts <see cref="Touch"/> into <see cref="Signals.Push"/>.
         /// </summary>
-        public static ITranslation<Touch, Push> Push { get; } = SignalInto.Signal<Touch, Push>(signal => signal.ToBoolean().ToPush());
+        public static ITranslation<Touch, Push> Push { get; }
+            = SignalInto.Signal<Touch, Push>(signal =>
+            {
+                return signal.ToPush();
+            });
 
         /// <summary>
-        /// Converts <see cref="Touch"/> into <see cref="Transformation.Pulse"/>.
+        /// Converts <see cref="Touch"/> into <see cref="Signals.Pull"/>.
         /// </summary>
-        public static ITranslation<Touch, Pulse> Pulse { get; } = PulseFrom.Signal(TouchIs.Enabled);
+        public static ITranslation<Touch, Pull> Pull { get; }
+            = SignalInto.Signal<Touch, Pull>(signal =>
+            {
+                return signal.ToPull();
+            });
     }
 }

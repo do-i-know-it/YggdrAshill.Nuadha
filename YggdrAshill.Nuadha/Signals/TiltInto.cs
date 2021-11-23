@@ -9,14 +9,13 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class TiltInto
     {
-        public sealed class PullBy :
-            ITranslation<Tilt, Pull>
+        public static class PullBy
         {
             /// <summary>
             /// Converts <see cref="Tilt.Distance"/> into <see cref="Pull"/>.
             /// </summary>
-            public static PullBy Distance { get; }
-                = new PullBy(signal =>
+            public static ITranslation<Tilt, Pull> Distance { get; }
+                = SignalInto.Signal<Tilt, Pull>(signal =>
                 {
                     return signal.Distance.ToPull();
                 });
@@ -24,8 +23,8 @@ namespace YggdrAshill.Nuadha
             /// <summary>
             /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Pull"/>.
             /// </summary>
-            public static PullBy Left { get; }
-                = new PullBy(signal =>
+            public static ITranslation<Tilt, Pull> Left { get; }
+                = SignalInto.Signal<Tilt, Pull>(signal =>
                 {
                     return Math.Max(-signal.Horizontal, 0).ToPull();
                 });
@@ -33,8 +32,8 @@ namespace YggdrAshill.Nuadha
             /// <summary>
             /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Pull"/>.
             /// </summary>
-            public static PullBy Right { get; }
-                = new PullBy(signal =>
+            public static ITranslation<Tilt, Pull> Right { get; }
+                = SignalInto.Signal<Tilt, Pull>(signal =>
                 {
                     return Math.Max(signal.Horizontal, 0).ToPull();
                 });
@@ -42,8 +41,8 @@ namespace YggdrAshill.Nuadha
             /// <summary>
             /// Converts <see cref="Tilt.Vertical"/> into <see cref="Pull"/>.
             /// </summary>
-            public static PullBy Forward { get; }
-                = new PullBy(signal =>
+            public static ITranslation<Tilt, Pull> Forward { get; }
+                = SignalInto.Signal<Tilt, Pull>(signal =>
                 {
                     return Math.Max(signal.Vertical, 0).ToPull();
                 });
@@ -51,24 +50,11 @@ namespace YggdrAshill.Nuadha
             /// <summary>
             /// Converts <see cref="Tilt.Vertical"/> into <see cref="Pull"/>.
             /// </summary>
-            public static PullBy Backward { get; }
-                = new PullBy(signal =>
+            public static ITranslation<Tilt, Pull> Backward { get; }
+                = SignalInto.Signal<Tilt, Pull>(signal =>
                 {
                     return Math.Max(-signal.Vertical, 0).ToPull();
                 });
-
-            private readonly Func<Tilt, Pull> onTranslated;
-
-            private PullBy(Func<Tilt, Pull> onTranslated)
-            {
-                this.onTranslated = onTranslated;
-            }
-
-            /// <inheritdoc/>
-            public Pull Translate(Tilt signal)
-            {
-                return onTranslated.Invoke(signal);
-            }
         }
 
         public static class PushBy
@@ -184,116 +170,116 @@ namespace YggdrAshill.Nuadha
             }
         }
 
-        public static class PulseBy
+        public static class TouchBy
         {
             /// <summary>
-            /// Converts <see cref="Tilt.Distance"/> into <see cref="Pulse"/>.
+            /// Converts <see cref="Tilt.Distance"/> into <see cref="Touch"/>.
             /// </summary>
             /// <param name="threshold">
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Distance"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Distance"/> into <see cref="Touch"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static ITranslation<Tilt, Pulse> Distance(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Touch> Distance(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return PushBy.Distance(threshold).Then(PushInto.Pulse);
+                return PullBy.Distance.Then(PullInto.Touch(threshold));
             }
 
             /// <summary>
-            /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
+            /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Touch"/>.
             /// </summary>
             /// <param name="threshold">
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Touch"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static ITranslation<Tilt, Pulse> Left(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Touch> Left(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return PushBy.Left(threshold).Then(PushInto.Pulse);
+                return PullBy.Left.Then(PullInto.Touch(threshold));
             }
 
             /// <summary>
-            /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
+            /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Touch"/>.
             /// </summary>
             /// <param name="threshold">
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Horizontal"/> into <see cref="Touch"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static ITranslation<Tilt, Pulse> Right(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Touch> Right(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return PushBy.Right(threshold).Then(PushInto.Pulse);
+                return PullBy.Right.Then(PullInto.Touch(threshold));
             }
 
             /// <summary>
-            /// Converts <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
+            /// Converts <see cref="Tilt.Vertical"/> into <see cref="Touch"/>.
             /// </summary>
             /// <param name="threshold">
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Touch"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static ITranslation<Tilt, Pulse> Forward(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Touch> Forward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return PushBy.Forward(threshold).Then(PushInto.Pulse);
+                return PullBy.Forward.Then(PullInto.Touch(threshold));
             }
 
             /// <summary>
-            /// Converts <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
+            /// Converts <see cref="Tilt.Vertical"/> into <see cref="Touch"/>.
             /// </summary>
             /// <param name="threshold">
             /// <see cref="HysteresisThreshold"/> to convert.
             /// </param>
             /// <returns>
-            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Pulse"/>.
+            /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt.Vertical"/> into <see cref="Touch"/>.
             /// </returns>
             /// <exception cref="ArgumentNullException">
             /// Thrown if <paramref name="threshold"/> is null.
             /// </exception>
-            public static ITranslation<Tilt, Pulse> Backward(HysteresisThreshold threshold)
+            public static ITranslation<Tilt, Touch> Backward(HysteresisThreshold threshold)
             {
                 if (threshold == null)
                 {
                     throw new ArgumentNullException(nameof(threshold));
                 }
 
-                return PushBy.Backward(threshold).Then(PushInto.Pulse);
+                return PullBy.Backward.Then(PullInto.Touch(threshold));
             }
         }
     }

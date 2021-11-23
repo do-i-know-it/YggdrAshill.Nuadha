@@ -93,55 +93,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreEqual(Push.Enabled, backward.Translate(Tilt.Backward));
         }
 
-        [TestCase(0.8f)]
-        [TestCase(0.5f)]
-        [TestCase(0.2f)]
-        public void ShouldConvertTiltIntoPulse(float threshold)
-        {
-            // Distance
-            var distance = TiltInto.PulseBy.Distance(new HysteresisThreshold(threshold));
-            Assert.AreEqual(Pulse.IsDisabled, distance.Translate(Tilt.Origin));
-            Assert.AreEqual(Pulse.HasEnabled, distance.Translate(Tilt.Left));
-            Assert.AreEqual(Pulse.IsEnabled, distance.Translate(Tilt.Right));
-            Assert.AreEqual(Pulse.HasDisabled, distance.Translate(Tilt.Origin));
-            Assert.AreEqual(Pulse.HasEnabled, distance.Translate(Tilt.Forward));
-            Assert.AreEqual(Pulse.IsEnabled, distance.Translate(Tilt.Backward));
-            Assert.AreEqual(Pulse.HasDisabled, distance.Translate(Tilt.Origin));
-            Assert.AreEqual(Pulse.IsDisabled, distance.Translate(Tilt.Origin));
-
-            // Left
-            var left = TiltInto.PulseBy.Left(new HysteresisThreshold(threshold));
-            Assert.AreEqual(Pulse.IsDisabled, left.Translate(Tilt.Right));
-            Assert.AreEqual(Pulse.HasEnabled, left.Translate(Tilt.Left));
-            Assert.AreEqual(Pulse.IsEnabled, left.Translate(Tilt.Left));
-            Assert.AreEqual(Pulse.HasDisabled, left.Translate(Tilt.Forward));
-            Assert.AreEqual(Pulse.IsDisabled, left.Translate(Tilt.Backward));
-
-            // Right
-            var right = TiltInto.PulseBy.Right(new HysteresisThreshold(threshold));
-            Assert.AreEqual(Pulse.IsDisabled, right.Translate(Tilt.Left));
-            Assert.AreEqual(Pulse.HasEnabled, right.Translate(Tilt.Right));
-            Assert.AreEqual(Pulse.IsEnabled, right.Translate(Tilt.Right));
-            Assert.AreEqual(Pulse.HasDisabled, right.Translate(Tilt.Forward));
-            Assert.AreEqual(Pulse.IsDisabled, right.Translate(Tilt.Backward));
-
-            // Forward
-            var forward = TiltInto.PulseBy.Forward(new HysteresisThreshold(threshold));
-            Assert.AreEqual(Pulse.IsDisabled, forward.Translate(Tilt.Backward));
-            Assert.AreEqual(Pulse.HasEnabled, forward.Translate(Tilt.Forward));
-            Assert.AreEqual(Pulse.IsEnabled, forward.Translate(Tilt.Forward));
-            Assert.AreEqual(Pulse.HasDisabled, forward.Translate(Tilt.Left));
-            Assert.AreEqual(Pulse.IsDisabled, forward.Translate(Tilt.Right));
-
-            // Backward
-            var backward = TiltInto.PulseBy.Backward(new HysteresisThreshold(threshold));
-            Assert.AreEqual(Pulse.IsDisabled, backward.Translate(Tilt.Forward));
-            Assert.AreEqual(Pulse.HasEnabled, backward.Translate(Tilt.Backward));
-            Assert.AreEqual(Pulse.IsEnabled, backward.Translate(Tilt.Backward));
-            Assert.AreEqual(Pulse.HasDisabled, backward.Translate(Tilt.Left));
-            Assert.AreEqual(Pulse.IsDisabled, backward.Translate(Tilt.Right));
-        }
-
         [Test]
         public void CannotBeGeneratedWithNull()
         {
@@ -164,27 +115,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var translation = TiltInto.PushBy.Backward(default);
-            });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var translation = TiltInto.PulseBy.Distance(default);
-            });
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var translation = TiltInto.PulseBy.Left(default);
-            });
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var translation = TiltInto.PulseBy.Right(default);
-            });
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var translation = TiltInto.PulseBy.Forward(default);
-            });
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var translation = TiltInto.PulseBy.Backward(default);
             });
         }
     }

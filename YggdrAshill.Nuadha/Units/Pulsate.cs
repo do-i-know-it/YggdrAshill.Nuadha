@@ -10,13 +10,17 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class Pulsate
     {
+        private static readonly ITranslation<Touch, Pulse> touch = PulseFrom.Signal(TouchIs.Enabled);
+
+        private static readonly ITranslation<Push, Pulse> push = PulseFrom.Signal(PushIs.Enabled);
+
         public static IButtonPulsation Button { get; } = new ButtonPulsation();
         private sealed class ButtonPulsation :
             IButtonPulsation
         {
-            public ITranslation<Touch, Pulse> Touch => TouchInto.Pulse;
+            public ITranslation<Touch, Pulse> Touch => touch;
 
-            public ITranslation<Push, Pulse> Push => PushInto.Pulse;
+            public ITranslation<Push, Pulse> Push => push;
         }
 
         public static ITriggerPulsation Trigger(HysteresisThreshold threshold)
@@ -33,10 +37,10 @@ namespace YggdrAshill.Nuadha
         {
             internal TriggerPulsation(HysteresisThreshold threshold)
             {
-                Pull = PullInto.Pulse(threshold);
+                Pull = PulseFrom.Signal(PullIs.Enabled(threshold));
             }
 
-            public ITranslation<Touch, Pulse> Touch => TouchInto.Pulse;
+            public ITranslation<Touch, Pulse> Touch => touch;
 
             public ITranslation<Pull, Pulse> Pull { get; }
         }
@@ -55,15 +59,25 @@ namespace YggdrAshill.Nuadha
         {
             internal TiltPulsation(TiltThreshold threshold)
             {
-                Distance = TiltInto.PulseBy.Distance(threshold.Distance);
+                Distance
+                    = TiltInto.PullBy.Distance
+                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Distance)));
 
-                Left = TiltInto.PulseBy.Left(threshold.Left);
+                Left
+                    = TiltInto.PullBy.Left
+                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Left)));
 
-                Right = TiltInto.PulseBy.Right(threshold.Right);
+                Right
+                    = TiltInto.PullBy.Right
+                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Right)));
 
-                Forward = TiltInto.PulseBy.Forward(threshold.Forward);
+                Forward
+                    = TiltInto.PullBy.Forward
+                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Forward)));
 
-                Backward = TiltInto.PulseBy.Backward(threshold.Backward);
+                Backward
+                    = TiltInto.PullBy.Backward
+                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Backward)));
             }
 
             public ITranslation<Tilt, Pulse> Distance { get; }
