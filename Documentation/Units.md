@@ -1,15 +1,16 @@
 # Units
 
-This module extends [Unitization](./Unitization.md) to define some types of `Handler` for hardware and software.
+This module extends [Unitization](./Unitization.md) to define some `Module`s for hardware and software.
 
 ## Dependencies
 
-This module depends on
+This module depends on below.
 
-- [Signalization](./Signalization.md).
-- [Transformation](./Transformation.md).
-- [Unitization](./Unitization.md).
-- [Signals](./Signals.md).
+- [Signalization](./Signalization.md)
+- [Unitization](./Unitization.md)
+- [Transformation](./Transformation.md)
+- [Conduction](./Conduction.md)
+- [Signals](./Signals.md)
 
 ## Architecture
 
@@ -32,4 +33,9 @@ and event below.
 
 ## Implementation
 
-Nothing.
+This module has internal implementations for
+
+- [Unitization](./Unitization.md)
+- [Conduction](./Conduction.md)
+
+in order to provide features of it.
