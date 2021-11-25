@@ -1,4 +1,5 @@
-# Release notes for version 1.1.1
+# Release notes for version 1.2.0
 
-- Added definitions for Units.
-- Moved implementations for Transformation.
+- Modified architecture of framework.
+  - Conduction
+  - Units
