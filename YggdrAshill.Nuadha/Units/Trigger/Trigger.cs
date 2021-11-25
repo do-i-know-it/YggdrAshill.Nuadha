@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -14,6 +14,18 @@ namespace YggdrAshill.Nuadha
         ITriggerSoftware,
         ITriggerProtocol
     {
+        /// <summary>
+        /// Converts <see cref="ITriggerConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="ITriggerConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="ITriggerSoftware"/> converted from <see cref="ITriggerConfiguration"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<ITriggerSoftware> Transmit(ITriggerConfiguration configuration)
         {
             if (configuration == null)

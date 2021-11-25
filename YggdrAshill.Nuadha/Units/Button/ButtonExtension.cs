@@ -1,6 +1,6 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -8,24 +8,28 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="IButtonHardware"/> and <see cref="IButtonSoftware"/>.
+    /// Defines extensions for <see cref="IButtonProtocol"/>, <see cref="IButtonHardware"/> and <see cref="IButtonSoftware"/>.
     /// </summary>
     public static class ButtonExtension
     {
-        public static IEmission Conduct(this IButtonSoftware software, IButtonConfiguration configuration)
-        {
-            if (software == null)
-            {
-                throw new ArgumentNullException(nameof(software));
-            }
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            return Nuadha.Conduct.Button(configuration, software);
-        }
-
+        /// <summary>
+        /// Converts <see cref="IButtonProtocol"/> into <see cref="ITransmission{TModule}"/> for <see cref="IButtonSoftware"/>.
+        /// </summary>
+        /// <param name="protocol">
+        /// <see cref="IButtonProtocol"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IButtonConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IButtonSoftware"/> converted from <see cref="IButtonProtocol"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="protocol"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<IButtonSoftware> Transmit(this IButtonProtocol protocol, IButtonConfiguration configuration)
         {
             if (protocol == null)
@@ -37,9 +41,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return Nuadha.Transmit.Button(configuration, protocol);
+            return ConvertButtonInto.Transmission(protocol, configuration);
         }
 
+        /// <summary>
+        /// Converts <see cref="IButtonSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IButtonHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IButtonSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IButtonHardware"/> converted from <see cref="IButtonSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
         public static IConnection<IButtonHardware> Connect(this IButtonSoftware software)
         {
             if (software == null)
@@ -47,9 +63,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(software));
             }
 
-            return Nuadha.Connect.Button(software);
+            return ConvertButtonInto.Connection(software);
         }
 
+        /// <summary>
+        /// Converts <see cref="IButtonHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IButtonSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IButtonSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IButtonSoftware"/> converted from <see cref="IButtonHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
         public static IConnection<IButtonSoftware> Connect(this IButtonHardware hardware)
         {
             if (hardware == null)
@@ -57,7 +85,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(hardware));
             }
 
-            return Nuadha.Connect.Button(hardware);
+            return ConvertButtonInto.Connection(hardware);
         }
 
         /// <summary>
@@ -144,38 +172,6 @@ namespace YggdrAshill.Nuadha
             }
 
             return ConvertButtonInto.Trigger(software, translation);
-        }
-
-        /// <summary>
-        /// Converts <see cref="IButtonSoftware"/> into <see cref="ITriggerSoftware"/>.
-        /// </summary>
-        /// <param name="software">
-        /// <see cref="IButtonSoftware"/> to convert.
-        /// </param>
-        /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to convert.
-        /// </param>
-        /// <returns>
-        /// <see cref="ITriggerSoftware"/> converted from <see cref="IButtonSoftware"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="software"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
-        /// </exception>
-        public static ITriggerSoftware ToTrigger(this IButtonSoftware software, HysteresisThreshold threshold)
-        {
-            if (software == null)
-            {
-                throw new ArgumentNullException(nameof(software));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            return software.ToTrigger(PullInto.Push(threshold));
         }
     }
 }

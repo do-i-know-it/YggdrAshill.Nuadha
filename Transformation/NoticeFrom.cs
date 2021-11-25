@@ -1,10 +1,10 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
-    /// Defines implementations of <see cref="INotification{TSignal}"/>.
+    /// Defines implementations of <see cref="INotification{TSignal}"/> for operation.
     /// </summary>
     public static class NoticeFrom
     {
@@ -12,7 +12,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// Inverts <see cref="INotification{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to detect.
+        /// Type of <see cref="ISignal"/> to notify.
         /// </typeparam>
         /// <param name="notification">
         /// <see cref="INotification{TSignal}"/> to invert.
@@ -31,22 +31,22 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(notification));
             }
 
-            return new InvertedNotified<TSignal>(notification);
+            return new NotifyToInvert<TSignal>(notification);
         }
-        private sealed class InvertedNotified<TSignal> :
+        private sealed class NotifyToInvert<TSignal> :
             INotification<TSignal>
             where TSignal : ISignal
         {
-            private readonly INotification<TSignal> condition;
+            private readonly INotification<TSignal> notification;
 
-            internal InvertedNotified(INotification<TSignal> condition)
+            internal NotifyToInvert(INotification<TSignal> notification)
             {
-                this.condition = condition;
+                this.notification = notification;
             }
 
             public bool Notify(TSignal signal)
             {
-                return !condition.Notify(signal);
+                return !notification.Notify(signal);
             }
         }
 
@@ -54,7 +54,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// Multiplies two <see cref="INotification{TSignal}"/>s.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to detect.
+        /// Type of <see cref="ISignal"/> to notify.
         /// </typeparam>
         /// <param name="first">
         /// <see cref="INotification{TSignal}"/> checked first.
@@ -83,9 +83,9 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(second));
             }
 
-            return new MultipliedNotified<TSignal>(first, second);
+            return new NotifyToMultiply<TSignal>(first, second);
         }
-        private sealed class MultipliedNotified<TSignal> :
+        private sealed class NotifyToMultiply<TSignal> :
             INotification<TSignal>
             where TSignal : ISignal
         {
@@ -93,7 +93,7 @@ namespace YggdrAshill.Nuadha.Transformation
 
             private readonly INotification<TSignal> second;
 
-            internal MultipliedNotified(INotification<TSignal> first, INotification<TSignal> second)
+            internal NotifyToMultiply(INotification<TSignal> first, INotification<TSignal> second)
             {
                 this.first = first;
 
@@ -110,7 +110,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// Adds two <see cref="INotification{TSignal}"/>s.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to detect.
+        /// Type of <see cref="ISignal"/> to notify.
         /// </typeparam>
         /// <param name="first">
         /// <see cref="INotification{TSignal}"/> checked first.
@@ -139,9 +139,9 @@ namespace YggdrAshill.Nuadha.Transformation
                 throw new ArgumentNullException(nameof(second));
             }
 
-            return new AddedNotified<TSignal>(first, second);
+            return new NotifyToAdd<TSignal>(first, second);
         }
-        private sealed class AddedNotified<TSignal> :
+        private sealed class NotifyToAdd<TSignal> :
             INotification<TSignal>
             where TSignal : ISignal
         {
@@ -149,7 +149,7 @@ namespace YggdrAshill.Nuadha.Transformation
 
             private readonly INotification<TSignal> second;
 
-            internal AddedNotified(INotification<TSignal> first, INotification<TSignal> second)
+            internal NotifyToAdd(INotification<TSignal> first, INotification<TSignal> second)
             {
                 this.first = first;
 

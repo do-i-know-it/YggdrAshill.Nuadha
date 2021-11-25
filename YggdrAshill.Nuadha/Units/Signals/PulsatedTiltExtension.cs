@@ -11,6 +11,18 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PulsatedTiltExtension
     {
+        /// <summary>
+        /// Converts <see cref="IPulsatedTiltSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPulsatedTiltSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltHardware"/> converted from <see cref="IPulsatedTiltSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedTiltHardware> Connect(this IPulsatedTiltSoftware software)
         {
             if (software == null)
@@ -18,9 +30,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(software));
             }
 
-            return Nuadha.Connect.PulsatedTilt(software);
+            return ConvertPulsatedTiltInto.Connection(software);
         }
 
+        /// <summary>
+        /// Converts <see cref="IPulsatedTiltHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IPulsatedTiltHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltSoftware"/> converted from <see cref="IPulsatedTiltHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedTiltSoftware> Connect(this IPulsatedTiltHardware hardware)
         {
             if (hardware == null)
@@ -28,7 +52,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(hardware));
             }
 
-            return Nuadha.Connect.PulsatedTilt(hardware);
+            return ConvertPulsatedTiltInto.Connection(hardware);
         }
 
         /// <summary>

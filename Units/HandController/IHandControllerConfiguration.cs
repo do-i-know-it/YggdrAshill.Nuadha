@@ -1,7 +1,7 @@
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
-    /// Defines configuration of <see cref="HandController"/>.
+    /// Defines configuration of hand controller.
     /// </summary>
     public interface IHandControllerConfiguration
     {
@@ -11,17 +11,17 @@ namespace YggdrAshill.Nuadha
         IPoseTrackerConfiguration Pose { get; }
 
         /// <summary>
-        /// <see cref="IStickConfiguration"/> for <see cref="Thumb"/>.
+        /// <see cref="IStickConfiguration"/> for thumb.
         /// </summary>
         IStickConfiguration Thumb { get; }
 
         /// <summary>
-        /// <see cref="ITriggerConfiguration"/> for <see cref="IndexFinger"/>.
+        /// <see cref="ITriggerConfiguration"/> for index finger.
         /// </summary>
         ITriggerConfiguration IndexFinger { get; }
 
         /// <summary>
-        /// <see cref="ITriggerConfiguration"/> for <see cref="HandGrip"/>.
+        /// <see cref="ITriggerConfiguration"/> for hand grip.
         /// </summary>
         ITriggerConfiguration HandGrip { get; }
     }

@@ -1,12 +1,12 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
-    /// Defines configuration of <see cref="Button"/>.
+    /// Defines configuration for stick.
     /// </summary>
-    public interface IButtonConfiguration
+    public interface IStickConfiguration
     {
         /// <summary>
         /// <see cref="IGeneration{TSignal}"/> to generate <see cref="Signals.Touch"/>.
@@ -14,8 +14,8 @@ namespace YggdrAshill.Nuadha
         IGeneration<Touch> Touch { get; }
 
         /// <summary>
-        /// <see cref="IGeneration{TSignal}"/> to generate <see cref="Signals.Push"/>.
+        /// <see cref="IGeneration{TSignal}"/> to generate <see cref="Signals.Tilt"/>.
         /// </summary>
-        IGeneration<Push> Push { get; }
+        IGeneration<Tilt> Tilt { get; }
     }
 }

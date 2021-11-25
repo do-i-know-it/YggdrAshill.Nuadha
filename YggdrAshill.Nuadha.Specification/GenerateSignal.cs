@@ -1,3 +1,4 @@
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signalization;
 
 namespace YggdrAshill.Nuadha.Specification

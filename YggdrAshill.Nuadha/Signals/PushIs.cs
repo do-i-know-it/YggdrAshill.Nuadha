@@ -4,7 +4,7 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines implementations of <see cref="INotification{TSignal}"/> for <see cref="Push"/>
+    /// Defines implementations of <see cref="INotification{TSignal}"/> for <see cref="Push"/>.
     /// </summary>
     public static class PushIs
     {

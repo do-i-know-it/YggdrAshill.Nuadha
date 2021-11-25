@@ -4,9 +4,24 @@ using System;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Defines implementations of <see cref="INotification{TSignal}"/> for <see cref="Pull"/>.
+    /// </summary>
     public static class PullIs
     {
-        public static INotification<Pull> Disabled(HysteresisThreshold threshold)
+        /// <summary>
+        /// Notifies <see cref="Pull"/> is under <see cref="HysteresisThreshold"/>.
+        /// </summary>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> to notify.
+        /// </param>
+        /// <returns>
+        /// <see cref="INotification{TSignal}"/> for <see cref="Pull"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
+        public static INotification<Pull> Under(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {
@@ -16,7 +31,19 @@ namespace YggdrAshill.Nuadha
             return new Notification(threshold, false);
         }
 
-        public static INotification<Pull> Enabled(HysteresisThreshold threshold)
+        /// <summary>
+        /// Notifies <see cref="Pull"/> is over <see cref="HysteresisThreshold"/>.
+        /// </summary>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> to notify.
+        /// </param>
+        /// <returns>
+        /// <see cref="INotification{TSignal}"/> for <see cref="Pull"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
+        public static INotification<Pull> Over(HysteresisThreshold threshold)
         {
             if (threshold == null)
             {

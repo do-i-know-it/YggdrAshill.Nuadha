@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -14,6 +14,18 @@ namespace YggdrAshill.Nuadha
         IPoseTrackerSoftware,
         IPoseTrackerProtocol
     {
+        /// <summary>
+        /// Converts <see cref="IPoseTrackerConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IPoseTrackerConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IPoseTrackerSoftware"/> converted from <see cref="IPoseTrackerConfiguration"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<IPoseTrackerSoftware> Transmit(IPoseTrackerConfiguration configuration)
         {
             if (configuration == null)

@@ -9,6 +9,18 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PulsatedTriggerExtension
     {
+        /// <summary>
+        /// Converts <see cref="IPulsatedTriggerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTriggerHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPulsatedTriggerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTriggerHardware"/> converted from <see cref="IPulsatedTriggerSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedTriggerHardware> Connect(this IPulsatedTriggerSoftware software)
         {
             if (software == null)
@@ -16,9 +28,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(software));
             }
 
-            return Nuadha.Connect.PulsatedTrigger(software);
+            return ConvertPulsatedTriggerInto.Connection(software);
         }
 
+        /// <summary>
+        /// Converts <see cref="IPulsatedTriggerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTriggerSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IPulsatedTriggerHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTriggerSoftware"/> converted from <see cref="IPulsatedTriggerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedTriggerSoftware> Connect(this IPulsatedTriggerHardware hardware)
         {
             if (hardware == null)
@@ -26,7 +50,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(hardware));
             }
 
-            return Nuadha.Connect.PulsatedTrigger(hardware);
+            return ConvertPulsatedTriggerInto.Connection(hardware);
         }
 
         /// <summary>

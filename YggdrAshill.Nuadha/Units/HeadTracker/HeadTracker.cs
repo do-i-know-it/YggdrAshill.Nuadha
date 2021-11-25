@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -14,6 +14,18 @@ namespace YggdrAshill.Nuadha
         IHeadTrackerSoftware,
         IHeadTrackerProtocol
     {
+        /// <summary>
+        /// Converts <see cref="IHeadTrackerConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IHeadTrackerSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IHeadTrackerConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IHeadTrackerSoftware"/> converted from <see cref="IHeadTrackerConfiguration"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<IHeadTrackerSoftware> Transmit(IHeadTrackerConfiguration configuration)
         {
             if (configuration == null)

@@ -1,12 +1,111 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
+    /// <summary>
+    /// Defines conversion for <see cref="IPulsatedTiltHardware"/> and <see cref="IPulsatedTiltSoftware"/>.
+    /// </summary>
     public static class ConvertPulsatedTiltInto
     {
+        /// <summary>
+        /// Converts <see cref="IPulsatedTiltSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPulsatedTiltSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltHardware"/> converted from <see cref="IPulsatedTiltSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        public static IConnection<IPulsatedTiltHardware> Connection(IPulsatedTiltSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return new ConnectPulsatedTiltHardware(software);
+        }
+        private sealed class ConnectPulsatedTiltHardware :
+            IConnection<IPulsatedTiltHardware>
+        {
+            private readonly IPulsatedTiltSoftware software;
+
+            internal ConnectPulsatedTiltHardware(IPulsatedTiltSoftware software)
+            {
+                this.software = software;
+            }
+
+            public ICancellation Connect(IPulsatedTiltHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                return ConvertPulsatedTiltInto.Connect(module, software);
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="IPulsatedTiltHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IPulsatedTiltHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltSoftware"/> converted from <see cref="IPulsatedTiltHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IConnection<IPulsatedTiltSoftware> Connection(IPulsatedTiltHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return new ConnectPulsatedTiltSoftware(hardware);
+        }
+        private sealed class ConnectPulsatedTiltSoftware :
+            IConnection<IPulsatedTiltSoftware>
+        {
+            private readonly IPulsatedTiltHardware hardware;
+
+            internal ConnectPulsatedTiltSoftware(IPulsatedTiltHardware hardware)
+            {
+                this.hardware = hardware;
+            }
+
+            public ICancellation Connect(IPulsatedTiltSoftware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                return ConvertPulsatedTiltInto.Connect(hardware, module);
+            }
+        }
+
+        private static ICancellation Connect(IPulsatedTiltHardware hardware, IPulsatedTiltSoftware software)
+            => CancellationSource
+            .Default
+            .Synthesize(hardware.Distance.Produce(software.Distance))
+            .Synthesize(hardware.Left.Produce(software.Left))
+            .Synthesize(hardware.Right.Produce(software.Right))
+            .Synthesize(hardware.Forward.Produce(software.Forward))
+            .Synthesize(hardware.Backward.Produce(software.Backward))
+            .Build();
+
         /// <summary>
         /// Converts <see cref="IPulsatedTiltHardware"/> into <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/>.
         /// </summary>

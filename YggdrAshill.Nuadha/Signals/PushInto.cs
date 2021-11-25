@@ -3,6 +3,9 @@ using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Push"/>.
+    /// </summary>
     public static class PushInto
     {
         /// <summary>

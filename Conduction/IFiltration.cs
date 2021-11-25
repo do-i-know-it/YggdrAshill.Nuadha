@@ -1,6 +1,6 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Transformation
+namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
     /// Filtrates <typeparamref name="TSignal"/> to correct.

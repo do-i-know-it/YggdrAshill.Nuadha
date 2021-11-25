@@ -1,4 +1,4 @@
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Units;
 using System;
 
@@ -12,6 +12,18 @@ namespace YggdrAshill.Nuadha
         IHandControllerSoftware,
         IHandControllerProtocol
     {
+        /// <summary>
+        /// Converts <see cref="IHandControllerConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IHandControllerSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IHandControllerConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IHandControllerSoftware"/> converted from <see cref="IHandControllerConfiguration"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<IHandControllerSoftware> Transmit(IHandControllerConfiguration configuration)
         {
             if (configuration == null)

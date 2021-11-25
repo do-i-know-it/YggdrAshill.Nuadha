@@ -14,6 +14,9 @@ namespace YggdrAshill.Nuadha
 
         private static readonly ITranslation<Push, Pulse> push = PulseFrom.Signal(PushIs.Enabled);
 
+        /// <summary>
+        /// Default <see cref="IButtonPulsation"/>.
+        /// </summary>
         public static IButtonPulsation Button { get; } = new ButtonPulsation();
         private sealed class ButtonPulsation :
             IButtonPulsation
@@ -23,6 +26,18 @@ namespace YggdrAshill.Nuadha
             public ITranslation<Push, Pulse> Push => push;
         }
 
+        /// <summary>
+        /// Default <see cref="ITriggerPulsation"/>.
+        /// </summary>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> to pulsate.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITriggerPulsation"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static ITriggerPulsation Trigger(HysteresisThreshold threshold)
         {
             if (threshold == null)
@@ -37,7 +52,7 @@ namespace YggdrAshill.Nuadha
         {
             internal TriggerPulsation(HysteresisThreshold threshold)
             {
-                Pull = PulseFrom.Signal(PullIs.Enabled(threshold));
+                Pull = PulseFrom.Signal(PullIs.Over(threshold));
             }
 
             public ITranslation<Touch, Pulse> Touch => touch;
@@ -45,6 +60,18 @@ namespace YggdrAshill.Nuadha
             public ITranslation<Pull, Pulse> Pull { get; }
         }
 
+        /// <summary>
+        /// Default <see cref="ITiltPulsation"/>.
+        /// </summary>
+        /// <param name="threshold">
+        /// <see cref="TiltThreshold"/> to pulsate.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITiltPulsation"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static ITiltPulsation Tilt(TiltThreshold threshold)
         {
             if (threshold == null)
@@ -60,24 +87,24 @@ namespace YggdrAshill.Nuadha
             internal TiltPulsation(TiltThreshold threshold)
             {
                 Distance
-                    = TiltInto.PullBy.Distance
-                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Distance)));
+                    = TiltIntoPullBy.Distance
+                    .Then(PulseFrom.Signal(PullIs.Over(threshold.Distance)));
 
                 Left
-                    = TiltInto.PullBy.Left
-                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Left)));
+                    = TiltIntoPullBy.Left
+                    .Then(PulseFrom.Signal(PullIs.Over(threshold.Left)));
 
                 Right
-                    = TiltInto.PullBy.Right
-                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Right)));
+                    = TiltIntoPullBy.Right
+                    .Then(PulseFrom.Signal(PullIs.Over(threshold.Right)));
 
                 Forward
-                    = TiltInto.PullBy.Forward
-                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Forward)));
+                    = TiltIntoPullBy.Forward
+                    .Then(PulseFrom.Signal(PullIs.Over(threshold.Forward)));
 
                 Backward
-                    = TiltInto.PullBy.Backward
-                    .Then(PulseFrom.Signal(PullIs.Enabled(threshold.Backward)));
+                    = TiltIntoPullBy.Backward
+                    .Then(PulseFrom.Signal(PullIs.Over(threshold.Backward)));
             }
 
             public ITranslation<Tilt, Pulse> Distance { get; }
@@ -91,6 +118,18 @@ namespace YggdrAshill.Nuadha
             public ITranslation<Tilt, Pulse> Backward { get; }
         }
 
+        /// <summary>
+        /// Default <see cref="IStickPulsation"/>.
+        /// </summary>
+        /// <param name="threshold">
+        /// <see cref="TiltThreshold"/> to pulsate.
+        /// </param>
+        /// <returns>
+        /// <see cref="IStickPulsation"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static IStickPulsation Stick(TiltThreshold threshold)
         {
             if (threshold == null)
@@ -115,6 +154,18 @@ namespace YggdrAshill.Nuadha
             public ITiltPulsation Tilt { get; }
         }
 
+        /// <summary>
+        /// Default <see cref="IHandControllerPulsation"/>.
+        /// </summary>
+        /// <param name="threshold">
+        /// <see cref="TiltThreshold"/> to pulsate.
+        /// </param>
+        /// <returns>
+        /// <see cref="IHandControllerPulsation"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
         public static IHandControllerPulsation HandController(HandControllerThreshold threshold)
         {
             if (threshold == null)

@@ -1,15 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>YggdrAshill.Nuadha.Units</AssemblyName>
-    <RootNamespace>YggdrAshill.Nuadha.Units</RootNamespace>
+    <AssemblyName>YggdrAshill.Nuadha.Conduction</AssemblyName>
+    <RootNamespace>YggdrAshill.Nuadha.Conduction</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conduction\Conduction.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
-    <ProjectReference Include="..\Signals\Signals.csproj" />
     <ProjectReference Include="..\Transformation\Transformation.csproj" />
     <ProjectReference Include="..\Unitization\Unitization.csproj" />
   </ItemGroup>

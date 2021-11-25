@@ -50,7 +50,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(mediumToOutput));
             }
 
-            return SignalTo.Transit(inputToMedium, mediumToOutput);
+            return SignalFrom.Transited(inputToMedium, mediumToOutput);
         }
 
         /// <summary>

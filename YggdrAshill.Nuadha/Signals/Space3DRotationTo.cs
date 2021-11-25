@@ -1,5 +1,5 @@
-using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
@@ -36,7 +36,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(generation));
             }
 
-            return SignalTo.Correct(calibration, generation);
+            return SignalIntoSignalTo.Correct(calibration, generation);
         }
     }
 }

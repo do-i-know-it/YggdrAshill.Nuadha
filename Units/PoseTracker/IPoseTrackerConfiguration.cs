@@ -1,10 +1,10 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
-    /// Defines configuration of <see cref="PoseTracker"/>.
+    /// Defines configuration for pose tracker.
     /// </summary>
     public interface IPoseTrackerConfiguration
     {

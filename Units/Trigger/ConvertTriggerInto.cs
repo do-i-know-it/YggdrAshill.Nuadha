@@ -1,12 +1,175 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
+    /// <summary>
+    /// Defines conversion for <see cref="ITriggerProtocol"/>, <see cref="ITriggerHardware"/> and <see cref="ITriggerSoftware"/>.
+    /// </summary>
     public static class ConvertTriggerInto
     {
+        /// <summary>
+        /// Converts <see cref="ITriggerProtocol"/> into <see cref="ITransmission{TModule}"/> for <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="protocol">
+        /// <see cref="ITriggerProtocol"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="ITriggerConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="ITriggerSoftware"/> converted from <see cref="ITriggerProtocol"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="protocol"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static ITransmission<ITriggerSoftware> Transmission(ITriggerProtocol protocol, ITriggerConfiguration configuration)
+        {
+            if (protocol == null)
+            {
+                throw new ArgumentNullException(nameof(protocol));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+            
+            return new TransmitTrigger(configuration, protocol);
+        }
+        private sealed class TransmitTrigger :
+            ITransmission<ITriggerSoftware>
+        {
+            private readonly IEmission emission;
+
+            private readonly IConnection<ITriggerSoftware> connection;
+
+            internal TransmitTrigger(ITriggerConfiguration configuration, ITriggerProtocol protocol)
+            {
+                emission = Conduct(configuration, protocol.Software);
+
+                connection = ConvertTriggerInto.Connection(protocol.Hardware);
+            }
+
+            public ICancellation Connect(ITriggerSoftware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                return connection.Connect(module);
+            }
+
+            public void Emit()
+            {
+                emission.Emit();
+            }
+        }
+        private static IEmission Conduct(ITriggerConfiguration configuration, ITriggerSoftware software)
+            => EmissionSource
+            .Default
+            .Synthesize(ConductSignalTo.Consume(configuration.Touch, software.Touch))
+            .Synthesize(ConductSignalTo.Consume(configuration.Pull, software.Pull))
+            .Build();
+
+        /// <summary>
+        /// Converts <see cref="ITriggerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="ITriggerHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="ITriggerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="ITriggerHardware"/> converted from <see cref="ITriggerSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        public static IConnection<ITriggerHardware> Connection(ITriggerSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return new ConnectTriggerHardware(software);
+        }
+        private sealed class ConnectTriggerHardware :
+            IConnection<ITriggerHardware>
+        {
+            private readonly ITriggerSoftware software;
+
+            internal ConnectTriggerHardware(ITriggerSoftware software)
+            {
+                this.software = software;
+            }
+
+            public ICancellation Connect(ITriggerHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                return ConvertTriggerInto.Connect(module, software);
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="ITriggerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="ITriggerHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="ITriggerSoftware"/> converted from <see cref="ITriggerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IConnection<ITriggerSoftware> Connection(ITriggerHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return new ConnectTriggerSoftware(hardware);
+        }
+        private sealed class ConnectTriggerSoftware :
+            IConnection<ITriggerSoftware>
+        {
+            private readonly ITriggerHardware hardware;
+
+            internal ConnectTriggerSoftware(ITriggerHardware hardware)
+            {
+                this.hardware = hardware;
+            }
+
+            public ICancellation Connect(ITriggerSoftware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                return ConvertTriggerInto.Connect(hardware, module);
+            }
+        }
+
+        private static ICancellation Connect(ITriggerHardware hardware, ITriggerSoftware software)
+            => CancellationSource
+            .Default
+            .Synthesize(hardware.Touch.Produce(software.Touch))
+            .Synthesize(hardware.Pull.Produce(software.Pull))
+            .Build();
+
         /// <summary>
         /// Converts <see cref="ITriggerHardware"/> into <see cref="IPulsatedTriggerHardware"/>.
         /// </summary>

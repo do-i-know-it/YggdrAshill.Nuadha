@@ -1,6 +1,6 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -8,24 +8,28 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="IStickHardware"/> and <see cref="IStickSoftware"/>.
+    /// Defines extensions for <see cref="IStickProtocol"/>, <see cref="IStickHardware"/> and <see cref="IStickSoftware"/>.
     /// </summary>
     public static class StickExtension
     {
-        public static IEmission Conduct(this IStickSoftware software, IStickConfiguration configuration)
-        {
-            if (software == null)
-            {
-                throw new ArgumentNullException(nameof(software));
-            }
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            return Nuadha.Conduct.Stick(configuration, software);
-        }
-
+        /// <summary>
+        /// Converts <see cref="IStickProtocol"/> into <see cref="ITransmission{TModule}"/> for <see cref="IStickSoftware"/>.
+        /// </summary>
+        /// <param name="protocol">
+        /// <see cref="IStickProtocol"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IStickConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IStickSoftware"/> converted from <see cref="IStickProtocol"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="protocol"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<IStickSoftware> Transmit(this IStickProtocol protocol, IStickConfiguration configuration)
         {
             if (protocol == null)
@@ -37,9 +41,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return Nuadha.Transmit.Stick(configuration, protocol);
+            return ConvertStickInto.Transmission(protocol, configuration);
         }
 
+        /// <summary>
+        /// Converts <see cref="IStickSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IStickHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IStickSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IStickHardware"/> converted from <see cref="IStickSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
         public static IConnection<IStickHardware> Connect(this IStickSoftware software)
         {
             if (software == null)
@@ -47,9 +63,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(software));
             }
 
-            return Nuadha.Connect.Stick(software);
+            return ConvertStickInto.Connection(software);
         }
 
+        /// <summary>
+        /// Converts <see cref="IStickHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IStickSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IStickHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IStickSoftware"/> converted from <see cref="IStickHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
         public static IConnection<IStickSoftware> Connect(this IStickHardware hardware)
         {
             if (hardware == null)
@@ -57,7 +85,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(hardware));
             }
 
-            return Nuadha.Connect.Stick(hardware);
+            return ConvertStickInto.Connection(hardware);
         }
 
         /// <summary>

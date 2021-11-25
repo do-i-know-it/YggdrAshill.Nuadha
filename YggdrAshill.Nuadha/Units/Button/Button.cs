@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -14,6 +14,18 @@ namespace YggdrAshill.Nuadha
         IButtonSoftware,
         IButtonProtocol
     {
+        /// <summary>
+        /// Converts <see cref="IButtonConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IButtonSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IButtonConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IButtonSoftware"/> converted from <see cref="IButtonConfiguration"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<IButtonSoftware> Transmit(IButtonConfiguration configuration)
         {
             if (configuration == null)

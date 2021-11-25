@@ -13,8 +13,6 @@ namespace YggdrAshill.Nuadha.Specification
 
         private FakeCancellation cancellation;
 
-        private CompositeCancellation composite;
-
         [SetUp]
         public void SetUp()
         {
@@ -23,8 +21,6 @@ namespace YggdrAshill.Nuadha.Specification
             propagation = new PropagateSignal();
 
             cancellation = new FakeCancellation();
-
-            composite = new CompositeCancellation();
         }
 
         [Test]
@@ -46,18 +42,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreEqual(expected, consumed);
 
             cancellation.Cancel();
-        }
-
-        [Test]
-        public void ShouldSynthesizeCancellation()
-        {
-            var composite = new CompositeCancellation();
-
-            cancellation.Synthesize(composite);
-
-            composite.Cancel();
-
-            Assert.IsTrue(cancellation.Cancelled);
         }
 
         [Test]
@@ -92,20 +76,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var cancellation = propagation.Produce(default);
-            });
-        }
-
-        [Test]
-        public void CannotSynthesizeWithNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                default(ICancellation).Synthesize(composite);
-            });
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                cancellation.Synthesize(default);
             });
         }
 

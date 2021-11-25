@@ -11,7 +11,7 @@ namespace YggdrAshill.Nuadha.Transformation
         IEquatable<Note>
     {
         /// <summary>
-        /// <see cref="None"/> of <see cref="Note"/>.
+        /// Default <see cref="Note"/>.
         /// </summary>
         public static Note None { get; } = new Note(string.Empty);
 
@@ -51,9 +51,9 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <inheritdoc/>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(this, obj))
+            if (ReferenceEquals(obj, null))
             {
-                return true;
+                return false;
             }
 
             if (obj is Note value)
@@ -106,6 +106,16 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <returns></returns>
         public static bool operator ==(Note left, Note right)
         {
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
+
+            if (ReferenceEquals(right, null))
+            {
+                return false;
+            }
+
             return left.Equals(right);
         }
 

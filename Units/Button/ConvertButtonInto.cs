@@ -1,12 +1,175 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
 namespace YggdrAshill.Nuadha.Units
 {
+    /// <summary>
+    /// Defines conversion for <see cref="IButtonProtocol"/>, <see cref="IButtonHardware"/> and <see cref="IButtonSoftware"/>.
+    /// </summary>
     public static class ConvertButtonInto
     {
+        /// <summary>
+        /// Converts <see cref="IButtonProtocol"/> into <see cref="ITransmission{TModule}"/> for <see cref="IButtonSoftware"/>.
+        /// </summary>
+        /// <param name="protocol">
+        /// <see cref="IButtonProtocol"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IButtonConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IButtonSoftware"/> converted from <see cref="IButtonProtocol"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="protocol"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static ITransmission<IButtonSoftware> Transmission(IButtonProtocol protocol, IButtonConfiguration configuration)
+        {
+            if (protocol == null)
+            {
+                throw new ArgumentNullException(nameof(protocol));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new TransmitButton(configuration, protocol);
+        }
+        private sealed class TransmitButton :
+            ITransmission<IButtonSoftware>
+        {
+            private readonly IEmission emission;
+
+            private readonly IConnection<IButtonSoftware> connection;
+
+            internal TransmitButton(IButtonConfiguration configuration, IButtonProtocol protocol)
+            {
+                emission = Conduct(configuration, protocol.Software);
+
+                connection = Connection(protocol.Hardware);
+            }
+
+            public ICancellation Connect(IButtonSoftware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                return connection.Connect(module);
+            }
+
+            public void Emit()
+            {
+                emission.Emit();
+            }
+        }
+        private static IEmission Conduct(IButtonConfiguration configuration, IButtonSoftware software)
+            => EmissionSource
+            .Default
+            .Synthesize(ConductSignalTo.Consume(configuration.Touch, software.Touch))
+            .Synthesize(ConductSignalTo.Consume(configuration.Push, software.Push))
+            .Build();
+
+        /// <summary>
+        /// Converts <see cref="IButtonSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IButtonHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IButtonSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IButtonHardware"/> converted from <see cref="IButtonSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        public static IConnection<IButtonHardware> Connection(IButtonSoftware software)
+        {
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return new ConnectButtonHardware(software);
+        }
+        private sealed class ConnectButtonHardware :
+            IConnection<IButtonHardware>
+        {
+            private readonly IButtonSoftware software;
+
+            internal ConnectButtonHardware(IButtonSoftware software)
+            {
+                this.software = software;
+            }
+
+            public ICancellation Connect(IButtonHardware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                return ConvertButtonInto.Connect(module, software);
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="IButtonHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IButtonSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IButtonSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IButtonSoftware"/> converted from <see cref="IButtonHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IConnection<IButtonSoftware> Connection(IButtonHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return new ConnectButtonSoftware(hardware);
+        }
+        private sealed class ConnectButtonSoftware :
+            IConnection<IButtonSoftware>
+        {
+            private readonly IButtonHardware hardware;
+
+            internal ConnectButtonSoftware(IButtonHardware hardware)
+            {
+                this.hardware = hardware;
+            }
+
+            public ICancellation Connect(IButtonSoftware module)
+            {
+                if (module == null)
+                {
+                    throw new ArgumentNullException(nameof(module));
+                }
+
+                return ConvertButtonInto.Connect(hardware, module);
+            }
+        }
+
+        private static ICancellation Connect(IButtonHardware hardware, IButtonSoftware software)
+            => CancellationSource
+            .Default
+            .Synthesize(hardware.Touch.Produce(software.Touch))
+            .Synthesize(hardware.Push.Produce(software.Push))
+            .Build();
+
         /// <summary>
         /// Converts <see cref="IButtonHardware"/> into <see cref="IPulsatedButtonHardware"/>.
         /// </summary>

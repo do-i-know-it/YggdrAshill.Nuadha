@@ -1,5 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -14,6 +14,18 @@ namespace YggdrAshill.Nuadha
         IStickSoftware,
         IStickProtocol
     {
+        /// <summary>
+        /// Converts <see cref="IStickConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IStickSoftware"/>.
+        /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IStickConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IStickSoftware"/> converted from <see cref="IStickConfiguration"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<IStickSoftware> Transmit(IStickConfiguration configuration)
         {
             if (configuration == null)

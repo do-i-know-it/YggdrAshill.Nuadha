@@ -3,6 +3,9 @@ using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
+    /// <summary>
+    /// Defines implementations of <see cref="IConsumption{TSignal}"/> for Transformation.
+    /// </summary>
     public static class ConsumeSignalTo
     {
         /// <summary>
@@ -75,7 +78,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// Type of <see cref="ISignal"/> to detect.
         /// </typeparam>
         /// <param name="notification">
-        /// <see cref="INotification{TSignal}"/> to detect.
+        /// <see cref="INotification{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="consumption">
         /// <see cref="IConsumption{TSignal}"/> to consume <see cref="Notice"/>.

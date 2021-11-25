@@ -1,15 +1,15 @@
-using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 
-namespace YggdrAshill.Nuadha
+namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
-    /// Defines configuration of <see cref="HeadTracker"/>.
+    /// Defines configuration for head tracker.
     /// </summary>
     public interface IHeadTrackerConfiguration
     {
         /// <summary>
-        /// <see cref="IPoseTrackerConfiguration"/>.
+        /// <see cref="IPoseTrackerConfiguration"/> for pose.
         /// </summary>
         IPoseTrackerConfiguration Pose { get; }
 

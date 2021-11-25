@@ -1,6 +1,6 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
@@ -8,24 +8,28 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="ITriggerHardware"/> and <see cref="ITriggerSoftware"/>.
+    /// Defines extensions for <see cref="ITriggerProtocol"/>, <see cref="ITriggerHardware"/> and <see cref="ITriggerSoftware"/>.
     /// </summary>
     public static class TriggerExtension
     {
-        public static IEmission Conduct(this ITriggerSoftware software, ITriggerConfiguration configuration)
-        {
-            if (software == null)
-            {
-                throw new ArgumentNullException(nameof(software));
-            }
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            return Nuadha.Conduct.Trigger(configuration, software);
-        }
-
+        /// <summary>
+        /// Converts <see cref="ITriggerProtocol"/> into <see cref="ITransmission{TModule}"/> for <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="protocol">
+        /// <see cref="ITriggerProtocol"/> to convert.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="ITriggerConfiguration"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITransmission{TModule}"/> for <see cref="ITriggerSoftware"/> converted from <see cref="ITriggerProtocol"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="protocol"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
         public static ITransmission<ITriggerSoftware> Transmit(this ITriggerProtocol protocol, ITriggerConfiguration configuration)
         {
             if (protocol == null)
@@ -37,9 +41,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return Nuadha.Transmit.Trigger(configuration, protocol);
+            return ConvertTriggerInto.Transmission(protocol, configuration);
         }
 
+        /// <summary>
+        /// Converts <see cref="ITriggerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="ITriggerHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="ITriggerSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="ITriggerHardware"/> converted from <see cref="ITriggerSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
         public static IConnection<ITriggerHardware> Connect(this ITriggerSoftware software)
         {
             if (software == null)
@@ -47,9 +63,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(software));
             }
 
-            return Nuadha.Connect.Trigger(software);
+            return ConvertTriggerInto.Connection(software);
         }
 
+        /// <summary>
+        /// Converts <see cref="ITriggerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="ITriggerSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="ITriggerHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="ITriggerSoftware"/> converted from <see cref="ITriggerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
         public static IConnection<ITriggerSoftware> Connect(this ITriggerHardware hardware)
         {
             if (hardware == null)
@@ -57,7 +85,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(hardware));
             }
 
-            return Nuadha.Connect.Trigger(hardware);
+            return ConvertTriggerInto.Connection(hardware);
         }
 
         /// <summary>
@@ -154,38 +182,6 @@ namespace YggdrAshill.Nuadha
             }
 
             return ConvertTriggerInto.Button(hardware, translation);
-        }
-
-        /// <summary>
-        /// Converts <see cref="ITriggerHardware"/> into <see cref="IButtonHardware"/>.
-        /// </summary>
-        /// <param name="hardware">
-        /// <see cref="ITriggerHardware"/> to convert.
-        /// </param>
-        /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to convert.
-        /// </param>
-        /// <returns>
-        /// <see cref="IButtonHardware"/> converted from <see cref="ITriggerHardware"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="hardware"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
-        /// </exception>
-        public static IButtonHardware ToButton(this ITriggerHardware hardware, HysteresisThreshold threshold)
-        {
-            if (hardware == null)
-            {
-                throw new ArgumentNullException(nameof(hardware));
-            }
-            if (threshold == null)
-            {
-                throw new ArgumentNullException(nameof(threshold));
-            }
-
-            return hardware.ToButton(PullInto.Push(threshold));
         }
 
         /// <summary>

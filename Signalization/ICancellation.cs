@@ -1,7 +1,7 @@
 namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Token to <see cref="Cancel"/>.
+    /// Token to cancel.
     /// </summary>
     public interface ICancellation
     {

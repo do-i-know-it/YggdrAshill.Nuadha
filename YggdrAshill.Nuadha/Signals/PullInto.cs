@@ -12,23 +12,23 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// Converts <see cref="Pull"/> into <see cref="Signals.Push"/>.
         /// </summary>
-        /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to convert.
+        /// <param name="notification">
+        /// <see cref="INotification{TSignal}"/> for <see cref="Pull"/> to convert.
         /// </param>
         /// <returns>
         /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Signals.Push"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
+        /// Thrown if <paramref name="notification"/> is null.
         /// </exception>
-        public static ITranslation<Pull, Push> Push(HysteresisThreshold threshold)
+        public static ITranslation<Pull, Push> Push(INotification<Pull> notification)
         {
-            if (threshold == null)
+            if (notification == null)
             {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(notification));
             }
 
-            return new PullToPush(PullIs.Enabled(threshold));
+            return new PullToPush(notification);
         }
         private sealed class PullToPush :
             ITranslation<Pull, Push>
@@ -49,23 +49,23 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// Converts <see cref="Pull"/> into <see cref="Signals.Touch"/>.
         /// </summary>
-        /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to convert.
+        /// <param name="notification">
+        /// <see cref="INotification{TSignal}"/> for <see cref="Pull"/> to convert.
         /// </param>
         /// <returns>
         /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Signals.Touch"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
+        /// Thrown if <paramref name="notification"/> is null.
         /// </exception>
-        public static ITranslation<Pull, Touch> Touch(HysteresisThreshold threshold)
+        public static ITranslation<Pull, Touch> Touch(INotification<Pull> notification)
         {
-            if (threshold == null)
+            if (notification == null)
             {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(notification));
             }
 
-            return new PullToTouch(PullIs.Enabled(threshold));
+            return new PullToTouch(notification);
         }
         private sealed class PullToTouch :
             ITranslation<Pull, Touch>

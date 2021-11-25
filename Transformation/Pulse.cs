@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
@@ -6,7 +7,8 @@ namespace YggdrAshill.Nuadha.Transformation
     /// Implementation of <see cref="ISignal"/> for <see cref="Pulse"/>.
     /// </summary>
     public sealed class Pulse :
-        ISignal
+        ISignal,
+        IEquatable<Pulse>
     {
         /// <summary>
         /// <see cref="Pulse"/> that is disabled.
@@ -65,10 +67,15 @@ namespace YggdrAshill.Nuadha.Transformation
 
             if (obj is Pulse signal)
             {
-                return state.Equals(signal.state);
+                return Equals(signal);
             }
 
             return false;
+        }
+
+        public bool Equals(Pulse other)
+        {
+            return state.Equals(other.state);
         }
 
         /// <summary>
@@ -89,7 +96,7 @@ namespace YggdrAshill.Nuadha.Transformation
                 return false;
             }
 
-            return left.state.Equals(right.state);
+            return left.Equals(right);
         }
 
         /// <summary>

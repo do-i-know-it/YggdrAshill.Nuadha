@@ -9,6 +9,18 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PulsatedStickExtension
     {
+        /// <summary>
+        /// Converts <see cref="IPulsatedStickSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedStickHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPulsatedStickSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedStickHardware"/> converted from <see cref="IPulsatedStickSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedStickHardware> Connect(this IPulsatedStickSoftware software)
         {
             if (software == null)
@@ -16,9 +28,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(software));
             }
 
-            return Nuadha.Connect.PulsatedStick(software);
+            return ConvertPulsatedStickInto.Connection(software);
         }
 
+        /// <summary>
+        /// Converts <see cref="IPulsatedStickHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedStickSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IPulsatedStickHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedStickSoftware"/> converted from <see cref="IPulsatedStickHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedStickSoftware> Connect(this IPulsatedStickHardware hardware)
         {
             if (hardware == null)
@@ -26,7 +50,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(hardware));
             }
 
-            return Nuadha.Connect.PulsatedStick(hardware);
+            return ConvertPulsatedStickInto.Connection(hardware);
         }
 
         /// <summary>

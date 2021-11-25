@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
 using System;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Specification
 {

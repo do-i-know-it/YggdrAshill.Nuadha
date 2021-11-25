@@ -1,7 +1,8 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Transformation;
 using System;
 
-namespace YggdrAshill.Nuadha.Transformation
+namespace YggdrAshill.Nuadha
 {
     /// <summary>
     /// Implementation of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Pulse"/>.
@@ -59,6 +60,17 @@ namespace YggdrAshill.Nuadha.Transformation
 
                 return previous;
             }
+        }
+
+        public static ITranslation<TSignal, Pulse> Signal<TSignal>(Func<TSignal, bool> condition)
+            where TSignal : ISignal
+        {
+            if (condition == null)
+            {
+                throw new ArgumentNullException(nameof(condition));
+            }
+
+            return Signal(NoticeOf.Signal(condition));
         }
     }
 }

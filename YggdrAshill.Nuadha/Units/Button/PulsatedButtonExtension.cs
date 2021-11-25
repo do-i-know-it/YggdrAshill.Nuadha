@@ -9,6 +9,18 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class PulsatedButtonExtension
     {
+        /// <summary>
+        /// Converts <see cref="IPulsatedButtonSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedButtonHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPulsatedButtonSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedButtonHardware"/> converted from <see cref="IPulsatedButtonSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedButtonHardware> Connect(this IPulsatedButtonSoftware software)
         {
             if (software == null)
@@ -16,9 +28,21 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(software));
             }
 
-            return Nuadha.Connect.PulsatedButton(software);
+            return ConvertPulsatedButtonInto.Connection(software);
         }
 
+        /// <summary>
+        /// Converts <see cref="IPulsatedButtonHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedButtonSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IPulsatedButtonHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedButtonSoftware"/> converted from <see cref="IPulsatedButtonHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
         public static IConnection<IPulsatedButtonSoftware> Connect(this IPulsatedButtonHardware hardware)
         {
             if (hardware == null)
@@ -26,7 +50,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(hardware));
             }
 
-            return Nuadha.Connect.PulsatedButton(hardware);
+            return ConvertPulsatedButtonInto.Connection(hardware);
         }
 
         /// <summary>

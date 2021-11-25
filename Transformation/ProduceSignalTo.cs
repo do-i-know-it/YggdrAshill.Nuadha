@@ -3,6 +3,9 @@ using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
+    /// <summary>
+    /// Defines implementations of <see cref="IProduction{TSignal}"/> for Transformation.
+    /// </summary>
     public static class ProduceSignalTo
     {
         /// <summary>
@@ -81,7 +84,7 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="notification">
-        /// <see cref="INotification{TSignal}"/> to detect.
+        /// <see cref="INotification{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <see cref="IProduction{TSignal}"/> to produce <see cref="Notice"/>.
