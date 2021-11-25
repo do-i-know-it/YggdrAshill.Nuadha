@@ -4,24 +4,24 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="ICancellation"/>.
+    /// Defines implementations of <see cref="ICancellation"/>.
     /// </summary>
     public sealed class Cancellation :
         ICancellation
     {
         /// <summary>
-        /// Executes <see cref="Action"/>.
+        /// Converts <see cref="Action"/> into <see cref="ICancellation"/>.
         /// </summary>
         /// <param name="cancellation">
-        /// <see cref="Action"/> to cancel.
+        /// <see cref="Action"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="Cancellation"/> created.
+        /// <see cref="ICancellation"/> converted from <see cref="Action"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="cancellation"/> is null.
         /// </exception>
-        public static Cancellation Of(Action cancellation)
+        public static ICancellation Of(Action cancellation)
         {
             if (cancellation == null)
             {
@@ -32,22 +32,18 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Executes none.
+        /// <see cref="ICancellation"/> to do nothing.
         /// </summary>
-        public static Cancellation None { get; } = Of(() => { });
+        public static ICancellation None { get; } = Of(() => { });
 
         private readonly Action onCancelled;
 
-        private Cancellation(Action cancellation)
+        private Cancellation(Action onCancelled)
         {
-            if (cancellation == null)
-            {
-                throw new ArgumentNullException(nameof(cancellation));
-            }
-
-            this.onCancelled = cancellation;
+            this.onCancelled = onCancelled;
         }
 
+        /// <inheritdoc/>
         public void Cancel()
         {
             onCancelled.Invoke();

@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="ITriggerProtocol"/>.
+    /// Defines implementations of <see cref="ITriggerProtocol"/>.
     /// </summary>
     public sealed class Trigger :
         ITriggerHardware,
@@ -15,32 +15,32 @@ namespace YggdrAshill.Nuadha
         ITriggerProtocol
     {
         /// <summary>
-        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="ITriggerSoftware"/>.
+        /// Converts <see cref="ITriggerConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="ITriggerSoftware"/>.
         /// </summary>
         /// <param name="configuration">
-        /// <see cref="ITriggerConfiguration"/> to ignite.
+        /// <see cref="ITriggerConfiguration"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="ITriggerSoftware"/>.
+        /// <see cref="ITransmission{TModule}"/> for <see cref="ITriggerSoftware"/> converted from <see cref="ITriggerConfiguration"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<ITriggerSoftware> Ignite(ITriggerConfiguration configuration)
+        public static ITransmission<ITriggerSoftware> Transmit(ITriggerConfiguration configuration)
         {
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return WithoutCache().Ignite(configuration);
+            return WithoutCache().Transmit(configuration);
         }
 
         /// <summary>
         /// <see cref="ITriggerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="ITriggerProtocol"/> without cache.
+        /// <see cref="ITriggerProtocol"/> initialized.
         /// </returns>
         public static ITriggerProtocol WithoutCache()
         {
@@ -50,19 +50,35 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="ITriggerProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="ITriggerConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="ITriggerProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static ITriggerProtocol WithLatestCache(ITriggerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new Trigger(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Pull));
+        }
+
+        /// <summary>
         /// <see cref="ITriggerProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="ITriggerProtocol"/> initialized.
         /// </returns>
         public static ITriggerProtocol WithLatestCache()
         {
-            return new Trigger(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Pull));
+            return WithLatestCache(Imitate.Trigger);
         }
-
-        /// <inheritdoc/>
-        public IPropagation<Touch> Touch { get; }
-
-        /// <inheritdoc/>
-        public IPropagation<Pull> Pull { get; }
 
         private Trigger(IPropagation<Touch> touch, IPropagation<Pull> pull)
         {
@@ -72,18 +88,16 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
+        public IPropagation<Touch> Touch { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Pull> Pull { get; }
+        
+        /// <inheritdoc/>
         public ITriggerHardware Hardware => this;
 
         /// <inheritdoc/>
         public ITriggerSoftware Software => this;
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Touch.Dispose();
-
-            Pull.Dispose();
-        }
 
         /// <inheritdoc/>
         IProduction<Touch> ITriggerHardware.Touch => Touch;

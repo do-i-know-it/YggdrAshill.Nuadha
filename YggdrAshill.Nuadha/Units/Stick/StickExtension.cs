@@ -1,6 +1,5 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -9,21 +8,21 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="Stick"/>.
+    /// Defines extensions for <see cref="IStickProtocol"/>, <see cref="IStickHardware"/> and <see cref="IStickSoftware"/>.
     /// </summary>
     public static class StickExtension
     {
         /// <summary>
-        /// Converts <see cref="IStickProtocol"/> into <see cref="IIgnition{TModule}"/> for <see cref="IStickSoftware"/>.
+        /// Converts <see cref="IStickProtocol"/> into <see cref="ITransmission{TModule}"/> for <see cref="IStickSoftware"/>.
         /// </summary>
         /// <param name="protocol">
         /// <see cref="IStickProtocol"/> to convert.
         /// </param>
         /// <param name="configuration">
-        /// <see cref="IStickConfiguration"/> to ignite.
+        /// <see cref="IStickConfiguration"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IStickSoftware"/>.
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IStickSoftware"/> converted from <see cref="IStickProtocol"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="protocol"/> is null.
@@ -31,7 +30,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IStickSoftware> Ignite(this IStickProtocol protocol, IStickConfiguration configuration)
+        public static ITransmission<IStickSoftware> Transmit(this IStickProtocol protocol, IStickConfiguration configuration)
         {
             if (protocol == null)
             {
@@ -42,219 +41,147 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new IgniteStick(protocol, configuration);
-        }
-        private sealed class IgniteStick :
-            IIgnition<IStickSoftware>
-        {
-            private readonly ITransmission<Touch> touch;
-
-            private readonly ITransmission<Tilt> tilt;
-
-            internal IgniteStick(IStickProtocol protocol, IStickConfiguration configuration)
-            {
-                touch = protocol.Touch.Ignite(configuration.Touch);
-
-                tilt = protocol.Tilt.Ignite(configuration.Tilt);
-            }
-
-            public ICancellation Connect(IStickSoftware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                touch.Produce(module.Touch).Synthesize(composite);
-                tilt.Produce(module.Tilt).Synthesize(composite);
-
-                return composite;
-            }
-
-            public void Emit()
-            {
-                touch.Emit();
-
-                tilt.Emit();
-            }
-
-            public void Dispose()
-            {
-                touch.Dispose();
-
-                tilt.Dispose();
-            }
+            return ConvertStickInto.Transmission(protocol, configuration);
         }
 
         /// <summary>
         /// Converts <see cref="IStickSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IStickHardware"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="software">
         /// <see cref="IStickSoftware"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IStickHardware"/>.
+        /// <see cref="IConnection{TModule}"/> for <see cref="IStickHardware"/> converted from <see cref="IStickSoftware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="software"/> is null.
         /// </exception>
-        public static IConnection<IStickHardware> Connect(this IStickSoftware module)
+        public static IConnection<IStickHardware> Connect(this IStickSoftware software)
         {
-            if (module == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            return new ConnectStickHardware(module);
-        }
-        private sealed class ConnectStickHardware :
-            IConnection<IStickHardware>
-        {
-            private readonly IConsumption<Touch> touch;
-
-            private readonly IConsumption<Tilt> tilt;
-
-            internal ConnectStickHardware(IStickSoftware module)
-            {
-                touch = module.Touch;
-
-                tilt = module.Tilt;
-            }
-
-            public ICancellation Connect(IStickHardware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                module.Touch.Produce(touch).Synthesize(composite);
-                module.Tilt.Produce(tilt).Synthesize(composite);
-
-                return composite;
-            }
-        }
-
-        [Obsolete("Please use StickExtension.Pulsate instead.")]
-        public static IConnection<IPulsatedStickSoftware> Convert(this IStickHardware module, TiltThreshold threshold)
-        {
-            return module.Pulsate(threshold);
+            return ConvertStickInto.Connection(software);
         }
 
         /// <summary>
-        /// Converts <see cref="IStickHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedStickSoftware"/>.
+        /// Converts <see cref="IStickHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IStickSoftware"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="hardware">
+        /// <see cref="IStickHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IStickSoftware"/> converted from <see cref="IStickHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IConnection<IStickSoftware> Connect(this IStickHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return ConvertStickInto.Connection(hardware);
+        }
+
+        /// <summary>
+        /// Converts <see cref="IStickHardware"/> into <see cref="IPulsatedStickHardware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IStickHardware"/> to convert.
+        /// </param>
+        /// <param name="pulsation">
+        /// <see cref="IStickPulsation"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPulsatedStickHardware"/> converted from <see cref="IStickHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
+        public static IPulsatedStickHardware Pulsate(this IStickHardware hardware, IStickPulsation pulsation)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (pulsation == null)
+            {
+                throw new ArgumentNullException(nameof(pulsation));
+            }
+
+            return ConvertStickInto.PulsatedStick(hardware, pulsation);
+        }
+
+        /// <summary>
+        /// Converts <see cref="IStickHardware"/> into <see cref="IPulsatedStickHardware"/>.
+        /// </summary>
+        /// <param name="hardware">
         /// <see cref="IStickHardware"/> to convert.
         /// </param>
         /// <param name="threshold">
-        /// <see cref="TiltThreshold"/> to convert.
+        /// <see cref="HysteresisThreshold"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedStickSoftware"/>.
+        /// <see cref="IPulsatedStickHardware"/> converted from <see cref="IStickHardware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="hardware"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedStickSoftware> Pulsate(this IStickHardware module, TiltThreshold threshold)
+        public static IPulsatedStickHardware Pulsate(this IStickHardware hardware, TiltThreshold threshold)
         {
-            if (module == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(hardware));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new ConnectPulsatedStickSoftware(module, threshold);
-        }
-        private sealed class ConnectPulsatedStickSoftware :
-            IConnection<IPulsatedStickSoftware>
-        {
-            private readonly IProduction<Pulse> touch;
-
-            private readonly IConnection<IPulsatedTiltSoftware> tilt;
-
-            internal ConnectPulsatedStickSoftware(IStickHardware module, TiltThreshold threshold)
-            {
-                touch = module.Touch.Convert(TouchInto.Pulse);
-
-                tilt = module.Tilt.Pulsate(threshold);
-            }
-
-            public ICancellation Connect(IPulsatedStickSoftware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                touch.Produce(module.Touch).Synthesize(composite);
-                tilt.Connect(module.Tilt).Synthesize(composite);
-
-                return composite;
-            }
+            return hardware.Pulsate(Nuadha.Pulsate.Stick(threshold));
         }
 
         /// <summary>
-        /// Converts <see cref="IPulsatedStickSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedStickHardware"/>.
+        /// Converts <see cref="IStickHardware"/> into <see cref="ITriggerHardware"/>.
         /// </summary>
-        /// <param name="module">
-        /// <see cref="IPulsatedStickSoftware"/> to convert.
+        /// <param name="hardware">
+        /// <see cref="IStickHardware"/> to convert.
+        /// </param>
+        /// <param name="translation">
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Tilt"/> into <see cref="Pull"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedStickHardware"/>.
+        /// <see cref="ITriggerHardware"/> converted from <see cref="IStickHardware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="hardware"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedStickHardware> Connect(this IPulsatedStickSoftware module)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="translation"/> is null.
+        /// </exception>
+        public static ITriggerHardware ToTrigger(IStickHardware hardware, ITranslation<Tilt, Pull> translation)
         {
-            if (module == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (translation == null)
+            {
+                throw new ArgumentNullException(nameof(translation));
             }
 
-            return new ConnectPulsatedStickHardware(module);
-        }
-        private sealed class ConnectPulsatedStickHardware :
-            IConnection<IPulsatedStickHardware>
-        {
-            private readonly IConsumption<Pulse> touch;
-
-            private readonly IConnection<IPulsatedTiltHardware> tilt;
-
-            internal ConnectPulsatedStickHardware(IPulsatedStickSoftware module)
-            {
-                touch = module.Touch;
-
-                tilt = module.Tilt.Connect();
-            }
-
-            public ICancellation Connect(IPulsatedStickHardware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                module.Touch.Produce(touch).Synthesize(composite);
-                tilt.Connect(module.Tilt).Synthesize(composite);
-
-                return composite;
-            }
+            return ConvertStickInto.Trigger(hardware, translation);
         }
     }
 }

@@ -1,7 +1,7 @@
 namespace YggdrAshill.Nuadha.Conduction
 {
     /// <summary>
-    /// Token to <see cref="Emit"/>.
+    /// Token to emit.
     /// </summary>
     public interface IEmission
     {

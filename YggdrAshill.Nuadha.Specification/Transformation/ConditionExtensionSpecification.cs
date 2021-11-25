@@ -4,24 +4,24 @@ using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(ConditionExtension))]
+    [TestFixture(TestOf = typeof(NotificationExtension))]
     internal class ConditionExtensionSpecification
     {
-        private SignalCondition condition;
+        private SignalCondition notification;
 
         [SetUp]
         public void SetUp()
         {
-            condition = new SignalCondition();
+            notification = new SignalCondition();
         }
 
         [TestCase(true)]
         [TestCase(false)]
         public void ShouldBeInversed(bool expected)
         {
-            condition.Previous = expected;
+            notification.Previous = expected;
 
-            var detected = condition.Not().IsSatisfiedBy(new Signal());
+            var detected = notification.Not().Notify(new Signal());
 
             Assert.AreNotEqual(expected, detected);
         }
@@ -41,7 +41,7 @@ namespace YggdrAshill.Nuadha.Specification
                 Previous = another
             };
 
-            var detected = oneCondition.And(anotherCondition).IsSatisfiedBy(new Signal());
+            var detected = oneCondition.And(anotherCondition).Notify(new Signal());
 
             Assert.AreEqual(expected, detected);
         }
@@ -61,7 +61,7 @@ namespace YggdrAshill.Nuadha.Specification
                 Previous = another
             };
 
-            var detected = oneCondition.Or(anotherCondition).IsSatisfiedBy(new Signal());
+            var detected = oneCondition.Or(anotherCondition).Notify(new Signal());
 
             Assert.AreEqual(expected, detected);
         }
@@ -71,7 +71,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var inversed = default(ICondition<Signal>).Not();
+                var inversed = default(INotification<Signal>).Not();
             });
         }
 
@@ -80,11 +80,20 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var multiplied = default(ICondition<Signal>).And(condition);
+                var multiplied = default(INotification<Signal>).And(notification);
             });
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var multiplied = condition.And(default);
+                var multiplied = notification.And(default(INotification<Signal>));
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var multiplied = default(INotification<Signal>).And(_ => false);
+            });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var multiplied = notification.And(default(Func<Signal, bool>));
             });
         }
 
@@ -93,11 +102,20 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var added = default(ICondition<Signal>).Or(condition);
+                var added = default(INotification<Signal>).Or(notification);
             });
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var added = condition.Or(default);
+                var added = notification.Or(default(INotification<Signal>));
+            });
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var added = default(INotification<Signal>).Or(notification);
+            });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var added = notification.Or(default(Func<Signal, bool>));
             });
         }
     }

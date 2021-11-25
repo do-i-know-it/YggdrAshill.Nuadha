@@ -45,35 +45,6 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Collects <see cref="ICancellation"/> to cancel simultaneously.
-        /// </summary>
-        /// <param name="cancellation">
-        /// <see cref="ICancellation"/> collected.
-        /// </param>
-        /// <param name="composite">
-        /// <see cref="CompositeCancellation"/> to collect.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="cancellation"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="composite"/> is null.
-        /// </exception>
-        public static void Synthesize(this ICancellation cancellation, CompositeCancellation composite)
-        {
-            if (cancellation == null)
-            {
-                throw new ArgumentNullException(nameof(cancellation));
-            }
-            if (composite == null)
-            {
-                throw new ArgumentNullException(nameof(composite));
-            }
-
-            composite.Synthesize(cancellation);
-        }
-
-        /// <summary>
         /// Converts <see cref="ICancellation"/> to <see cref="IDisposable"/>.
         /// </summary>
         /// <param name="cancellation">

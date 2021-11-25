@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transformation", "Transform
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YggdrAshill.Nuadha.Samples", "YggdrAshill.Nuadha.Samples\YggdrAshill.Nuadha.Samples.csproj", "{615B922B-7DF3-474F-8CB4-ED6EE737C5D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduction", "Conduction\Conduction.csproj", "{FAED6B53-0DA7-4206-A9DE-6A406CE437FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduction", "Conduction\Conduction.csproj", "{F96F69B6-F08E-4815-94CB-152ECB7807BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,10 +64,10 @@ Global
 		{615B922B-7DF3-474F-8CB4-ED6EE737C5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{615B922B-7DF3-474F-8CB4-ED6EE737C5D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{615B922B-7DF3-474F-8CB4-ED6EE737C5D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAED6B53-0DA7-4206-A9DE-6A406CE437FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAED6B53-0DA7-4206-A9DE-6A406CE437FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FAED6B53-0DA7-4206-A9DE-6A406CE437FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FAED6B53-0DA7-4206-A9DE-6A406CE437FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F96F69B6-F08E-4815-94CB-152ECB7807BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F96F69B6-F08E-4815-94CB-152ECB7807BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F96F69B6-F08E-4815-94CB-152ECB7807BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F96F69B6-F08E-4815-94CB-152ECB7807BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

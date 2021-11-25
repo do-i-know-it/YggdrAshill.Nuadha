@@ -1,28 +1,26 @@
-using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="PoseTracker"/>.
+    /// Defines extensions for <see cref="IPoseTrackerProtocol"/>, <see cref="IPoseTrackerHardware"/> and <see cref="IPoseTrackerSoftware"/>.
     /// </summary>
     public static class PoseTrackerExtension
     {
         /// <summary>
-        /// Converts <see cref="IPoseTrackerProtocol"/> into <see cref="IIgnition{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
+        /// Converts <see cref="IPoseTrackerProtocol"/> into <see cref="ITransmission{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
         /// </summary>
         /// <param name="protocol">
         /// <see cref="IPoseTrackerProtocol"/> to convert.
         /// </param>
         /// <param name="configuration">
-        /// <see cref="IPoseTrackerConfiguration"/> to ignite.
+        /// <see cref="IPoseTrackerConfiguration"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IPoseTrackerSoftware"/>.
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IPoseTrackerSoftware"/> converted from <see cref="IPoseTrackerProtocol"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="protocol"/> is null.
@@ -30,7 +28,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IPoseTrackerSoftware> Ignite(this IPoseTrackerProtocol protocol, IPoseTrackerConfiguration configuration)
+        public static ITransmission<IPoseTrackerSoftware> Transmit(this IPoseTrackerProtocol protocol, IPoseTrackerConfiguration configuration)
         {
             if (protocol == null)
             {
@@ -41,164 +39,179 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new IgnitePoseTracker(protocol, configuration);
-        }
-        private sealed class IgnitePoseTracker :
-            IIgnition<IPoseTrackerSoftware>
-        {
-            private readonly ITransmission<Space3D.Position> position;
-
-            private readonly ITransmission<Space3D.Rotation> rotation;
-
-            internal IgnitePoseTracker(IPoseTrackerProtocol protocol, IPoseTrackerConfiguration configuration)
-            {
-                position = protocol.Position.Ignite(configuration.Position);
-
-                rotation = protocol.Rotation.Ignite(configuration.Rotation);
-            }
-
-            public ICancellation Connect(IPoseTrackerSoftware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                position.Produce(module.Position).Synthesize(composite);
-                rotation.Produce(module.Rotation).Synthesize(composite);
-
-                return composite;
-            }
-
-            public void Emit()
-            {
-                position.Emit();
-
-                rotation.Emit();
-            }
-
-            public void Dispose()
-            {
-                position.Dispose();
-
-                rotation.Dispose();
-            }
+            return ConvertPoseTrackerInto.Transmission(protocol, configuration);
         }
 
         /// <summary>
         /// Converts <see cref="IPoseTrackerSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPoseTrackerHardware"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="software">
         /// <see cref="IPoseTrackerSoftware"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPoseTrackerHardware"/>.
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPoseTrackerHardware"/> converted from <see cref="IPoseTrackerSoftware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="software"/> is null.
         /// </exception>
-        public static IConnection<IPoseTrackerHardware> Connect(this IPoseTrackerSoftware module)
+        public static IConnection<IPoseTrackerHardware> Connect(this IPoseTrackerSoftware software)
         {
-            if (module == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(software));
             }
 
-            return new ConnectPoseTrackerHardware(module);
-        }
-        private sealed class ConnectPoseTrackerHardware :
-            IConnection<IPoseTrackerHardware>
-        {
-            private readonly IConsumption<Space3D.Position> position;
-
-            private readonly IConsumption<Space3D.Rotation> rotation;
-
-            internal ConnectPoseTrackerHardware(IPoseTrackerSoftware module)
-            {
-                position = module.Position;
-
-                rotation = module.Rotation;
-            }
-
-            public ICancellation Connect(IPoseTrackerHardware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                module.Position.Produce(position).Synthesize(composite);
-                module.Rotation.Produce(rotation).Synthesize(composite);
-
-                return composite;
-            }
-        }
-
-        [Obsolete("Please use PoseTrackerExtension.Pulsate instead.")]
-        public static IConnection<IPoseTrackerSoftware> Convert(this IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
-        {
-            return module.Calibrate(configuration);
+            return ConvertPoseTrackerInto.Connection(software);
         }
 
         /// <summary>
         /// Converts <see cref="IPoseTrackerHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
         /// </summary>
-        /// <param name="module">
-        /// <see cref="IPoseTrackerHardware"/> to convert.
-        /// </param>
-        /// <param name="configuration">
-        /// <see cref="IPoseTrackerConfiguration"/> to convert.
+        /// <param name="hardware">
+        /// <see cref="IPoseTrackerSoftware"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPoseTrackerSoftware"/>.
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPoseTrackerSoftware"/> converted from <see cref="IPoseTrackerHardware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IConnection<IPoseTrackerSoftware> Connect(this IPoseTrackerHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return ConvertPoseTrackerInto.Connection(hardware);
+        }
+
+        /// <summary>
+        /// Converts <see cref="IPoseTrackerHardware"/> into <see cref="IPoseTrackerHardware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IPoseTrackerHardware"/> to convert.
+        /// </param>
+        /// <param name="correction">
+        /// <see cref="IPoseTrackerCorrection"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPoseTrackerHardware"/> converted from <see cref="IPoseTrackerHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="correction"/> is null.
+        /// </exception>
+        public static IPoseTrackerHardware Correct(this IPoseTrackerHardware hardware, IPoseTrackerCorrection correction)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (correction == null)
+            {
+                throw new ArgumentNullException(nameof(correction));
+            }
+
+            return ConvertPoseTrackerInto.CorrectedPoseTracker(hardware, correction);
+        }
+
+        /// <summary>
+        /// Calibrates <see cref="IPoseTrackerHardware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IPoseTrackerHardware"/> to calibrate.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IPoseTrackerConfiguration"/> to calibrate.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPoseTrackerHardware"/> calibrated.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IConnection<IPoseTrackerSoftware> Calibrate(this IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
+        public static IPoseTrackerHardware Calibrate(this IPoseTrackerHardware hardware, IPoseTrackerConfiguration configuration)
         {
-            if (module == null)
+            if (hardware == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(hardware));
+            }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            return new ConnectPoseTrackerSoftware(module, configuration);
+            return hardware.Correct(PoseTrackerTo.Calibrate(configuration));
         }
-        private sealed class ConnectPoseTrackerSoftware :
-            IConnection<IPoseTrackerSoftware>
+
+        /// <summary>
+        /// Converts <see cref="IPoseTrackerSoftware"/> into <see cref="IPoseTrackerSoftware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPoseTrackerSoftware"/> to convert.
+        /// </param>
+        /// <param name="correction">
+        /// <see cref="IPoseTrackerCorrection"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPoseTrackerSoftware"/> converted from <see cref="IPoseTrackerSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="correction"/> is null.
+        /// </exception>
+        public static IPoseTrackerSoftware Correct(this IPoseTrackerSoftware software, IPoseTrackerCorrection correction)
         {
-            private readonly IProduction<Space3D.Position> position;
-
-            private readonly IProduction<Space3D.Rotation> rotation;
-
-            internal ConnectPoseTrackerSoftware(IPoseTrackerHardware module, IPoseTrackerConfiguration configuration)
+            if (software == null)
             {
-                position = module.Position.Convert(Space3DPositionTo.Calibrate(configuration.Position));
-
-                rotation = module.Rotation.Convert(Space3DRotationTo.Calibrate(configuration.Rotation));
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (correction == null)
+            {
+                throw new ArgumentNullException(nameof(correction));
             }
 
-            public ICancellation Connect(IPoseTrackerSoftware module)
+            return ConvertPoseTrackerInto.CorrectedPoseTracker(software, correction);
+        }
+
+        /// <summary>
+        /// Calibrates <see cref="IPoseTrackerSoftware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPoseTrackerSoftware"/> to calibrate.
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IPoseTrackerConfiguration"/> to calibrate.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPoseTrackerSoftware"/> calibrated.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IPoseTrackerSoftware Calibrate(this IPoseTrackerSoftware software, IPoseTrackerConfiguration configuration)
+        {
+            if (software == null)
             {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                position.Produce(module.Position).Synthesize(composite);
-                rotation.Produce(module.Rotation).Synthesize(composite);
-
-                return composite;
+                throw new ArgumentNullException(nameof(software));
             }
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return software.Correct(PoseTrackerTo.Calibrate(configuration));
         }
     }
 }

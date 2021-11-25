@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IPoseTrackerProtocol"/>.
+    /// Defines implementations of <see cref="IPoseTrackerProtocol"/>.
     /// </summary>
     public sealed class PoseTracker :
         IPoseTrackerHardware,
@@ -15,32 +15,32 @@ namespace YggdrAshill.Nuadha
         IPoseTrackerProtocol
     {
         /// <summary>
-        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
+        /// Converts <see cref="IPoseTrackerConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IPoseTrackerSoftware"/>.
         /// </summary>
         /// <param name="configuration">
-        /// <see cref="IPoseTrackerConfiguration"/> to ignite.
+        /// <see cref="IPoseTrackerConfiguration"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IPoseTrackerSoftware"/>.
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IPoseTrackerSoftware"/> converted from <see cref="IPoseTrackerConfiguration"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IPoseTrackerSoftware> Ignite(IPoseTrackerConfiguration configuration)
+        public static ITransmission<IPoseTrackerSoftware> Transmit(IPoseTrackerConfiguration configuration)
         {
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return WithoutCache().Ignite(configuration);
+            return WithoutCache().Transmit(configuration);
         }
 
         /// <summary>
         /// <see cref="IPoseTrackerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="IPoseTrackerProtocol"/> without cache.
+        /// <see cref="IPoseTrackerProtocol"/> initialized.
         /// </returns>
         public static IPoseTrackerProtocol WithoutCache()
         {
@@ -52,19 +52,35 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="IPoseTrackerProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IPoseTrackerConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="IPoseTrackerProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IPoseTrackerProtocol WithLatestCache(IPoseTrackerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new PoseTracker(Propagate.WithLatestCache(configuration.Position), Propagate.WithLatestCache(configuration.Rotation));
+        }
+
+        /// <summary>
         /// <see cref="IPoseTrackerProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IPoseTrackerProtocol"/> initialized.
         /// </returns>
         public static IPoseTrackerProtocol WithLatestCache()
         {
-            return new PoseTracker(Propagate.WithLatestCache(Imitate.Position), Propagate.WithLatestCache(Imitate.Rotation));
+            return WithLatestCache(Imitate.PoseTracker);
         }
-
-        /// <inheritdoc/>
-        public IPropagation<Space3D.Position> Position { get; }
-
-        /// <inheritdoc/>
-        public IPropagation<Space3D.Rotation> Rotation { get; }
 
         private PoseTracker(IPropagation<Space3D.Position> position, IPropagation<Space3D.Rotation> rotation)
         {
@@ -74,18 +90,16 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
+        public IPropagation<Space3D.Position> Position { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Space3D.Rotation> Rotation { get; }
+
+        /// <inheritdoc/>
         public IPoseTrackerHardware Hardware => this;
 
         /// <inheritdoc/>
         public IPoseTrackerSoftware Software => this;
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Position.Dispose();
-
-            Rotation.Dispose();
-        }
 
         /// <inheritdoc/>
         IProduction<Space3D.Position> IPoseTrackerHardware.Position => Position;

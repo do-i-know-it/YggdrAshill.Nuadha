@@ -1,25 +1,24 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
-using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IPulsatedTiltHardware"/> and <see cref="IPulsatedTiltSoftware"/>.
+    /// Defines implementations of <see cref="IPulsatedTiltProtocol"/>.
     /// </summary>
     public sealed class PulsatedTilt :
         IPulsatedTiltHardware,
         IPulsatedTiltSoftware,
-        IProtocol<IPulsatedTiltHardware, IPulsatedTiltSoftware>
+        IPulsatedTiltProtocol
     {
         /// <summary>
-        /// <see cref="PulsatedTilt"/> without cache.
+        /// <see cref="IPulsatedTiltProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedTilt"/> without cache.
+        /// <see cref="IPulsatedTiltProtocol"/> initialized.
         /// </returns>
-        public static PulsatedTilt WithoutCache()
+        public static IPulsatedTiltProtocol WithoutCache()
         {
             return new PulsatedTilt(
                 Propagate.WithoutCache<Pulse>(),
@@ -30,48 +29,48 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// <see cref="PulsatedTilt"/> with latest cache.
+        /// <see cref="IPulsatedTiltProtocol"/> with latest cache.
         /// </summary>
         /// <returns>
-        /// <see cref="PulsatedTilt"/> with latest cache.
+        /// <see cref="IPulsatedTiltProtocol"/> initialized.
         /// </returns>
-        public static PulsatedTilt WithLatestCache()
+        public static IPulsatedTiltProtocol WithLatestCache()
         {
-            var generation = Generate.Signal(() => Pulse.IsDisabled);
-
             return new PulsatedTilt(
-                Propagate.WithLatestCache(generation),
-                Propagate.WithLatestCache(generation),
-                Propagate.WithLatestCache(generation),
-                Propagate.WithLatestCache(generation),
-                Propagate.WithLatestCache(generation));
+                Propagate.WithLatestCache(Imitate.Pulse),
+                Propagate.WithLatestCache(Imitate.Pulse),
+                Propagate.WithLatestCache(Imitate.Pulse),
+                Propagate.WithLatestCache(Imitate.Pulse),
+                Propagate.WithLatestCache(Imitate.Pulse));
         }
 
-        private readonly IPropagation<Pulse> distance;
-
-        private readonly IPropagation<Pulse> left;
-
-        private readonly IPropagation<Pulse> right;
-
-        private readonly IPropagation<Pulse> forward;
-
-        private readonly IPropagation<Pulse> backward;
-
-        private PulsatedTilt(
-            IPropagation<Pulse> distance,
-            IPropagation<Pulse> left, IPropagation<Pulse> right,
-            IPropagation<Pulse> forward, IPropagation<Pulse> backward)
+        private PulsatedTilt(IPropagation<Pulse> distance, IPropagation<Pulse> left, IPropagation<Pulse> right, IPropagation<Pulse> forward, IPropagation<Pulse> backward)
         {
-            this.distance = distance;
+            Distance = distance;
 
-            this.left = left;
+            Left = left;
 
-            this.right = right;
+            Right = right;
 
-            this.forward = forward;
+            Forward = forward;
 
-            this.backward = backward;
+            Backward = backward;
         }
+
+        /// <inheritdoc/>
+        public IPropagation<Pulse> Distance { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Pulse> Left { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Pulse> Right { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Pulse> Forward { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Pulse> Backward { get; }
 
         /// <inheritdoc/>
         public IPulsatedTiltHardware Hardware => this;
@@ -80,37 +79,33 @@ namespace YggdrAshill.Nuadha
         public IPulsatedTiltSoftware Software => this;
 
         /// <inheritdoc/>
-        public void Dispose()
-        {
-            distance.Dispose();
+        IProduction<Pulse> IPulsatedTiltHardware.Distance => Distance;
 
-            left.Dispose();
+        /// <inheritdoc/>
+        IProduction<Pulse> IPulsatedTiltHardware.Left => Left;
 
-            right.Dispose();
+        /// <inheritdoc/>
+        IProduction<Pulse> IPulsatedTiltHardware.Right => Right;
 
-            forward.Dispose();
+        /// <inheritdoc/>
+        IProduction<Pulse> IPulsatedTiltHardware.Forward => Forward;
 
-            backward.Dispose();
-        }
+        /// <inheritdoc/>
+        IProduction<Pulse> IPulsatedTiltHardware.Backward => Backward;
 
-        IProduction<Pulse> IPulsatedTiltHardware.Distance => distance;
+        /// <inheritdoc/>
+        IConsumption<Pulse> IPulsatedTiltSoftware.Distance => Distance;
 
-        IProduction<Pulse> IPulsatedTiltHardware.Left => left;
+        /// <inheritdoc/>
+        IConsumption<Pulse> IPulsatedTiltSoftware.Left => Left;
 
-        IProduction<Pulse> IPulsatedTiltHardware.Right => right;
+        /// <inheritdoc/>
+        IConsumption<Pulse> IPulsatedTiltSoftware.Right => Right;
 
-        IProduction<Pulse> IPulsatedTiltHardware.Forward => forward;
+        /// <inheritdoc/>
+        IConsumption<Pulse> IPulsatedTiltSoftware.Forward => Forward;
 
-        IProduction<Pulse> IPulsatedTiltHardware.Backward => backward;
-
-        IConsumption<Pulse> IPulsatedTiltSoftware.Distance => distance;
-
-        IConsumption<Pulse> IPulsatedTiltSoftware.Left => left;
-
-        IConsumption<Pulse> IPulsatedTiltSoftware.Right => right;
-
-        IConsumption<Pulse> IPulsatedTiltSoftware.Forward => forward;
-
-        IConsumption<Pulse> IPulsatedTiltSoftware.Backward => backward;
+        /// <inheritdoc/>
+        IConsumption<Pulse> IPulsatedTiltSoftware.Backward => Backward;
     }
 }

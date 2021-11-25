@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha.Specification
                 return expected = true;
             });
 
-            condition.IsSatisfiedBy(new Signal());
+            condition.Notify(new Signal());
 
             Assert.IsTrue(expected);
         }
@@ -39,7 +39,7 @@ namespace YggdrAshill.Nuadha.Specification
                 return expected;
             });
 
-            var detected = condition.IsSatisfiedBy(new Signal());
+            var detected = condition.Notify(new Signal());
 
             Assert.AreEqual(expected, detected);
         }
@@ -47,13 +47,13 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldBeAlwaysSatisfied()
         {
-            Assert.IsTrue(NoticeOf.All<Signal>().IsSatisfiedBy(default));
+            Assert.IsTrue(NoticeOf.All<Signal>().Notify(default));
         }
 
         [Test]
         public void ShouldBeNeverSatisfied()
         {
-            Assert.IsFalse(NoticeOf.None<Signal>().IsSatisfiedBy(default));
+            Assert.IsFalse(NoticeOf.None<Signal>().Notify(default));
         }
 
         [Test]

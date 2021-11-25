@@ -9,15 +9,15 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldBeSatisfiedWhenPushIsDisabled()
         {
-            Assert.IsTrue(PushIs.Disabled.IsSatisfiedBy(Push.Disabled));
-            Assert.IsFalse(PushIs.Disabled.IsSatisfiedBy(Push.Enabled));
+            Assert.IsTrue(PushIs.Disabled.Notify(Push.Disabled));
+            Assert.IsFalse(PushIs.Disabled.Notify(Push.Enabled));
         }
 
         [Test]
         public void ShouldBeSatisfiedWhenPushIsEnabled()
         {
-            Assert.IsFalse(PushIs.Enabled.IsSatisfiedBy(Push.Disabled));
-            Assert.IsTrue(PushIs.Enabled.IsSatisfiedBy(Push.Enabled));
+            Assert.IsFalse(PushIs.Enabled.Notify(Push.Disabled));
+            Assert.IsTrue(PushIs.Enabled.Notify(Push.Enabled));
         }
     }
 }

@@ -9,19 +9,19 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldBeSatisfiedWhenPulseIsDisabled()
         {
-            Assert.IsTrue(PulseIs.Disabled.IsSatisfiedBy(Pulse.IsDisabled));
-            Assert.IsTrue(PulseIs.Disabled.IsSatisfiedBy(Pulse.HasDisabled));
-            Assert.IsFalse(PulseIs.Disabled.IsSatisfiedBy(Pulse.IsEnabled));
-            Assert.IsFalse(PulseIs.Disabled.IsSatisfiedBy(Pulse.HasEnabled));
+            Assert.IsTrue(PulseIs.Disabled.Notify(Pulse.IsDisabled));
+            Assert.IsTrue(PulseIs.Disabled.Notify(Pulse.HasDisabled));
+            Assert.IsFalse(PulseIs.Disabled.Notify(Pulse.IsEnabled));
+            Assert.IsFalse(PulseIs.Disabled.Notify(Pulse.HasEnabled));
         }
 
         [Test]
         public void ShouldBeSatisfiedWhenPulseIsEnabled()
         {
-            Assert.IsFalse(PulseIs.Enabled.IsSatisfiedBy(Pulse.IsDisabled));
-            Assert.IsFalse(PulseIs.Enabled.IsSatisfiedBy(Pulse.HasDisabled));
-            Assert.IsTrue(PulseIs.Enabled.IsSatisfiedBy(Pulse.IsEnabled));
-            Assert.IsTrue(PulseIs.Enabled.IsSatisfiedBy(Pulse.HasEnabled));
+            Assert.IsFalse(PulseIs.Enabled.Notify(Pulse.IsDisabled));
+            Assert.IsFalse(PulseIs.Enabled.Notify(Pulse.HasDisabled));
+            Assert.IsTrue(PulseIs.Enabled.Notify(Pulse.IsEnabled));
+            Assert.IsTrue(PulseIs.Enabled.Notify(Pulse.HasEnabled));
         }
     }
 }

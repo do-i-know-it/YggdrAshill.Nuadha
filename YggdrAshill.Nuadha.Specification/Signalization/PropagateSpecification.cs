@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using System;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Specification
 {
@@ -48,20 +48,6 @@ namespace YggdrAshill.Nuadha.Specification
             propagation.Consume(expected);
 
             Assert.AreNotEqual(expected, consumption.Consumed);
-        }
-
-        [TestCaseSource("TestSuiteForPropagation")]
-        public void ShouldNotSendSignalAfterHasDisposed(IPropagation<Signal> propagation)
-        {
-            var cancellation = propagation.Produce(consumption);
-
-            propagation.Dispose();
-
-            propagation.Consume(expected);
-
-            Assert.AreNotEqual(expected, consumption.Consumed);
-
-            cancellation.Cancel();
         }
 
         [Test]

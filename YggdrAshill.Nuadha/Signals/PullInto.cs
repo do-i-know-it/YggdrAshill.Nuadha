@@ -12,71 +12,75 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// Converts <see cref="Pull"/> into <see cref="Signals.Push"/>.
         /// </summary>
-        /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to convert.
+        /// <param name="notification">
+        /// <see cref="INotification{TSignal}"/> for <see cref="Pull"/> to convert.
         /// </param>
         /// <returns>
         /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Signals.Push"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
+        /// Thrown if <paramref name="notification"/> is null.
         /// </exception>
-        public static ITranslation<Pull, Push> Push(HysteresisThreshold threshold)
+        public static ITranslation<Pull, Push> Push(INotification<Pull> notification)
         {
-            if (threshold == null)
+            if (notification == null)
             {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(notification));
             }
 
-            var condition = new Condition(threshold);
-            return SignalInto.Signal<Pull, Push>(signal => condition.IsSatisfiedBy(signal).ToPush());
+            return new PullToPush(notification);
         }
-        private sealed class Condition :
-            ICondition<Pull>
+        private sealed class PullToPush :
+            ITranslation<Pull, Push>
         {
-            private readonly HysteresisThreshold threshold;
+            private readonly INotification<Pull> notification;
 
-            private bool previous = false;
-
-            internal Condition(HysteresisThreshold threshold)
+            internal PullToPush(INotification<Pull> notification)
             {
-                this.threshold = threshold;
+                this.notification = notification;
             }
 
-            /// <inheritdoc/>
-            public bool IsSatisfiedBy(Pull signal)
+            public Push Translate(Pull signal)
             {
-                if (previous)
-                {
-                    return previous = threshold.Lower <= (float)signal;
-                }
-                else
-                {
-                    return previous = threshold.Upper <= (float)signal;
-                }
+                return notification.Notify(signal).ToPush();
             }
         }
 
         /// <summary>
-        /// Converts <see cref="Pull"/> into <see cref="Transformation.Pulse"/>.
+        /// Converts <see cref="Pull"/> into <see cref="Signals.Touch"/>.
         /// </summary>
-        /// <param name="threshold">
-        /// <see cref="HysteresisThreshold"/> to convert.
+        /// <param name="notification">
+        /// <see cref="INotification{TSignal}"/> for <see cref="Pull"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Transformation.Pulse"/>.
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Signals.Touch"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
+        /// Thrown if <paramref name="notification"/> is null.
         /// </exception>
-        public static ITranslation<Pull, Pulse> Pulse(HysteresisThreshold threshold)
+        public static ITranslation<Pull, Touch> Touch(INotification<Pull> notification)
         {
-            if (threshold == null)
+            if (notification == null)
             {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(notification));
             }
 
-            return Push(threshold).Then(PushInto.Pulse);
+            return new PullToTouch(notification);
+        }
+        private sealed class PullToTouch :
+            ITranslation<Pull, Touch>
+        {
+            private readonly INotification<Pull> notification;
+
+            internal PullToTouch(INotification<Pull> notification)
+            {
+                this.notification = notification;
+            }
+
+            public Touch Translate(Pull signal)
+            {
+                return notification.Notify(signal).ToTouch();
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var cancellation = Cancellation.Of(default);
+                var cancellation = Cancellation.Of(default(Action));
             });
         }
     }

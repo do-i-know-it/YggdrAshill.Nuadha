@@ -8,7 +8,6 @@ namespace YggdrAshill.Nuadha.Units
     /// Defines <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="ITriggerHardware"/> and <see cref="ITriggerSoftware"/>.
     /// </summary>
     public interface ITriggerProtocol :
-        IModule,
         IProtocol<ITriggerHardware, ITriggerSoftware>
 
     {

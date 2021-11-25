@@ -9,15 +9,15 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldBeSatisfiedWhenTouchIsDisabled()
         {
-            Assert.IsTrue(TouchIs.Disabled.IsSatisfiedBy(Touch.Disabled));
-            Assert.IsFalse(TouchIs.Disabled.IsSatisfiedBy(Touch.Enabled));
+            Assert.IsTrue(TouchIs.Disabled.Notify(Touch.Disabled));
+            Assert.IsFalse(TouchIs.Disabled.Notify(Touch.Enabled));
         }
 
         [Test]
         public void ShouldBeSatisfiedWhenTouchIsEnabled()
         {
-            Assert.IsFalse(TouchIs.Enabled.IsSatisfiedBy(Touch.Disabled));
-            Assert.IsTrue(TouchIs.Enabled.IsSatisfiedBy(Touch.Enabled));
+            Assert.IsFalse(TouchIs.Enabled.Notify(Touch.Disabled));
+            Assert.IsTrue(TouchIs.Enabled.Notify(Touch.Enabled));
         }
     }
 }

@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IHeadTrackerProtocol"/>.
+    /// Defines implementations of <see cref="IHeadTrackerProtocol"/>.
     /// </summary>
     public sealed class HeadTracker :
         IHeadTrackerHardware,
@@ -15,32 +15,32 @@ namespace YggdrAshill.Nuadha
         IHeadTrackerProtocol
     {
         /// <summary>
-        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="IHeadTrackerSoftware"/>.
+        /// Converts <see cref="IHeadTrackerConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IHeadTrackerSoftware"/>.
         /// </summary>
         /// <param name="configuration">
-        /// <see cref="IHeadTrackerConfiguration"/> to ignite.
+        /// <see cref="IHeadTrackerConfiguration"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IHeadTrackerSoftware"/>.
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IHeadTrackerSoftware"/> converted from <see cref="IHeadTrackerConfiguration"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IHeadTrackerSoftware> Ignite(IHeadTrackerConfiguration configuration)
+        public static ITransmission<IHeadTrackerSoftware> Transmit(IHeadTrackerConfiguration configuration)
         {
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return WithoutCache().Ignite(configuration);
+            return WithoutCache().Transmit(configuration);
         }
 
         /// <summary>
         /// <see cref="IHeadTrackerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="IHeadTrackerProtocol"/> without cache.
+        /// <see cref="IHeadTrackerProtocol"/> initialized.
         /// </returns>
         public static IHeadTrackerProtocol WithoutCache()
         {
@@ -50,19 +50,35 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="IHeadTrackerProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IHeadTrackerConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="IHeadTrackerProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IHeadTrackerProtocol WithLatestCache(IHeadTrackerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new HeadTracker(PoseTracker.WithLatestCache(configuration.Pose), Propagate.WithLatestCache(configuration.Direction));
+        }
+
+        /// <summary>
         /// <see cref="IHeadTrackerProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IHeadTrackerProtocol"/> initialized.
         /// </returns>
         public static IHeadTrackerProtocol WithLatestCache()
         {
-            return new HeadTracker(PoseTracker.WithLatestCache(), Propagate.WithLatestCache(Imitate.Direction));
+            return WithLatestCache(Imitate.HeadTracker);
         }
-
-        /// <inheritdoc/>
-        public IPoseTrackerProtocol Pose { get; }
-
-        /// <inheritdoc/>
-        public IPropagation<Space3D.Direction> Direction { get; }
 
         private HeadTracker(IPoseTrackerProtocol pose, IPropagation<Space3D.Direction> direction)
         {
@@ -72,18 +88,16 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
+        public IPoseTrackerProtocol Pose { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Space3D.Direction> Direction { get; }
+
+        /// <inheritdoc/>
         public IHeadTrackerHardware Hardware => this;
 
         /// <inheritdoc/>
         public IHeadTrackerSoftware Software => this;
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Pose.Dispose();
-
-            Direction.Dispose();
-        }
 
         /// <inheritdoc/>
         IPoseTrackerHardware IHeadTrackerHardware.Pose => Pose.Hardware;

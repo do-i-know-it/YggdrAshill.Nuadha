@@ -1,5 +1,4 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Unitization;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
@@ -8,27 +7,97 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="PulsatedTilt"/>.
+    /// Defines extensions for <see cref="IPulsatedStickHardware"/> and <see cref="IPulsatedStickSoftware"/>.
     /// </summary>
     public static class PulsatedTiltExtension
     {
-        [Obsolete("Please use PulsatedTiltExtension.Pulsate instead.")]
-        public static IConnection<IPulsatedTiltSoftware> Convert(this IProduction<Tilt> production, TiltThreshold threshold)
+        /// <summary>
+        /// Converts <see cref="IPulsatedTiltSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltHardware"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPulsatedTiltSoftware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltHardware"/> converted from <see cref="IPulsatedTiltSoftware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        public static IConnection<IPulsatedTiltHardware> Connect(this IPulsatedTiltSoftware software)
         {
-            return production.Pulsate(threshold);
+            if (software == null)
+            {
+                throw new ArgumentNullException(nameof(software));
+            }
+
+            return ConvertPulsatedTiltInto.Connection(software);
         }
 
         /// <summary>
-        /// Converts <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltSoftware"/>.
+        /// Converts <see cref="IPulsatedTiltHardware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltSoftware"/>.
+        /// </summary>
+        /// <param name="hardware">
+        /// <see cref="IPulsatedTiltHardware"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltSoftware"/> converted from <see cref="IPulsatedTiltHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="hardware"/> is null.
+        /// </exception>
+        public static IConnection<IPulsatedTiltSoftware> Connect(this IPulsatedTiltHardware hardware)
+        {
+            if (hardware == null)
+            {
+                throw new ArgumentNullException(nameof(hardware));
+            }
+
+            return ConvertPulsatedTiltInto.Connection(hardware);
+        }
+
+        /// <summary>
+        /// Converts <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/> into <see cref="IPulsatedTiltHardware"/>.
         /// </summary>
         /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/> to convert.
+        /// <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/>.
+        /// </param>
+        /// <param name="pulsation">
+        /// <see cref="ITiltPulsation"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IPulsatedTiltHardware"/> converted from <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
+        public static IPulsatedTiltHardware Pulsate(this IProduction<Tilt> production, ITiltPulsation pulsation)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (pulsation == null)
+            {
+                throw new ArgumentNullException(nameof(pulsation));
+            }
+
+            return ConvertTiltInto.PulsatedTilt(production, pulsation);
+        }
+
+        /// <summary>
+        /// Converts <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/> into <see cref="IPulsatedTiltHardware"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/>.
         /// </param>
         /// <param name="threshold">
         /// <see cref="TiltThreshold"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedTiltSoftware"/>.
+        /// <see cref="IPulsatedTiltHardware"/> converted from <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
@@ -36,7 +105,7 @@ namespace YggdrAshill.Nuadha
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedTiltSoftware> Pulsate(this IProduction<Tilt> production, TiltThreshold threshold)
+        public static IPulsatedTiltHardware Pulsate(this IProduction<Tilt> production, TiltThreshold threshold)
         {
             if (production == null)
             {
@@ -47,109 +116,71 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new ConnectPulsatedTiltSoftware(production, threshold);
-        }
-        private sealed class ConnectPulsatedTiltSoftware :
-            IConnection<IPulsatedTiltSoftware>
-        {
-            private readonly IProduction<Pulse> distance;
-
-            private readonly IProduction<Pulse> left;
-
-            private readonly IProduction<Pulse> right;
-
-            private readonly IProduction<Pulse> forward;
-
-            private readonly IProduction<Pulse> backward;
-
-            internal ConnectPulsatedTiltSoftware(IProduction<Tilt> production, TiltThreshold threshold)
-            {
-                distance = production.Convert(TiltInto.PulseBy.Distance(threshold.Distance));
-                left = production.Convert(TiltInto.PulseBy.Left(threshold.Left));
-                right = production.Convert(TiltInto.PulseBy.Right(threshold.Right));
-                forward = production.Convert(TiltInto.PulseBy.Forward(threshold.Forward));
-                backward = production.Convert(TiltInto.PulseBy.Backward(threshold.Backward));
-            }
-
-            public ICancellation Connect(IPulsatedTiltSoftware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                distance.Produce(module.Distance).Synthesize(composite);
-                left.Produce(module.Left).Synthesize(composite);
-                right.Produce(module.Right).Synthesize(composite);
-                forward.Produce(module.Forward).Synthesize(composite);
-                backward.Produce(module.Backward).Synthesize(composite);
-
-                return composite;
-            }
+            return production.Pulsate(Nuadha.Pulsate.Tilt(threshold));
         }
 
         /// <summary>
-        /// Converts <see cref="IPulsatedTiltSoftware"/> into <see cref="IConnection{TModule}"/> for <see cref="IPulsatedTiltHardware"/>.
+        /// Converts <see cref="IPulsatedTiltHardware"/> into <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/>.
         /// </summary>
-        /// <param name="module">
+        /// <param name="software">
         /// <see cref="IPulsatedTiltSoftware"/> to convert.
         /// </param>
+        /// <param name="pulsation">
+        /// <see cref="ITiltPulsation"/> to convert.
+        /// </param>
         /// <returns>
-        /// <see cref="IConnection{TModule}"/> to connect <see cref="IPulsatedTiltHardware"/>.
+        /// <see cref="IConsumption{TSignal}"/> for <see cref="Tilt"/> converted from <see cref="IPulsatedTiltHardware"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="module"/> is null.
+        /// Thrown if <paramref name="software"/> is null.
         /// </exception>
-        public static IConnection<IPulsatedTiltHardware> Connect(this IPulsatedTiltSoftware module)
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="pulsation"/> is null.
+        /// </exception>
+        public static IConsumption<Tilt> ToTilt(this IPulsatedTiltSoftware software, ITiltPulsation pulsation)
         {
-            if (module == null)
+            if (software == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (pulsation == null)
+            {
+                throw new ArgumentNullException(nameof(pulsation));
             }
 
-            return new ConnectPulsatedTiltHardware(module);
+            return ConvertPulsatedTiltInto.Tilt(software, pulsation);
         }
-        private sealed class ConnectPulsatedTiltHardware :
-            IConnection<IPulsatedTiltHardware>
+
+        /// <summary>
+        /// Converts <see cref="IPulsatedTiltHardware"/> into <see cref="IProduction{TSignal}"/> for <see cref="Tilt"/>.
+        /// </summary>
+        /// <param name="software">
+        /// <see cref="IPulsatedTiltSoftware"/> to convert.
+        /// </param>
+        /// <param name="threshold">
+        /// <see cref="TiltThreshold"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="IConsumption{TSignal}"/> for <see cref="Tilt"/> converted from <see cref="IPulsatedTiltHardware"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="software"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
+        public static IConsumption<Tilt> ToTilt(this IPulsatedTiltSoftware software, TiltThreshold threshold)
         {
-            private readonly IConsumption<Pulse> distance;
-
-            private readonly IConsumption<Pulse> left;
-
-            private readonly IConsumption<Pulse> right;
-
-            private readonly IConsumption<Pulse> forward;
-
-            private readonly IConsumption<Pulse> backward;
-
-            internal ConnectPulsatedTiltHardware(IPulsatedTiltSoftware module)
+            if (software == null)
             {
-                distance = module.Distance;
-                left = module.Left;
-                right = module.Right;
-                forward = module.Forward;
-                backward = module.Backward;
+                throw new ArgumentNullException(nameof(software));
+            }
+            if (threshold == null)
+            {
+                throw new ArgumentNullException(nameof(threshold));
             }
 
-            public ICancellation Connect(IPulsatedTiltHardware module)
-            {
-                if (module == null)
-                {
-                    throw new ArgumentNullException(nameof(module));
-                }
-
-                var composite = new CompositeCancellation();
-
-                module.Distance.Produce(distance).Synthesize(composite);
-                module.Left.Produce(left).Synthesize(composite);
-                module.Right.Produce(right).Synthesize(composite);
-                module.Forward.Produce(forward).Synthesize(composite);
-                module.Backward.Produce(backward).Synthesize(composite);
-
-                return composite;
-            }
+            return software.ToTilt(Nuadha.Pulsate.Tilt(threshold));
         }
     }
 }

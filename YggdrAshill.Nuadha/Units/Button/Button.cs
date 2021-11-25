@@ -7,7 +7,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IButtonProtocol"/>.
+    /// Defines implementations of <see cref="IButtonProtocol"/>.
     /// </summary>
     public sealed class Button :
         IButtonHardware,
@@ -15,32 +15,32 @@ namespace YggdrAshill.Nuadha
         IButtonProtocol
     {
         /// <summary>
-        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="IButtonSoftware"/>.
+        /// Converts <see cref="IButtonConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IButtonSoftware"/>.
         /// </summary>
         /// <param name="configuration">
-        /// <see cref="IButtonConfiguration"/> to ignite.
+        /// <see cref="IButtonConfiguration"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IButtonSoftware"/>.
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IButtonSoftware"/> converted from <see cref="IButtonConfiguration"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IButtonSoftware> Ignite(IButtonConfiguration configuration)
+        public static ITransmission<IButtonSoftware> Transmit(IButtonConfiguration configuration)
         {
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return WithoutCache().Ignite(configuration);
+            return WithoutCache().Transmit(configuration);
         }
 
         /// <summary>
         /// <see cref="IButtonProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="IButtonProtocol"/> without cache.
+        /// <see cref="IButtonProtocol"/> initialized.
         /// </returns>
         public static IButtonProtocol WithoutCache()
         {
@@ -50,19 +50,35 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="IButtonProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IButtonConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="IButtonProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IButtonProtocol WithLatestCache(IButtonConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new Button(Propagate.WithLatestCache(configuration.Touch), Propagate.WithLatestCache(configuration.Push));
+        }
+
+        /// <summary>
         /// <see cref="IButtonProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IButtonProtocol"/> initialized.
         /// </returns>
         public static IButtonProtocol WithLatestCache()
         {
-            return new Button(Propagate.WithLatestCache(Imitate.Touch), Propagate.WithLatestCache(Imitate.Push));
+            return WithLatestCache(Imitate.Button);
         }
-
-        /// <inheritdoc/>
-        public IPropagation<Touch> Touch { get; }
-
-        /// <inheritdoc/>
-        public IPropagation<Push> Push { get; }
 
         private Button(IPropagation<Touch> touch, IPropagation<Push> push)
         {
@@ -72,18 +88,16 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
+        public IPropagation<Touch> Touch { get; }
+
+        /// <inheritdoc/>
+        public IPropagation<Push> Push { get; }
+
+        /// <inheritdoc/>
         public IButtonHardware Hardware => this;
 
         /// <inheritdoc/>
         public IButtonSoftware Software => this;
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Touch.Dispose();
-
-            Push.Dispose();
-        }
 
         /// <inheritdoc/>
         IProduction<Touch> IButtonHardware.Touch => Touch;

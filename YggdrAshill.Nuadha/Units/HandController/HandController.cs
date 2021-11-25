@@ -5,7 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Implementation of <see cref="IHandControllerProtocol"/>.
+    /// Defines implementations of <see cref="IHandControllerProtocol"/>.
     /// </summary>
     public sealed class HandController :
         IHandControllerHardware,
@@ -13,32 +13,32 @@ namespace YggdrAshill.Nuadha
         IHandControllerProtocol
     {
         /// <summary>
-        /// Creates <see cref="IIgnition{TModule}"/> for <see cref="IHandControllerSoftware"/>.
+        /// Converts <see cref="IHandControllerConfiguration"/> into <see cref="ITransmission{TModule}"/> for <see cref="IHandControllerSoftware"/>.
         /// </summary>
         /// <param name="configuration">
-        /// <see cref="IHandControllerConfiguration"/> to ignite.
+        /// <see cref="IHandControllerConfiguration"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IIgnition{TModule}"/> to ignite <see cref="IHandControllerSoftware"/>.
+        /// <see cref="ITransmission{TModule}"/> for <see cref="IHandControllerSoftware"/> converted from <see cref="IHandControllerConfiguration"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="configuration"/> is null.
         /// </exception>
-        public static IIgnition<IHandControllerSoftware> Ignite(IHandControllerConfiguration configuration)
+        public static ITransmission<IHandControllerSoftware> Transmit(IHandControllerConfiguration configuration)
         {
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            return WithoutCache().Ignite(configuration);
+            return WithoutCache().Transmit(configuration);
         }
 
         /// <summary>
         /// <see cref="IHandControllerProtocol"/> without cache.
         /// </summary>
         /// <returns>
-        /// <see cref="IHandControllerProtocol"/> without cache.
+        /// <see cref="IHandControllerProtocol"/> initialized.
         /// </returns>
         public static IHandControllerProtocol WithoutCache()
         {
@@ -52,16 +52,38 @@ namespace YggdrAshill.Nuadha
         /// <summary>
         /// <see cref="IHandControllerProtocol"/> with latest cache.
         /// </summary>
+        /// <param name="configuration">
+        /// <see cref="IHandControllerConfiguration"/> to initialize.
+        /// </param>
         /// <returns>
+        /// <see cref="IHandControllerProtocol"/> initialized.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="configuration"/> is null.
+        /// </exception>
+        public static IHandControllerProtocol WithLatestCache(IHandControllerConfiguration configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            return new HandController(
+                PoseTracker.WithLatestCache(configuration.Pose),
+                Stick.WithLatestCache(configuration.Thumb),
+                Trigger.WithLatestCache(configuration.IndexFinger),
+                Trigger.WithLatestCache(configuration.HandGrip));
+        }
+
+        /// <summary>
         /// <see cref="IHandControllerProtocol"/> with latest cache.
+        /// </summary>
+        /// <returns>
+        /// <see cref="IHandControllerProtocol"/> initialized.
         /// </returns>
         public static IHandControllerProtocol WithLatestCache()
         {
-            return new HandController(
-                PoseTracker.WithLatestCache(),
-                Stick.WithLatestCache(),
-                Trigger.WithLatestCache(),
-                Trigger.WithLatestCache());
+            return WithLatestCache(Imitate.HandController);
         }
 
         /// <inheritdoc/>
@@ -92,18 +114,6 @@ namespace YggdrAshill.Nuadha
 
         /// <inheritdoc/>
         public IHandControllerSoftware Software => this;
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            Pose.Dispose();
-
-            Thumb.Dispose();
-
-            IndexFinger.Dispose();
-
-            HandGrip.Dispose();
-        }
 
         /// <inheritdoc/>
         IPoseTrackerHardware IHandControllerHardware.Pose => Pose.Hardware;

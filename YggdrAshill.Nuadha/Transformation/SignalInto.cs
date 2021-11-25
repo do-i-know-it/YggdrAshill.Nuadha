@@ -70,5 +70,57 @@ namespace YggdrAshill.Nuadha
         {
             return Signal<TSignal, TSignal>(signal => signal);
         }
+
+        public static ITranslation<TSignal, Note> Note<TSignal>(Func<TSignal, string> notation)
+            where TSignal : ISignal
+        {
+            if (notation == null)
+            {
+                throw new ArgumentNullException(nameof(notation));
+            }
+
+            return new SignalToNote<TSignal>(notation);
+        }
+        private sealed class SignalToNote<TSignal> :
+            ITranslation<TSignal, Note>
+            where TSignal : ISignal
+        {
+            private readonly Func<TSignal, string> onTranslated;
+
+            internal SignalToNote(Func<TSignal, string> onTranslated)
+            {
+                this.onTranslated = onTranslated;
+            }
+
+            public Note Translate(TSignal signal)
+            {
+                return onTranslated.Invoke(signal).ToNote();
+            }
+        }
+
+        public static ITranslation<Note, Note> Note(Func<string, string> notation)
+        {
+            if (notation == null)
+            {
+                throw new ArgumentNullException(nameof(notation));
+            }
+
+            return new NoteToNote(notation);
+        }
+        private sealed class NoteToNote :
+           ITranslation<Note, Note>
+        {
+            private readonly Func<string, string> onTranslated;
+
+            internal NoteToNote(Func<string, string> onTranslated)
+            {
+                this.onTranslated = onTranslated;
+            }
+
+            public Note Translate(Note signal)
+            {
+                return onTranslated.Invoke(signal.ToString()).ToNote();
+            }
+        }
     }
 }

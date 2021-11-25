@@ -9,16 +9,16 @@ namespace YggdrAshill.Nuadha
     public static class Consume
     {
         /// <summary>
-        /// Executes <see cref="Action{T}"/>.
+        /// Converts <see cref="Action{T}"/> for <typeparamref name="TSignal"/> into <see cref="IConsumption{TSignal}"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to consume.
         /// </typeparam>
         /// <param name="consumption">
-        /// <see cref="Action{T}"/> to consume <typeparamref name="TSignal"/>.
+        /// <see cref="Action{T}"/> for <typeparamref name="TSignal"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="IConsumption{TSignal}"/> created.
+        /// <see cref="IConsumption{TSignal}"/> converted from <see cref="Action{T}"/> for <typeparamref name="TSignal"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="consumption"/> is null.
@@ -51,13 +51,13 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Executes none.
+        /// <see cref="IConsumption{TSignal}"/> to do nothing.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to consume.
         /// </typeparam>
         /// <returns>
-        /// <see cref="IConsumption{TSignal}"/> created.
+        /// <see cref="IConsumption{TSignal}"/> to do nothing.
         /// </returns>
         public static IConsumption<TSignal> None<TSignal>()
             where TSignal : ISignal
