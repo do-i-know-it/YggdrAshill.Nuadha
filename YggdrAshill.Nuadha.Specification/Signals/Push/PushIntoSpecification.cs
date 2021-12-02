@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -15,6 +14,16 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.AreEqual(Touch.Disabled, translation.Translate(Push.Disabled));
 
             Assert.AreEqual(Touch.Enabled, translation.Translate(Push.Enabled));
+        }
+
+        [Test]
+        public void ShouldConvertPushIntoPull()
+        {
+            var translation = PushInto.Pull;
+
+            Assert.AreEqual(new Pull(Pull.Minimum), translation.Translate(Push.Disabled));
+
+            Assert.AreEqual(new Pull(Pull.Maximum), translation.Translate(Push.Enabled));
         }
     }
 }

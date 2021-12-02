@@ -11,17 +11,22 @@ namespace YggdrAshill.Nuadha.Signals
         IEquatable<Tilt>
     {
         /// <summary>
+        /// Tolerance of difference for <see cref="Tilt"/>.
+        /// </summary>
+        public static float Tolerance { get; } = 1e-5f;
+
+        /// <summary>
         /// Maximum of <see cref="Length"/> for <see cref="Tilt"/>.
         /// </summary>
         public const float Length = 1.0f;
 
         /// <summary>
-        /// <see cref="Minimum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/>.
+        /// Minimum value for <see cref="Horizontal"/> and <see cref="Vertical"/>.
         /// </summary>
         public const float Minimum = -Length;
 
         /// <summary>
-        /// <see cref="Maximum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/>.
+        /// Maximum value for <see cref="Horizontal"/> and <see cref="Vertical"/>.
         /// </summary>
         public const float Maximum = Length;
 
@@ -40,17 +45,10 @@ namespace YggdrAshill.Nuadha.Signals
         /// </summary>
         public static Tilt Left { get; } = new Tilt(-1.0f, 0.0f);
 
-        [Obsolete("Please use Tilt.Forward instead.")]
-        public static Tilt Upward { get; } = Forward;
-
         /// <summary>
         /// <see cref="Forward"/> in the coordinate.
         /// </summary>
         public static Tilt Forward { get; } = new Tilt(0.0f, 1.0f);
-
-
-        [Obsolete("Please use Tilt.Backward instead.")]
-        public static Tilt Downward { get; } = Backward;
 
         /// <summary>
         /// <see cref="Backward"/> in the coordinate.
@@ -99,13 +97,6 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         /// <summary>
-        /// <see cref="Reversed"/> <see cref="Tilt"/>.
-        /// </summary>
-        [Obsolete("Please use \"operator -\" instead of this.")]
-        public Tilt Reversed
-            => -this;
-
-        /// <summary>
         /// Constructs instance.
         /// </summary>
         /// <param name="horizontal">
@@ -152,9 +143,11 @@ namespace YggdrAshill.Nuadha.Signals
             var dotted
                 = horizontal * horizontal
                 + vertical * vertical;
-            if (dotted > Length)
+            var difference = dotted - Length;
+
+            if (difference > Tolerance)
             {
-                throw new ArgumentOutOfRangeException($"{nameof(Distance)}");
+                throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 > {Tolerance}");
             }
 
             Horizontal = horizontal;

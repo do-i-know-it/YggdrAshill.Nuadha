@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> <see cref="Push"/>.
+    /// Implementation of <see cref="ISignal"/> for <see cref="Push"/>.
     /// </summary>
     public struct Push :
         ISignal,
@@ -13,36 +13,30 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// <see cref="Push"/> that is disabled.
         /// </summary>
-        public static Push Disabled { get; } = new Push(State.Disabled);
+        public static Push Disabled { get; } = new Push(false);
 
         /// <summary>
         /// <see cref="Push"/> that is enabled.
         /// </summary>
-        public static Push Enabled { get; } = new Push(State.Enabled);
+        public static Push Enabled { get; } = new Push(true);
 
-        private enum State
+        private readonly bool value;
+
+        private Push(bool value)
         {
-            Disabled = 0,
-            Enabled = 1,
-        }
-
-        private readonly State state;
-
-        private Push(State state)
-        {
-            this.state = state;
+            this.value = value;
         }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{state}";
+            return value ? nameof(Enabled) : nameof(Disabled);
         }
 
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return (int)state;
+            return value.GetHashCode();
         }
 
         /// <inheritdoc/>
@@ -64,7 +58,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// <inheritdoc/>
         public bool Equals(Push other)
         {
-            return state.Equals(other.state);
+            return value.Equals(other.value);
         }
 
         /// <summary>
@@ -92,15 +86,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// </returns>
         public static explicit operator bool(Push signal)
         {
-            switch (signal.state)
-            {
-                case State.Disabled:
-                    return false;
-                case State.Enabled:
-                    return true;
-                default:
-                    throw new NotSupportedException(nameof(Push));
-            }
+            return signal.value;
         }
 
         /// <summary>
@@ -142,15 +128,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// </returns>
         public static Push operator -(Push signal)
         {
-            switch (signal.state)
-            {
-                case State.Disabled:
-                    return Enabled;
-                case State.Enabled:
-                    return Disabled;
-                default:
-                    throw new NotSupportedException(nameof(Push));
-            }
+            return signal.value ? Disabled : Enabled;
         }
 
         /// <summary>
