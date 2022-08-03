@@ -28,22 +28,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(notification));
             }
 
-            return new PullToPush(notification);
-        }
-        private sealed class PullToPush :
-            ITranslation<Pull, Push>
-        {
-            private readonly INotification<Pull> notification;
-
-            internal PullToPush(INotification<Pull> notification)
-            {
-                this.notification = notification;
-            }
-
-            public Push Translate(Pull signal)
-            {
-                return notification.Notify(signal).ToPush();
-            }
+            return SignalInto.Signal<Pull, Push>(signal => notification.Notify(signal).ToPush());
         }
 
         /// <summary>
@@ -65,22 +50,29 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(notification));
             }
 
-            return new PullToTouch(notification);
+            return SignalInto.Signal<Pull, Touch>(signal => notification.Notify(signal).ToTouch());
         }
-        private sealed class PullToTouch :
-            ITranslation<Pull, Touch>
+
+        /// <summary>
+        /// Converts <see cref="Pull"/> into <see cref="Transformation.Pulse"/>.
+        /// </summary>
+        /// <param name="threshold">
+        /// <see cref="HysteresisThreshold"/> to pulsate.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <see cref="Pull"/> into <see cref="Transformation.Pulse"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="threshold"/> is null.
+        /// </exception>
+        public static ITranslation<Pull, Pulse> Pulse(HysteresisThreshold threshold)
         {
-            private readonly INotification<Pull> notification;
-
-            internal PullToTouch(INotification<Pull> notification)
+            if (threshold == null)
             {
-                this.notification = notification;
+                throw new ArgumentNullException(nameof(threshold));
             }
 
-            public Touch Translate(Pull signal)
-            {
-                return notification.Notify(signal).ToTouch();
-            }
+            return PulseFrom.Signal(PullIs.Over(threshold));
         }
     }
 }

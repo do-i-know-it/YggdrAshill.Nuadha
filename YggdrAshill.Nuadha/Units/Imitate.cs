@@ -1,7 +1,6 @@
 using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
 
 namespace YggdrAshill.Nuadha
 {
@@ -51,34 +50,24 @@ namespace YggdrAshill.Nuadha
         public static IGeneration<Space3D.Direction> Direction => imitation;
 
         /// <summary>
-        /// Imitated <see cref="IButtonConfiguration"/>.
+        /// Imitated <see cref="IGeneration{TSignal}"/> for <see cref="Space3D.Pose"/>.
         /// </summary>
-        public static IButtonConfiguration Button => imitation;
+        public static IGeneration<Space3D.Pose> Pose => imitation;
 
         /// <summary>
-        /// Imitated <see cref="ITriggerConfiguration"/>.
+        /// Imitated <see cref="IGeneration{TSignal}"/> for <see cref="Signals.Button"/>.
         /// </summary>
-        public static ITriggerConfiguration Trigger => imitation;
+        public static IGeneration<Button> Button => imitation;
 
         /// <summary>
-        /// Imitated <see cref="IStickConfiguration"/>.
+        /// Imitated <see cref="IGeneration{TSignal}"/> for <see cref="Signals.Trigger"/>.
         /// </summary>
-        public static IStickConfiguration Stick => imitation;
+        public static IGeneration<Trigger> Trigger => imitation;
 
         /// <summary>
-        /// Imitated <see cref="IPoseTrackerConfiguration"/>.
+        /// Imitated <see cref="IGeneration{TSignal}"/> for <see cref="Signals.Stick"/>.
         /// </summary>
-        public static IPoseTrackerConfiguration PoseTracker => imitation;
-
-        /// <summary>
-        /// Imitated <see cref="IHeadTrackerConfiguration"/>.
-        /// </summary>
-        public static IHeadTrackerConfiguration HeadTracker => imitation;
-
-        /// <summary>
-        /// Imitated <see cref="IHandControllerConfiguration"/>.
-        /// </summary>
-        public static IHandControllerConfiguration HandController => imitation;
+        public static IGeneration<Stick> Stick => imitation;
 
         private static readonly Imitation imitation = new Imitation();
 
@@ -91,37 +80,11 @@ namespace YggdrAshill.Nuadha
             IGeneration<Space3D.Position>,
             IGeneration<Space3D.Rotation>,
             IGeneration<Space3D.Direction>,
-            IButtonConfiguration,
-            ITriggerConfiguration,
-            IStickConfiguration,
-            IPoseTrackerConfiguration,
-            IHeadTrackerConfiguration,
-            IHandControllerConfiguration
+            IGeneration<Space3D.Pose>,
+            IGeneration<Button>,
+            IGeneration<Trigger>,
+            IGeneration<Stick>
         {
-            public IGeneration<Touch> Touch => this;
-
-            public IGeneration<Push> Push => this;
-
-            public IGeneration<Pull> Pull => this;
-
-            public IGeneration<Tilt> Tilt => this;
-
-            public IGeneration<Space3D.Position> Position => this;
-
-            public IGeneration<Space3D.Rotation> Rotation => this;
-
-            public IGeneration<Space3D.Direction> Direction => this;
-
-            IPoseTrackerConfiguration IHeadTrackerConfiguration.Pose => this;
-
-            IPoseTrackerConfiguration IHandControllerConfiguration.Pose => this;
-
-            IStickConfiguration IHandControllerConfiguration.Thumb => this;
-
-            ITriggerConfiguration IHandControllerConfiguration.IndexFinger => this;
-
-            ITriggerConfiguration IHandControllerConfiguration.HandGrip => this;
-
             Pulse IGeneration<Pulse>.Generate()
             {
                 return Transformation.Pulse.IsDisabled;
@@ -160,6 +123,26 @@ namespace YggdrAshill.Nuadha
             Space3D.Direction IGeneration<Space3D.Direction>.Generate()
             {
                 return Space3D.Direction.Forward;
+            }
+
+            Space3D.Pose IGeneration<Space3D.Pose>.Generate()
+            {
+                return Space3D.Pose.Origin;
+            }
+
+            Button IGeneration<Button>.Generate()
+            {
+                return Signals.Button.None;
+            }
+
+            Trigger IGeneration<Trigger>.Generate()
+            {
+                return Signals.Trigger.None;
+            }
+
+            Stick IGeneration<Stick>.Generate()
+            {
+                return Signals.Stick.None;
             }
         }
     }

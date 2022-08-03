@@ -9,9 +9,9 @@ namespace YggdrAshill.Nuadha.Units
     public interface IHeadTrackerConfiguration
     {
         /// <summary>
-        /// <see cref="IPoseTrackerConfiguration"/> for pose.
+        /// <see cref="IGeneration{TSignal}"/> to generate <see cref="Space3D.Pose"/>.
         /// </summary>
-        IPoseTrackerConfiguration Pose { get; }
+        IGeneration<Space3D.Pose> Pose { get; }
 
         /// <summary>
         /// <see cref="IGeneration{TSignal}"/> to generate <see cref="Space3D.Direction"/>.

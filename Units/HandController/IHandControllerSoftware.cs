@@ -1,4 +1,6 @@
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
@@ -9,23 +11,23 @@ namespace YggdrAshill.Nuadha.Units
         IModule
     {
         /// <summary>
-        /// <see cref="IPoseTrackerSoftware"/> of hand controller.
+        /// Receives <see cref="Space3D.Pose"/> sent from hardware.
         /// </summary>
-        IPoseTrackerSoftware Pose { get; }
+        IConsumption<Space3D.Pose> Pose { get; }
 
         /// <summary>
-        /// <see cref="IStickSoftware"/> of hand controller.
+        /// Receives <see cref="Stick"/> of thumb sent from hardware.
         /// </summary>
-        IStickSoftware Thumb { get; }
+        IConsumption<Stick> Thumb { get; }
 
         /// <summary>
-        /// <see cref="ITriggerSoftware"/> of hand controller.
+        /// Receives <see cref="Trigger"/> of index finger sent from hardware.
         /// </summary>
-        ITriggerSoftware IndexFinger { get; }
+        IConsumption<Trigger> IndexFinger { get; }
 
         /// <summary>
-        /// <see cref="ITriggerSoftware"/> of hand controller.
+        /// Receives <see cref="Trigger"/> of hand grip sent from hardware.
         /// </summary>
-        ITriggerSoftware HandGrip { get; }
+        IConsumption<Trigger> HandGrip { get; }
     }
 }

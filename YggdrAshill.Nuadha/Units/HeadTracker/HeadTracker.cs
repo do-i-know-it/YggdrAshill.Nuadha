@@ -44,29 +44,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IHeadTrackerProtocol WithoutCache()
         {
-            return new HeadTracker(PoseTracker.WithoutCache(), Propagate.WithoutCache<Space3D.Direction>());
-        }
-
-        /// <summary>
-        /// <see cref="IHeadTrackerProtocol"/> with latest cache.
-        /// </summary>
-        /// <param name="configuration">
-        /// <see cref="IHeadTrackerConfiguration"/> to initialize.
-        /// </param>
-        /// <returns>
-        /// <see cref="IHeadTrackerProtocol"/> initialized.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="configuration"/> is null.
-        /// </exception>
-        public static IHeadTrackerProtocol WithLatestCache(IHeadTrackerConfiguration configuration)
-        {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            return new HeadTracker(PoseTracker.WithLatestCache(configuration.Pose), Propagate.WithLatestCache(configuration.Direction));
+            return new HeadTracker(Propagate.WithoutCache<Space3D.Pose>(), Propagate.WithoutCache<Space3D.Direction>());
         }
 
         /// <summary>
@@ -77,10 +55,10 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IHeadTrackerProtocol WithLatestCache()
         {
-            return WithLatestCache(Imitate.HeadTracker);
+            return new HeadTracker(Propagate.WithLatestCache(Imitate.Pose), Propagate.WithLatestCache(Imitate.Direction));
         }
 
-        private HeadTracker(IPoseTrackerProtocol pose, IPropagation<Space3D.Direction> direction)
+        private HeadTracker(IPropagation<Space3D.Pose> pose, IPropagation<Space3D.Direction> direction)
         {
             Pose = pose;
 
@@ -88,7 +66,7 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <inheritdoc/>
-        public IPoseTrackerProtocol Pose { get; }
+        public IPropagation<Space3D.Pose> Pose { get; }
 
         /// <inheritdoc/>
         public IPropagation<Space3D.Direction> Direction { get; }
@@ -100,13 +78,13 @@ namespace YggdrAshill.Nuadha
         public IHeadTrackerSoftware Software => this;
 
         /// <inheritdoc/>
-        IPoseTrackerHardware IHeadTrackerHardware.Pose => Pose.Hardware;
+        IProduction<Space3D.Pose> IHeadTrackerHardware.Pose => Pose;
 
         /// <inheritdoc/>
         IProduction<Space3D.Direction> IHeadTrackerHardware.Direction => Direction;
 
         /// <inheritdoc/>
-        IPoseTrackerSoftware IHeadTrackerSoftware.Pose => Pose.Software;
+        IConsumption<Space3D.Pose> IHeadTrackerSoftware.Pose => Pose;
 
         /// <inheritdoc/>
         IConsumption<Space3D.Direction> IHeadTrackerSoftware.Direction => Direction;

@@ -1069,5 +1069,137 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         #endregion
+
+        #region Pose
+
+        /// <summary>
+        /// Implemetation of <see cref="ISignal"/> for <see cref="Pose"/> of <see cref="Space3D"/>.
+        /// </summary>
+        public struct Pose :
+            ISignal,
+            IEquatable<Pose>
+        {
+            /// <summary>
+            /// <see cref="Origin"/> of the coordinate.
+            /// </summary>
+            public static Pose Origin { get; } = new Pose(Position.Origin, Rotation.None);
+
+            /// <summary>
+            /// <see cref="Space3D.Position"/> of <see cref="Pose"/>.
+            /// </summary>
+            public Position Position { get; }
+
+            /// <summary>
+            /// <see cref="Space3D.Rotation"/> of <see cref="Pose"/>.
+            /// </summary>
+            public Rotation Rotation { get; }
+
+            /// <summary>
+            /// Constructs instance.
+            /// </summary>
+            /// <param name="position">
+            /// <see cref="Space3D.Position"/> of <see cref="Pose"/>.
+            /// </param>
+            /// <param name="rotation">
+            /// <see cref="Space3D.Rotation"/> of <see cref="Pose"/>.
+            /// </param>
+            public Pose(Position position, Rotation rotation)
+            {
+                Position = position;
+
+                Rotation = rotation;
+            }
+
+            /// <inheritdoc/>
+            public override string ToString()
+            {
+                return $"{nameof(Position)}: {Position}; {nameof(Rotation)}: {Rotation}";
+            }
+
+            /// <inheritdoc/>
+            public override int GetHashCode()
+            {
+                // Visual Studio auto generated.
+                var hashCode = -388643783;
+                hashCode = hashCode * -1521134295 + Position.GetHashCode();
+                hashCode = hashCode * -1521134295 + Rotation.GetHashCode();
+                return hashCode;
+            }
+
+            /// <inheritdoc/>
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(this, obj))
+                {
+                    return true;
+                }
+
+                if (obj is Pose signal)
+                {
+                    return Equals(signal);
+                }
+
+                return false;
+            }
+
+            /// <inheritdoc/>
+            public bool Equals(Pose other)
+            {
+                return Position.Equals(other.Position)
+                    && Rotation.Equals(other.Rotation);
+            }
+
+            /// <summary>
+            /// Converts explicitly <see cref="Space3D.Position"/> to <see cref="Pose"/>.
+            /// </summary>
+            /// <param name="signal">
+            /// <see cref="Space3D.Position"/> to covert.
+            /// </param>
+            /// <returns>
+            /// <see cref="Pose"/> converted.
+            /// </returns>
+            public static explicit operator Pose(Position signal)
+            {
+                return new Pose(signal, Rotation.None);
+            }
+
+            /// <summary>
+            /// Converts explicitly <see cref="Space3D.Rotation"/> to <see cref="Pose"/>.
+            /// </summary>
+            /// <param name="signal">
+            /// <see cref="Space3D.Rotation"/> to covert.
+            /// </param>
+            /// <returns>
+            /// <see cref="Pose"/> converted.
+            /// </returns>
+            public static explicit operator Pose(Rotation signal)
+            {
+                return new Pose(Position.Origin, signal);
+            }
+
+            /// <summary>
+            /// Checks if <see cref="Pose"/> and <see cref="Pose"/> are equal.
+            /// </summary>
+            /// <param name="left"></param>
+            /// <param name="right"></param>
+            /// <returns></returns>
+            public static bool operator ==(Pose left, Pose right)
+            {
+                return left.Equals(right);
+            }
+
+            /// <summary>
+            /// Checks if <see cref="Pose"/> and <see cref="Pose"/> are not equal.
+            /// </summary>
+            /// <param name="left"></param>
+            /// <param name="right"></param>
+            /// <returns></returns>
+            public static bool operator !=(Pose left, Pose right)
+            {
+                return !(left == right);
+            }
+        }
+
+        #endregion
     }
 }

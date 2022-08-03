@@ -11,14 +11,24 @@ namespace YggdrAshill.Nuadha.Signals
         IEquatable<Pull>
     {
         /// <summary>
-        /// <see cref="Minimum"/> of <see cref="Pull"/>.
+        /// <see cref="Minimum"/> for <see cref="Pull"/>.
         /// </summary>
         public const float Minimum = 0.0f;
 
         /// <summary>
-        /// <see cref="Maximum"/> of <see cref="Pull"/>.
+        /// <see cref="Maximum"/> for <see cref="Pull"/>.
         /// </summary>
         public const float Maximum = 1.0f;
+
+        /// <summary>
+        /// <see cref="Released"/> of <see cref="Pull"/>.
+        /// </summary>
+        public static Pull Released { get; } = new Pull(Minimum);
+
+        /// <summary>
+        /// <see cref="Pulled"/> of <see cref="Pull"/>.
+        /// </summary>
+        public static Pull Pulled { get; } = new Pull(Maximum);
 
         private readonly float value;
 

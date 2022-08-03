@@ -73,8 +73,8 @@ namespace YggdrAshill.Nuadha.Units
         private static IEmission Conduct(IHeadTrackerConfiguration configuration, IHeadTrackerSoftware software)
             => EmissionSource
             .Default
-            .Synthesize(ConductSignalTo.Consume(configuration.Pose.Position, software.Pose.Position))
-            .Synthesize(ConductSignalTo.Consume(configuration.Pose.Rotation, software.Pose.Rotation))
+            .Synthesize(ConductSignalTo.Consume(configuration.Pose, software.Pose))
+            .Synthesize(ConductSignalTo.Consume(configuration.Pose, software.Pose))
             .Synthesize(ConductSignalTo.Consume(configuration.Direction, software.Direction))
             .Build();
 
@@ -165,8 +165,8 @@ namespace YggdrAshill.Nuadha.Units
         private static ICancellation Connect(IHeadTrackerHardware hardware, IHeadTrackerSoftware software)
             => CancellationSource
             .Default
-            .Synthesize(hardware.Pose.Position.Produce(software.Pose.Position))
-            .Synthesize(hardware.Pose.Rotation.Produce(software.Pose.Rotation))
+            .Synthesize(hardware.Pose.Produce(software.Pose))
+            .Synthesize(hardware.Pose.Produce(software.Pose))
             .Synthesize(hardware.Direction.Produce(software.Direction))
             .Build();
     }

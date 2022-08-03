@@ -11,9 +11,9 @@ namespace YggdrAshill.Nuadha.Units
         IModule
     {
         /// <summary>
-        /// <see cref="IPoseTrackerSoftware"/> of head tracker.
+        /// Sends <see cref="Space3D.Pose"/> to software.
         /// </summary>
-        IPoseTrackerHardware Pose { get; }
+        IProduction<Space3D.Pose> Pose { get; }
 
         /// <summary>
         /// Sends <see cref="Space3D.Direction"/> to software.

@@ -11,28 +11,38 @@ namespace YggdrAshill.Nuadha.Signals
         IEquatable<Battery>
     {
         /// <summary>
+        /// <see cref="Minimum"/> for <see cref="Battery"/>.
+        /// </summary>
+        public const float Minimum = 0.0f;
+
+        /// <summary>
+        /// <see cref="Maximum"/> for <see cref="Battery"/>.
+        /// </summary>
+        public const float Maximum = 1.0f;
+
+        /// <summary>
         /// <see cref="Empty"/> of <see cref="Battery"/>.
         /// </summary>
-        public const float Empty = 0.0f;
+        public static Battery Empty { get; } = new Battery(Minimum);
 
         /// <summary>
         /// <see cref="Full"/> of <see cref="Battery"/>.
         /// </summary>
-        public const float Full = 1.0f;
+        public static Battery Full { get; } = new Battery(Maximum);
 
         private readonly float level;
 
         /// <summary>
-        /// Construcs instance.
+        /// Constructs instance.
         /// </summary>
         /// <param name="level">
-        /// <see cref="float"/> for <see cref="Battery"/>
+        /// <see cref="float"/> for <see cref="Battery"/>.
         /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown if <paramref name="level"/> is <see cref="float.NaN"/>.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="level"/> is out of range between <see cref="Empty"/> and <see cref="Full"/>.
+        /// Thrown if <paramref name="level"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
         /// </exception>
         public Battery(float level)
         {
@@ -41,7 +51,7 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentException($"{nameof(level)} is NaN.");
             }
 
-            if (level < Empty || Full < level)
+            if (level < Minimum || Maximum < level)
             {
                 throw new ArgumentOutOfRangeException(nameof(level));
             }

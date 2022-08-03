@@ -1,3 +1,6 @@
+using YggdrAshill.Nuadha.Conduction;
+using YggdrAshill.Nuadha.Signals;
+
 namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
@@ -6,23 +9,23 @@ namespace YggdrAshill.Nuadha.Units
     public interface IHandControllerConfiguration
     {
         /// <summary>
-        /// <see cref="IPoseTrackerConfiguration"/>.
+        /// Generates <see cref="Space3D.Pose"/> to send.
         /// </summary>
-        IPoseTrackerConfiguration Pose { get; }
+        IGeneration<Space3D.Pose> Pose { get; }
 
         /// <summary>
-        /// <see cref="IStickConfiguration"/> for thumb.
+        /// Generates <see cref="Stick"/> of thumb to send.
         /// </summary>
-        IStickConfiguration Thumb { get; }
+        IGeneration<Stick> Thumb { get; }
 
         /// <summary>
-        /// <see cref="ITriggerConfiguration"/> for index finger.
+        /// Generates <see cref="Trigger"/> of index finger to send.
         /// </summary>
-        ITriggerConfiguration IndexFinger { get; }
+        IGeneration<Trigger> IndexFinger { get; }
 
         /// <summary>
-        /// <see cref="ITriggerConfiguration"/> for hand grip.
+        /// Generates <see cref="Trigger"/> of hand grip to send.
         /// </summary>
-        ITriggerConfiguration HandGrip { get; }
+        IGeneration<Trigger> HandGrip { get; }
     }
 }

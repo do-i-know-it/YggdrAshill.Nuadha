@@ -73,14 +73,10 @@ namespace YggdrAshill.Nuadha.Units
         private static IEmission Conduct(IHandControllerConfiguration configuration, IHandControllerSoftware software)
             => EmissionSource
             .Default
-            .Synthesize(ConductSignalTo.Consume(configuration.HandGrip.Touch, software.HandGrip.Touch))
-            .Synthesize(ConductSignalTo.Consume(configuration.HandGrip.Pull, software.HandGrip.Pull))
-            .Synthesize(ConductSignalTo.Consume(configuration.IndexFinger.Touch, software.IndexFinger.Touch))
-            .Synthesize(ConductSignalTo.Consume(configuration.IndexFinger.Pull, software.IndexFinger.Pull))
-            .Synthesize(ConductSignalTo.Consume(configuration.Thumb.Touch, software.Thumb.Touch))
-            .Synthesize(ConductSignalTo.Consume(configuration.Thumb.Tilt, software.Thumb.Tilt))
-            .Synthesize(ConductSignalTo.Consume(configuration.Pose.Position, software.Pose.Position))
-            .Synthesize(ConductSignalTo.Consume(configuration.Pose.Rotation, software.Pose.Rotation))
+            .Synthesize(ConductSignalTo.Consume(configuration.HandGrip, software.HandGrip))
+            .Synthesize(ConductSignalTo.Consume(configuration.IndexFinger, software.IndexFinger))
+            .Synthesize(ConductSignalTo.Consume(configuration.Thumb, software.Thumb))
+            .Synthesize(ConductSignalTo.Consume(configuration.Pose, software.Pose))
             .Build();
 
         /// <summary>
@@ -170,64 +166,10 @@ namespace YggdrAshill.Nuadha.Units
         private static ICancellation Connect(IHandControllerHardware hardware, IHandControllerSoftware software)
             => CancellationSource
             .Default
-            .Synthesize(hardware.HandGrip.Touch.Produce(software.HandGrip.Touch))
-            .Synthesize(hardware.HandGrip.Pull.Produce(software.HandGrip.Pull))
-            .Synthesize(hardware.IndexFinger.Touch.Produce(software.IndexFinger.Touch))
-            .Synthesize(hardware.IndexFinger.Pull.Produce(software.IndexFinger.Pull))
-            .Synthesize(hardware.Thumb.Touch.Produce(software.Thumb.Touch))
-            .Synthesize(hardware.Thumb.Tilt.Produce(software.Thumb.Tilt))
-            .Synthesize(hardware.Pose.Position.Produce(software.Pose.Position))
-            .Synthesize(hardware.Pose.Rotation.Produce(software.Pose.Rotation))
+            .Synthesize(hardware.HandGrip.Produce(software.HandGrip))
+            .Synthesize(hardware.IndexFinger.Produce(software.IndexFinger))
+            .Synthesize(hardware.Thumb.Produce(software.Thumb))
+            .Synthesize(hardware.Pose.Produce(software.Pose))
             .Build();
-
-        /// <summary>
-        /// Converts <see cref="IHandControllerHardware"/> into <see cref="IPulsatedHandControllerHardware"/>.
-        /// </summary>
-        /// <param name="hardware">
-        /// <see cref="IHandControllerHardware"/> to convert.
-        /// </param>
-        /// <param name="pulsation">
-        /// <see cref="IHandControllerPulsation"/> to convert.
-        /// </param>
-        /// <returns>
-        /// <see cref="IPulsatedHandControllerHardware"/> converted from <see cref="IHandControllerHardware"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="hardware"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="pulsation"/> is null.
-        /// </exception>
-        public static IPulsatedHandControllerHardware PulsatedHandController(IHandControllerHardware hardware, IHandControllerPulsation pulsation)
-        {
-            if (hardware == null)
-            {
-                throw new ArgumentNullException(nameof(hardware));
-            }
-            if (pulsation == null)
-            {
-                throw new ArgumentNullException(nameof(pulsation));
-            }
-
-            return new PulsatedHandControllerHardware(hardware, pulsation);
-        }
-        private sealed class PulsatedHandControllerHardware :
-            IPulsatedHandControllerHardware
-        {
-            internal PulsatedHandControllerHardware(IHandControllerHardware module, IHandControllerPulsation pulsation)
-            {
-                Thumb = ConvertStickInto.PulsatedStick(module.Thumb, pulsation.Thumb);
-
-                IndexFinger = ConvertTriggerInto.PulsatedTrigger(module.IndexFinger, pulsation.IndexFinger);
-
-                HandGrip = ConvertTriggerInto.PulsatedTrigger(module.HandGrip, pulsation.HandGrip);
-            }
-
-            public IPulsatedStickHardware Thumb { get; }
-
-            public IPulsatedTriggerHardware IndexFinger { get; }
-
-            public IPulsatedTriggerHardware HandGrip { get; }
-        }
     }
 }

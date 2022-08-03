@@ -126,13 +126,13 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Battery ToBattery(this float signal)
         {
-            if (signal < Battery.Empty)
+            if (signal < Battery.Minimum)
             {
-                signal = Battery.Empty;
+                signal = Battery.Minimum;
             }
-            if (signal > Battery.Full)
+            if (signal > Battery.Maximum)
             {
-                signal = Battery.Full;
+                signal = Battery.Maximum;
             }
 
             return (Battery)signal;
