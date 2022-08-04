@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -6,24 +7,30 @@ namespace YggdrAshill.Nuadha.Specification
     [TestFixture(TestOf = typeof(PushInto))]
     internal class PushIntoSpecification
     {
-        [Test]
-        public void ShouldConvertPushIntoTouch()
+        private static object[] TestSuiteToConvertPushIntoTouch => new[]
         {
-            var translation = PushInto.Touch;
-
-            Assert.AreEqual(Touch.Disabled, translation.Translate(Push.Disabled));
-
-            Assert.AreEqual(Touch.Enabled, translation.Translate(Push.Enabled));
+            new object[] { PushInto.TouchWhen.Enabled, Touch.Disabled, Push.Disabled },
+            new object[] { PushInto.TouchWhen.Enabled, Touch.Enabled, Push.Enabled },
+            new object[] { PushInto.TouchWhen.Disabled, Touch.Enabled, Push.Disabled },
+            new object[] { PushInto.TouchWhen.Disabled, Touch.Disabled, Push.Enabled },
+        };
+        [TestCaseSource("TestSuiteToConvertPushIntoTouch")]
+        public void ShouldConvertPushIntoTouch(ITranslation<Push, Touch> translation, Touch expected, Push actual)
+        {
+            Assert.AreEqual(expected, translation.Translate(actual));
         }
 
-        [Test]
-        public void ShouldConvertPushIntoPull()
+        private static object[] TestSuiteToConvertPushIntoPull => new[]
         {
-            var translation = PushInto.Pull;
-
-            Assert.AreEqual(new Pull(Pull.Minimum), translation.Translate(Push.Disabled));
-
-            Assert.AreEqual(new Pull(Pull.Maximum), translation.Translate(Push.Enabled));
+            new object[] { PushInto.PullWhen.Enabled, Pull.Released, Push.Disabled },
+            new object[] { PushInto.PullWhen.Enabled, Pull.Pulled, Push.Enabled },
+            new object[] { PushInto.PullWhen.Disabled, Pull.Pulled, Push.Disabled },
+            new object[] { PushInto.PullWhen.Disabled, Pull.Released, Push.Enabled },
+        };
+        [TestCaseSource("TestSuiteToConvertPushIntoPull")]
+        public void ShouldConvertPushIntoPull(ITranslation<Push, Pull> translation, Pull expected, Push actual)
+        {
+            Assert.AreEqual(expected, translation.Translate(actual));
         }
     }
 }
