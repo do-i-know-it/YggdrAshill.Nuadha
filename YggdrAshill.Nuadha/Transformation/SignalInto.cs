@@ -22,7 +22,7 @@ namespace YggdrAshill.Nuadha
         /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
-        /// <see cref="ITranslation{TInput, TOutput}"/> to convert.
+        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="translation"/> is null.
@@ -57,18 +57,44 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Executes none.
+        /// Corrects <typeparamref name="TSignal"/>.
         /// </summary>
         /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to convert.
+        /// Type of <see cref="ISignal"/> to correct.
+        /// </typeparam>
+        /// <param name="translation">
+        /// <see cref="Func{T, TResult}"/> to correct <typeparamref name="TSignal"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ITranslation{TInput, TOutput}"/> for <typeparamref name="TSignal"/> to correct.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="translation"/> is null.
+        /// </exception>
+        public static ITranslation<TSignal, TSignal> Signal<TSignal>(Func<TSignal, TSignal> translation)
+            where TSignal : ISignal
+        {
+            if (translation == null)
+            {
+                throw new ArgumentNullException(nameof(translation));
+            }
+
+            return new Translation<TSignal, TSignal>(translation);
+        }
+
+        /// <summary>
+        /// Corrects none.
+        /// </summary>
+        /// <typeparam name="TSignal">
+        /// Type of <see cref="ISignal"/> to correct.
         /// </typeparam>
         /// <returns>
-        /// <see cref="ITranslation{TInput, TOutput}"/> created.
+        /// <see cref="ITranslation{TInput, TOutput}"/> to correct <typeparamref name="TSignal"/>.
         /// </returns>
         public static ITranslation<TSignal, TSignal> None<TSignal>()
             where TSignal : ISignal
         {
-            return Signal<TSignal, TSignal>(signal => signal);
+            return Signal<TSignal>(signal => signal);
         }
 
         public static ITranslation<TSignal, Note> Note<TSignal>(Func<TSignal, string> notation)
