@@ -7,14 +7,14 @@ namespace YggdrAshill.Nuadha.Specification
     internal class TouchIsSpecification
     {
         [Test]
-        public void ShouldBeSatisfiedWhenTouchIsDisabled()
+        public void ShouldNotifyWhenTouchIsDisabled()
         {
             Assert.IsTrue(TouchIs.Disabled.Notify(Touch.Disabled));
             Assert.IsFalse(TouchIs.Disabled.Notify(Touch.Enabled));
         }
 
         [Test]
-        public void ShouldBeSatisfiedWhenTouchIsEnabled()
+        public void ShouldNotifyWhenTouchIsEnabled()
         {
             Assert.IsFalse(TouchIs.Enabled.Notify(Touch.Disabled));
             Assert.IsTrue(TouchIs.Enabled.Notify(Touch.Enabled));

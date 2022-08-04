@@ -52,7 +52,7 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Satisfied by all of <typeparamref name="TSignal"/> even if <typeparamref name="TSignal"/> is <see cref="null"/>.
+        /// Notifies all of <typeparamref name="TSignal"/> even if <typeparamref name="TSignal"/> is <see cref="null"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.
@@ -67,7 +67,7 @@ namespace YggdrAshill.Nuadha
         }
 
         /// <summary>
-        /// Satisfied by none of <typeparamref name="TSignal"/> even if <typeparamref name="TSignal"/> is <see cref="null"/>.
+        /// Notifies none of <typeparamref name="TSignal"/> even if <typeparamref name="TSignal"/> is <see cref="null"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to detect.

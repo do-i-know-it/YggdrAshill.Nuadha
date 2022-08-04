@@ -7,14 +7,14 @@ namespace YggdrAshill.Nuadha.Specification
     internal class PushIsSpecification
     {
         [Test]
-        public void ShouldBeSatisfiedWhenPushIsDisabled()
+        public void ShouldNotifyWhenPushIsDisabled()
         {
             Assert.IsTrue(PushIs.Disabled.Notify(Push.Disabled));
             Assert.IsFalse(PushIs.Disabled.Notify(Push.Enabled));
         }
 
         [Test]
-        public void ShouldBeSatisfiedWhenPushIsEnabled()
+        public void ShouldNotifyWhenPushIsEnabled()
         {
             Assert.IsFalse(PushIs.Enabled.Notify(Push.Disabled));
             Assert.IsTrue(PushIs.Enabled.Notify(Push.Enabled));

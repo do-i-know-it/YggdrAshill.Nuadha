@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha.Specification
     internal class PulseHasSpecification
     {
         [Test]
-        public void ShouldBeSatisfiedWhenPulseHasDisabled()
+        public void ShouldNotifyWhenPulseHasDisabled()
         {
             Assert.IsFalse(PulseHas.Disabled.Notify(Pulse.IsDisabled));
             Assert.IsTrue(PulseHas.Disabled.Notify(Pulse.HasDisabled));
@@ -16,7 +16,7 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldBeSatisfiedWhenPulseHasEnabled()
+        public void ShouldNotifyWhenPulseHasEnabled()
         {
             Assert.IsFalse(PulseHas.Enabled.Notify(Pulse.IsDisabled));
             Assert.IsFalse(PulseHas.Enabled.Notify(Pulse.HasDisabled));

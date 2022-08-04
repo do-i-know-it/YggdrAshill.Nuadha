@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha.Specification
     internal class NoticeOfSpecification
     {
         [Test]
-        public void ShouldExecuteFunctionWhenHasBeenSatisfied()
+        public void ShouldExecuteFunctionWhenHasNotified()
         {
             var expected = false;
             var condition = NoticeOf.Signal<Signal>(signal =>
@@ -27,7 +27,7 @@ namespace YggdrAshill.Nuadha.Specification
 
         [TestCase(true)]
         [TestCase(false)]
-        public void ShouldBeSatisfiedBySignal(bool expected)
+        public void ShouldNotifyBySignal(bool expected)
         {
             var condition = NoticeOf.Signal<Signal>(signal =>
             {
@@ -45,13 +45,13 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldBeAlwaysSatisfied()
+        public void ShouldNofityAll()
         {
             Assert.IsTrue(NoticeOf.All<Signal>().Notify(default));
         }
 
         [Test]
-        public void ShouldBeNeverSatisfied()
+        public void ShouldNotifyNone()
         {
             Assert.IsFalse(NoticeOf.None<Signal>().Notify(default));
         }
