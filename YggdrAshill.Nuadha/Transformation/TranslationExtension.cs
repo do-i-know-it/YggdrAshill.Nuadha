@@ -50,7 +50,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(mediumToOutput));
             }
 
-            return SignalFrom.Transited(inputToMedium, mediumToOutput);
+            return Translate<TInput, TOutput>.Via(inputToMedium, mediumToOutput);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(mediumToOutput));
             }
 
-            return inputToMedium.Then(SignalInto.Signal(mediumToOutput));
+            return inputToMedium.Then(From<TMedium>.Into(mediumToOutput));
         }
     }
 }

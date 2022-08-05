@@ -115,6 +115,15 @@ namespace YggdrAshill.Nuadha.Signals
             /// </returns>
             public static explicit operator Radian(float signal)
             {
+                if (signal < Minimum)
+                {
+                    return new Radian(Minimum);
+                }
+                if (signal > Maximum)
+                {
+                    return new Radian(Maximum);
+                }
+
                 return new Radian(signal);
             }
 
@@ -317,6 +326,15 @@ namespace YggdrAshill.Nuadha.Signals
             /// </returns>
             public static explicit operator Degree(float signal)
             {
+                if (signal < Minimum)
+                {
+                    return new Degree(Minimum);
+                }
+                if (signal > Maximum)
+                {
+                    return new Degree(Maximum);
+                }
+
                 return new Degree(signal);
             }
 

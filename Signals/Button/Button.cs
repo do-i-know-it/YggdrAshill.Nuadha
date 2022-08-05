@@ -109,6 +109,20 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         /// <summary>
+        /// Converts explicitly <see cref="Button"/> to <see cref="Trigger"/>.
+        /// </summary>
+        /// <param name="signal">
+        /// <see cref="Button"/> to covert.
+        /// </param>
+        /// <returns>
+        /// <see cref="Trigger"/> converted.
+        /// </returns>
+        public static explicit operator Trigger(Button signal)
+        {
+            return new Trigger(signal.Touch, (Pull)signal.Push);
+        }
+
+        /// <summary>
         /// Checks if <see cref="Button"/> and <see cref="Button"/> are equal.
         /// </summary>
         /// <param name="left"></param>

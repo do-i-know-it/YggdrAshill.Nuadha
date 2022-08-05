@@ -5,7 +5,7 @@ using System;
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="INotification{TSignal}"/>.
+    /// Defines extensions for <see cref="INotification{TSignal}"/> to operate <see cref="INotification{TSignal}"/>.
     /// </summary>
     public static class NotificationExtension
     {
@@ -17,7 +17,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(notification));
             }
 
-            return NoticeFrom.Inverted(notification);
+            return Notify<TSignal>.Inverted(notification);
         }
         
         public static INotification<TSignal> And<TSignal>(this INotification<TSignal> first, INotification<TSignal> second)
@@ -32,7 +32,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(second));
             }
 
-            return NoticeFrom.Multiplied(first, second);
+            return Notify<TSignal>.Multiplied(first, second);
         }
 
         public static INotification<TSignal> And<TSignal>(this INotification<TSignal> first, Func<TSignal, bool> second)
@@ -47,7 +47,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(second));
             }
 
-            return first.And(NoticeOf.Signal(second));
+            return first.And(When<TSignal>.Is(second));
         }
 
         public static INotification<TSignal> Or<TSignal>(this INotification<TSignal> first, INotification<TSignal> second)
@@ -62,7 +62,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(second));
             }
 
-            return NoticeFrom.Added(first, second);
+            return Notify<TSignal>.Added(first, second);
         }
 
         public static INotification<TSignal> Or<TSignal>(this INotification<TSignal> first, Func<TSignal, bool> second)
@@ -77,7 +77,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(second));
             }
 
-            return first.Or(NoticeOf.Signal(second));
+            return first.Or(When<TSignal>.Is(second));
         }
     }
 }

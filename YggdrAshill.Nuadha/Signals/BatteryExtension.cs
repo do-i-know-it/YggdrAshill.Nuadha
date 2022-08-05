@@ -1,36 +1,36 @@
-using YggdrAshill.Nuadha.Signals;
+﻿using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="Pull"/>.
+    /// Defines extensions for <see cref="Battery"/>.
     /// </summary>
-    public static class PullExtension
+    public static class BatteryExtension
     {
         /// <summary>
-        /// Converts <see cref="float"/> to <see cref="Pull"/>.
+        /// Converts <see cref="float"/> to <see cref="Battery"/>.
         /// </summary>
         /// <param name="signal">
         /// <see cref="float"/> to covert.
         /// </param>
         /// <returns>
-        /// <see cref="Pull"/> converted.
+        /// <see cref="Battery"/> converted.
         /// </returns>
-        public static Pull ToPull(this float signal)
+        public static Battery ToBattery(this float signal)
         {
-            return (Pull)signal;
+            return (Battery)signal;
         }
 
         /// <summary>
-        /// Converts <see cref="Pull"/> to <see cref="float"/>.
+        /// Converts <see cref="Battery"/> to <see cref="float"/>.
         /// </summary>
         /// <param name="signal">
-        /// <see cref="Pull"/> to covert.
+        /// <see cref="Battery"/> to covert.
         /// </param>
         /// <returns>
         /// <see cref="float"/> converted.
         /// </returns>
-        public static float ToSingle(this Pull signal)
+        public static float ToSingle(this Battery signal)
         {
             return (float)signal;
         }

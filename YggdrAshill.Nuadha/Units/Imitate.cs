@@ -1,4 +1,3 @@
-using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 
@@ -9,11 +8,6 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public static class Imitate
     {
-        /// <summary>
-        /// Imitated <see cref="IGeneration{TSignal}"/> for <see cref="Transformation.Pulse"/>.
-        /// </summary>
-        public static IGeneration<Pulse> Pulse => imitation;
-
         /// <summary>
         /// Imitated <see cref="IGeneration{TSignal}"/> for <see cref="Signals.Touch"/>.
         /// </summary>
@@ -72,7 +66,6 @@ namespace YggdrAshill.Nuadha
         private static readonly Imitation imitation = new Imitation();
 
         private sealed class Imitation :
-            IGeneration<Pulse>,
             IGeneration<Touch>,
             IGeneration<Push>,
             IGeneration<Pull>,
@@ -85,11 +78,6 @@ namespace YggdrAshill.Nuadha
             IGeneration<Trigger>,
             IGeneration<Stick>
         {
-            Pulse IGeneration<Pulse>.Generate()
-            {
-                return Transformation.Pulse.IsDisabled;
-            }
-
             Touch IGeneration<Touch>.Generate()
             {
                 return Signals.Touch.Disabled;

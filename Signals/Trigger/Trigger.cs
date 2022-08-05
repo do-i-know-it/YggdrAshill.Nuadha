@@ -13,7 +13,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// <see cref="Trigger"/> disabled.
         /// </summary>
-        public static Trigger None { get; } = new Trigger(Touch.Disabled, Pull.Released);
+        public static Trigger None { get; } = new Trigger(Touch.Disabled, Pull.Empty);
 
         /// <summary>
         /// <see cref="Signals.Touch"/> of <see cref="Trigger"/>.
@@ -91,7 +91,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// </returns>
         public static explicit operator Trigger(Touch signal)
         {
-            return new Trigger(signal, Pull.Released);
+            return new Trigger(signal, Pull.Empty);
         }
 
         /// <summary>

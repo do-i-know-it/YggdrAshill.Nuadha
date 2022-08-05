@@ -114,7 +114,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// </returns>
         public static explicit operator Pull(Push signal)
         {
-            return signal ? Pull.Pulled : Pull.Released;
+            return signal ? Pull.Full : Pull.Empty;
         }
 
         /// <summary>
