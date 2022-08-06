@@ -5,19 +5,19 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
-    /// Defines <see cref="IModule"/> for head tracker as software.
+    /// Defines <see cref="ISoftware"/> for head tracker.
     /// </summary>
     public interface IHeadTrackerSoftware :
-        IModule
+        ISoftware
     {
         /// <summary>
-        /// Receives <see cref="Space3D.Pose"/> sent from hardware.
+        /// Receives <see cref="Signals.Battery"/> sent from <see cref="IHeadTrackerHardware"/>.
         /// </summary>
-        IConsumption<Space3D.Pose> Pose { get; }
+        IConsumption<Battery> Battery { get; }
 
         /// <summary>
-        /// Receives <see cref="Space3D.Direction"/> sent from hardware.
+        /// Receives <see cref="Space3D.Pose"/> sent from <see cref="IHeadTrackerHardware"/>.
         /// </summary>
-        IConsumption<Space3D.Direction> Direction { get; }
+        IConsumption<Space3D.Pose> Pose { get; }
     }
 }

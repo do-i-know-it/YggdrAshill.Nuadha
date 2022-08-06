@@ -1,13 +1,18 @@
 using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 
-namespace YggdrAshill.Nuadha.Units
+namespace YggdrAshill.Nuadha
 {
     /// <summary>
     /// Defines configuration of hand controller.
     /// </summary>
-    public interface IHandControllerConfiguration
+    public interface IHandController
     {
+        /// <summary>
+        /// Generates <see cref="Signals.Battery"/> to send.
+        /// </summary>
+        IGeneration<Battery> Battery { get; }
+
         /// <summary>
         /// Generates <see cref="Space3D.Pose"/> to send.
         /// </summary>

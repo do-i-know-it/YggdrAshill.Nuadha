@@ -5,12 +5,16 @@ using YggdrAshill.Nuadha.Signals;
 namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
-    /// Defines <see cref="IProtocol{THardware, TSoftware}"/> for <see cref="IHandControllerHardware"/> and <see cref="IHandControllerSoftware"/>.
+    /// Defines <see cref="IModule{THardware, TSoftware}"/> for <see cref="IHandControllerHardware"/> and <see cref="IHandControllerSoftware"/>.
     /// </summary>
-    public interface IHandControllerProtocol :
-        IModule,
-        IProtocol<IHandControllerHardware, IHandControllerSoftware>
+    public interface IHandControllerModule :
+        IModule<IHandControllerHardware, IHandControllerSoftware>
     {
+        /// <summary>
+        /// Propagates <see cref="Signals.Battery"/>.
+        /// </summary>
+        IPropagation<Battery> Battery { get; }
+
         /// <summary>
         /// Propagates <see cref="Space3D.Pose"/>.
         /// </summary>

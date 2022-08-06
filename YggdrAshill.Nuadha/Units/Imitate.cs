@@ -9,6 +9,11 @@ namespace YggdrAshill.Nuadha
     public static class Imitate
     {
         /// <summary>
+        /// Imitated <see cref="IGeneration{TSignal}"/> for <see cref="Signals.Battery"/>.
+        /// </summary>
+        public static IGeneration<Battery> Battery => imitation;
+
+        /// <summary>
         /// Imitated <see cref="IGeneration{TSignal}"/> for <see cref="Signals.Touch"/>.
         /// </summary>
         public static IGeneration<Touch> Touch => imitation;
@@ -66,6 +71,7 @@ namespace YggdrAshill.Nuadha
         private static readonly Imitation imitation = new Imitation();
 
         private sealed class Imitation :
+            IGeneration<Battery>,
             IGeneration<Touch>,
             IGeneration<Push>,
             IGeneration<Pull>,
@@ -78,6 +84,11 @@ namespace YggdrAshill.Nuadha
             IGeneration<Trigger>,
             IGeneration<Stick>
         {
+            Battery IGeneration<Battery>.Generate()
+            {
+                return Signals.Battery.Full;
+            }
+
             Touch IGeneration<Touch>.Generate()
             {
                 return Signals.Touch.Disabled;
