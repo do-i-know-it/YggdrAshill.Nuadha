@@ -18,17 +18,6 @@ namespace YggdrAshill.Nuadha.Samples
 
             using (cancellation.ToDisposable())
             {
-                var touch = false;
-                var push = false;
-
-                var generation = Generate.Signal(() =>
-                {
-                    return new Button(touch.ToTouch(), push.ToPush());
-                });
-
-                var emission
-                    = propagation.Conduct(generation);
-
                 while (true)
                 {
                     Console.WriteLine("Please enter any key to emit signals.");
@@ -36,19 +25,23 @@ namespace YggdrAshill.Nuadha.Samples
                     Console.Write("Key: ");
 
                     var input = Console.ReadLine();
+
                     if (input == "q")
                     {
                         Console.WriteLine("quit.");
                         return;
                     }
 
-                    touch = input == "t";
-
-                    push = input == "p";
-
-                    emission.Emit();
-
                     Console.WriteLine($"{input}");
+
+                    var touch = (input == "t").ToTouch();
+
+                    var push = (input == "p").ToPush();
+
+                    var button = new Button(touch, push);
+
+                    propagation.Consume(button);
+
                     Console.WriteLine();
                 }
             }
