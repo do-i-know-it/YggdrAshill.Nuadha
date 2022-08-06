@@ -39,21 +39,18 @@ namespace YggdrAshill.Nuadha
 
         private HumanPoseTrackerModule(IPropagation<Space3D.Pose> head, IPropagation<Space3D.Pose> leftHand, IPropagation<Space3D.Pose> rightHand)
         {
-            Head = head;
+            this.head = head;
 
-            LeftHand = leftHand;
+            this.leftHand = leftHand;
 
-            RightHand = rightHand;
+            this.rightHand = rightHand;
         }
 
-        /// <inheritdoc/>
-        public IPropagation<Space3D.Pose> Head { get; }
+        private readonly IPropagation<Space3D.Pose> head;
 
-        /// <inheritdoc/>
-        public IPropagation<Space3D.Pose> LeftHand { get; }
+        private readonly IPropagation<Space3D.Pose> leftHand;
 
-        /// <inheritdoc/>
-        public IPropagation<Space3D.Pose> RightHand { get; }
+        private readonly IPropagation<Space3D.Pose> rightHand;
 
         /// <inheritdoc/>
         public IHumanPoseTrackerHardware Hardware => this;
@@ -62,21 +59,21 @@ namespace YggdrAshill.Nuadha
         public IHumanPoseTrackerSoftware Software => this;
 
         /// <inheritdoc/>
-        IProduction<Space3D.Pose> IHumanPoseTrackerHardware.Head => Head;
+        IProduction<Space3D.Pose> IHumanPoseTrackerHardware.Head => head;
 
         /// <inheritdoc/>
-        IProduction<Space3D.Pose> IHumanPoseTrackerHardware.LeftHand => LeftHand;
+        IProduction<Space3D.Pose> IHumanPoseTrackerHardware.LeftHand => leftHand;
 
         /// <inheritdoc/>
-        IProduction<Space3D.Pose> IHumanPoseTrackerHardware.RightHand => RightHand;
+        IProduction<Space3D.Pose> IHumanPoseTrackerHardware.RightHand => rightHand;
 
         /// <inheritdoc/>
-        IConsumption<Space3D.Pose> IHumanPoseTrackerSoftware.Head => Head;
+        IConsumption<Space3D.Pose> IHumanPoseTrackerSoftware.Head => head;
 
         /// <inheritdoc/>
-        IConsumption<Space3D.Pose> IHumanPoseTrackerSoftware.LeftHand => LeftHand;
+        IConsumption<Space3D.Pose> IHumanPoseTrackerSoftware.LeftHand => leftHand;
 
         /// <inheritdoc/>
-        IConsumption<Space3D.Pose> IHumanPoseTrackerSoftware.RightHand => RightHand;
+        IConsumption<Space3D.Pose> IHumanPoseTrackerSoftware.RightHand => rightHand;
     }
 }

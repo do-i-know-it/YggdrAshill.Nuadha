@@ -37,7 +37,7 @@ namespace YggdrAshill.Nuadha
         public static IHandControllerModule WithLatestCache()
         {
             return new HandControllerModule(
-                Propagate<Battery>.WithLatestCache(Signals.Battery.Full),
+                Propagate<Battery>.WithLatestCache(Battery.Full),
                 Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin),
                 Propagate<Stick>.WithLatestCache(Stick.None),
                 Propagate<Trigger>.WithLatestCache(Trigger.None),
@@ -46,31 +46,26 @@ namespace YggdrAshill.Nuadha
 
         private HandControllerModule(IPropagation<Battery> battery, IPropagation<Space3D.Pose> pose, IPropagation<Stick> thumb, IPropagation<Trigger> indexFinger, IPropagation<Trigger> handGrip)
         {
-            Battery = battery;
+            this.battery = battery;
 
-            Pose = pose;
+            this.pose = pose;
 
-            Thumb = thumb;
+            this.thumb = thumb;
 
-            IndexFinger = indexFinger;
+            this.indexFinger = indexFinger;
 
-            HandGrip = handGrip;
+            this.handGrip = handGrip;
         }
 
-        /// <inheritdoc/>
-        public IPropagation<Battery> Battery { get; }
+        private readonly IPropagation<Battery> battery;
 
-        /// <inheritdoc/>
-        public IPropagation<Space3D.Pose> Pose { get; }
+        private readonly IPropagation<Space3D.Pose> pose;
 
-        /// <inheritdoc/>
-        public IPropagation<Stick> Thumb { get; }
+        private readonly IPropagation<Stick> thumb;
 
-        /// <inheritdoc/>
-        public IPropagation<Trigger> IndexFinger { get; }
+        private readonly IPropagation<Trigger> indexFinger;
 
-        /// <inheritdoc/>
-        public IPropagation<Trigger> HandGrip { get; }
+        private readonly IPropagation<Trigger> handGrip;
 
         /// <inheritdoc/>
         public IHandControllerHardware Hardware => this;
@@ -79,33 +74,33 @@ namespace YggdrAshill.Nuadha
         public IHandControllerSoftware Software => this;
 
         /// <inheritdoc/>
-        IProduction<Battery> IHandControllerHardware.Battery => Battery;
+        IProduction<Battery> IHandControllerHardware.Battery => battery;
 
         /// <inheritdoc/>
-        IProduction<Space3D.Pose> IHandControllerHardware.Pose => Pose;
+        IProduction<Space3D.Pose> IHandControllerHardware.Pose => pose;
 
         /// <inheritdoc/>
-        IProduction<Stick> IHandControllerHardware.Thumb => Thumb;
+        IProduction<Stick> IHandControllerHardware.Thumb => thumb;
 
         /// <inheritdoc/>
-        IProduction<Trigger> IHandControllerHardware.IndexFinger => IndexFinger;
+        IProduction<Trigger> IHandControllerHardware.IndexFinger => indexFinger;
 
         /// <inheritdoc/>
-        IProduction<Trigger> IHandControllerHardware.HandGrip => HandGrip;
+        IProduction<Trigger> IHandControllerHardware.HandGrip => handGrip;
 
         /// <inheritdoc/>
-        IConsumption<Battery> IHandControllerSoftware.Battery => Battery;
+        IConsumption<Battery> IHandControllerSoftware.Battery => battery;
 
         /// <inheritdoc/>
-        IConsumption<Space3D.Pose> IHandControllerSoftware.Pose => Pose;
+        IConsumption<Space3D.Pose> IHandControllerSoftware.Pose => pose;
 
         /// <inheritdoc/>
-        IConsumption<Stick> IHandControllerSoftware.Thumb => Thumb;
+        IConsumption<Stick> IHandControllerSoftware.Thumb => thumb;
 
         /// <inheritdoc/>
-        IConsumption<Trigger> IHandControllerSoftware.IndexFinger => IndexFinger;
+        IConsumption<Trigger> IHandControllerSoftware.IndexFinger => indexFinger;
 
         /// <inheritdoc/>
-        IConsumption<Trigger> IHandControllerSoftware.HandGrip => HandGrip;
+        IConsumption<Trigger> IHandControllerSoftware.HandGrip => handGrip;
     }
 }

@@ -34,21 +34,18 @@ namespace YggdrAshill.Nuadha
 
         private ThreePointTrackerModule(IHeadTrackerModule head, IHandControllerModule leftHand, IHandControllerModule rightHand)
         {
-            Head = head;
+            this.head = head;
 
-            LeftHand = leftHand;
+            this.leftHand = leftHand;
 
-            RightHand = rightHand;
+            this.rightHand = rightHand;
         }
 
-        /// <inheritdoc/>
-        public IHeadTrackerModule Head { get; }
+        private readonly IHeadTrackerModule head;
 
-        /// <inheritdoc/>
-        public IHandControllerModule LeftHand { get; }
+        private readonly IHandControllerModule leftHand;
 
-        /// <inheritdoc/>
-        public IHandControllerModule RightHand { get; }
+        private readonly IHandControllerModule rightHand;
 
         /// <inheritdoc/>
         public IThreePointTrackerHardware Hardware => this;
@@ -57,21 +54,21 @@ namespace YggdrAshill.Nuadha
         public IThreePointTrackerSoftware Software => this;
 
         /// <inheritdoc/>
-        IHeadTrackerHardware IThreePointTrackerHardware.Head => Head.Hardware;
+        IHeadTrackerHardware IThreePointTrackerHardware.Head => head.Hardware;
 
         /// <inheritdoc/>
-        IHandControllerHardware IThreePointTrackerHardware.LeftHand => LeftHand.Hardware;
+        IHandControllerHardware IThreePointTrackerHardware.LeftHand => leftHand.Hardware;
 
         /// <inheritdoc/>
-        IHandControllerHardware IThreePointTrackerHardware.RightHand => RightHand.Hardware;
+        IHandControllerHardware IThreePointTrackerHardware.RightHand => rightHand.Hardware;
 
         /// <inheritdoc/>
-        IHeadTrackerSoftware IThreePointTrackerSoftware.Head => Head.Software;
+        IHeadTrackerSoftware IThreePointTrackerSoftware.Head => head.Software;
 
         /// <inheritdoc/>
-        IHandControllerSoftware IThreePointTrackerSoftware.LeftHand => LeftHand.Software;
+        IHandControllerSoftware IThreePointTrackerSoftware.LeftHand => leftHand.Software;
 
         /// <inheritdoc/>
-        IHandControllerSoftware IThreePointTrackerSoftware.RightHand => RightHand.Software;
+        IHandControllerSoftware IThreePointTrackerSoftware.RightHand => rightHand.Software;
     }
 }

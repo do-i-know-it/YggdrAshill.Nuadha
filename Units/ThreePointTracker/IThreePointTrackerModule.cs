@@ -8,19 +8,6 @@ namespace YggdrAshill.Nuadha.Units
     public interface IThreePointTrackerModule :
         IModule<IThreePointTrackerHardware, IThreePointTrackerSoftware>
     {
-        /// <summary>
-        /// <see cref="IHeadTrackerModule"/> for head.
-        /// </summary>
-        IHeadTrackerModule Head { get; }
-
-        /// <summary>
-        /// <see cref="IHandControllerModule"/> for left hand.
-        /// </summary>
-        IHandControllerModule LeftHand { get; }
-
-        /// <summary>
-        /// <see cref="IHandControllerModule"/> for right hand.
-        /// </summary>
-        IHandControllerModule RightHand { get; }
+        
     }
 }

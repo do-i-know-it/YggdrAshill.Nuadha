@@ -31,21 +31,19 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IHeadTrackerModule WithLatestCache()
         {
-            return new HeadTrackerModule(Propagate<Battery>.WithLatestCache(Signals.Battery.Full), Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin));
+            return new HeadTrackerModule(Propagate<Battery>.WithLatestCache(Battery.Full), Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin));
         }
 
         private HeadTrackerModule(IPropagation<Battery> battery, IPropagation<Space3D.Pose> pose)
         {
-            Battery = battery;
+            this.battery = battery;
 
-            Pose = pose;
+            this.pose = pose;
         }
 
-        /// <inheritdoc/>
-        public IPropagation<Battery> Battery { get; }
+        private readonly IPropagation<Battery> battery;
 
-        /// <inheritdoc/>
-        public IPropagation<Space3D.Pose> Pose { get; }
+        private readonly IPropagation<Space3D.Pose> pose;
 
         /// <inheritdoc/>
         public IHeadTrackerHardware Hardware => this;
@@ -54,16 +52,15 @@ namespace YggdrAshill.Nuadha
         public IHeadTrackerSoftware Software => this;
 
         /// <inheritdoc/>
-        IProduction<Battery> IHeadTrackerHardware.Battery => Battery;
+        IProduction<Battery> IHeadTrackerHardware.Battery => battery;
 
         /// <inheritdoc/>
-        IProduction<Space3D.Pose> IHeadTrackerHardware.Pose => Pose;
+        IProduction<Space3D.Pose> IHeadTrackerHardware.Pose => pose;
 
         /// <inheritdoc/>
-        IConsumption<Space3D.Pose> IHeadTrackerSoftware.Pose => Pose;
+        IConsumption<Space3D.Pose> IHeadTrackerSoftware.Pose => pose;
 
         /// <inheritdoc/>
-        IConsumption<Battery> IHeadTrackerSoftware.Battery => Battery;
-
+        IConsumption<Battery> IHeadTrackerSoftware.Battery => battery;
     }
 }
