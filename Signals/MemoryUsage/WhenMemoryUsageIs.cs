@@ -1,35 +1,35 @@
-﻿using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Transformation;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="IEvaluation{TSignal}"/> for <see cref="MemoryUsage"/>.
+    /// Defines implementations of <see cref="INotification{TSignal}"/> for <see cref="MemoryUsage"/>.
     /// </summary>
     public static class WhenMemoryUsageIs
     {
         /// <summary>
         /// When one <see cref="MemoryUsage.TotalSize"/> is same as or more than another <see cref="MemoryUsage"/>.
         /// </summary>
-        public static IEvaluation<MemoryUsage> Over { get; } = new MemoryUsageIsOver();
+        public static INotification<Analysis<MemoryUsage>> Over { get; } = new MemoryUsageIsOver();
         private sealed class MemoryUsageIsOver :
-            IEvaluation<MemoryUsage>
+            INotification<Analysis<MemoryUsage>>
         {
-            public bool Evaluate(MemoryUsage signal, MemoryUsage gauge)
+            public bool Notify(Analysis<MemoryUsage> signal)
             {
-                return gauge.TotalSize <= signal.TotalSize;
+                return signal.Expected.TotalSize <= signal.Actual.TotalSize;
             }
         }
 
         /// <summary>
         /// When one <see cref="MemoryUsage.TotalSize"/> is same as or less than another <see cref="MemoryUsage"/>.
         /// </summary>
-        public static IEvaluation<MemoryUsage> Under { get; } = new MemoryUsageIsUnder();
+        public static INotification<Analysis<MemoryUsage>> Under { get; } = new MemoryUsageIsUnder();
         private sealed class MemoryUsageIsUnder :
-            IEvaluation<MemoryUsage>
+            INotification<Analysis<MemoryUsage>>
         {
-            public bool Evaluate(MemoryUsage signal, MemoryUsage gauge)
+            public bool Notify(Analysis<MemoryUsage> signal)
             {
-                return signal.TotalSize <= gauge.TotalSize;
+                return signal.Actual.TotalSize <= signal.Expected.TotalSize;
             }
         }
     }

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -23,19 +24,19 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldNotifyWhenOneIsEqualToAnother()
         {
-            Assert.IsTrue(WhenPushIs.EqualTo.Evaluate(Push.Disabled, Push.Disabled));
-            Assert.IsFalse(WhenPushIs.EqualTo.Evaluate(Push.Disabled, Push.Enabled));
-            Assert.IsFalse(WhenPushIs.EqualTo.Evaluate(Push.Enabled, Push.Disabled));
-            Assert.IsTrue(WhenPushIs.EqualTo.Evaluate(Push.Enabled, Push.Enabled));
+            Assert.IsTrue(WhenPushIs.EqualTo.Notify(new Analysis<Push>(Push.Disabled, Push.Disabled)));
+            Assert.IsFalse(WhenPushIs.EqualTo.Notify(new Analysis<Push>(Push.Disabled, Push.Enabled)));
+            Assert.IsFalse(WhenPushIs.EqualTo.Notify(new Analysis<Push>(Push.Enabled, Push.Disabled)));
+            Assert.IsTrue(WhenPushIs.EqualTo.Notify(new Analysis<Push>(Push.Enabled, Push.Enabled)));
         }
 
         [Test]
         public void ShouldNotifyWhenOneIsNotEqualToAnother()
         {
-            Assert.IsFalse(WhenPushIs.NotEqualTo.Evaluate(Push.Disabled, Push.Disabled));
-            Assert.IsTrue(WhenPushIs.NotEqualTo.Evaluate(Push.Disabled, Push.Enabled));
-            Assert.IsTrue(WhenPushIs.NotEqualTo.Evaluate(Push.Enabled, Push.Disabled));
-            Assert.IsFalse(WhenPushIs.NotEqualTo.Evaluate(Push.Enabled, Push.Enabled));
+            Assert.IsFalse(WhenPushIs.NotEqualTo.Notify(new Analysis<Push>(Push.Disabled, Push.Disabled)));
+            Assert.IsTrue(WhenPushIs.NotEqualTo.Notify(new Analysis<Push>(Push.Disabled, Push.Enabled)));
+            Assert.IsTrue(WhenPushIs.NotEqualTo.Notify(new Analysis<Push>(Push.Enabled, Push.Disabled)));
+            Assert.IsFalse(WhenPushIs.NotEqualTo.Notify(new Analysis<Push>(Push.Enabled, Push.Enabled)));
         }
     }
 }

@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Transformation;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="IEvaluation{TSignal}"/> and <see cref="INotification{TSignal}"/> for <see cref="Push"/>.
+    /// Defines implementations of <see cref="INotification{TSignal}"/> for <see cref="Push"/>.
     /// </summary>
     public static class WhenPushIs
     {
@@ -36,26 +36,27 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// When one <see cref="Push"/> is equal to another <see cref="Push"/>.
         /// </summary>
-        public static IEvaluation<Push> EqualTo { get; } = new PushIsEqualTo();
+        public static INotification<Analysis<Push>> EqualTo { get; } = new PushIsEqualTo();
         private sealed class PushIsEqualTo :
-            IEvaluation<Push>
+            INotification<Analysis<Push>>
         {
-            public bool Evaluate(Push signal, Push gauge)
+
+            public bool Notify(Analysis<Push> signal)
             {
-                return signal == gauge;
+                return signal.Expected == signal.Actual;
             }
         }
 
         /// <summary>
         /// When one <see cref="Push"/> is not equal to another <see cref="Push"/>.
         /// </summary>
-        public static IEvaluation<Push> NotEqualTo { get; } = new PushIsNotEqualTo();
+        public static INotification<Analysis<Push>> NotEqualTo { get; } = new PushIsNotEqualTo();
         private sealed class PushIsNotEqualTo :
-            IEvaluation<Push>
+            INotification<Analysis<Push>>
         {
-            public bool Evaluate(Push signal, Push gauge)
+            public bool Notify(Analysis<Push> signal)
             {
-                return signal != gauge;
+                return signal.Expected != signal.Actual;
             }
         }
     }

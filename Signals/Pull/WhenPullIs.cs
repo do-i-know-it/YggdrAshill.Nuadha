@@ -3,33 +3,33 @@ using YggdrAshill.Nuadha.Transformation;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="IEvaluation{TSignal}"/> for <see cref="Pull"/>.
+    /// Defines implementations of <see cref="INotification{TSignal}"/> for <see cref="Pull"/>.
     /// </summary>
     public static class WhenPullIs
     {
         /// <summary>
         /// When one <see cref="Pull"/> is same as or more than another <see cref="Pull"/>.
         /// </summary>
-        public static IEvaluation<Pull> Over { get; } = new PullIsOver();
+        public static INotification<Analysis<Pull>> Over { get; } = new PullIsOver();
         private sealed class PullIsOver :
-            IEvaluation<Pull>
+            INotification<Analysis<Pull>>
         {
-            public bool Evaluate(Pull signal, Pull gauge)
+            public bool Notify(Analysis<Pull> signal)
             {
-                return gauge <= signal;
+                return signal.Expected <= signal.Actual;
             }
         }
 
         /// <summary>
         /// When one <see cref="Pull"/> is same as or less than another <see cref="Pull"/>.
         /// </summary>
-        public static IEvaluation<Pull> Under { get; } = new PullIsUnder();
+        public static INotification<Analysis<Pull>> Under { get; } = new PullIsUnder();
         private sealed class PullIsUnder :
-            IEvaluation<Pull>
+            INotification<Analysis<Pull>>
         {
-            public bool Evaluate(Pull signal, Pull gauge)
+            public bool Notify(Analysis<Pull> signal)
             {
-                return signal <= gauge;
+                return signal.Actual <= signal.Expected;
             }
         }
     }

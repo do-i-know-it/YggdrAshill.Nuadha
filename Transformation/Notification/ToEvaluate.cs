@@ -15,8 +15,8 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <summary>
         /// When <typeparamref name="TSignal"/> is evaluated.
         /// </summary>
-        /// <param name="evaluation">
-        /// <see cref="IEvaluation{TSignal}"/> for <typeparamref name="TSignal"/> to notify.
+        /// <param name="notification">
+        /// <see cref="INotification{TSignal}"/> for <see cref="Analysis{TSignal}"/> of <typeparamref name="TSignal"/> to notify.
         /// </param>
         /// <param name="threshold">
         /// <see cref="IThreshold{TSignal}"/> for <typeparamref name="TSignal"/> to notify.
@@ -25,41 +25,41 @@ namespace YggdrAshill.Nuadha.Transformation
         /// <see cref="INotification{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="evaluation"/> is null.
+        /// Thrown if <paramref name="notification"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static INotification<TSignal> With(IEvaluation<TSignal> evaluation, IThreshold<TSignal> threshold)
+        public static INotification<TSignal> With(INotification<Analysis<TSignal>> notification, IThreshold<TSignal> threshold)
         {
-            if (evaluation == null)
+            if (notification == null)
             {
-                throw new ArgumentNullException(nameof(evaluation));
+                throw new ArgumentNullException(nameof(notification));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return new NotifyToEvaluate(threshold, evaluation);
+            return new NotifyToEvaluate(threshold, notification);
         }
         private sealed class NotifyToEvaluate :
             INotification<TSignal>
         {
             private readonly IThreshold<TSignal> threshold;
 
-            private readonly IEvaluation<TSignal> evaluation;
+            private readonly INotification<Analysis<TSignal>> notification;
 
-            internal NotifyToEvaluate(IThreshold<TSignal> threshold, IEvaluation<TSignal> evaluation)
+            internal NotifyToEvaluate(IThreshold<TSignal> threshold, INotification<Analysis<TSignal>> notification)
             {
                 this.threshold = threshold;
 
-                this.evaluation = evaluation;
+                this.notification = notification;
             }
 
             public  bool Notify(TSignal signal)
             {
-                return evaluation.Evaluate(signal, threshold.Signal);
+                return notification.Notify(new Analysis<TSignal>(threshold.Signal, signal));
             }
         }
     }

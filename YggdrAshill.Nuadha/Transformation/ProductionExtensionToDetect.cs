@@ -90,8 +90,8 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </param>
-        /// <param name="evaluation">
-        /// <see cref="IEvaluation{TSignal}"/> for <typeparamref name="TSignal"/>.
+        /// <param name="notification">
+        /// <see cref="INotification{TSignal}"/> for <see cref="Analysis{TSignal}"/> of <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="threshold">
         /// <see cref="IThreshold{TSignal}"/> for <typeparamref name="TSignal"/>.
@@ -103,28 +103,28 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="evaluation"/> is null.
+        /// Thrown if <paramref name="notification"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="threshold"/> is null.
         /// </exception>
-        public static IProduction<Pulse> Detect<TSignal>(this IProduction<TSignal> production, IEvaluation<TSignal> evaluation, IThreshold<TSignal> threshold)
+        public static IProduction<Pulse> Detect<TSignal>(this IProduction<TSignal> production, INotification<Analysis<TSignal>> notification, IThreshold<TSignal> threshold)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (evaluation == null)
+            if (notification == null)
             {
-                throw new ArgumentNullException(nameof(evaluation));
+                throw new ArgumentNullException(nameof(notification));
             }
             if (threshold == null)
             {
                 throw new ArgumentNullException(nameof(threshold));
             }
 
-            return production.Detect(ToEvaluate<TSignal>.With(evaluation, threshold));
+            return production.Detect(ToEvaluate<TSignal>.With(notification, threshold));
         }
 
         /// <summary>

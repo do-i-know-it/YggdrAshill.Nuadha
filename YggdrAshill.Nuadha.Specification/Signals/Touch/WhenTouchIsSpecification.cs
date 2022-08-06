@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using YggdrAshill.Nuadha.Transformation;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Specification
@@ -23,19 +24,19 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldNotifyWhenOneIsEqualToAnother()
         {
-            Assert.IsTrue(WhenTouchIs.EqualTo.Evaluate(Touch.Disabled, Touch.Disabled));
-            Assert.IsFalse(WhenTouchIs.EqualTo.Evaluate(Touch.Disabled, Touch.Enabled));
-            Assert.IsFalse(WhenTouchIs.EqualTo.Evaluate(Touch.Enabled, Touch.Disabled));
-            Assert.IsTrue(WhenTouchIs.EqualTo.Evaluate(Touch.Enabled, Touch.Enabled));
+            Assert.IsTrue(WhenTouchIs.EqualTo.Notify(new Analysis<Touch>(Touch.Disabled, Touch.Disabled)));
+            Assert.IsFalse(WhenTouchIs.EqualTo.Notify(new Analysis<Touch>(Touch.Disabled, Touch.Enabled)));
+            Assert.IsFalse(WhenTouchIs.EqualTo.Notify(new Analysis<Touch>(Touch.Enabled, Touch.Disabled)));
+            Assert.IsTrue(WhenTouchIs.EqualTo.Notify(new Analysis<Touch>(Touch.Enabled, Touch.Enabled)));
         }
 
         [Test]
         public void ShouldNotifyWhenOneIsNotEqualToAnother()
         {
-            Assert.IsFalse(WhenTouchIs.NotEqualTo.Evaluate(Touch.Disabled, Touch.Disabled));
-            Assert.IsTrue(WhenTouchIs.NotEqualTo.Evaluate(Touch.Disabled, Touch.Enabled));
-            Assert.IsTrue(WhenTouchIs.NotEqualTo.Evaluate(Touch.Enabled, Touch.Disabled));
-            Assert.IsFalse(WhenTouchIs.NotEqualTo.Evaluate(Touch.Enabled, Touch.Enabled));
+            Assert.IsFalse(WhenTouchIs.NotEqualTo.Notify(new Analysis<Touch>(Touch.Disabled, Touch.Disabled)));
+            Assert.IsTrue(WhenTouchIs.NotEqualTo.Notify(new Analysis<Touch>(Touch.Disabled, Touch.Enabled)));
+            Assert.IsTrue(WhenTouchIs.NotEqualTo.Notify(new Analysis<Touch>(Touch.Enabled, Touch.Disabled)));
+            Assert.IsFalse(WhenTouchIs.NotEqualTo.Notify(new Analysis<Touch>(Touch.Enabled, Touch.Enabled)));
         }
     }
 }

@@ -3,33 +3,33 @@ using YggdrAshill.Nuadha.Transformation;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="IEvaluation{TSignal}"/> for <see cref="Battery"/>.
+    /// Defines implementations of <see cref="INotification{TSignal}"/> for <see cref="Battery"/>.
     /// </summary>
     public static class WhenBatteryIs
     {
         /// <summary>
         /// When one <see cref="Battery"/> is same as or more than another <see cref="Battery"/>.
         /// </summary>
-        public static IEvaluation<Battery> Over { get; } = new BatteryIsOver();
+        public static INotification<Analysis<Battery>> Over { get; } = new BatteryIsOver();
         private sealed class BatteryIsOver :
-            IEvaluation<Battery>
+            INotification<Analysis<Battery>>
         {
-            public bool Evaluate(Battery signal, Battery gauge)
+            public bool Notify(Analysis<Battery> signal)
             {
-                return gauge <= signal;
+                return signal.Expected <= signal.Actual;
             }
         }
 
         /// <summary>
         /// When one <see cref="Battery"/> is same as or less than another <see cref="Battery"/>.
         /// </summary>
-        public static IEvaluation<Battery> Under { get; } = new BatteryIsUnder();
+        public static INotification<Analysis<Battery>> Under { get; } = new BatteryIsUnder();
         private sealed class BatteryIsUnder :
-            IEvaluation<Battery>
+            INotification<Analysis<Battery>>
         {
-            public bool Evaluate(Battery signal, Battery gauge)
+            public bool Notify(Analysis<Battery> signal)
             {
-                return signal <= gauge;
+                return signal.Actual <= signal.Expected;
             }
         }
     }

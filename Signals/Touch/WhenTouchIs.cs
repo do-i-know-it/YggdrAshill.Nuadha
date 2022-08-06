@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Transformation;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="IEvaluation{TSignal}"/> and <see cref="INotification{TSignal}"/> for <see cref="Touch"/>.
+    /// Defines implementations of <see cref="INotification{TSignal}"/> for <see cref="Touch"/>.
     /// </summary>
     public static class WhenTouchIs
     {
@@ -36,26 +36,27 @@ namespace YggdrAshill.Nuadha.Signals
         /// <summary>
         /// When one <see cref="Touch"/> is equal to another <see cref="Touch"/>.
         /// </summary>
-        public static IEvaluation<Touch> EqualTo { get; } = new TouchIsEqualTo();
+        public static INotification<Analysis<Touch>> EqualTo { get; } = new TouchIsEqualTo();
         private sealed class TouchIsEqualTo :
-            IEvaluation<Touch>
+            INotification<Analysis<Touch>>
         {
-            public bool Evaluate(Touch signal, Touch gauge)
+            
+            public bool Notify(Analysis<Touch> signal)
             {
-                return signal == gauge;
+                return signal.Expected == signal.Actual;
             }
         }
 
         /// <summary>
         /// When one <see cref="Touch"/> is not equal to another <see cref="Touch"/>.
         /// </summary>
-        public static IEvaluation<Touch> NotEqualTo { get; } = new TouchIsNotEqualTo();
+        public static INotification<Analysis<Touch>> NotEqualTo { get; } = new TouchIsNotEqualTo();
         private sealed class TouchIsNotEqualTo :
-            IEvaluation<Touch>
+            INotification<Analysis<Touch>>
         {
-            public bool Evaluate(Touch signal, Touch gauge)
+            public bool Notify(Analysis<Touch> signal)
             {
-                return signal != gauge;
+                return signal.Expected != signal.Actual;
             }
         }
     }
