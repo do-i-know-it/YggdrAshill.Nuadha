@@ -21,11 +21,11 @@ namespace YggdrAshill.Nuadha
         public static IHandControllerModule WithoutCache()
         {
             return new HandControllerModule(
-                Propagate.WithoutCache<Battery>(),
-                Propagate.WithoutCache<Space3D.Pose>(),
-                Propagate.WithoutCache<Stick>(),
-                Propagate.WithoutCache<Trigger>(),
-                Propagate.WithoutCache<Trigger>());
+                Propagate<Battery>.WithoutCache(),
+                Propagate<Space3D.Pose>.WithoutCache(),
+                Propagate<Stick>.WithoutCache(),
+                Propagate<Trigger>.WithoutCache(),
+                Propagate<Trigger>.WithoutCache());
         }
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace YggdrAshill.Nuadha
         public static IHandControllerModule WithLatestCache()
         {
             return new HandControllerModule(
-                Propagate.WithLatestCache(Imitate.Battery),
-                Propagate.WithLatestCache(Imitate.Pose),
-                Propagate.WithLatestCache(Imitate.Stick),
-                Propagate.WithLatestCache(Imitate.Trigger),
-                Propagate.WithLatestCache(Imitate.Trigger));
+                Propagate<Battery>.WithLatestCache(Signals.Battery.Full),
+                Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin),
+                Propagate<Stick>.WithLatestCache(Stick.None),
+                Propagate<Trigger>.WithLatestCache(Trigger.None),
+                Propagate<Trigger>.WithLatestCache(Trigger.None));
         }
 
         private HandControllerModule(IPropagation<Battery> battery, IPropagation<Space3D.Pose> pose, IPropagation<Stick> thumb, IPropagation<Trigger> indexFinger, IPropagation<Trigger> handGrip)

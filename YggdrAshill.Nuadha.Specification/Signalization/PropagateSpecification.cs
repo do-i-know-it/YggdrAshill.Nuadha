@@ -1,17 +1,16 @@
 using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
 using System;
-using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(Propagate))]
+    [TestFixture(TestOf = typeof(Propagate<>))]
     internal class PropagateSpecification
     {
         private static object[] TestSuiteForPropagation => new[]
         {
-            new object[] { Propagate.WithoutCache<Signal>() },
-            new object[] { Propagate.WithLatestCache(new GenerateSignal()) },
+            new object[] { Propagate<Signal>.WithoutCache() },
+            new object[] { Propagate<Signal>.WithLatestCache(new Signal()) },
         };
 
         private Signal expected;
@@ -53,7 +52,7 @@ namespace YggdrAshill.Nuadha.Specification
         [Test]
         public void ShouldSendCachedSignalToProducedWhenHasProduced()
         {
-            var propagation = Propagate.WithLatestCache(new GenerateSignal());
+            var propagation = Propagate<Signal>.WithLatestCache(new Signal());
 
             propagation.Consume(expected);
 
@@ -70,15 +69,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var cancellation = propagation.Produce(default);
-            });
-        }
-
-        [Test]
-        public void CannotBeCreatedWithNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                var propagation = Propagate.WithLatestCache(default(IGeneration<Signal>));
             });
         }
     }

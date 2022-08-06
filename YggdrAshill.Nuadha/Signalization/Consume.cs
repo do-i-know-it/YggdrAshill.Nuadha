@@ -6,40 +6,39 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Defines implementations of <see cref="IConsumption{TSignal}"/>.
     /// </summary>
-    public static class Consume
+    /// <typeparam name="TSignal">
+    /// Type of <see cref="ISignal"/> to consume.
+    /// </typeparam>
+    public static class Consume<TSignal>
+        where TSignal : ISignal
     {
         /// <summary>
-        /// Converts <see cref="Action{T}"/> for <typeparamref name="TSignal"/> into <see cref="IConsumption{TSignal}"/>.
+        /// Receives <typeparamref name="TSignal"/> to consume.
         /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to consume.
-        /// </typeparam>
         /// <param name="consumption">
-        /// <see cref="Action{T}"/> for <typeparamref name="TSignal"/> to convert.
+        /// <see cref="Action{T}"/> to consume <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IConsumption{TSignal}"/> converted from <see cref="Action{T}"/> for <typeparamref name="TSignal"/>.
+        /// <see cref="IConsumption{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="consumption"/> is null.
         /// </exception>
-        public static IConsumption<TSignal> Signal<TSignal>(Action<TSignal> consumption)
-            where TSignal : ISignal
+        public static IConsumption<TSignal> With(Action<TSignal> consumption)
         {
             if (consumption == null)
             {
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return new Consumption<TSignal>(consumption);
+            return new ConsumeWithFunction(consumption);
         }
-        private sealed class Consumption<TSignal> :
+        private sealed class ConsumeWithFunction :
             IConsumption<TSignal>
-            where TSignal : ISignal
         {
             private readonly Action<TSignal> onConsumed;
 
-            internal Consumption(Action<TSignal> onConsumed)
+            internal ConsumeWithFunction(Action<TSignal> onConsumed)
             {
                 this.onConsumed = onConsumed;
             }
@@ -48,21 +47,6 @@ namespace YggdrAshill.Nuadha
             {
                 onConsumed.Invoke(signal);
             }
-        }
-
-        /// <summary>
-        /// <see cref="IConsumption{TSignal}"/> to do nothing.
-        /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to consume.
-        /// </typeparam>
-        /// <returns>
-        /// <see cref="IConsumption{TSignal}"/> to do nothing.
-        /// </returns>
-        public static IConsumption<TSignal> None<TSignal>()
-            where TSignal : ISignal
-        {
-            return Signal<TSignal>(_ => { });
         }
     }
 }

@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IHeadTrackerModule WithoutCache()
         {
-            return new HeadTrackerModule(Propagate.WithoutCache<Battery>(), Propagate.WithoutCache<Space3D.Pose>());
+            return new HeadTrackerModule(Propagate<Battery>.WithoutCache(), Propagate<Space3D.Pose>.WithoutCache());
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IHeadTrackerModule WithLatestCache()
         {
-            return new HeadTrackerModule(Propagate.WithLatestCache(Imitate.Battery), Propagate.WithLatestCache(Imitate.Pose));
+            return new HeadTrackerModule(Propagate<Battery>.WithLatestCache(Signals.Battery.Full), Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin));
         }
 
         private HeadTrackerModule(IPropagation<Battery> battery, IPropagation<Space3D.Pose> pose)

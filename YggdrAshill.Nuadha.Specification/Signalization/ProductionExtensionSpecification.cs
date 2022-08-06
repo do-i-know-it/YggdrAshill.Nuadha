@@ -1,17 +1,15 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using YggdrAshill.Nuadha.Signalization;
 using System;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(SignalizationExtension))]
-    internal class SignalizationExtensionSpecification
+    [TestFixture(TestOf = typeof(ProductionExtension))]
+    internal class ProductionExtensionSpecification
     {
         private Signal expected;
 
         private PropagateSignal propagation;
-
-        private FakeCancellation cancellation;
 
         [SetUp]
         public void SetUp()
@@ -19,8 +17,6 @@ namespace YggdrAshill.Nuadha.Specification
             expected = new Signal();
 
             propagation = new PropagateSignal();
-
-            cancellation = new FakeCancellation();
         }
 
         [Test]
@@ -45,27 +41,6 @@ namespace YggdrAshill.Nuadha.Specification
         }
 
         [Test]
-        public void ShouldConvertCancellationIntoDisposable()
-        {
-            cancellation.ToDisposable().Dispose();
-
-            Assert.IsTrue(cancellation.Cancelled);
-        }
-
-        [Test]
-        public void ConvertedDisposableShouldDisposeOnlyOnce()
-        {
-            var disposable = cancellation.ToDisposable();
-
-            disposable.Dispose();
-
-            Assert.Throws<ObjectDisposedException>(() =>
-            {
-                disposable.Dispose();
-            });
-        }
-
-        [Test]
         public void CannotProduceWithNull()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -76,15 +51,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var cancellation = propagation.Produce(default);
-            });
-        }
-
-        [Test]
-        public void CannotConvertWithNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                default(ICancellation).ToDisposable();
             });
         }
     }

@@ -20,7 +20,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IHumanPoseTrackerModule WithoutCache()
         {
-            return new HumanPoseTrackerModule(Propagate.WithoutCache<Space3D.Pose>(), Propagate.WithoutCache<Space3D.Pose>(), Propagate.WithoutCache<Space3D.Pose>());
+            return new HumanPoseTrackerModule(Propagate<Space3D.Pose>.WithoutCache(), Propagate<Space3D.Pose>.WithoutCache(), Propagate<Space3D.Pose>.WithoutCache());
         }
 
         /// <summary>
@@ -31,7 +31,10 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static IHumanPoseTrackerModule WithLatestCache()
         {
-            return new HumanPoseTrackerModule(Propagate.WithLatestCache(Imitate.Pose), Propagate.WithLatestCache(Imitate.Pose), Propagate.WithLatestCache(Imitate.Pose));
+            return new HumanPoseTrackerModule(
+                Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin),
+                Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin),
+                Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin));
         }
 
         private HumanPoseTrackerModule(IPropagation<Space3D.Pose> head, IPropagation<Space3D.Pose> leftHand, IPropagation<Space3D.Pose> rightHand)

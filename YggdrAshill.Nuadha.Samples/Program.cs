@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha.Samples
     {
         private static void Main(string[] arguments)
         {
-            var propagation = Propagate.WithLatestCache(Imitate.Button);
+            var propagation = Propagate<Button>.WithLatestCache(Button.None);
 
             var cancellation
                 = propagation

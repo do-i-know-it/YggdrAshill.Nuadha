@@ -1,5 +1,4 @@
 using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Conduction;
 using System;
 using System.Collections.Generic;
 
@@ -8,25 +7,24 @@ namespace YggdrAshill.Nuadha
     /// <summary>
     /// Defines implementations of <see cref="IPropagation{TSignal}"/>.
     /// </summary>
-    public static class Propagate
+    /// <typeparam name="TSignal">
+    /// Type of <see cref="ISignal"/> to propagate.
+    /// </typeparam>
+    public static class Propagate<TSignal>
+        where TSignal : ISignal
     {
         /// <summary>
         /// Propagates <typeparamref name="TSignal"/> without cache.
         /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to propagate.
-        /// </typeparam>
         /// <returns>
-        /// <see cref="IPropagation{TSignal}"/> created.
+        /// <see cref="IPropagation{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </returns>
-        public static IPropagation<TSignal> WithoutCache<TSignal>()
-            where TSignal : ISignal
+        public static IPropagation<TSignal> WithoutCache()
         {
-            return new NotCachedPropagation<TSignal>();
+            return new PropagateWithList();
         }
-        private sealed class NotCachedPropagation<TSignal> :
+        private sealed class PropagateWithList :
             IPropagation<TSignal>
-            where TSignal : ISignal
         {
             private readonly List<IConsumption<TSignal>> consumptionList = new List<IConsumption<TSignal>>();
 
@@ -58,49 +56,31 @@ namespace YggdrAshill.Nuadha
                     consumption.Consume(signal);
                 }
             }
-
-            public void Dispose()
-            {
-                consumptionList.Clear();
-            }
         }
 
         /// <summary>
         /// Propagates <typeparamref name="TSignal"/> with latest cache.
         /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to propagate.
-        /// </typeparam>
-        /// <param name="generation">
-        /// <see cref="IGeneration{TSignal}"/> to initialize cache of <typeparamref name="TSignal"/>.
+        /// <param name="signal">
+        /// <typeparamref name="TSignal"/> for initiali cache.
         /// </param>
         /// <returns>
-        /// <see cref="IPropagation{TSignal}"/> created.
+        /// <see cref="IPropagation{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="generation"/> is null.
-        /// </exception>
-        public static IPropagation<TSignal> WithLatestCache<TSignal>(IGeneration<TSignal> generation)
-            where TSignal : ISignal
+        public static IPropagation<TSignal> WithLatestCache(TSignal signal)
         {
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-
-            return new CachedPropagation<TSignal>(generation);
+            return new PropagateWithLatestCache(signal);
         }
-        private sealed class CachedPropagation<TSignal> :
+        private sealed class PropagateWithLatestCache :
             IPropagation<TSignal>
-            where TSignal : ISignal
         {
-            private readonly NotCachedPropagation<TSignal> propagation = new NotCachedPropagation<TSignal>();
+            private readonly PropagateWithList propagation = new PropagateWithList();
 
-            private TSignal cached;
+            private TSignal previous;
 
-            internal CachedPropagation(IGeneration<TSignal> generation)
+            internal PropagateWithLatestCache(TSignal signal)
             {
-                cached = generation.Generate();
+                previous = signal;
             }
 
             public ICancellation Produce(IConsumption<TSignal> consumption)
@@ -112,48 +92,17 @@ namespace YggdrAshill.Nuadha
 
                 var cancellation = propagation.Produce(consumption);
 
-                consumption.Consume(cached);
+                consumption.Consume(previous);
 
                 return cancellation;
             }
 
             public void Consume(TSignal signal)
             {
-                cached = signal;
+                previous = signal;
 
                 propagation.Consume(signal);
             }
-
-            public void Dispose()
-            {
-                propagation.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Propagates <typeparamref name="TSignal"/> with latest cache.
-        /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to propagate.
-        /// </typeparam>
-        /// <param name="generation">
-        /// <see cref="Func{TResult}"/> to initialize cache of <typeparamref name="TSignal"/>.
-        /// </param>
-        /// <returns>
-        /// <see cref="IPropagation{TSignal}"/> created.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="generation"/> is null.
-        /// </exception>
-        public static IPropagation<TSignal> WithLatestCache<TSignal>(Func<TSignal> generation)
-            where TSignal : ISignal
-        {
-            if (generation == null)
-            {
-                throw new ArgumentNullException(nameof(generation));
-            }
-
-            return WithLatestCache(Generate.Signal(generation));
         }
     }
 }
