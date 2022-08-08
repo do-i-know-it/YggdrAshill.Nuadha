@@ -1,36 +1,21 @@
-﻿using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Push"/>.
+    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> for <see cref="Push"/>.
     /// </summary>
     public static class FromPush
     {
         /// <summary>
         /// Converts <see cref="Push"/> into <see cref="Touch"/>.
         /// </summary>
-        public static ITranslation<Push, Touch> IntoTouch { get; } = new FromPushIntoTouch();
-        private sealed class FromPushIntoTouch :
-            ITranslation<Push, Touch>
-        {
-            public Touch Translate(Push signal)
-            {
-                return (Touch)signal;
-            }
-        }
+        public static IConversion<Push, Touch> IntoTouch { get; } = From<Push>.Into<Touch>.Like(signal => (Touch)signal);
 
         /// <summary>
         /// Converts <see cref="Push"/> into <see cref="Pull"/>.
         /// </summary>
-        public static ITranslation<Push, Pull> IntoPull { get; } = new FromPushIntoPull();
-        private sealed class FromPushIntoPull :
-            ITranslation<Push, Pull>
-        {
-            public Pull Translate(Push signal)
-            {
-                return (Pull)signal;
-            }
-        }
+        public static IConversion<Push, Pull> IntoPull { get; } = From<Push>.Into<Pull>.Like(signal => (Pull)signal);
     }
 }

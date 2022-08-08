@@ -4,107 +4,89 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines some types of <see cref="ISignal"/> for <see cref="Space3D"/>.
+    /// Defines <see cref="ISignal"/>s for <see cref="Space3D"/>.
     /// </summary>
     public static class Space3D
     {
-        private const float Tolerance = 1e-5f;
+        /// <summary>
+        /// <see cref="float"/> of difference of <see cref="Space3D"/>.
+        /// </summary>
+        public static float Tolerance { get; } = 1e-5f;
 
         private const float Length = 1.0f;
 
         #region Position
 
         /// <summary>
-        /// Implementation of <see cref="ISignal"/> for <see cref="Position"/> of <see cref="Space3D"/>.
+        /// Implementation of <see cref="ISignal"/> for position in <see cref="Space3D"/>.
         /// </summary>
         public struct Position :
             ISignal,
             IEquatable<Position>
         {
             /// <summary>
-            /// <see cref="Origin"/> of the coordinate.
+            /// Origin of <see cref="Position"/>.
             /// </summary>
             public static Position Origin { get; } = new Position(0.0f, 0.0f, 0.0f);
 
             /// <summary>
-            /// <see cref="Right"/> in the coordinate.
+            /// Right of <see cref="Position"/>.
             /// </summary>
             public static Position Right { get; } = new Position(1.0f, 0.0f, 0.0f);
 
             /// <summary>
-            /// <see cref="Left"/> in the coordinate.
+            /// Left of <see cref="Position"/>.
             /// </summary>
             public static Position Left { get; } = new Position(-1.0f, 0.0f, 0.0f);
 
             /// <summary>
-            /// <see cref="Upward"/> in the coordinate.
+            /// Upward of <see cref="Position"/>.
             /// </summary>
             public static Position Upward { get; } = new Position(0.0f, 1.0f, 0.0f);
 
             /// <summary>
-            /// <see cref="Downward"/> in the coordinate.
+            /// Downward of <see cref="Position"/>.
             /// </summary>
             public static Position Downward { get; } = new Position(0.0f, -1.0f, 0.0f);
 
             /// <summary>
-            /// <see cref="Forward"/> in the coordinate.
+            /// Forward of <see cref="Position"/>.
             /// </summary>
             public static Position Forward { get; } = new Position(0.0f, 0.0f, 1.0f);
 
             /// <summary>
-            /// <see cref="Backward"/> in the coordinate.
+            /// Backward of <see cref="Position"/>.
             /// </summary>
             public static Position Backward { get; } = new Position(0.0f, 0.0f, -1.0f);
 
             /// <summary>
-            /// <see cref="Horizontal"/> of the coordinate.
+            /// <see cref="float"/> for horizontal of <see cref="Position"/>.
             /// </summary>
             public float Horizontal { get; }
 
             /// <summary>
-            /// <see cref="Vertical"/> of the coordinate.
+            /// <see cref="float"/> for vertical of <see cref="Position"/>.
             /// </summary>
             public float Vertical { get; }
 
             /// <summary>
-            /// <see cref="Frontal"/> of the coordinate.
+            /// <see cref="float"/> for frontal of <see cref="Position"/>.
             /// </summary>
             public float Frontal { get; }
 
-            private float distance;
             /// <summary>
-            /// <see cref="Distance"/> of <see cref="Position"/>.
+            /// <see cref="float"/> for distance of <see cref="Position"/>.
             /// </summary>
             public float Distance
             {
                 get
                 {
-                    InitializeIfNeeded();
-
-                    return distance;
+                    return (float)Math.Sqrt(Dot(this));
                 }
-            }
-
-            private bool initialized;
-            private void InitializeIfNeeded()
-            {
-                if (initialized)
-                {
-                    return;
-                }
-
-                var dotted
-                    = Horizontal * Horizontal
-                    + Vertical * Vertical
-                    + Frontal * Frontal;
-
-                distance = (float)Math.Sqrt(dotted);
-
-                initialized = true;
             }
 
             /// <summary>
-            /// Constructs instance.
+            /// Constructor.
             /// </summary>
             /// <param name="horizontal">
             /// <see cref="float"/> for <see cref="Horizontal"/>.
@@ -144,35 +126,47 @@ namespace YggdrAshill.Nuadha.Signals
                 Vertical = vertical;
 
                 Frontal = frontal;
-
-                initialized = false;
-
-                distance = 0f;
             }
 
             /// <summary>
-            /// <see cref="Direction"/> from <see cref="Position"/>.
+            /// Calculates dot product.
             /// </summary>
-            /// <param name="position"></param>
+            /// <param name="position">
+            /// <see cref="Position"/> to calculate.
+            /// </param>
             /// <returns>
-            /// <see cref="Direction"/> calculated.
+            /// <see cref="float"/> calculated.
             /// </returns>
-            public Direction DirectionFrom(Position position)
+            public float Dot(Position position)
             {
-                if (this == position)
-                {
-                    return Direction.Forward;
-                }
+                return Horizontal * position.Horizontal
+                    + Vertical * position.Vertical
+                    + Frontal * position.Frontal;
+            }
 
-                var difference = this - position;
+            /// <summary>
+            /// Calculates cross product.
+            /// </summary>
+            /// <param name="position">
+            /// <see cref="Position"/> to calculate.
+            /// </param>
+            /// <returns>
+            /// <see cref="Position"/> calculated.
+            /// </returns>
+            public Position Cross(Position position)
+            {
+                var horizontal
+                    = Vertical * position.Frontal
+                    - Frontal * position.Vertical;
+                var vertical
+                    = Frontal * position.Horizontal
+                    - Horizontal * position.Frontal;
 
-                var horizontal = difference.Horizontal / difference.Distance;
+                var frontal
+                    = Horizontal * position.Vertical
+                    - Vertical * position.Horizontal;
 
-                var vertical = difference.Vertical / difference.Distance;
-
-                var frontal = difference.Frontal / difference.Distance;
-
-                return new Direction(horizontal, vertical, frontal);
+                return new Position(horizontal, vertical, frontal);
             }
 
             /// <inheritdoc/>
@@ -217,7 +211,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Inverses <see cref="Position"/>.
+            /// Inverses <paramref name="signal"/>.
             /// </summary>
             /// <param name="signal">
             /// <see cref="Position"/> to inverse.
@@ -237,10 +231,14 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Adds <see cref="Position"/> and <see cref="Position"/>.
+            /// Adds <paramref name="right"/> into <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Position"/> to add.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Position"/> to add.
+            /// </param>
             /// <returns>
             /// <see cref="Position"/> added.
             /// </returns>
@@ -262,10 +260,14 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Subtracts <see cref="Position"/> and <see cref="Position"/>.
+            /// Subtracts <paramref name="right"/> from <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Position"/> to subtract.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Position"/> to subtract.
+            /// </param>
             /// <returns>
             /// <see cref="Position"/> subtracted.
             /// </returns>
@@ -275,11 +277,17 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Checks if <see cref="Position"/> and <see cref="Position"/> are equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Position"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Position"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+            /// </returns>
             public static bool operator ==(Position left, Position right)
             {
                 if (left.Equals(right))
@@ -287,373 +295,24 @@ namespace YggdrAshill.Nuadha.Signals
                     return true;
                 }
 
-                return (left - right).Distance <= Tolerance;
+                var difference = left - right;
+
+                return difference.Dot(difference) <= Tolerance;
             }
 
             /// <summary>
-            /// Checks if <see cref="Position"/> and <see cref="Position"/> are not equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Position"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Position"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+            /// </returns>
             public static bool operator !=(Position left, Position right)
-            {
-                return !(left == right);
-            }
-        }
-
-        #endregion
-
-        #region Direction
-
-        /// <summary>
-        /// Implementation of <see cref="ISignal"/> for <see cref="Direction"/> of <see cref="Space3D"/>.
-        /// </summary>
-        public struct Direction :
-            ISignal,
-            IEquatable<Direction>
-        {
-            /// <summary>
-            /// <see cref="Minimum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/> and <see cref="Frontal"/>.
-            /// </summary>
-            public const float Minimum = -Length;
-
-            /// <summary>
-            /// <see cref="Maximum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/> and <see cref="Frontal"/>.
-            /// </summary>
-            public const float Maximum = Length;
-
-            /// <summary>
-            /// <see cref="Tolerance"/> for <see cref="Direction"/>.
-            /// </summary>
-            public static float Tolerance { get; } = Space3D.Tolerance;
-
-            /// <summary>
-            /// <see cref="Right"/> in the coordinate.
-            /// </summary>
-            public static Direction Right { get; } = Position.Right.DirectionFrom(Position.Origin);
-
-            /// <summary>
-            /// <see cref="Left"/> in the coordinate.
-            /// </summary>
-            public static Direction Left { get; } = Position.Left.DirectionFrom(Position.Origin);
-
-            /// <summary>
-            /// <see cref="Upward"/> in the coordinate.
-            /// </summary>
-            public static Direction Upward { get; } = Position.Upward.DirectionFrom(Position.Origin);
-
-            /// <summary>
-            /// <see cref="Downward"/> in the coordinate.
-            /// </summary>
-            public static Direction Downward { get; } = Position.Downward.DirectionFrom(Position.Origin);
-
-            /// <summary>
-            /// <see cref="Forward"/> in the coordinate.
-            /// </summary>
-            public static Direction Forward { get; } = Position.Forward.DirectionFrom(Position.Origin);
-
-            /// <summary>
-            /// <see cref="Backward"/> in the coordinate.
-            /// </summary>
-            public static Direction Backward { get; } = Position.Backward.DirectionFrom(Position.Origin);
-
-            private float horizontal;
-            /// <summary>
-            /// <see cref="Horizontal"/> of the coordinate.
-            /// </summary>
-            public float Horizontal
-            {
-                get
-                {
-                    InitializeIfNeeded();
-
-                    return horizontal;
-                }
-            }
-
-            private float vertical;
-            /// <summary>
-            /// <see cref="Vertical"/> of the coordinate.
-            /// </summary>
-            public float Vertical
-            {
-                get
-                {
-                    InitializeIfNeeded();
-
-                    return vertical;
-                }
-            }
-
-            private float frontal;
-            /// <summary>
-            /// <see cref="Frontal"/> of the coordinate.
-            /// </summary>
-            public float Frontal
-            {
-                get
-                {
-                    InitializeIfNeeded();
-
-                    return frontal;
-                }
-            }
-
-            private bool initialized;
-            private void InitializeIfNeeded()
-            {
-                if (initialized)
-                {
-                    return;
-                }
-
-                horizontal = Forward.Horizontal;
-
-                vertical = Forward.Vertical;
-
-                frontal = Forward.Frontal;
-
-                initialized = true;
-            }
-
-            /// <summary>
-            /// Reversed <see cref="Direction"/>.
-            /// </summary>
-            [Obsolete("Please use \"operator -\" instead of this.")]
-            public Direction Reversed
-                => -this;
-
-            /// <summary>
-            /// Constructs instance.
-            /// </summary>
-            /// <param name="horizontal">
-            /// <see cref="float"/> for <see cref="Horizontal"/>.
-            /// </param>
-            /// <param name="vertical">
-            /// <see cref="float"/> for <see cref="Vertical"/>.
-            /// </param>
-            /// <param name="frontal">
-            /// <see cref="float"/> for <see cref="Frontal"/>.
-            /// </param>
-            /// <exception cref="ArgumentException">
-            /// Thrown if <paramref name="horizontal"/> is <see cref="float.NaN"/>.
-            /// </exception>
-            /// <exception cref="ArgumentException">
-            /// Thrown if <paramref name="vertical"/> is <see cref="float.NaN"/>.
-            /// </exception>
-            /// <exception cref="ArgumentException">
-            /// Thrown if <paramref name="frontal"/> is <see cref="float.NaN"/>.
-            /// </exception>
-            /// <exception cref="ArgumentOutOfRangeException">
-            /// Thrown if <paramref name="horizontal"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
-            /// </exception>
-            /// <exception cref="ArgumentOutOfRangeException">
-            /// Thrown if <paramref name="vertical"/> is  out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
-            /// </exception>
-            /// <exception cref="ArgumentOutOfRangeException">
-            /// Thrown if <paramref name="frontal"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
-            /// </exception>
-            /// <exception cref="ArgumentOutOfRangeException">
-            /// Thrown if <paramref name="horizontal"/>^2 + <paramref name="vertical"/>^2 + <paramref name="frontal"/>^2 is larger than <see cref="Tolerance"/>.
-            /// </exception>
-            public Direction(float horizontal, float vertical, float frontal)
-            {
-                if (float.IsNaN(horizontal))
-                {
-                    throw new ArgumentException($"{nameof(horizontal)} is NaN.");
-                }
-                if (float.IsNaN(vertical))
-                {
-                    throw new ArgumentException($"{nameof(vertical)} is NaN.");
-                }
-                if (float.IsNaN(frontal))
-                {
-                    throw new ArgumentException($"{nameof(frontal)} is NaN.");
-                }
-
-                if (horizontal < Minimum || Maximum < horizontal)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(horizontal));
-                }
-                if (vertical < Minimum || Maximum < vertical)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(vertical));
-                }
-                if (frontal < Minimum || Maximum < frontal)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(frontal));
-                }
-
-                var dotted
-                    = horizontal * horizontal
-                    + vertical * vertical
-                    + frontal * frontal;
-
-                if (Math.Abs(Length - dotted) > Tolerance)
-                {
-                    throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 + {nameof(frontal)}^2 > {Tolerance}");
-                }
-
-                this.horizontal = horizontal;
-
-                this.vertical = vertical;
-
-                this.frontal = frontal;
-
-                initialized = true;
-            }
-
-            /// <summary>
-            /// <see cref="Rotation"/> from <see cref="Direction"/>.
-            /// </summary>
-            /// <param name="direction"></param>
-            /// <returns>
-            /// <see cref="Rotation"/> calculated.
-            /// </returns>
-            public Rotation RotationFrom(Direction direction)
-            {
-                var horizontal
-                    = Vertical * direction.Frontal
-                    - Frontal * direction.Vertical;
-
-                var vertical
-                    = Frontal * direction.Horizontal
-                    - Horizontal * direction.Frontal;
-
-                var frontal
-                    = Horizontal * direction.Vertical
-                    - Vertical * direction.Horizontal;
-
-                var real
-                    = Horizontal * direction.Horizontal
-                    + Vertical * direction.Vertical
-                    + Frontal * direction.Frontal;
-
-                return new Rotation(horizontal, vertical, frontal, real);
-            }
-
-            /// <summary>
-            /// <see cref="Rotation"/> of <see cref="Angle.Degree"/>.
-            /// </summary>
-            /// <param name="degree"></param>
-            /// <returns>
-            /// <see cref="Rotation"/> calculated.
-            /// </returns>
-            public Rotation RotationOf(Angle.Degree degree)
-            {
-                return RotationOf((Angle.Radian)degree);
-            }
-
-            /// <summary>
-            /// <see cref="Rotation"/> of <see cref="Angle.Radian"/>.
-            /// </summary>
-            /// <param name="radian"></param>
-            /// <returns>
-            /// <see cref="Rotation"/> calculated.
-            /// </returns>
-            public Rotation RotationOf(Angle.Radian radian)
-            {
-                var cosine = (float)Math.Cos((float)radian);
-                var sine = (float)Math.Sin((float)radian);
-
-                var real = cosine;
-                var horizontal = Horizontal * sine;
-                var vertical = Vertical * sine;
-                var frontal = Frontal * sine;
-
-                return new Rotation(horizontal, vertical, frontal, real);
-            }
-
-            /// <inheritdoc/>
-            public override string ToString()
-            {
-                return $"{Horizontal}, {Vertical}, {Frontal}";
-            }
-
-            /// <inheritdoc/>
-            public override int GetHashCode()
-            {
-                // Visual Studio auto generated.
-                var hashCode = -55840831;
-                hashCode = hashCode * -1521134295 + Horizontal.GetHashCode();
-                hashCode = hashCode * -1521134295 + Vertical.GetHashCode();
-                hashCode = hashCode * -1521134295 + Frontal.GetHashCode();
-                return hashCode;
-            }
-
-            /// <inheritdoc/>
-            public override bool Equals(object obj)
-            {
-                if (ReferenceEquals(this, obj))
-                {
-                    return true;
-                }
-
-                if (obj is Direction signal)
-                {
-                    return Equals(signal);
-                }
-
-                return false;
-            }
-
-            /// <inheritdoc/>
-            public bool Equals(Direction other)
-            {
-                return Horizontal.Equals(other.Horizontal)
-                    && Vertical.Equals(other.Vertical)
-                    && Frontal.Equals(other.Frontal);
-            }
-
-            /// <summary>
-            /// Inverses <see cref="Direction"/>.
-            /// </summary>
-            /// <param name="signal">
-            /// <see cref="Direction"/> to inverse.
-            /// </param>
-            /// <returns>
-            /// <see cref="Direction"/> inversed.
-            /// </returns>
-            public static Direction operator -(Direction signal)
-            {
-                var horizontal = -signal.Horizontal;
-
-                var vertical = -signal.Vertical;
-
-                var frontal = -signal.Frontal;
-
-                return new Direction(horizontal, vertical, frontal);
-            }
-
-
-            /// <summary>
-            /// Checks if <see cref="Direction"/> and <see cref="Direction"/> are equal.
-            /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
-            public static bool operator ==(Direction left, Direction right)
-            {
-                if (left.Equals(right))
-                {
-                    return true;
-                }
-
-                var dotted
-                    = left.Horizontal * right.Horizontal
-                    + left.Vertical * right.Vertical;
-
-                return Math.Abs(Length - dotted) <= Tolerance;
-            }
-
-            /// <summary>
-            /// Checks if <see cref="Direction"/> and <see cref="Direction"/> are not equal.
-            /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
-            public static bool operator !=(Direction left, Direction right)
             {
                 return !(left == right);
             }
@@ -664,35 +323,30 @@ namespace YggdrAshill.Nuadha.Signals
         #region Rotation
 
         /// <summary>
-        /// Implementation of <see cref="ISignal"/> for <see cref="Rotation"/> of <see cref="Space3D"/>.
+        /// Implementation of <see cref="ISignal"/> for rotation in <see cref="Space3D"/>.
         /// </summary>
         public struct Rotation :
             ISignal,
             IEquatable<Rotation>
         {
             /// <summary>
-            /// <see cref="Minimum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/> and <see cref="Frontal"/> and <see cref="Real"/>.
+            /// Minimum <see cref="float"/> for <see cref="Horizontal"/> and <see cref="Vertical"/>, <see cref="Frontal"/> and <see cref="Real"/>.
             /// </summary>
             public const float Minimum = -Length;
 
             /// <summary>
-            /// <see cref="Maximum"/> of <see cref="Horizontal"/> and <see cref="Vertical"/> and <see cref="Frontal"/> and <see cref="Real"/>.
+            /// Maximum <see cref="float"/> for <see cref="Horizontal"/> and <see cref="Vertical"/>, <see cref="Frontal"/> and <see cref="Real"/>.
             /// </summary>
             public const float Maximum = Length;
 
             /// <summary>
-            /// <see cref="Tolerance"/> for <see cref="Rotation"/>.
+            /// <see cref="Rotation"/> not to rotate.
             /// </summary>
-            public static float Tolerance { get; } = Space3D.Tolerance;
-
-            /// <summary>
-            /// <see cref="Rotation"/> not rotated.
-            /// </summary>
-            public static Rotation None { get; } = new Rotation(0.0f, 0.0f, 0.0f, 1.0f);
+            public static Rotation None { get; } = new Rotation(0.0f, 0.0f, 0.0f, Length);
 
             private float horizontal;
             /// <summary>
-            /// <see cref="Horizontal"/> of the coordinate.
+            /// <see cref="float"/> for horizontal of <see cref="Rotation"/>.
             /// </summary>
             public float Horizontal
             {
@@ -706,7 +360,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             private float vertical;
             /// <summary>
-            /// <see cref="Vertical"/> of the coordinate.
+            /// <see cref="float"/> for vertical of <see cref="Rotation"/>.
             /// </summary>
             public float Vertical
             {
@@ -720,7 +374,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             private float frontal;
             /// <summary>
-            /// <see cref="Frontal"/> of the coordinate.
+            /// <see cref="float"/> for frontal of <see cref="Rotation"/>.
             /// </summary>
             public float Frontal
             {
@@ -734,7 +388,7 @@ namespace YggdrAshill.Nuadha.Signals
 
             private float real;
             /// <summary>
-            /// <see cref="Real"/> of the coordinate.
+            /// <see cref="float"/> for real of <see cref="Rotation"/>.
             /// </summary>
             public float Real
             {
@@ -766,7 +420,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Constructs instance.
+            /// Constructor.
             /// </summary>
             /// <param name="horizontal">
             /// <see cref="float"/> for <see cref="Rotation"/>.
@@ -865,6 +519,23 @@ namespace YggdrAshill.Nuadha.Signals
                 initialized = true;
             }
 
+            /// <summary>
+            /// Calculates dot product.
+            /// </summary>
+            /// <param name="rotation">
+            /// <see cref="Rotation"/> to calculate.
+            /// </param>
+            /// <returns>
+            /// <see cref="float"/> calculated.
+            /// </returns>
+            public float Dot(Rotation rotation)
+            {
+                return Horizontal * rotation.Horizontal
+                    + Vertical * rotation.Vertical
+                    + Frontal * rotation.Frontal
+                    + Real * rotation.Real;
+            }
+
             /// <inheritdoc/>
             public override string ToString()
             {
@@ -891,7 +562,7 @@ namespace YggdrAshill.Nuadha.Signals
                     return true;
                 }
 
-                if (obj is Direction signal)
+                if (obj is Rotation signal)
                 {
                     return Equals(signal);
                 }
@@ -909,79 +580,53 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Inverses <see cref="Rotation"/>.
+            /// Inverses <paramref name="signal"/>.
             /// </summary>
-            /// <param name="rotation">
+            /// <param name="signal">
             /// <see cref="Rotation"/> to inverse.
             /// </param>
             /// <returns>
             /// <see cref="Rotation"/> inversed.
             /// </returns>
-            public static Rotation operator -(Rotation rotation)
+            public static Rotation operator -(Rotation signal)
             {
-                var horizontal = -rotation.Horizontal;
+                var horizontal = -signal.Horizontal;
 
-                var vertical = -rotation.Vertical;
+                var vertical = -signal.Vertical;
 
-                var frontal = -rotation.Frontal;
+                var frontal = -signal.Frontal;
 
-                var real = rotation.Real;
+                var real = signal.Real;
 
                 return new Rotation(horizontal, vertical, frontal, real);
             }
 
             /// <summary>
-            /// Adds <see cref="Rotation"/> and <see cref="Rotation"/>.
+            /// Adds <paramref name="right"/> into <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Rotation"/> to add.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Rotation"/> to add.
+            /// </param>
             /// <returns>
             /// <see cref="Rotation"/> added.
             /// </returns>
             public static Rotation operator +(Rotation left, Rotation right)
             {
-                var leftW = left.Real;
-                var leftX = left.Horizontal;
-                var leftY = left.Vertical;
-                var leftZ = left.Frontal;
-
-                var rightW = right.Real;
-                var rightX = right.Horizontal;
-                var rightY = right.Vertical;
-                var rightZ = right.Frontal;
-
-                var horizontal
-                    = (leftW * rightX)
-                    + (leftX * rightW)
-                    + (leftY * rightZ)
-                    - (leftZ * rightY);
-
-                var vertical
-                    = (leftW * rightY)
-                    + (leftY * rightW)
-                    + (leftZ * rightX)
-                    - (leftX * rightZ);
-
-                var frontal
-                    = (leftW * rightZ)
-                    + (leftZ * rightW)
-                    + (leftX * rightY)
-                    - (leftY * rightX);
-
-                var real
-                    = (leftW * rightW)
-                    - (leftX * rightX)
-                    - (leftY * rightY)
-                    - (leftZ * rightZ);
-
-                return new Rotation(horizontal, vertical, frontal, real);
+                return (Rotation)((Quaternion)left + (Quaternion)right);
             }
 
             /// <summary>
-            /// Subtracts <see cref="Rotation"/> and <see cref="Rotation"/>.
+            /// Subtracts <paramref name="right"/> from <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Rotation"/> to subtract.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Rotation"/> to subtract.
+            /// </param>
             /// <returns>
             /// <see cref="Rotation"/> subtracted.
             /// </returns>
@@ -991,7 +636,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Rotates <see cref="Position"/>.
+            /// Rotates <paramref name="position"/>.
             /// </summary>
             /// <param name="rotation">
             /// <see cref="Rotation"/> to rotate.
@@ -1004,21 +649,15 @@ namespace YggdrAshill.Nuadha.Signals
             /// </returns>
             public static Position operator *(Rotation rotation, Position position)
             {
-                var direction = position.DirectionFrom(Position.Origin);
-
-                var directionAsRotation = new Rotation(direction.Horizontal, direction.Vertical, direction.Frontal, 0f);
-
-                directionAsRotation = rotation + directionAsRotation - rotation;
-
-                var horizontal = directionAsRotation.Horizontal * position.Distance;
-                var vertical = directionAsRotation.Vertical * position.Distance;
-                var frontal = directionAsRotation.Frontal * position.Distance;
-
-                return new Position(horizontal, vertical, frontal);
+                return (Position)Rotate((Quaternion)rotation, (Quaternion)position);
+            }
+            private static Quaternion Rotate(Quaternion rotation, Quaternion position)
+            {
+                return rotation + position - rotation;
             }
 
             /// <summary>
-            /// Rotates <see cref="Position"/> inversely.
+            /// Rotates <paramref name="position"/> inversely.
             /// </summary>
             /// <param name="position">
             /// <see cref="Position"/> to rotate.
@@ -1035,33 +674,39 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Checks if <see cref="Rotation"/> and <see cref="Rotation"/> are equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Rotation"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Rotation"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+            /// </returns>
             public static bool operator ==(Rotation left, Rotation right)
             {
                 if (left.Equals(right))
                 {
                     return true;
                 }
-
-                var dotted
-                    = left.Horizontal * right.Horizontal
-                    + left.Vertical * right.Vertical
-                    + left.Frontal * right.Frontal
-                    + left.Real * right.Real;
-
-                return Length - Math.Abs(dotted) <= Tolerance;
+                
+                return Length - Math.Abs(left.Dot(right)) <= Tolerance;
             }
 
             /// <summary>
-            /// Checks if <see cref="Rotation"/> and <see cref="Rotation"/> are not equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Rotation"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Rotation"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+            /// </returns>
             public static bool operator !=(Rotation left, Rotation right)
             {
                 return !(left == right);
@@ -1073,14 +718,14 @@ namespace YggdrAshill.Nuadha.Signals
         #region Pose
 
         /// <summary>
-        /// Implemetation of <see cref="ISignal"/> for <see cref="Pose"/> of <see cref="Space3D"/>.
+        /// Implemetation of <see cref="ISignal"/> for pose in <see cref="Space3D"/>.
         /// </summary>
         public struct Pose :
             ISignal,
             IEquatable<Pose>
         {
             /// <summary>
-            /// <see cref="Origin"/> of the coordinate.
+            /// Default <see cref="Pose"/>.
             /// </summary>
             public static Pose Origin { get; } = new Pose(Position.Origin, Rotation.None);
 
@@ -1095,13 +740,13 @@ namespace YggdrAshill.Nuadha.Signals
             public Rotation Rotation { get; }
 
             /// <summary>
-            /// Constructs instance.
+            /// Constructor.
             /// </summary>
             /// <param name="position">
-            /// <see cref="Space3D.Position"/> of <see cref="Pose"/>.
+            /// <see cref="Space3D.Position"/> for <see cref="Position"/>.
             /// </param>
             /// <param name="rotation">
-            /// <see cref="Space3D.Rotation"/> of <see cref="Pose"/>.
+            /// <see cref="Space3D.Rotation"/> for <see cref="Rotation"/>.
             /// </param>
             public Pose(Position position, Rotation rotation)
             {
@@ -1113,7 +758,7 @@ namespace YggdrAshill.Nuadha.Signals
             /// <inheritdoc/>
             public override string ToString()
             {
-                return $"{nameof(Position)}: {Position}; {nameof(Rotation)}: {Rotation}";
+                return $"({Position}), ({Rotation})";
             }
 
             /// <inheritdoc/>
@@ -1178,7 +823,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Inverses <see cref="Pose"/>.
+            /// Inverses <paramref name="signal"/>.
             /// </summary>
             /// <param name="signal">
             /// <see cref="Pose"/> to inverse.
@@ -1195,10 +840,14 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Adds <see cref="Pose"/> and <see cref="Pose"/>.
+            /// Adds <paramref name="right"/> into <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Pose"/> to add.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Pose"/> to add.
+            /// </param>
             /// <returns>
             /// <see cref="Pose"/> added.
             /// </returns>
@@ -1211,10 +860,14 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Subtracts <see cref="Pose"/> and <see cref="Pose"/>.
+            /// Subtracts <paramref name="right"/> from <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Pose"/> to subtract.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Pose"/> to subtract.
+            /// </param>
             /// <returns>
             /// <see cref="Pose"/> subtracted.
             /// </returns>
@@ -1224,23 +877,215 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Checks if <see cref="Pose"/> and <see cref="Pose"/> are equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Pose"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Pose"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+            /// </returns>
             public static bool operator ==(Pose left, Pose right)
             {
                 return left.Equals(right);
             }
 
             /// <summary>
-            /// Checks if <see cref="Pose"/> and <see cref="Pose"/> are not equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Pose"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Pose"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+            /// </returns>
             public static bool operator !=(Pose left, Pose right)
+            {
+                return !(left == right);
+            }
+        }
+
+        #endregion
+
+        #region Quaternion
+
+        internal struct Quaternion :
+            IEquatable<Quaternion>
+        {
+            public static Quaternion None { get; } = new Quaternion();
+
+            public float Horizontal { get; }
+
+            public float Vertical { get; }
+
+            public float Frontal { get; }
+
+            public float Real { get; }
+
+            public Quaternion(float horizontal, float vertical, float frontal, float real)
+            {
+                if (float.IsNaN(horizontal))
+                {
+                    throw new ArgumentException($"{nameof(horizontal)} is NaN.");
+                }
+                if (float.IsNaN(vertical))
+                {
+                    throw new ArgumentException($"{nameof(vertical)} is NaN.");
+                }
+                if (float.IsNaN(frontal))
+                {
+                    throw new ArgumentException($"{nameof(frontal)} is NaN.");
+                }
+                if (float.IsNaN(real))
+                {
+                    throw new ArgumentException($"{nameof(real)} is NaN.");
+                }
+
+                Horizontal = horizontal;
+
+                Vertical = vertical;
+
+                Frontal = frontal;
+
+                Real = real;
+            }
+
+            public float Dot(Quaternion quaternion)
+            {
+                return Horizontal * quaternion.Horizontal
+                    + Vertical * quaternion.Vertical
+                    + Frontal * quaternion.Frontal
+                    + Real * quaternion.Real;
+            }
+
+            public override string ToString()
+            {
+                return $"{Horizontal}, {Vertical}, {Frontal}, {Real}";
+            }
+
+            public override int GetHashCode()
+            {
+                // Visual Studio auto generated.
+                var hashCode = -448432282;
+                hashCode = hashCode * -1521134295 + Horizontal.GetHashCode();
+                hashCode = hashCode * -1521134295 + Vertical.GetHashCode();
+                hashCode = hashCode * -1521134295 + Frontal.GetHashCode();
+                hashCode = hashCode * -1521134295 + Real.GetHashCode();
+                return hashCode;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(this, obj))
+                {
+                    return true;
+                }
+
+                if (obj is Quaternion signal)
+                {
+                    return Equals(signal);
+                }
+
+                return false;
+            }
+
+            public bool Equals(Quaternion other)
+            {
+                return Real.Equals(other.Real)
+                    && Horizontal.Equals(other.Horizontal)
+                    && Vertical.Equals(other.Vertical)
+                    && Frontal.Equals(other.Frontal);
+            }
+
+            public static explicit operator Quaternion(Position position)
+            {
+                return new Quaternion(position.Horizontal, position.Vertical, position.Frontal, 0.0f);
+            }
+
+            public static explicit operator Position(Quaternion quaternion)
+            {
+                return new Position(quaternion.Horizontal, quaternion.Vertical, quaternion.Frontal);
+            }
+
+            public static explicit operator Quaternion(Rotation rotation)
+            {
+                return new Quaternion(rotation.Horizontal, rotation.Vertical, rotation.Frontal, rotation.Real);
+            }
+
+            public static explicit operator Rotation(Quaternion quaternion)
+            {
+                return new Rotation(quaternion.Horizontal, quaternion.Vertical, quaternion.Frontal, quaternion.Real);
+            }
+
+            public static Quaternion operator -(Quaternion quaternion)
+            {
+                var horizontal = -quaternion.Horizontal;
+
+                var vertical = -quaternion.Vertical;
+
+                var frontal = -quaternion.Frontal;
+
+                var real = quaternion.Real;
+
+                return new Quaternion(horizontal, vertical, frontal, real);
+            }
+
+            public static Quaternion operator +(Quaternion left, Quaternion right)
+            {
+                var horizontal
+                    = left.Real * right.Horizontal
+                    + left.Horizontal * right.Real
+                    + left.Vertical * right.Frontal
+                    - left.Frontal * right.Vertical;
+
+                var vertical
+                    = left.Real * right.Vertical
+                    + left.Vertical * right.Real
+                    + left.Frontal * right.Horizontal
+                    - left.Horizontal * right.Frontal;
+
+                var frontal
+                    = left.Real * right.Frontal
+                    + left.Frontal * right.Real
+                    + left.Horizontal * right.Vertical
+                    - left.Vertical * right.Horizontal;
+
+                var real
+                    = left.Real * right.Real
+                    - left.Horizontal * right.Horizontal
+                    - left.Vertical * right.Vertical
+                    - left.Frontal * right.Frontal;
+
+                return new Quaternion(horizontal, vertical, frontal, real);
+            }
+
+            public static Quaternion operator -(Quaternion left, Quaternion right)
+            {
+                return left + (-right);
+            }
+
+            public static bool operator ==(Quaternion left, Quaternion right)
+            {
+                if (left.Equals(right))
+                {
+                    return true;
+                }
+
+                var leftLength = Math.Sqrt(left.Dot(left));
+                var rightLength = Math.Sqrt(right.Dot(right));
+
+                var dotted = left.Dot(right) / (leftLength * rightLength);
+
+                return Length - Math.Abs(dotted) <= Tolerance;
+            }
+
+            public static bool operator !=(Quaternion left, Quaternion right)
             {
                 return !(left == right);
             }

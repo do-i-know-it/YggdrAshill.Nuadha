@@ -1,17 +1,15 @@
 using YggdrAshill.Nuadha.Signalization;
-using System;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> for <see cref="Stick"/>.
+    /// Implementation of <see cref="ISignal"/> for stick.
     /// </summary>
     public struct Stick :
-        ISignal,
-        IEquatable<Stick>
+        ISignal
     {
         /// <summary>
-        /// <see cref="Stick"/> disabled.
+        /// Default <see cref="Stick"/>.
         /// </summary>
         public static Stick None { get; } = new Stick(Touch.Disabled, Push.Disabled, Tilt.Origin);
 
@@ -31,16 +29,16 @@ namespace YggdrAshill.Nuadha.Signals
         public Tilt Tilt { get; }
 
         /// <summary>
-        /// Constructs instance.
+        /// Constructor.
         /// </summary>
         /// <param name="touch">
-        /// <see cref="Signals.Touch"/> for <see cref="Stick"/>.
+        /// <see cref="Signals.Touch"/> for <see cref="Touch"/>.
         /// </param>
         /// <param name="push">
-        /// <see cref="Signals.Push"/> for <see cref="Stick"/>.
+        /// <see cref="Signals.Push"/> for <see cref="Push"/>.
         /// </param>
         /// <param name="tilt">
-        /// <see cref="Signals.Tilt"/> for <see cref="Stick"/>.
+        /// <see cref="Signals.Tilt"/> for <see cref="Tilt"/>.
         /// </param>
         public Stick(Touch touch, Push push, Tilt tilt)
         {
@@ -54,42 +52,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{nameof(Touch)}: {Touch}; {nameof(Push)}: {Push}; {nameof(Tilt)}: {Tilt}";
-        }
-
-        /// <inheritdoc/>
-        public override int GetHashCode()
-        {
-            // Visual Studio auto generated.
-            var hashCode = 1589348003;
-            hashCode = hashCode * -1521134295 + Touch.GetHashCode();
-            hashCode = hashCode * -1521134295 + Push.GetHashCode();
-            hashCode = hashCode * -1521134295 + Tilt.GetHashCode();
-            return hashCode;
-        }
-
-        /// <inheritdoc/>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj is Stick signal)
-            {
-                return Equals(signal);
-            }
-
-            return false;
-        }
-
-        /// <inheritdoc/>
-        public bool Equals(Stick other)
-        {
-            return Touch.Equals(other.Touch)
-                && Push.Equals(other.Push)
-                && Tilt.Equals(other.Tilt);
+            return $"({Touch}), ({Push}), ({Tilt})";
         }
 
         /// <summary>
@@ -118,28 +81,6 @@ namespace YggdrAshill.Nuadha.Signals
         public static explicit operator Stick(Push signal)
         {
             return new Stick((Touch)signal, signal, Tilt.Origin);
-        }
-
-        /// <summary>
-        /// Checks if <see cref="Stick"/> and <see cref="Stick"/> are equal.
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static bool operator ==(Stick left, Stick right)
-        {
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Checks if <see cref="Stick"/> and <see cref="Stick"/> are not equal.
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static bool operator !=(Stick left, Stick right)
-        {
-            return !(left == right);
         }
     }
 }

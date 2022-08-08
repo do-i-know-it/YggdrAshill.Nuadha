@@ -10,7 +10,7 @@ namespace YggdrAshill.Nuadha.Signalization
         where TSignal : ISignal
     {
         /// <summary>
-        /// Receives <typeparamref name="TSignal"/> to consume.
+        /// Receives <paramref name="signal"/> to consume.
         /// </summary>
         /// <param name="signal">
         /// <typeparamref name="TSignal"/> received.

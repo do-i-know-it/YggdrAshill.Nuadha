@@ -1,4 +1,5 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -9,7 +10,7 @@ namespace YggdrAshill.Nuadha
     public static class ProductionExtension
     {
         /// <summary>
-        /// Sends <typeparamref name="TSignal"/> to <see cref="IConsumption{TSignal}"/>.
+        /// Sends produced <typeparamref name="TSignal"/> to <paramref name="consumption"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to produce.
@@ -18,10 +19,10 @@ namespace YggdrAshill.Nuadha
         /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="consumption">
-        /// <see cref="Action{T}"/> for <typeparamref name="TSignal"/>.
+        /// <see cref="Action{T}"/> to consume <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="ICancellation"/> to cancel.
+        /// <see cref="ICancellation"/> to cancel sending.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
@@ -41,7 +42,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return production.Produce(Consume<TSignal>.With(consumption));
+            return production.Produce(Consume<TSignal>.Like(consumption));
         }
     }
 }

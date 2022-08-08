@@ -10,26 +10,9 @@ namespace YggdrAshill.Nuadha
         IThreePointTrackerSoftware,
         IThreePointTrackerModule
     {
-        /// <summary>
-        /// <see cref="IThreePointTrackerModule"/> without cache.
-        /// </summary>
-        /// <returns>
-        /// <see cref="IThreePointTrackerModule"/> initialized.
-        /// </returns>
         public static IThreePointTrackerModule WithoutCache()
         {
-            return new ThreePointTrackerModule(HeadTrackerModule.WithoutCache(), HandControllerModule.WithoutCache(), HandControllerModule.WithoutCache());
-        }
-
-        /// <summary>
-        /// <see cref="IThreePointTrackerModule"/> with latest cache.
-        /// </summary>
-        /// <returns>
-        /// <see cref="IThreePointTrackerModule"/> initialized.
-        /// </returns>
-        public static IThreePointTrackerModule WithLatestCache()
-        {
-            return new ThreePointTrackerModule(HeadTrackerModule.WithLatestCache(), HandControllerModule.WithLatestCache(), HandControllerModule.WithLatestCache());
+            return new ThreePointTrackerModule(HeadTrackerModule.WithList(), HandControllerModule.WithList(), HandControllerModule.WithList());
         }
 
         private ThreePointTrackerModule(IHeadTrackerModule head, IHandControllerModule leftHand, IHandControllerModule rightHand)
@@ -46,6 +29,16 @@ namespace YggdrAshill.Nuadha
         private readonly IHandControllerModule leftHand;
 
         private readonly IHandControllerModule rightHand;
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            head.Dispose();
+
+            leftHand.Dispose();
+
+            rightHand.Dispose();
+        }
 
         /// <inheritdoc/>
         public IThreePointTrackerHardware Hardware => this;

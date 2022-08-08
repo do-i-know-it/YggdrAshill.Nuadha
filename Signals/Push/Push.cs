@@ -4,7 +4,7 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> for <see cref="Push"/>.
+    /// Implementation of <see cref="ISignal"/> for push.
     /// </summary>
     public struct Push :
         ISignal,
@@ -160,22 +160,34 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         /// <summary>
-        /// Checks if <see cref="Push"/> and <see cref="Push"/> are equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Push"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Push"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+        /// </returns>
         public static bool operator ==(Push left, Push right)
         {
             return left.Equals(right);
         }
 
         /// <summary>
-        /// Checks if <see cref="Push"/> and <see cref="Push"/> are not equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Push"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Push"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+        /// </returns>
         public static bool operator !=(Push left, Push right)
         {
             return !(left == right);

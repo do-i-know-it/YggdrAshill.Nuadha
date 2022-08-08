@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -12,36 +13,14 @@ namespace YggdrAshill.Nuadha
         IHandControllerSoftware,
         IHandControllerModule
     {
-        /// <summary>
-        /// <see cref="IHandControllerModule"/> without cache.
-        /// </summary>
-        /// <returns>
-        /// <see cref="IHandControllerModule"/> initialized.
-        /// </returns>
-        public static IHandControllerModule WithoutCache()
+        public static IHandControllerModule WithList()
         {
             return new HandControllerModule(
-                Propagate<Battery>.WithoutCache(),
-                Propagate<Space3D.Pose>.WithoutCache(),
-                Propagate<Stick>.WithoutCache(),
-                Propagate<Trigger>.WithoutCache(),
-                Propagate<Trigger>.WithoutCache());
-        }
-
-        /// <summary>
-        /// <see cref="IHandControllerModule"/> with latest cache.
-        /// </summary>
-        /// <returns>
-        /// <see cref="IHandControllerModule"/> initialized.
-        /// </returns>
-        public static IHandControllerModule WithLatestCache()
-        {
-            return new HandControllerModule(
-                Propagate<Battery>.WithLatestCache(Battery.Full),
-                Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin),
-                Propagate<Stick>.WithLatestCache(Stick.None),
-                Propagate<Trigger>.WithLatestCache(Trigger.None),
-                Propagate<Trigger>.WithLatestCache(Trigger.None));
+                Propagate<Battery>.WithList(),
+                Propagate<Space3D.Pose>.WithList(),
+                Propagate<Stick>.WithList(),
+                Propagate<Trigger>.WithList(),
+                Propagate<Trigger>.WithList());
         }
 
         private HandControllerModule(IPropagation<Battery> battery, IPropagation<Space3D.Pose> pose, IPropagation<Stick> thumb, IPropagation<Trigger> indexFinger, IPropagation<Trigger> handGrip)
@@ -66,6 +45,20 @@ namespace YggdrAshill.Nuadha
         private readonly IPropagation<Trigger> indexFinger;
 
         private readonly IPropagation<Trigger> handGrip;
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            battery.Dispose();
+
+            pose.Dispose();
+
+            thumb.Dispose();
+
+            indexFinger.Dispose();
+
+            handGrip.Dispose();
+        }
 
         /// <inheritdoc/>
         public IHandControllerHardware Hardware => this;

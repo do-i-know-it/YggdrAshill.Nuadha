@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
@@ -12,10 +13,10 @@ namespace YggdrAshill.Nuadha
         /// Converts <see cref="ICancellation"/> to <see cref="IDisposable"/>.
         /// </summary>
         /// <param name="cancellation">
-        /// <see cref="ICancellation"/>.
+        /// <see cref="ICancellation"/> to covert.
         /// </param>
         /// <returns>
-        /// <see cref="IDisposable"/>
+        /// <see cref="IDisposable"/> converted.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="cancellation"/> is null.
@@ -27,31 +28,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(cancellation));
             }
 
-            return new Disposable(cancellation);
-        }
-        private sealed class Disposable :
-            IDisposable
-        {
-            private readonly ICancellation cancellation;
-
-            private bool disposed;
-
-            internal Disposable(ICancellation cancellation)
-            {
-                this.cancellation = cancellation;
-            }
-
-            public void Dispose()
-            {
-                if (disposed)
-                {
-                    throw new ObjectDisposedException(nameof(IDisposable));
-                }
-
-                cancellation.Cancel();
-
-                disposed = true;
-            }
+            return new DisposeToCancel(cancellation);
         }
     }
 }

@@ -7,42 +7,63 @@ namespace YggdrAshill.Nuadha.Specification
     internal class TiltIntoSpecification
     {
         [Test]
-        public void ShouldConvertTiltIntoPull()
+        public void ShouldConvertDistanceOfTiltIntoPull()
         {
-            // Distance
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Distance.Translate(Tilt.Origin));
-            Assert.AreEqual(Pull.Full, TiltInto.PullBy.Distance.Translate(Tilt.Left));
-            Assert.AreEqual(Pull.Full, TiltInto.PullBy.Distance.Translate(Tilt.Right));
-            Assert.AreEqual(Pull.Full, TiltInto.PullBy.Distance.Translate(Tilt.Forward));
-            Assert.AreEqual(Pull.Full, TiltInto.PullBy.Distance.Translate(Tilt.Backward));
+            var conversion = TiltInto.PullBy.Distance;
 
-            // Left
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Left.Translate(Tilt.Origin));
-            Assert.AreEqual(Pull.Full, TiltInto.PullBy.Left.Translate(Tilt.Left));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Left.Translate(Tilt.Right));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Left.Translate(Tilt.Forward));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Left.Translate(Tilt.Backward));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Origin));
+            Assert.AreEqual(Pull.Full, conversion.Convert(Tilt.Left));
+            Assert.AreEqual(Pull.Full, conversion.Convert(Tilt.Right));
+            Assert.AreEqual(Pull.Full, conversion.Convert(Tilt.Forward));
+            Assert.AreEqual(Pull.Full, conversion.Convert(Tilt.Backward));
+        }
 
-            // Right
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Right.Translate(Tilt.Origin));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Right.Translate(Tilt.Left));
-            Assert.AreEqual(Pull.Full, TiltInto.PullBy.Right.Translate(Tilt.Right));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Right.Translate(Tilt.Forward));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Right.Translate(Tilt.Backward));
+        [Test]
+        public void ShouldConvertLeftOfTiltIntoPull()
+        {
+            var conversion = TiltInto.PullBy.Left;
 
-            // Forward
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Forward.Translate(Tilt.Origin));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Forward.Translate(Tilt.Left));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Forward.Translate(Tilt.Right));
-            Assert.AreEqual(Pull.Full, TiltInto.PullBy.Forward.Translate(Tilt.Forward));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Forward.Translate(Tilt.Backward));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Origin));
+            Assert.AreEqual(Pull.Full, conversion.Convert(Tilt.Left));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Right));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Forward));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Backward));
+        }
 
-            // Backward
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Backward.Translate(Tilt.Origin));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Backward.Translate(Tilt.Left));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Backward.Translate(Tilt.Right));
-            Assert.AreEqual(Pull.Empty, TiltInto.PullBy.Backward.Translate(Tilt.Forward));
-            Assert.AreEqual(Pull.Full, TiltInto.PullBy.Backward.Translate(Tilt.Backward));
+        [Test]
+        public void ShouldConvertRightOfTiltIntoPull()
+        {
+            var conversion = TiltInto.PullBy.Right;
+
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Origin));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Left));
+            Assert.AreEqual(Pull.Full, conversion.Convert(Tilt.Right));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Forward));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Backward));
+        }
+
+        [Test]
+        public void ShouldConvertForwardOfTiltIntoPull()
+        {
+            var conversion = TiltInto.PullBy.Forward;
+
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Origin));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Left));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Right));
+            Assert.AreEqual(Pull.Full, conversion.Convert(Tilt.Forward));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Backward));
+        }
+
+        [Test]
+        public void ShouldConvertBackwardOfTiltIntoPull()
+        {
+            var conversion = TiltInto.PullBy.Backward;
+
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Origin));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Left));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Right));
+            Assert.AreEqual(Pull.Empty, conversion.Convert(Tilt.Forward));
+            Assert.AreEqual(Pull.Full, conversion.Convert(Tilt.Backward));
         }
     }
 }

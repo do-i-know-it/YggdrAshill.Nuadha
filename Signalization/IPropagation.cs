@@ -1,14 +1,17 @@
+using System;
+
 namespace YggdrAshill.Nuadha.Signalization
 {
     /// <summary>
-    /// Sends received <typeparamref name="TSignal"/> to each of <see cref="IConsumption{TSignal}"/>.
+    /// Receives <typeparamref name="TSignal"/> to send.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to propagate.
     /// </typeparam>
     public interface IPropagation<TSignal> :
         IProduction<TSignal>,
-        IConsumption<TSignal>
+        IConsumption<TSignal>,
+        IDisposable
         where TSignal : ISignal
     {
 

@@ -1,16 +1,17 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
     /// <summary>
-    /// Defines extensions for <see cref="IProduction{TSignal}"/> to convert.
+    /// Defines extensions for <see cref="IProduction{TSignal}"/> with <see cref="IConversion{TInput, TOutput}"/>.
     /// </summary>
     public static class ProductionExtensionToConvert
     {
         /// <summary>
-        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/> with <paramref name="conversion"/>.
         /// </summary>
         /// <typeparam name="TInput">
         /// Type of <see cref="ISignal"/> to convert.
@@ -21,8 +22,8 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TInput"/>.
         /// </param>
-        /// <param name="translation">
-        /// <see cref="ITranslation{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// <param name="conversion">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
         /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TOutput"/>.
@@ -31,9 +32,9 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="translation"/> is null.
+        /// Thrown if <paramref name="conversion"/> is null.
         /// </exception>
-        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, ITranslation<TInput, TOutput> translation)
+        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, IConversion<TInput, TOutput> conversion)
             where TInput : ISignal
             where TOutput : ISignal
         {
@@ -41,16 +42,16 @@ namespace YggdrAshill.Nuadha
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (translation == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(translation));
+                throw new ArgumentNullException(nameof(conversion));
             }
 
-            return ConvertWhen<TInput, TOutput>.IsProduced(production, translation);
+            return new ProduceToConvert<TInput, TOutput>(production, conversion);
         }
 
         /// <summary>
-        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/> with <paramref name="conversion"/>.
         /// </summary>
         /// <typeparam name="TInput">
         /// Type of <see cref="ISignal"/> to convert.
@@ -61,7 +62,7 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TInput"/>.
         /// </param>
-        /// <param name="translation">
+        /// <param name="conversion">
         /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
@@ -71,9 +72,9 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="translation"/> is null.
+        /// Thrown if <paramref name="conversion"/> is null.
         /// </exception>
-        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, Func<TInput, TOutput> translation)
+        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, Func<TInput, TOutput> conversion)
             where TInput : ISignal
             where TOutput : ISignal
         {
@@ -81,16 +82,16 @@ namespace YggdrAshill.Nuadha
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (translation == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(translation));
+                throw new ArgumentNullException(nameof(conversion));
             }
 
-            return production.Convert(From<TInput>.Into(translation));
+            return production.Convert(From<TInput>.Into<TOutput>.Like(conversion));
         }
-        
+
         /// <summary>
-        /// Corrects <typeparamref name="TSignal"/>.
+        /// Corrects <typeparamref name="TSignal"/> to calibrate with <paramref name="conversion"/> and <paramref name="error"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to correct.
@@ -98,109 +99,56 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </param>
-        /// <param name="calibration">
-        /// <see cref="ICalibration{TSignal}"/> for <typeparamref name="TSignal"/> to correct.
+        /// <param name="conversion">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <see cref="Accuracy{TSignal}"/> of <typeparamref name="TSignal"/> into <typeparamref name="TSignal"/>.
         /// </param>
-        /// <param name="offset">
-        /// <see cref="IOffset{TSignal}"/> for <typeparamref name="TSignal"/> to correct.
+        /// <param name="error">
+        /// <see cref="IError{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TSignal"/>.
+        /// <see cref="IConversion{TInput, TOutput}"/> to correct <typeparamref name="TSignal"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="calibration"/> is null.
+        /// Thrown if <paramref name="conversion"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="offset"/> is null.
+        /// Thrown if <paramref name="error"/> is null.
         /// </exception>
-        public static IProduction<TSignal> Correct<TSignal>(this IProduction<TSignal> production, ICalibration<TSignal> calibration, IOffset<TSignal> offset)
+        public static IProduction<TSignal> Convert<TSignal>(this IProduction<TSignal> production, IConversion<Accuracy<TSignal>, TSignal> conversion, IError<TSignal> error)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (calibration == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(calibration));
+                throw new ArgumentNullException(nameof(conversion));
             }
-            if (offset == null)
+            if (error == null)
             {
-                throw new ArgumentNullException(nameof(offset));
+                throw new ArgumentNullException(nameof(error));
             }
 
-            return production.Convert(ToCorrect<TSignal>.With(calibration, offset));
+            return production.Convert(From<TSignal>.Into<TSignal>.Via(IntoBufferFrom<TSignal>.With(error), conversion));
         }
 
-        /// <summary>
-        /// Converts <typeparamref name="TSignal"/> into <see cref="Note"/> to notate.
-        /// </summary>
-        /// <typeparam name="TSignal">
-        /// Type of <see cref="ISignal"/> to notate.
-        /// </typeparam>
-        /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TSignal"/>.
-        /// </param>
-        /// <param name="notation">
-        /// <see cref="Func{T, TResult}"/> to notate <typeparamref name="TSignal"/>.
-        /// </param>
-        /// <returns>
-        /// <see cref="IProduction{TSignal}"/> for <see cref="Note"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="notation"/> is null.
-        /// </exception>
-        public static IProduction<Note> Convert<TSignal>(this IProduction<TSignal> production, Func<TSignal, string> notation)
+        public static IProduction<TSignal> Convert<TSignal>(this IProduction<TSignal> production, IConversion<Sequence<TSignal>, TSignal> conversion, TSignal initial)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (notation == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(notation));
+                throw new ArgumentNullException(nameof(conversion));
             }
 
-            return production.Convert(IntoNote.From(notation));
-        }
-
-        /// <summary>
-        /// Converts <see cref="Note"/> into <see cref="Note"/> to notate.
-        /// </summary>
-        /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> for <see cref="Note"/>.
-        /// </param>
-        /// <param name="notation">
-        /// <see cref="Func{T, TResult}"/> to notate <see cref="Note"/>.
-        /// </param>
-        /// <returns>
-        /// <see cref="IProduction{TSignal}"/> for <see cref="Note"/>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="notation"/> is null.
-        /// </exception>
-        public static IProduction<Note> Convert(this IProduction<Note> production, Func<string, string> notation)
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (notation == null)
-            {
-                throw new ArgumentNullException(nameof(notation));
-            }
-
-            return production.Convert(IntoNote.FromNote(notation));
+            return production.Convert(From<TSignal>.Into<TSignal>.Via(IntoBufferFrom<TSignal>.With(initial), conversion));
         }
     }
 }

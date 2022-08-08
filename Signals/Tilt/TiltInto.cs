@@ -1,55 +1,42 @@
-﻿using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Transformation;
 using System;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Tilt"/>.
+    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> for <see cref="Tilt"/>.
     /// </summary>
     public static class TiltInto
     {
         /// <summary>
         /// Converts <see cref="Tilt"/> into <see cref="Pull"/>.
         /// </summary>
-        public sealed class PullBy :
-            ITranslation<Tilt, Pull>
+        public sealed class PullBy
         {
             /// <summary>
             /// Converts <see cref="Tilt.Distance"/> into <see cref="Pull"/>.
             /// </summary>
-            public static ITranslation<Tilt, Pull> Distance { get; } = new PullBy(signal => signal.Distance);
+            public static IConversion<Tilt, Pull> Distance { get; } = IntoPullFrom<Tilt>.Like(signal => signal.Distance);
 
             /// <summary>
             /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Pull"/>.
             /// </summary>
-            public static ITranslation<Tilt, Pull> Left { get; } = new PullBy(signal => Math.Max(-signal.Horizontal, 0));
+            public static IConversion<Tilt, Pull> Left { get; } = IntoPullFrom<Tilt>.Like(signal => Math.Max(-signal.Horizontal, 0));
 
             /// <summary>
             /// Converts <see cref="Tilt.Horizontal"/> into <see cref="Pull"/>.
             /// </summary>
-            public static ITranslation<Tilt, Pull> Right { get; } = new PullBy(signal => Math.Max(signal.Horizontal, 0));
+            public static IConversion<Tilt, Pull> Right { get; } = IntoPullFrom<Tilt>.Like(signal => Math.Max(signal.Horizontal, 0));
 
             /// <summary>
             /// Converts <see cref="Tilt.Vertical"/> into <see cref="Pull"/>.
             /// </summary>
-            public static ITranslation<Tilt, Pull> Forward { get; } = new PullBy(signal => Math.Max(signal.Vertical, 0));
+            public static IConversion<Tilt, Pull> Forward { get; } = IntoPullFrom<Tilt>.Like(signal => Math.Max(signal.Vertical, 0));
 
             /// <summary>
             /// Converts <see cref="Tilt.Vertical"/> into <see cref="Pull"/>.
             /// </summary>
-            public static ITranslation<Tilt, Pull> Backward { get; } = new PullBy(signal => Math.Max(-signal.Vertical, 0));
-
-            private readonly Func<Tilt, float> onTranslated;
-
-            private PullBy(Func<Tilt, float> onTranslated)
-            {
-                this.onTranslated = onTranslated;
-            }
-
-            public Pull Translate(Tilt signal)
-            {
-                return (Pull)onTranslated.Invoke(signal);
-            }
+            public static IConversion<Tilt, Pull> Backward { get; } = IntoPullFrom<Tilt>.Like(signal => Math.Max(-signal.Vertical, 0));
         }
     }
 }

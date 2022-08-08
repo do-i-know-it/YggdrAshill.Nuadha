@@ -4,36 +4,36 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> for <see cref="Pull"/>.
+    /// Implementation of <see cref="ISignal"/> for pull.
     /// </summary>
     public struct Pull :
         ISignal,
         IEquatable<Pull>
     {
         /// <summary>
-        /// <see cref="Minimum"/> for <see cref="Pull"/>.
+        /// Minimum <see cref="float"/> for <see cref="Pull"/>.
         /// </summary>
         public const float Minimum = 0.0f;
 
         /// <summary>
-        /// <see cref="Maximum"/> for <see cref="Pull"/>.
+        /// Maximum <see cref="float"/> for <see cref="Pull"/>.
         /// </summary>
         public const float Maximum = 1.0f;
 
         /// <summary>
-        /// <see cref="Empty"/> of <see cref="Pull"/>.
+        /// Empty <see cref="Pull"/>.
         /// </summary>
         public static Pull Empty { get; } = new Pull(Minimum);
 
         /// <summary>
-        /// <see cref="Full"/> of <see cref="Pull"/>.
+        /// Full <see cref="Pull"/>.
         /// </summary>
         public static Pull Full { get; } = new Pull(Maximum);
 
         private readonly float value;
 
         /// <summary>
-        /// Constructs instance.
+        /// Constructor.
         /// </summary>
         /// <param name="value">
         /// <see cref="float"/> for <see cref="Pull"/>.
@@ -118,12 +118,12 @@ namespace YggdrAshill.Nuadha.Signals
         /// </returns>
         public static explicit operator Pull(float signal)
         {
-            if (signal < Minimum)
+            if (signal <= Minimum)
             {
                 return Empty;
             }
 
-            if (signal > Maximum)
+            if (Maximum <= signal)
             {
                 return Full;
             }
@@ -146,66 +146,102 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         /// <summary>
-        /// Checks if <see cref="Pull"/> and <see cref="Pull"/> are equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+        /// </returns>
         public static bool operator ==(Pull left, Pull right)
         {
             return left.Equals(right);
         }
 
         /// <summary>
-        /// Checks if <see cref="Pull"/> and <see cref="Pull"/> are not equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+        /// </returns>
         public static bool operator !=(Pull left, Pull right)
         {
             return !(left == right);
         }
 
         /// <summary>
-        /// Checks if one <see cref="Pull"/> is over another <see cref="Pull"/>.
+        /// Checks if <paramref name="left"/> is more than <paramref name="right"/>.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> is more than <paramref name="right"/>.
+        /// </returns>
         public static bool operator <(Pull left, Pull right)
         {
             return left.value < right.value;
         }
 
         /// <summary>
-        /// Checks if one <see cref="Pull"/> is under another <see cref="Pull"/>.
+        /// Checks if <paramref name="left"/> is less than <paramref name="right"/>.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> is more than <paramref name="right"/>.
+        /// </returns>
         public static bool operator >(Pull left, Pull right)
         {
             return left.value > right.value;
         }
 
         /// <summary>
-        /// Checks if one <see cref="Pull"/> is over another <see cref="Pull"/>.
+        /// Checks if <paramref name="left"/> is <paramref name="right"/> or more.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> is <paramref name="right"/> or more.
+        /// </returns>
         public static bool operator <=(Pull left, Pull right)
         {
             return left.value <= right.value;
         }
 
         /// <summary>
-        /// Checks if one <see cref="Pull"/> is under another <see cref="Pull"/>.
+        /// Checks if <paramref name="left"/> is <paramref name="right"/> or less.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Pull"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> is <paramref name="right"/> or less.
+        /// </returns>
         public static bool operator >=(Pull left, Pull right)
         {
             return left.value >= right.value;

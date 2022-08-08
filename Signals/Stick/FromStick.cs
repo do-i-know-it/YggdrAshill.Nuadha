@@ -1,49 +1,26 @@
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Stick"/>.
+    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> for <see cref="Stick"/>.
     /// </summary>
     public static class FromStick
     {
         /// <summary>
         /// Converts <see cref="Stick"/> into <see cref="Touch"/>.
         /// </summary>
-        public static ITranslation<Stick, Touch> IntoTouch { get; } = new FromStickIntoTouch();
-        private sealed class FromStickIntoTouch :
-            ITranslation<Stick, Touch>
-        {
-            public Touch Translate(Stick signal)
-            {
-                return signal.Touch;
-            }
-        }
+        public static IConversion<Stick, Touch> IntoTouch { get; } = From<Stick>.Into<Touch>.Like(signal => signal.Touch);
 
         /// <summary>
         /// Converts <see cref="Stick"/> into <see cref="Push"/>.
         /// </summary>
-        public static ITranslation<Stick, Push> IntoPush { get; } = new FromStickIntoPush();
-        private sealed class FromStickIntoPush :
-            ITranslation<Stick, Push>
-        {
-            public Push Translate(Stick signal)
-            {
-                return signal.Push;
-            }
-        }
+        public static IConversion<Stick, Push> IntoPush { get; } = From<Stick>.Into<Push>.Like(signal => signal.Push);
 
         /// <summary>
         /// Converts <see cref="Stick"/> into <see cref="Tilt"/>.
         /// </summary>
-        public static ITranslation<Stick, Tilt> IntoTilt { get; } = new FromStickIntoTilt();
-        private sealed class FromStickIntoTilt :
-            ITranslation<Stick, Tilt>
-        {
-            public Tilt Translate(Stick signal)
-            {
-                return signal.Tilt;
-            }
-        }
+        public static IConversion<Stick, Tilt> IntoTilt { get; } = From<Stick>.Into<Tilt>.Like(signal => signal.Tilt);
     }
 }

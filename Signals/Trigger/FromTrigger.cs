@@ -1,36 +1,21 @@
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Trigger"/>.
+    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> for <see cref="Trigger"/>.
     /// </summary>
     public static class FromTrigger
     {
         /// <summary>
         /// Converts <see cref="Trigger"/> into <see cref="Touch"/>.
         /// </summary>
-        public static ITranslation<Trigger, Touch> IntoTouch { get; } = new FromTriggerIntoTouch();
-        private sealed class FromTriggerIntoTouch :
-            ITranslation<Trigger, Touch>
-        {
-            public Touch Translate(Trigger signal)
-            {
-                return signal.Touch;
-            }
-        }
+        public static IConversion<Trigger, Touch> IntoTouch { get; } = From<Trigger>.Into<Touch>.Like(signal => signal.Touch);
 
         /// <summary>
         /// Converts <see cref="Trigger"/> into <see cref="Pull"/>.
         /// </summary>
-        public static ITranslation<Trigger, Pull> IntoPull { get; } = new FromTriggerIntoPull();
-        private sealed class FromTriggerIntoPull :
-            ITranslation<Trigger, Pull>
-        {
-            public Pull Translate(Trigger signal)
-            {
-                return signal.Pull;
-            }
-        }
+        public static IConversion<Trigger, Pull> IntoPull { get; } = From<Trigger>.Into<Pull>.Like(signal => signal.Pull);
     }
 }

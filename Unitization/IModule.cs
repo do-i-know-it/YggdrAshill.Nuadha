@@ -1,3 +1,5 @@
+using System;
+
 namespace YggdrAshill.Nuadha.Unitization
 {
     /// <summary>
@@ -9,7 +11,8 @@ namespace YggdrAshill.Nuadha.Unitization
     /// <typeparam name="TSoftware">
     /// Type of <see cref="ISoftware"/> for module.
     /// </typeparam>
-    public interface IModule<THardware, TSoftware>
+    public interface IModule<THardware, TSoftware> :
+        IDisposable
         where THardware : IHardware
         where TSoftware : ISoftware
     {

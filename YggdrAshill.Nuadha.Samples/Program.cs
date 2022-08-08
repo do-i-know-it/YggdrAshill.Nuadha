@@ -1,5 +1,6 @@
 using YggdrAshill.Nuadha.Signals;
 using System;
+using System.Linq;
 
 namespace YggdrAshill.Nuadha.Samples
 {
@@ -7,21 +8,25 @@ namespace YggdrAshill.Nuadha.Samples
     {
         private static void Main(string[] arguments)
         {
-            var propagation = Propagate<Button>.WithLatestCache(Button.None);
+            var module = new SampleModule();
 
-            var cancellation
-                = propagation
-                .Produce(signal =>
-                {
-                    Console.WriteLine($"Touch: {signal.Touch}\nPush: {signal.Push}");
-                });
+            using (module.Hardware.Input.Send(signal =>
+            {
+                Console.WriteLine($"Received {signal} from device.");
 
-            using (cancellation.ToDisposable())
+                var output = string.Join("", signal.Reverse());
+
+                module.Hardware.Output.Consume((Note)output);
+            }).ToDisposable())
+            using (module.Software.Output.Send(signal =>
+            {
+                Console.WriteLine($"Received {signal} from system.");
+            }).ToDisposable())
             {
                 while (true)
                 {
-                    Console.WriteLine("Please enter any key to emit signals.");
-                    Console.WriteLine("Please enter \"q\" to quit this program.");
+                    Console.WriteLine("Please enter any keys to send signal.");
+                    Console.WriteLine("If you quit this program, enter \"q\".");
                     Console.Write("Key: ");
 
                     var input = Console.ReadLine();
@@ -32,15 +37,7 @@ namespace YggdrAshill.Nuadha.Samples
                         return;
                     }
 
-                    Console.WriteLine($"{input}");
-
-                    var touch = (input == "t").ToTouch();
-
-                    var push = (input == "p").ToPush();
-
-                    var button = new Button(touch, push);
-
-                    propagation.Consume(button);
+                    module.Software.Input.Consume((Note)input);
 
                     Console.WriteLine();
                 }

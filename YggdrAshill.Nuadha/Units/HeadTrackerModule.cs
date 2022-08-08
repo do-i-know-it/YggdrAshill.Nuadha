@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -12,26 +13,9 @@ namespace YggdrAshill.Nuadha
         IHeadTrackerSoftware,
         IHeadTrackerModule
     {
-        /// <summary>
-        /// <see cref="IHeadTrackerModule"/> without cache.
-        /// </summary>
-        /// <returns>
-        /// <see cref="IHeadTrackerModule"/> initialized.
-        /// </returns>
-        public static IHeadTrackerModule WithoutCache()
+        public static IHeadTrackerModule WithList()
         {
-            return new HeadTrackerModule(Propagate<Battery>.WithoutCache(), Propagate<Space3D.Pose>.WithoutCache());
-        }
-
-        /// <summary>
-        /// <see cref="IHeadTrackerModule"/> with latest cache.
-        /// </summary>
-        /// <returns>
-        /// <see cref="IHeadTrackerModule"/> initialized.
-        /// </returns>
-        public static IHeadTrackerModule WithLatestCache()
-        {
-            return new HeadTrackerModule(Propagate<Battery>.WithLatestCache(Battery.Full), Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin));
+            return new HeadTrackerModule(Propagate<Battery>.WithList(), Propagate<Space3D.Pose>.WithList());
         }
 
         private HeadTrackerModule(IPropagation<Battery> battery, IPropagation<Space3D.Pose> pose)
@@ -44,6 +28,14 @@ namespace YggdrAshill.Nuadha
         private readonly IPropagation<Battery> battery;
 
         private readonly IPropagation<Space3D.Pose> pose;
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            battery.Dispose();
+
+            pose.Dispose();
+        }
 
         /// <inheritdoc/>
         public IHeadTrackerHardware Hardware => this;

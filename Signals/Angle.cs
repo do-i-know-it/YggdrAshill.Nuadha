@@ -4,11 +4,14 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines some types of <see cref="ISignal"/> for <see cref="Angle"/>.
+    /// Defines <see cref="ISignal"/>s for <see cref="Angle"/>.
     /// </summary>
     public static class Angle
     {
-        #region Constants
+        /// <summary>
+        /// <see cref="float"/> of difference of <see cref="Angle"/>.
+        /// </summary>
+        public static float Tolerance { get; } = 1e-5f;
 
         /// <summary>
         /// Coefficient to convert <see cref="Degree"/> to <see cref="Radian"/>.
@@ -20,8 +23,6 @@ namespace YggdrAshill.Nuadha.Signals
         /// </summary>
         public const float RadianToDegree = Degree.Maximum / Radian.Maximum;
 
-        #endregion
-
         #region Radian
 
         /// <summary>
@@ -32,19 +33,24 @@ namespace YggdrAshill.Nuadha.Signals
             IEquatable<Radian>
         {
             /// <summary>
-            /// <see cref="Minimum"/> of <see cref="Radian"/>.
+            /// Minimum <see cref="float"/> of <see cref="Radian"/>.
             /// </summary>
             public const float Minimum = -(float)Math.PI;
 
             /// <summary>
-            /// <see cref="Maximum"/> of <see cref="Radian"/>.
+            /// Maximum <see cref="float"/> of <see cref="Radian"/>.
             /// </summary>
             public const float Maximum = (float)Math.PI;
+
+            /// <summary>
+            /// Zero of <see cref="Radian"/>.
+            /// </summary>
+            public static Radian Zero { get; } = new Radian(0.0f);
 
             private readonly float value;
 
             /// <summary>
-            /// Constructs instance.
+            /// Constructor.
             /// </summary>
             /// <param name="value">
             /// <see cref="float"/> for <see cref="Radian"/>.
@@ -158,7 +164,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Inverses <see cref="Radian"/>.
+            /// Inverses <paramref name="signal"/>.
             /// </summary>
             /// <param name="signal">
             /// <see cref="Radian"/> to inverse.
@@ -172,10 +178,14 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Adds <see cref="Radian"/> and <see cref="Radian"/>.
+            /// Adds <paramref name="right"/> into <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Radian"/> to add.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Radian"/> to add.
+            /// </param>
             /// <returns>
             /// <see cref="Radian"/> added.
             /// </returns>
@@ -187,21 +197,26 @@ namespace YggdrAshill.Nuadha.Signals
 
                 if (value < Minimum)
                 {
-                    value += 2 * Maximum;
+                    return new Radian(value + Maximum * 2);
                 }
-                else if (value > Maximum)
+
+                if (value > Maximum)
                 {
-                    value += 2 * Minimum;
+                    return new Radian(value + Minimum * 2);
                 }
 
                 return new Radian(value);
             }
 
             /// <summary>
-            /// Subtracts <see cref="Radian"/> and <see cref="Radian"/>.
+            /// Subtracts <paramref name="right"/> from <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Radian"/> to subtract.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Radian"/> to subtract.
+            /// </param>
             /// <returns>
             /// <see cref="Radian"/> subtracted.
             /// </returns>
@@ -211,22 +226,34 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Checks if <see cref="Radian"/> and <see cref="Radian"/> are equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Radian"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Radian"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+            /// </returns>
             public static bool operator ==(Radian left, Radian right)
             {
                 return left.Equals(right);
             }
 
             /// <summary>
-            /// Checks if <see cref="Radian"/> and <see cref="Radian"/> are not equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Radian"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Radian"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+            /// </returns>
             public static bool operator !=(Radian left, Radian right)
             {
                 return !(left == right);
@@ -245,21 +272,28 @@ namespace YggdrAshill.Nuadha.Signals
             IEquatable<Degree>
         {
             /// <summary>
-            /// <see cref="Minimum"/> of <see cref="Degree"/>.
+            /// Minimum <see cref="float"/> of <see cref="Degree"/>.
             /// </summary>
             public const float Minimum = -180.0f;
 
             /// <summary>
-            /// <see cref="Maximum"/> of <see cref="Degree"/>.
+            /// Maximum <see cref="float"/> of <see cref="Degree"/>.
             /// </summary>
             public const float Maximum = 180.0f;
+
+            /// <summary>
+            /// Zero of <see cref="Radian"/>.
+            /// </summary>
+            public static Radian Zero { get; } = new Radian(0.0f);
 
             private readonly float value;
 
             /// <summary>
-            /// Constructs instance.
+            /// Constructor.
             /// </summary>
-            /// <param name="value"></param>
+            /// <param name="value">
+            /// <see cref="float"/> for <see cref="Degree"/>.
+            /// </param>
             /// <exception cref="ArgumentException">
             /// Thrown if <paramref name="value"/> is <see cref="float.NaN"/>.
             /// </exception>
@@ -369,7 +403,7 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Inverses <see cref="Degree"/>.
+            /// Inverses <paramref name="signal"/>.
             /// </summary>
             /// <param name="signal">
             /// <see cref="Degree"/> to inverse.
@@ -383,10 +417,14 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Adds <see cref="Degree"/> and <see cref="Degree"/>.
+            /// Adds <paramref name="right"/> into <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Degree"/> to add.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Degree"/> to add.
+            /// </param>
             /// <returns>
             /// <see cref="Degree"/> added.
             /// </returns>
@@ -398,21 +436,26 @@ namespace YggdrAshill.Nuadha.Signals
 
                 if (value < Minimum)
                 {
-                    value += 2 * Maximum;
+                    return new Degree(value + Maximum * 2);
                 }
-                else if (value > Maximum)
+
+                if (value > Maximum)
                 {
-                    value += 2 * Minimum;
+                    return new Degree(value + Minimum * 2);
                 }
 
                 return new Degree(value);
             }
 
             /// <summary>
-            /// Subtracts <see cref="Degree"/> and <see cref="Degree"/>.
+            /// Subtracts <paramref name="right"/> from <paramref name="left"/>.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
+            /// <param name="left">
+            /// <see cref="Degree"/> to subtract.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Degree"/> to subtract.
+            /// </param>
             /// <returns>
             /// <see cref="Degree"/> subtracted.
             /// </returns>
@@ -422,22 +465,34 @@ namespace YggdrAshill.Nuadha.Signals
             }
 
             /// <summary>
-            /// Checks if <see cref="Degree"/> and <see cref="Degree"/> are equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Degree"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Degree"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+            /// </returns>
             public static bool operator ==(Degree left, Degree right)
             {
                 return left.Equals(right);
             }
 
             /// <summary>
-            /// Checks if <see cref="Degree"/> and <see cref="Degree"/> are not equal.
+            /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
             /// </summary>
-            /// <param name="left"></param>
-            /// <param name="right"></param>
-            /// <returns></returns>
+            /// <param name="left">
+            /// <see cref="Degree"/> to check.
+            /// </param>
+            /// <param name="right">
+            /// <see cref="Degree"/> to check.
+            /// </param>
+            /// <returns>
+            /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+            /// </returns>
             public static bool operator !=(Degree left, Degree right)
             {
                 return !(left == right);

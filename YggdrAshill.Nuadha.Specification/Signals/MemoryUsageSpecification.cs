@@ -34,7 +34,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             var expected = used + unused;
 
-            Assert.AreEqual(expected, new MemoryUsage(used, unused).TotalSize);
+            Assert.AreEqual(expected, new MemoryUsage(used, unused).Total);
         }
 
         [Test]

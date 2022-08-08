@@ -4,36 +4,36 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> for <see cref="Battery"/>.
+    /// Implementation of <see cref="ISignal"/> for batter.
     /// </summary>
     public struct Battery :
         ISignal,
         IEquatable<Battery>
     {
         /// <summary>
-        /// <see cref="Minimum"/> for <see cref="Battery"/>.
+        /// Minimum <see cref="float"/> for <see cref="Battery"/>.
         /// </summary>
         public const float Minimum = 0.0f;
 
         /// <summary>
-        /// <see cref="Maximum"/> for <see cref="Battery"/>.
+        /// Maximum <see cref="float"/> for <see cref="Battery"/>.
         /// </summary>
         public const float Maximum = 1.0f;
 
         /// <summary>
-        /// <see cref="Battery"/> that is <see cref="Minimum"/>.
+        /// Empty <see cref="Battery"/>.
         /// </summary>
         public static Battery Empty { get; } = new Battery(Minimum);
 
         /// <summary>
-        /// <see cref="Battery"/> that is <see cref="Maximum"/>.
+        /// Full <see cref="Battery"/>.
         /// </summary>
         public static Battery Full { get; } = new Battery(Maximum);
 
         private readonly float level;
 
         /// <summary>
-        /// Constructs instance.
+        /// Constructor.
         /// </summary>
         /// <param name="level">
         /// <see cref="float"/> for <see cref="Battery"/>.
@@ -104,11 +104,11 @@ namespace YggdrAshill.Nuadha.Signals
         /// </returns>
         public static explicit operator Battery(float signal)
         {
-            if (signal < Minimum)
+            if (signal <= Minimum)
             {
                 return Empty;
             }
-            if (signal > Maximum)
+            if (Maximum <= signal)
             {
                 return Full;
             }
@@ -131,66 +131,102 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         /// <summary>
-        /// Checks if <see cref="Battery"/> and <see cref="Battery"/> are equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+        /// </returns>
         public static bool operator ==(Battery left, Battery right)
         {
             return left.Equals(right);
         }
 
         /// <summary>
-        /// Checks if <see cref="Battery"/> and <see cref="Battery"/> are not equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+        /// </returns>
         public static bool operator !=(Battery left, Battery right)
         {
             return !(left == right);
         }
 
         /// <summary>
-        /// Checks if one <see cref="Battery"/> is over another <see cref="Battery"/>.
+        /// Checks if <paramref name="left"/> is more than <paramref name="right"/>.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> is more than <paramref name="right"/>.
+        /// </returns>
         public static bool operator <(Battery left, Battery right)
         {
             return left.level < right.level;
         }
 
         /// <summary>
-        /// Checks if one <see cref="Battery"/> is under another <see cref="Battery"/>.
+        /// Checks if <paramref name="left"/> is less than <paramref name="right"/>.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> is more than <paramref name="right"/>.
+        /// </returns>
         public static bool operator >(Battery left, Battery right)
         {
             return left.level > right.level;
         }
 
         /// <summary>
-        /// Checks if one <see cref="Battery"/> is over another <see cref="Battery"/>.
+        /// Checks if <paramref name="left"/> is <paramref name="right"/> or more.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> is <paramref name="right"/> or more.
+        /// </returns>
         public static bool operator <=(Battery left, Battery right)
         {
             return left.level <= right.level;
         }
 
         /// <summary>
-        /// Checks if one <see cref="Battery"/> is under another <see cref="Battery"/>.
+        /// Checks if <paramref name="left"/> is <paramref name="right"/> or less.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Battery"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> is <paramref name="right"/> or less.
+        /// </returns>
         public static bool operator >=(Battery left, Battery right)
         {
             return left.level >= right.level;

@@ -1,5 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using System;
 
@@ -11,7 +12,7 @@ namespace YggdrAshill.Nuadha
     public static class ProductionExtensionForPush
     {
         /// <summary>
-        /// Converts <typeparamref name="TSignal"/> into <see cref="Push"/>.
+        /// Converts <typeparamref name="TSignal"/> into <see cref="Push"/> like <paramref name="conversion"/>.
         /// </summary>
         /// <typeparam name="TSignal">
         /// Type of <see cref="ISignal"/> to convert.
@@ -19,8 +20,8 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </param>
-        /// <param name="notification">
-        /// <see cref="INotification{TSignal}"/> for <typeparamref name="TSignal"/>.
+        /// <param name="conversion">
+        /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TSignal"/> into <see cref="bool"/>.
         /// </param>
         /// <returns>
         /// <see cref="IProduction{TSignal}"/> for <see cref="Push"/>.
@@ -29,21 +30,21 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="notification"/> is null.
+        /// Thrown if <paramref name="conversion"/> is null.
         /// </exception>
-        public static IProduction<Push> IntoPush<TSignal>(this IProduction<TSignal> production, INotification<TSignal> notification)
+        public static IProduction<Push> IntoPush<TSignal>(this IProduction<TSignal> production, Func<TSignal, bool> conversion)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (notification == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(notification));
+                throw new ArgumentNullException(nameof(conversion));
             }
 
-            return production.Convert(Signals.IntoPush.From(notification));
+            return production.Convert(IntoPushFrom<TSignal>.Like(conversion));
         }
 
         /// <summary>
@@ -55,8 +56,8 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </param>
-        /// <param name="notification">
-        /// <see cref="Func{T, TResult}"/> to notify <typeparamref name="TSignal"/>.
+        /// <param name="detection">
+        /// <see cref="IDetection{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <see cref="IProduction{TSignal}"/> for <see cref="Push"/>.
@@ -65,21 +66,21 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="notification"/> is null.
+        /// Thrown if <paramref name="detection"/> is null.
         /// </exception>
-        public static IProduction<Push> IntoPush<TSignal>(this IProduction<TSignal> production, Func<TSignal, bool> notification)
+        public static IProduction<Push> IntoPush<TSignal>(this IProduction<TSignal> production, IDetection<TSignal> detection)
             where TSignal : ISignal
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (notification == null)
+            if (detection == null)
             {
-                throw new ArgumentNullException(nameof(notification));
+                throw new ArgumentNullException(nameof(detection));
             }
 
-            return production.IntoPush(When<TSignal>.Is(notification));
+            return production.Convert(IntoPushFrom<TSignal>.When(detection));
         }
 
         /// <summary>
@@ -145,7 +146,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(production));
             }
 
-            return production.Detect(WhenPushIs.Enabled);
+            return production.Detect(PushIs.Enabled);
         }
 
         /// <summary>
@@ -167,7 +168,7 @@ namespace YggdrAshill.Nuadha
                 throw new ArgumentNullException(nameof(production));
             }
 
-            return production.Detect(WhenPushIs.Disabled);
+            return production.Detect(PushIs.Disabled);
         }
 
         /// <summary>
@@ -176,8 +177,8 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> for <see cref="Push"/>.
         /// </param>
-        /// <param name="threshold">
-        /// <see cref="IThreshold{TSignal}"/> for <see cref="Push"/>.
+        /// <param name="target">
+        /// <see cref="ITarget{TSignal}"/> for <see cref="Push"/>.
         /// </param>
         /// <returns>
         /// <see cref="IProduction{TSignal}"/> for <see cref="Pulse"/>.
@@ -186,20 +187,20 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
+        /// Thrown if <paramref name="target"/> is null.
         /// </exception>
-        public static IProduction<Pulse> IsEqualTo(this IProduction<Push> production, IThreshold<Push> threshold)
+        public static IProduction<Pulse> IsEqualTo(this IProduction<Push> production, ITarget<Push> target)
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (threshold == null)
+            if (target == null)
             {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(target));
             }
 
-            return production.Detect(WhenPushIs.EqualTo, threshold);
+            return production.Detect(PushIs.EqualTo, target);
         }
 
         /// <summary>
@@ -208,8 +209,8 @@ namespace YggdrAshill.Nuadha
         /// <param name="production">
         /// <see cref="IProduction{TSignal}"/> for <see cref="Push"/>.
         /// </param>
-        /// <param name="threshold">
-        /// <see cref="IThreshold{TSignal}"/> for <see cref="Push"/>.
+        /// <param name="target">
+        /// <see cref="ITarget{TSignal}"/> for <see cref="Push"/>.
         /// </param>
         /// <returns>
         /// <see cref="IProduction{TSignal}"/> for <see cref="Pulse"/>.
@@ -218,20 +219,52 @@ namespace YggdrAshill.Nuadha
         /// Thrown if <paramref name="production"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="threshold"/> is null.
+        /// Thrown if <paramref name="target"/> is null.
         /// </exception>
-        public static IProduction<Pulse> IsNotEqualTo(this IProduction<Push> production, IThreshold<Push> threshold)
+        public static IProduction<Pulse> IsNotEqualTo(this IProduction<Push> production, ITarget<Push> target)
         {
             if (production == null)
             {
                 throw new ArgumentNullException(nameof(production));
             }
-            if (threshold == null)
+            if (target == null)
             {
-                throw new ArgumentNullException(nameof(threshold));
+                throw new ArgumentNullException(nameof(target));
             }
 
-            return production.Detect(WhenPushIs.NotEqualTo, threshold);
+            return production.Detect(PushIs.NotEqualTo, target);
+        }
+
+        /// <summary>
+        /// Sends <see cref="Push"/> like <paramref name="consumption"/>.
+        /// </summary>
+        /// <param name="production">
+        /// <see cref="IProduction{TSignal}"/> for <see cref="Push"/>.
+        /// </param>
+        /// <param name="consumption">
+        /// <see cref="Action{T}"/> to consume <see cref="Push"/> as <see cref="bool"/>.
+        /// </param>
+        /// <returns>
+        /// <see cref="ICancellation"/> to cancell sending.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="production"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="consumption"/> is null.
+        /// </exception>
+        public static ICancellation Send(this IProduction<Push> production, Action<bool> consumption)
+        {
+            if (production == null)
+            {
+                throw new ArgumentNullException(nameof(production));
+            }
+            if (consumption == null)
+            {
+                throw new ArgumentNullException(nameof(consumption));
+            }
+
+            return production.Produce(ConsumePush.Like(consumption));
         }
     }
 }

@@ -4,100 +4,84 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> for <see cref="Tilt"/>.
+    /// Implementation of <see cref="ISignal"/> for tilt.
     /// </summary>
     public struct Tilt :
         ISignal,
         IEquatable<Tilt>
     {
         /// <summary>
-        /// Tolerance of difference for <see cref="Tilt"/>.
+        /// <see cref="float"/> of difference of <see cref="Tilt"/>.
         /// </summary>
         public static float Tolerance { get; } = 1e-5f;
 
         /// <summary>
-        /// Maximum of <see cref="Length"/> for <see cref="Tilt"/>.
+        /// <see cref="float"/> for length of <see cref="Tilt"/>.
         /// </summary>
         public const float Length = 1.0f;
 
         /// <summary>
-        /// Minimum value for <see cref="Horizontal"/> and <see cref="Vertical"/>.
+        /// Minimum <see cref="float"/> for <see cref="Horizontal"/> and <see cref="Vertical"/>.
         /// </summary>
         public const float Minimum = -Length;
 
         /// <summary>
-        /// Maximum value for <see cref="Horizontal"/> and <see cref="Vertical"/>.
+        /// Maximum <see cref="float"/> for <see cref="Horizontal"/> and <see cref="Vertical"/>.
         /// </summary>
         public const float Maximum = Length;
 
         /// <summary>
-        /// <see cref="Origin"/> of the coordinate.
+        /// Origin of <see cref="Tilt"/>.
         /// </summary>
         public static Tilt Origin { get; } = new Tilt(0.0f, 0.0f);
 
         /// <summary>
-        /// <see cref="Right"/> in the coordinate.
+        /// Right of <see cref="Tilt"/>.
         /// </summary>
         public static Tilt Right { get; } = new Tilt(Maximum, 0.0f);
 
         /// <summary>
-        /// <see cref="Left"/> in the coordinate.
+        /// Left of <see cref="Tilt"/>.
         /// </summary>
         public static Tilt Left { get; } = new Tilt(Minimum, 0.0f);
 
         /// <summary>
-        /// <see cref="Forward"/> in the coordinate.
+        /// Forward of <see cref="Tilt"/>.
         /// </summary>
         public static Tilt Forward { get; } = new Tilt(0.0f, Maximum);
 
         /// <summary>
-        /// <see cref="Backward"/> in the coordinate.
+        /// Backward of <see cref="Tilt"/>.
         /// </summary>
         public static Tilt Backward { get; } = new Tilt(0.0f, Minimum);
 
         /// <summary>
-        /// <see cref="Horizontal"/> of the coordinate.
+        /// <see cref="float"/> for horizontal of <see cref="Tilt"/>.
         /// </summary>
         public float Horizontal { get; }
 
         /// <summary>
-        /// <see cref="Vertical"/> of the coordinate.
+        /// <see cref="float"/> for vertical of <see cref="Tilt"/>.
         /// </summary>
         public float Vertical { get; }
 
-        private float distance;
         /// <summary>
-        /// <see cref="Distance"/> of <see cref="Tilt"/>.
+        /// <see cref="float"/> for distance of <see cref="Tilt"/>.
         /// </summary>
         public float Distance
         {
             get
             {
-                InitializeIfNeeded();
+                var dotted
+                    = Horizontal * Horizontal
+                    + Vertical * Vertical;
 
-                return distance;
+                return (float)Math.Sqrt(dotted);
             }
-        }
-
-        private bool initialized;
-        private void InitializeIfNeeded()
-        {
-            if (initialized)
-            {
-                return;
-            }
-
-            var dotted
-                = Horizontal * Horizontal
-                + Vertical * Vertical;
-
-            distance = (float)Math.Sqrt(dotted);
-
-            initialized = true;
         }
 
         /// <summary>
-        /// Constructs instance.
+        /// Constructor.
         /// </summary>
         /// <param name="horizontal">
         /// <see cref="float"/> for <see cref="Horizontal"/>.
@@ -116,9 +100,6 @@ namespace YggdrAshill.Nuadha.Signals
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="vertical"/> is out of range between <see cref="Minimum"/> and <see cref="Maximum"/>.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <see cref="Distance"/> is out of <see cref="Length"/>.
         /// </exception>
         public Tilt(float horizontal, float vertical)
         {
@@ -140,23 +121,9 @@ namespace YggdrAshill.Nuadha.Signals
                 throw new ArgumentOutOfRangeException(nameof(vertical));
             }
 
-            var dotted
-                = horizontal * horizontal
-                + vertical * vertical;
-            var difference = dotted - Length;
-
-            if (difference > Tolerance)
-            {
-                throw new ArgumentOutOfRangeException($"{nameof(horizontal)}^2 + {nameof(vertical)}^2 > {Tolerance}");
-            }
-
             Horizontal = horizontal;
 
             Vertical = vertical;
-
-            distance = (float)Math.Sqrt(dotted);
-
-            initialized = true;
         }
 
         /// <inheritdoc/>
@@ -217,22 +184,47 @@ namespace YggdrAshill.Nuadha.Signals
         }
 
         /// <summary>
-        /// Checks if <see cref="Tilt"/> and <see cref="Tilt"/> are equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Tilt"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Tilt"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+        /// </returns>
         public static bool operator ==(Tilt left, Tilt right)
         {
-            return left.Equals(right);
+            if (left.Equals(right))
+            {
+                return true;
+            }
+
+            var horizontalDifference = left.Horizontal - right.Horizontal;
+
+            var verticalDifference = left.Vertical - right.Vertical;
+
+            var dotted
+                = horizontalDifference * horizontalDifference
+                + verticalDifference * verticalDifference;
+
+            return dotted <= Tolerance;
         }
 
         /// <summary>
-        /// Checks if <see cref="Tilt"/> and <see cref="Tilt"/> are not equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are not equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="Tilt"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="Tilt"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+        /// </returns>
         public static bool operator !=(Tilt left, Tilt right)
         {
             return !(left == right);

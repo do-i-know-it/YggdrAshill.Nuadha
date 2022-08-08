@@ -1,4 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
 using YggdrAshill.Nuadha.Units;
 
@@ -12,29 +13,9 @@ namespace YggdrAshill.Nuadha
         IHumanPoseTrackerSoftware,
         IHumanPoseTrackerModule
     {
-        /// <summary>
-        /// <see cref="IHumanPoseTrackerModule"/> without cache.
-        /// </summary>
-        /// <returns>
-        /// <see cref="IHumanPoseTrackerModule"/> initialized.
-        /// </returns>
-        public static IHumanPoseTrackerModule WithoutCache()
+        public static IHumanPoseTrackerModule WithList()
         {
-            return new HumanPoseTrackerModule(Propagate<Space3D.Pose>.WithoutCache(), Propagate<Space3D.Pose>.WithoutCache(), Propagate<Space3D.Pose>.WithoutCache());
-        }
-
-        /// <summary>
-        /// <see cref="IHumanPoseTrackerModule"/> with latest cache.
-        /// </summary>
-        /// <returns>
-        /// <see cref="IHumanPoseTrackerModule"/> initialized.
-        /// </returns>
-        public static IHumanPoseTrackerModule WithLatestCache()
-        {
-            return new HumanPoseTrackerModule(
-                Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin),
-                Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin),
-                Propagate<Space3D.Pose>.WithLatestCache(Space3D.Pose.Origin));
+            return new HumanPoseTrackerModule(Propagate<Space3D.Pose>.WithList(), Propagate<Space3D.Pose>.WithList(), Propagate<Space3D.Pose>.WithList());
         }
 
         private HumanPoseTrackerModule(IPropagation<Space3D.Pose> head, IPropagation<Space3D.Pose> leftHand, IPropagation<Space3D.Pose> rightHand)
@@ -51,6 +32,16 @@ namespace YggdrAshill.Nuadha
         private readonly IPropagation<Space3D.Pose> leftHand;
 
         private readonly IPropagation<Space3D.Pose> rightHand;
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            head.Dispose();
+
+            leftHand.Dispose();
+
+            rightHand.Dispose();
+        }
 
         /// <inheritdoc/>
         public IHumanPoseTrackerHardware Hardware => this;

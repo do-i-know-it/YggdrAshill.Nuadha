@@ -1,49 +1,26 @@
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Defines implementations of <see cref="ITranslation{TInput, TOutput}"/> for <see cref="Button"/>.
+    /// Defines implementations of <see cref="IConversion{TInput, TOutput}"/> for <see cref="Button"/>.
     /// </summary>
     public static class FromButton
     {
         /// <summary>
         /// Converts <see cref="Button"/> into <see cref="Touch"/>.
         /// </summary>
-        public static ITranslation<Button, Touch> IntoTouch { get; } = new FromButtonIntoTouch();
-        private sealed class FromButtonIntoTouch :
-            ITranslation<Button, Touch>
-        {
-            public Touch Translate(Button signal)
-            {
-                return signal.Touch;
-            }
-        }
+        public static IConversion<Button, Touch> IntoTouch { get; } = From<Button>.Into<Touch>.Like(signal => signal.Touch);
 
         /// <summary>
         /// Converts <see cref="Button"/> into <see cref="Push"/>.
         /// </summary>
-        public static ITranslation<Button, Push> IntoPush { get; } = new FromButtonIntoPush();
-        private sealed class FromButtonIntoPush :
-            ITranslation<Button, Push>
-        {
-            public Push Translate(Button signal)
-            {
-                return signal.Push;
-            }
-        }
+        public static IConversion<Button, Push> IntoPush { get; } = From<Button>.Into<Push>.Like(signal => signal.Push);
 
         /// <summary>
         /// Converts <see cref="Button"/> into <see cref="Trigger"/>.
         /// </summary>
-        public static ITranslation<Button, Trigger> IntoTrigger { get; } = new FromButtonIntoTrigger();
-        private sealed class FromButtonIntoTrigger :
-            ITranslation<Button, Trigger>
-        {
-            public Trigger Translate(Button signal)
-            {
-                return (Trigger)signal;
-            }
-        }
+        public static IConversion<Button, Trigger> IntoTrigger { get; } = From<Button>.Into<Trigger>.Like(signal => (Trigger)signal);
     }
 }

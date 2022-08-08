@@ -4,77 +4,86 @@ using System;
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> for <see cref="MemoryUsage"/>.
+    /// Implementation of <see cref="ISignal"/> for memory usage.
     /// </summary>
     public struct MemoryUsage :
         ISignal,
         IEquatable<MemoryUsage>
     {
+        /// <summary>
+        /// <see cref="float"/> of coefficient to convert byte into kilo byte.
+        /// </summary>
         public const float ByteToKiloByte = 1 / 1000.0f;
 
+        /// <summary>
+        /// <see cref="float"/> of coefficient to convert kilo byte into mega byte.
+        /// </summary>
         public const float KiloByteToMegaByte = 1 / 1000.0f;
 
+        /// <summary>
+        /// <see cref="float"/> of coefficient to convert byte into mega byte.
+        /// </summary>
         public const float ByteToMegaByte = ByteToKiloByte * KiloByteToMegaByte;
 
         /// <summary>
-        /// <see cref="UsedSize"/> in byte.
+        /// <see cref="long"/> of used <see cref="MemoryUsage"/> in byte.
         /// </summary>
-        public long UsedSize { get; }
+        public long Used { get; }
 
         /// <summary>
-        /// <see cref="UnusedSize"/> in byte.
+        /// <see cref="long"/> of unused <see cref="MemoryUsage"/> in byte.
         /// </summary>
-        public long UnusedSize { get; }
+        public long Unused { get; }
 
         /// <summary>
-        /// Construcs instance.
+        /// Constructor.
         /// </summary>
-        /// <param name="usedSize">
-        /// <see cref="long"/> for <see cref="UsedSize"/> in byte.
+        /// <param name="used">
+        /// <see cref="long"/> for <see cref="Used"/>.
         /// </param>
-        /// <param name="unusedSize">
-        /// <see cref="long"/> for <see cref="UnusedSize"/> in byte.
+        /// <param name="unused">
+        /// <see cref="long"/> for <see cref="Unused"/>.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="usedSize"/> is negative.
+        /// Thrown if <paramref name="used"/> is negative.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="unusedSize"/> is negative.
+        /// Thrown if <paramref name="unused"/> is negative.
         /// </exception>
-        public MemoryUsage(long usedSize, long unusedSize)
+        public MemoryUsage(long used, long unused)
         {
-            if (usedSize < 0)
+            if (used < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(usedSize));
+                throw new ArgumentOutOfRangeException(nameof(used));
             }
-            if (unusedSize < 0)
+            if (unused < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(unusedSize));
+                throw new ArgumentOutOfRangeException(nameof(unused));
             }
 
-            UsedSize = usedSize;
+            Used = used;
 
-            UnusedSize = unusedSize;
+            Unused = unused;
         }
 
         /// <summary>
-        /// <see cref="TotalSize"/> of <see cref="MemoryUsage"/>.
+        /// <see cref="long"/> of total <see cref="MemoryUsage"/> in byte.
         /// </summary>
-        public long TotalSize
-            => UsedSize + UnusedSize;
+        public long Total
+            => Used + Unused;
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{TotalSize}";
+            return $"{Total}";
         }
 
         /// <inheritdoc/>
         public override int GetHashCode()
         {
             var hashCode = 1985031587;
-            hashCode = hashCode * -1521134295 + UsedSize.GetHashCode();
-            hashCode = hashCode * -1521134295 + UnusedSize.GetHashCode();
+            hashCode = hashCode * -1521134295 + Used.GetHashCode();
+            hashCode = hashCode * -1521134295 + Unused.GetHashCode();
             return hashCode;
         }
 
@@ -97,27 +106,44 @@ namespace YggdrAshill.Nuadha.Signals
         /// <inheritdoc/>
         public bool Equals(MemoryUsage other)
         {
-            return UsedSize.Equals(other.UsedSize)
-                && UnusedSize.Equals(other.UnusedSize);
+            return Used.Equals(other.Used)
+                && Unused.Equals(other.Unused);
         }
 
         /// <summary>
-        /// Checks if <see cref="MemoryUsage"/> and <see cref="MemoryUsage"/> are equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="MemoryUsage"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="MemoryUsage"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are equal.
+        /// </returns>
         public static bool operator ==(MemoryUsage left, MemoryUsage right)
         {
-            return left.Equals(right);
+            if (left.Equals(right))
+            {
+                return true;
+            }
+
+            return left.Total.Equals(right.Total);
         }
 
         /// <summary>
-        /// Checks if <see cref="MemoryUsage"/> and <see cref="MemoryUsage"/> are not equal.
+        /// Checks if <paramref name="left"/> and <paramref name="right"/> are equal.
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
+        /// <param name="left">
+        /// <see cref="MemoryUsage"/> to check.
+        /// </param>
+        /// <param name="right">
+        /// <see cref="MemoryUsage"/> to check.
+        /// </param>
+        /// <returns>
+        /// True if <paramref name="left"/> and <paramref name="right"/> are not equal.
+        /// </returns>
         public static bool operator !=(MemoryUsage left, MemoryUsage right)
         {
             return !(left == right);

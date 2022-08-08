@@ -1,17 +1,15 @@
 using YggdrAshill.Nuadha.Signalization;
-using System;
 
 namespace YggdrAshill.Nuadha.Signals
 {
     /// <summary>
-    /// Implementation of <see cref="ISignal"/> for <see cref="Button"/>.
+    /// Implementation of <see cref="ISignal"/> for button.
     /// </summary>
     public struct Button :
-        ISignal,
-        IEquatable<Button>
+        ISignal
     {
         /// <summary>
-        /// <see cref="Button"/> disabled.
+        /// Default <see cref="Button"/>.
         /// </summary>
         public static Button None { get; } = new Button(Touch.Disabled, Push.Disabled);
 
@@ -26,13 +24,13 @@ namespace YggdrAshill.Nuadha.Signals
         public Push Push { get; }
 
         /// <summary>
-        /// Constructs instance.
+        /// Constructor.
         /// </summary>
         /// <param name="touch">
-        /// <see cref="Signals.Touch"/> for <see cref="Button"/>.
+        /// <see cref="Signals.Touch"/> for <see cref="Touch"/>.
         /// </param>
         /// <param name="push">
-        /// <see cref="Signals.Push"/> for <see cref="Button."/>
+        /// <see cref="Signals.Push"/> for <see cref="Push."/>
         /// </param>
         public Button(Touch touch, Push push)
         {
@@ -44,40 +42,7 @@ namespace YggdrAshill.Nuadha.Signals
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{nameof(Touch)}: {Touch}; {nameof(Push)}: {Push}";
-        }
-
-        /// <inheritdoc/>
-        public override int GetHashCode()
-        {
-            // Visual Studio auto generated.
-            var hashCode = 556604981;
-            hashCode = hashCode * -1521134295 + Touch.GetHashCode();
-            hashCode = hashCode * -1521134295 + Push.GetHashCode();
-            return hashCode;
-        }
-
-        /// <inheritdoc/>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj is Button signal)
-            {
-                return Equals(signal);
-            }
-
-            return false;
-        }
-
-        /// <inheritdoc/>
-        public bool Equals(Button other)
-        {
-            return Touch.Equals(other.Touch)
-                && Push.Equals(other.Push);
+            return $"({Touch}), ({Push})";
         }
 
         /// <summary>
@@ -120,28 +85,6 @@ namespace YggdrAshill.Nuadha.Signals
         public static explicit operator Trigger(Button signal)
         {
             return new Trigger(signal.Touch, (Pull)signal.Push);
-        }
-
-        /// <summary>
-        /// Checks if <see cref="Button"/> and <see cref="Button"/> are equal.
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static bool operator ==(Button left, Button right)
-        {
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Checks if <see cref="Button"/> and <see cref="Button"/> are not equal.
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        public static bool operator !=(Button left, Button right)
-        {
-            return !(left == right);
         }
     }
 }

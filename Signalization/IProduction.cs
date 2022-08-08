@@ -10,13 +10,13 @@ namespace YggdrAshill.Nuadha.Signalization
         where TSignal : ISignal
     {
         /// <summary>
-        /// Sends <typeparamref name="TSignal"/> produced to <see cref="IConsumption{TSignal}"/>.
+        /// Sends produced <typeparamref name="TSignal"/> to <paramref name="consumption"/>.
         /// </summary>
         /// <param name="consumption">
         /// <see cref="IConsumption{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
-        /// <see cref="ICancellation"/> to cancel.
+        /// <see cref="ICancellation"/> to cancel sending.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
         /// Thrown if <paramref name="consumption"/> is null.
