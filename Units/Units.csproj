@@ -7,11 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conduction\Conduction.csproj" />
     <ProjectReference Include="..\Monitorization\Monitorization.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
     <ProjectReference Include="..\Signals\Signals.csproj" />
-    <ProjectReference Include="..\Transformation\Transformation.csproj" />
     <ProjectReference Include="..\Unitization\Unitization.csproj" />
   </ItemGroup>
 
