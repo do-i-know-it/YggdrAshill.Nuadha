@@ -1,23 +1,15 @@
 using YggdrAshill.Nuadha.Signalization;
+using System;
 
 namespace YggdrAshill.Nuadha.Transformation
 {
     /// <summary>
     /// Implementation of <see cref="ISignal"/> for pulse.
     /// </summary>
-    public sealed class Pulse :
-        ISignal
+    public struct Pulse :
+        ISignal,
+        IEquatable<Pulse>
     {
-        /// <summary>
-        /// <see cref="Pulse"/> that only exists.
-        /// </summary>
-        public static Pulse Instance { get; } = new Pulse();
-
-        private Pulse()
-        {
-
-        }
-
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -28,6 +20,12 @@ namespace YggdrAshill.Nuadha.Transformation
         public override int GetHashCode()
         {
             return 0;
+        }
+
+        /// <inheritdoc/>
+        public bool Equals(Pulse other)
+        {
+            return true;
         }
     }
 }

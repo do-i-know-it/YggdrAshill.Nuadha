@@ -61,7 +61,7 @@ namespace YggdrAshill.Nuadha.Transformation
                 return;
             }
 
-            consumption.Consume(Pulse.Instance);
+            consumption.Consume(new Pulse());
         }
     }
 }

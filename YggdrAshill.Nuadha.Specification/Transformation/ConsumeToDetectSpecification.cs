@@ -13,11 +13,6 @@ namespace YggdrAshill.Nuadha.Specification
 
         void IConsumption<Pulse>.Consume(Pulse signal)
         {
-            if (signal == null)
-            {
-                throw new ArgumentNullException(nameof(signal));
-            }
-
             detected = true;
         }
 

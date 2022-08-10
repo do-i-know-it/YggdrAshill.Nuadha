@@ -28,13 +28,8 @@ namespace YggdrAshill.Nuadha.Conduction
                 throw new ArgumentNullException(nameof(consumption));
             }
 
-            return Consume<Pulse>.Like(signal =>
+            return Consume<Pulse>.Like(_ =>
             {
-                if (signal == null)
-                {
-                    throw new ArgumentNullException(nameof(signal));
-                }
-
                 consumption.Invoke();
             });
         }

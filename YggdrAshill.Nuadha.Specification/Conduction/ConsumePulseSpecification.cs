@@ -17,7 +17,7 @@ namespace YggdrAshill.Nuadha.Specification
                 expected = true;
             });
 
-            consumption.Consume(Pulse.Instance);
+            consumption.Consume(new Pulse());
 
             Assert.IsTrue(expected);
         }
@@ -27,7 +27,7 @@ namespace YggdrAshill.Nuadha.Specification
         {
             Assert.DoesNotThrow(() =>
             {
-                ConsumePulse.None.Consume(Pulse.Instance);
+                ConsumePulse.None.Consume(new Pulse());
             });
         }
 
@@ -37,15 +37,6 @@ namespace YggdrAshill.Nuadha.Specification
             Assert.Throws<ArgumentNullException>(() =>
             {
                 var consumption = ConsumePulse.Like(default);
-            });
-        }
-
-        [Test]
-        public void CannotConsumeNull()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                ConsumePulse.None.Consume(default);
             });
         }
     }

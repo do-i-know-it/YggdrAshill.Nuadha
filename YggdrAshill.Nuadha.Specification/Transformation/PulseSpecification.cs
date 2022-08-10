@@ -7,15 +7,9 @@ namespace YggdrAshill.Nuadha.Specification
     internal class PulseSpecification
     {
         [Test]
-        public void ShouldBeEqualToAnyInstance()
+        public void ShouldBeEqualToAny()
         {
-            Assert.AreEqual(Pulse.Instance, Pulse.Instance);
-        }
-
-        [Test]
-        public void CannotBeEqualToNull()
-        {
-            Assert.AreNotEqual(Pulse.Instance, null);
+            Assert.AreEqual(new Pulse(), new Pulse());
         }
     }
 }
