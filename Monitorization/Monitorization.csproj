@@ -1,17 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>YggdrAshill.Nuadha.Monitorization</AssemblyName>
+    <RootNamespace>YggdrAshill.Nuadha.Monitorization</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Conduction\Conduction.csproj" />
-    <ProjectReference Include="..\Monitorization\Monitorization.csproj" />
     <ProjectReference Include="..\Signalization\Signalization.csproj" />
-    <ProjectReference Include="..\Signals\Signals.csproj" />
     <ProjectReference Include="..\Transformation\Transformation.csproj" />
-    <ProjectReference Include="..\Unitization\Unitization.csproj" />
-    <ProjectReference Include="..\Units\Units.csproj" />
   </ItemGroup>
 
 </Project>

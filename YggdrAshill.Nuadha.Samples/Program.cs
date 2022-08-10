@@ -1,4 +1,4 @@
-using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Monitorization;
 using System;
 using System.Linq;
 
