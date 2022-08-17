@@ -1,6 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Monitorization;
 using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
@@ -12,7 +11,7 @@ namespace YggdrAshill.Nuadha.Units
         ISoftware
     {
         /// <summary>
-        /// Receives <see cref="Monitorization.Battery"/> sent from <see cref="IHeadTrackerHardware"/>.
+        /// Receives <see cref="Signals.Battery"/> sent from <see cref="IHeadTrackerHardware"/>.
         /// </summary>
         IConsumption<Battery> Battery { get; }
 
