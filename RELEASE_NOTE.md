@@ -1,4 +1,5 @@
-# Release notes for version 1.2.1
+# Release notes for version 2.0.0
 
-- Modified implementations for Signals.
-- Fixed bugs in Tilt.
+- Added definitions for Conduction.
+- Removed unnecessary definitions.
+- Modified all definitions.
