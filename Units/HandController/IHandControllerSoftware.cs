@@ -1,31 +1,38 @@
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
-    /// Defines <see cref="IModule"/> for hand controller as software.
+    /// Defines <see cref="ISoftware"/> for hand controller.
     /// </summary>
     public interface IHandControllerSoftware :
-        IModule
+        ISoftware
     {
         /// <summary>
-        /// <see cref="IPoseTrackerSoftware"/> of hand controller.
+        /// Receives <see cref="Signals.Battery"/> sent from <see cref="IHandControllerHardware"/>.
         /// </summary>
-        IPoseTrackerSoftware Pose { get; }
+        IConsumption<Battery> Battery { get; }
 
         /// <summary>
-        /// <see cref="IStickSoftware"/> of hand controller.
+        /// Receives <see cref="Space3D.Pose"/> sent from <see cref="IHandControllerHardware"/>.
         /// </summary>
-        IStickSoftware Thumb { get; }
+        IConsumption<Space3D.Pose> Pose { get; }
 
         /// <summary>
-        /// <see cref="ITriggerSoftware"/> of hand controller.
+        /// Receives <see cref="Stick"/> of thumb sent from <see cref="IHandControllerHardware"/>.
         /// </summary>
-        ITriggerSoftware IndexFinger { get; }
+        IConsumption<Stick> Thumb { get; }
 
         /// <summary>
-        /// <see cref="ITriggerSoftware"/> of hand controller.
+        /// Receives <see cref="Trigger"/> of index finger sent from <see cref="IHandControllerHardware"/>.
         /// </summary>
-        ITriggerSoftware HandGrip { get; }
+        IConsumption<Trigger> IndexFinger { get; }
+
+        /// <summary>
+        /// Receives <see cref="Trigger"/> of hand grip sent from <see cref="IHandControllerHardware"/>.
+        /// </summary>
+        IConsumption<Trigger> HandGrip { get; }
     }
 }

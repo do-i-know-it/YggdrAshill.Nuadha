@@ -1,148 +1,133 @@
-﻿using YggdrAshill.Nuadha.Signalization;
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Transformation;
+using YggdrAshill.Nuadha.Conduction;
 using System;
 
 namespace YggdrAshill.Nuadha
 {
+    /// <summary>
+    /// Defines extensions for <see cref="IConversion{TInput, TOutput}"/>.
+    /// </summary>
     public static class ConversionExtension
     {
         /// <summary>
-        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/> via <typeparamref name="TMedium"/>.
         /// </summary>
         /// <typeparam name="TInput">
-        /// Type of <see cref="ISignal"/> to convert.
+        /// Type of <see cref="ISignal"/> to convert into <typeparamref name="TMedium"/>.
+        /// </typeparam>
+        /// <typeparam name="TMedium">
+        /// Type of <see cref="ISignal"/> converted from <typeparamref name="TInput"/> to convert into <typeparamref name="TOutput"/>.
         /// </typeparam>
         /// <typeparam name="TOutput">
-        /// Type of <see cref="ISignal"/> converted.
+        /// Type of <see cref="ISignal"/> converted from <typeparamref name="TMedium"/>.
         /// </typeparam>
-        /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TInput"/>.
+        /// <param name="inputToMedium">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TMedium"/>.
         /// </param>
-        /// <param name="translation">
-        /// <see cref="ITranslation{TInput, TOutput}"/> to convert.
+        /// <param name="mediumToOutput">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TMedium"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TOutput"/>.
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
+        /// Thrown if <paramref name="inputToMedium"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="translation"/> is null.
+        /// Thrown if <paramref name="mediumToOutput"/> is null.
         /// </exception>
-        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, ITranslation<TInput, TOutput> translation)
+        public static IConversion<TInput, TOutput> Then<TInput, TMedium, TOutput>(this IConversion<TInput, TMedium> inputToMedium, IConversion<TMedium, TOutput> mediumToOutput)
             where TInput : ISignal
+            where TMedium : ISignal
             where TOutput : ISignal
         {
-            if (production == null)
+            if (inputToMedium == null)
             {
-                throw new ArgumentNullException(nameof(production));
+                throw new ArgumentNullException(nameof(inputToMedium));
             }
-            if (translation == null)
+            if (mediumToOutput == null)
             {
-                throw new ArgumentNullException(nameof(translation));
+                throw new ArgumentNullException(nameof(mediumToOutput));
             }
 
-            return ProduceSignalTo.Convert(production, translation);
+            return From<TInput>.Into<TOutput>.Via(inputToMedium, mediumToOutput);
         }
 
         /// <summary>
-        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// Converts <typeparamref name="TInput"/> into <typeparamref name="TOutput"/> via <typeparamref name="TMedium"/>.
         /// </summary>
         /// <typeparam name="TInput">
-        /// Type of <see cref="ISignal"/> to convert.
+        /// Type of <see cref="ISignal"/> to convert into <typeparamref name="TMedium"/>.
+        /// </typeparam>
+        /// <typeparam name="TMedium">
+        /// Type of <see cref="ISignal"/> converted from <typeparamref name="TInput"/> to convert into <typeparamref name="TOutput"/>.
         /// </typeparam>
         /// <typeparam name="TOutput">
-        /// Type of <see cref="ISignal"/> converted.
+        /// Type of <see cref="ISignal"/> converted from <typeparamref name="TMedium"/>.
         /// </typeparam>
-        /// <param name="production">
-        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TInput"/>.
+        /// <param name="inputToMedium">
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TMedium"/>.
         /// </param>
-        /// <param name="translation">
-        /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
+        /// <param name="mediumToOutput">
+        /// <see cref="Func{T, TResult}"/> to convert <typeparamref name="TMedium"/> into <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
-        /// <see cref="IProduction{TSignal}"/> to produce <typeparamref name="TOutput"/>.
+        /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="production"/> is null.
+        /// Thrown if <paramref name="inputToMedium"/> is null.
         /// </exception>
         /// <exception cref="ArgumentNullException">
-        /// Thrown if <paramref name="translation"/> is null.
+        /// Thrown if <paramref name="mediumToOutput"/> is null.
         /// </exception>
-        public static IProduction<TOutput> Convert<TInput, TOutput>(this IProduction<TInput> production, Func<TInput, TOutput> translation)
+        public static IConversion<TInput, TOutput> Then<TInput, TMedium, TOutput>(this IConversion<TInput, TMedium> inputToMedium, Func<TMedium, TOutput> mediumToOutput)
             where TInput : ISignal
+            where TMedium : ISignal
             where TOutput : ISignal
         {
-            if (production == null)
+            if (inputToMedium == null)
             {
-                throw new ArgumentNullException(nameof(production));
+                throw new ArgumentNullException(nameof(inputToMedium));
             }
-            if (translation == null)
+            if (mediumToOutput == null)
             {
-                throw new ArgumentNullException(nameof(translation));
+                throw new ArgumentNullException(nameof(mediumToOutput));
             }
 
-            return production.Convert(SignalInto.Signal(translation));
+            return inputToMedium.Then(From<TMedium>.Into<TOutput>.Like(mediumToOutput));
         }
 
-        public static IProduction<Note> Convert<TSignal>(this IProduction<TSignal> production, Func<TSignal, string> notation)
+        public static IDetection<TSignal> ToDetect<TSignal, TMedium>(this IConversion<TSignal, TMedium> conversion, IDetection<TMedium> detection)
             where TSignal : ISignal
+            where TMedium : ISignal
         {
-            if (production == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(production));
+                throw new ArgumentNullException(nameof(conversion));
             }
-            if (notation == null)
+            if (detection == null)
             {
-                throw new ArgumentNullException(nameof(notation));
+                throw new ArgumentNullException(nameof(detection));
             }
 
-            return production.Convert(SignalInto.Note(notation));
-        }
-        
-        public static IProduction<Note> Convert(this IProduction<Note> production, Func<string, string> notation)
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (notation == null)
-            {
-                throw new ArgumentNullException(nameof(notation));
-            }
-
-            return production.Convert(SignalInto.Note(notation));
+            return new ConvertToDetect<TSignal, TMedium>(conversion, detection);
         }
 
-        public static IProduction<Pulse> Convert<TSignal>(this IProduction<TSignal> production, INotification<TSignal> condition)
-           where TSignal : ISignal
-        {
-            if (production == null)
-            {
-                throw new ArgumentNullException(nameof(production));
-            }
-            if (condition == null)
-            {
-                throw new ArgumentNullException(nameof(condition));
-            }
-
-            return production.Convert(PulseFrom.Signal(condition));
-        }
-
-        public static IProduction<Pulse> Convert<TSignal>(this IProduction<TSignal> production, Func<TSignal, bool> condition)
+        public static IDetection<TSignal> ToDetect<TSignal, TMedium>(this IConversion<TSignal, TMedium> conversion, Func<TMedium, bool> detection)
             where TSignal : ISignal
+            where TMedium : ISignal
         {
-            if (production == null)
+            if (conversion == null)
             {
-                throw new ArgumentNullException(nameof(production));
+                throw new ArgumentNullException(nameof(conversion));
             }
-            if (condition == null)
+            if (detection == null)
             {
-                throw new ArgumentNullException(nameof(condition));
+                throw new ArgumentNullException(nameof(detection));
             }
 
-            return production.Convert(NoticeOf.Signal(condition));
+            return conversion.ToDetect(That<TMedium>.Is(detection));
         }
     }
 }

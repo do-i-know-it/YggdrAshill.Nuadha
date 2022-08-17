@@ -6,8 +6,4 @@
     <RootNamespace>YggdrAshill.Nuadha.Unitization</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Signalization\Signalization.csproj" />
-  </ItemGroup>
-
 </Project>

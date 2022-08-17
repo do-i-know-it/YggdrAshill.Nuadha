@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
@@ -18,15 +18,6 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Pull ToPull(this float signal)
         {
-            if (signal < Pull.Minimum)
-            {
-                signal = Pull.Minimum;
-            }
-            if (signal > Pull.Maximum)
-            {
-                signal = Pull.Maximum;
-            }
-
             return (Pull)signal;
         }
 

@@ -5,7 +5,12 @@ This module defines how to
 - send
 - receive
 
-input/output data for users in XR applications.
+data for user's
+
+- input
+- output
+
+in XR applications.
 
 ## Dependencies
 
@@ -15,10 +20,10 @@ Nothing.
 
 | Word | Description |
 |:-|:-|
-| Signal | Data for input/output of applications. |
+| Signal | Data for user's input/output in applications. |
 | Consumption | Receives `Signal`. |
-| Production | Sends `Signal` to `Consumption`. |
-| Cancellation | Token to stop producing. |
+| Production | Sends `Signal` to each of `Consumption`. |
+| Cancellation | Token to stop sending. |
 | Propagation | Collects `Consumption` to distribute `Signal`. |
 
 `Consumption` receives `Signal` for interaction between devices and systems.

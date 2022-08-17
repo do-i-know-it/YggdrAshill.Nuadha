@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Transformation", "Transform
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YggdrAshill.Nuadha.Samples", "YggdrAshill.Nuadha.Samples\YggdrAshill.Nuadha.Samples.csproj", "{615B922B-7DF3-474F-8CB4-ED6EE737C5D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conduction", "Conduction\Conduction.csproj", "{F96F69B6-F08E-4815-94CB-152ECB7807BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conduction", "Conduction\Conduction.csproj", "{F96F69B6-F08E-4815-94CB-152ECB7807BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

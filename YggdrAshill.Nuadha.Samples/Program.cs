@@ -1,115 +1,47 @@
-using YggdrAshill.Nuadha.Signalization;
-using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Conduction;
 using YggdrAshill.Nuadha.Signals;
-using YggdrAshill.Nuadha.Units;
 using System;
+using System.Linq;
 
 namespace YggdrAshill.Nuadha.Samples
 {
-    internal class Program
+    internal sealed class Program
     {
-        private static IProtocol<IButtonHardware, IButtonSoftware> Device { get; } = Button.WithLatestCache();
-
-        private static IProtocol<IPulsatedButtonHardware, IPulsatedButtonSoftware> DeviceEvent { get; } = PulsatedButton.WithLatestCache();
-
         private static void Main(string[] arguments)
         {
-            // Device
-            var configuration = new ToggleButton();
+            var module = new SampleModule();
 
-            // System
-            var connection = new ShowInConsole();
+            using (module.Hardware.Input.Send(signal =>
+            {
+                Console.WriteLine($"Received {signal} from device.");
 
-            // Button to pulsated button
-            var conversion = Device.Hardware.Pulsate().Connect();
+                var output = string.Join("", signal.Reverse());
 
-            // Button transmission
-            var transmission = Button.Transmit(configuration);
-
-            var cancellation
-                = CancellationSource
-                .Default
-                .Synthesize(transmission.Connect(Device.Software))
-                .Synthesize(connection.Connect(Device.Hardware))
-                .Synthesize(conversion.Connect(DeviceEvent.Software))
-                .Synthesize(connection.Connect(DeviceEvent.Hardware))
-                .Build();
-
-            using (cancellation.ToDisposable())
+                module.Hardware.Output.Consume((Note)output);
+            }).ToDisposable())
+            using (module.Software.Output.Send(signal =>
+            {
+                Console.WriteLine($"Received {signal} from system.");
+            }).ToDisposable())
             {
                 while (true)
                 {
-                    Console.WriteLine("Please enter any key to emit signals.");
-                    Console.WriteLine("Please enter \"q\" to quit this program.");
+                    Console.WriteLine("Please enter any keys to send signal.");
+                    Console.WriteLine("If you quit this program, enter \"q\".");
                     Console.Write("Key: ");
 
                     var input = Console.ReadLine();
+
                     if (input == "q")
                     {
                         Console.WriteLine("quit.");
                         return;
                     }
 
-                    transmission.Emit();
+                    module.Software.Input.Consume((Note)input);
 
-                    Console.WriteLine($"{input}");
                     Console.WriteLine();
                 }
             }
-        }
-
-        private sealed class ToggleButton :
-            IButtonConfiguration
-        {
-            private bool touch;
-
-            private bool push;
-
-            public IGeneration<Touch> Touch => Generate.Signal(() =>
-            {
-                touch = !touch;
-
-                return touch.ToTouch();
-            });
-
-            public IGeneration<Push> Push => Generate.Signal(() =>
-            {
-                push = !push;
-
-                return push.ToPush();
-            });
-        }
-
-        private sealed class ShowInConsole :
-            IConnection<IButtonHardware>,
-            IConnection<IPulsatedButtonHardware>
-        {
-            public ICancellation Connect(IButtonHardware module)
-                => CancellationSource
-                .Default
-                .Synthesize(module.Touch.Produce(signal =>
-                {
-                    Console.WriteLine(signal);
-                }))
-                .Synthesize(module.Push.Produce(signal =>
-                {
-                    Console.WriteLine(signal);
-                }))
-                .Build();
-
-            public ICancellation Connect(IPulsatedButtonHardware module)
-                => CancellationSource
-                .Default
-                .Synthesize(module.Touch.Detect(PulseIs.Enabled).Produce(() =>
-                {
-                    Console.WriteLine("Touched.");
-                }))
-                .Synthesize(module.Push.Detect(PulseIs.Enabled).Produce(() =>
-                {
-                    Console.WriteLine("Pushed.");
-                }))
-                .Build();
         }
     }
 }

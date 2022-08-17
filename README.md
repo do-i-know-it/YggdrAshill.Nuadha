@@ -8,10 +8,10 @@
 
 Nuadha is a framework defining how to
 
-- generate
 - send
 - receive
 - convert
+- detect
 
 I/O data of applications, for mainly XR (VR/AR/MR).  
 This framework is able to isolate definitions from implementations for specific platforms like:

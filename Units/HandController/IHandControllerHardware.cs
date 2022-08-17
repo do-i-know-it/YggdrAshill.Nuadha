@@ -1,31 +1,38 @@
+using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
+using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Units
 {
     /// <summary>
-    /// Defines <see cref="IModule"/> for hand controller as hardware.
+    /// Defines <see cref="IHardware"/> for hand controller.
     /// </summary>
     public interface IHandControllerHardware :
-        IModule
+        IHardware
     {
         /// <summary>
-        /// <see cref="IPoseTrackerHardware"/> of hand controler.
+        /// Sends <see cref="Signals.Battery"/> to <see cref="IHandControllerSoftware"/>.
         /// </summary>
-        IPoseTrackerHardware Pose { get; }
+        IProduction<Battery> Battery { get; }
 
         /// <summary>
-        /// <see cref="IStickHardware"/> of hand controler.
+        /// Sends <see cref="Space3D.Pose"/> to <see cref="IHandControllerSoftware"/>.
         /// </summary>
-        IStickHardware Thumb { get; }
+        IProduction<Space3D.Pose> Pose { get; }
 
         /// <summary>
-        /// <see cref="ITriggerHardware"/> of hand controler.
+        /// Sends <see cref="Stick"/> of thumb to <see cref="IHandControllerSoftware"/>.
         /// </summary>
-        ITriggerHardware IndexFinger { get; }
+        IProduction<Stick> Thumb { get; }
 
         /// <summary>
-        /// <see cref="ITriggerHardware"/> of hand controler.
+        /// Sends <see cref="Trigger"/> of index finger to <see cref="IHandControllerSoftware"/>.
         /// </summary>
-        ITriggerHardware HandGrip { get; }
+        IProduction<Trigger> IndexFinger { get; }
+
+        /// <summary>
+        /// Sends <see cref="Trigger"/> of hand grip to <see cref="IHandControllerSoftware"/>.
+        /// </summary>
+        IProduction<Trigger> HandGrip { get; }
     }
 }

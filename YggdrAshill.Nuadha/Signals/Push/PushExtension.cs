@@ -1,4 +1,4 @@
-﻿using YggdrAshill.Nuadha.Signals;
+using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha
 {
@@ -46,7 +46,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Touch ToTouch(this Push signal)
         {
-            return signal.ToBoolean().ToTouch();
+            return (Touch)signal;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace YggdrAshill.Nuadha
         /// </returns>
         public static Pull ToPull(this Push signal)
         {
-            return signal ? Pull.Maximum.ToPull() : Pull.Minimum.ToPull();
+            return (Pull)signal;
 
         }
     }
