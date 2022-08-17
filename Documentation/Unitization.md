@@ -1,23 +1,20 @@
 # Unitization
 
-This module extends [Signalization](./Signalization.md) to define how to connect hardware to software.
+This module defines hardware and software for XR applications.
 
 ## Dependencies
 
-This module depends on [Signalization](./Signalization.md).
+Nothing.
 
 ## Architecture
 
 | Word | Description |
 |:-|:-|
-| Module | Provides `Production` or `Consumption`. |
-| Connection | Connects `Module` to send and receive `Signal`. |
-| Hardware | Sends `Signal` device generated and receives `Signal` system generated. |
-| Software | Receives `Signal` device generated and sends `Signal` system generated. |
-| Protocol | Defines `Module` for `Hardware` and `Software`. |
+| Hardware | Device sending `Signal` to and receiving `Signal` from system. |
+| Software | System receiving `Signal` from and sending `Signal` to device. |
+| Module | Mediator being `Hardware` and `Software`. |
 
-`Module` defines a interface providing `Production` or `Consumption`.
-`Connection` enables `Module` to send and receive `Signal`.
+`Module` defines `Hardware` and `Software`.
 
 ![Image not found.](./Resources/Unitization.jpg "Architecture of Unitization.")
 

@@ -10,31 +10,21 @@ This module depends on all of other modules:
 - [Unitization](./Unitization.md)
 - [Transformation](./Transformation.md)
 - [Conduction](./Conduction.md)
+- [Monitorization](./Monitorization.md)
 - [Signals](./Signals.md)
 - [Units](./Units.md)
 
 ## Architecture
 
-This module provides
-
-- simple implementations
-- useful extensions
-
-for other modules.
+Nothing.
 
 ## Implementation
 
-This module makes developers use
-
-- `System.Action`
-- `System.Function`
-
-to implement interfaces of the modules.
-
-Also, this module provides extensions for below.
+This module provides useful extensions for below.
 
 - [Signalization](./Signalization.md)
 - [Transformation](./Transformation.md)
 - [Conduction](./Conduction.md)
 - [Signals](./Signals.md)
-- [Units](./Units.md)
+
+Also, this module provides implementations for [Units](./Units.md).

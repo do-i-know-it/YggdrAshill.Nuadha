@@ -1,6 +1,6 @@
 # Units
 
-This module extends [Unitization](./Unitization.md) to define some `Module`s for hardware and software.
+This module extends [Unitization](./Unitization.md) to define some `Hardware`s and `Software`s.
 
 ## Dependencies
 
@@ -8,34 +8,17 @@ This module depends on below.
 
 - [Signalization](./Signalization.md)
 - [Unitization](./Unitization.md)
-- [Transformation](./Transformation.md)
-- [Conduction](./Conduction.md)
 - [Signals](./Signals.md)
 
 ## Architecture
 
-This module defines
+This module defines below.
 
-- `Button`
-- `Trigger`
-- `Stick`
-- `PoseTracker`
+- `HandController`
 - `HeadTracker`
-- `HandController`
-
-and event below.
-
-- `Tilt`
-- `Button`
-- `Trigger`
-- `Stick`
-- `HandController`
+- `HumanPoseTracker`
+- `ThreePointTracker`
 
 ## Implementation
 
-This module has internal implementations for
-
-- [Unitization](./Unitization.md)
-- [Conduction](./Conduction.md)
-
-in order to provide features of it.
+Nothing.
