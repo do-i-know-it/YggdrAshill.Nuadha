@@ -1,6 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Modification
+namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
     /// Defines how to detect <typeparamref name="TSignal"/>.

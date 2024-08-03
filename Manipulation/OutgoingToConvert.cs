@@ -1,6 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Modification
+namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
     /// <see cref="IOutgoingMessage{TSignal}"/> for <typeparamref name="TInput"/> to convert into <typeparamref name="TOutput"/>.

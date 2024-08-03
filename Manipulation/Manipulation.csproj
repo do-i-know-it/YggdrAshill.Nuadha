@@ -4,8 +4,8 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
-        <AssemblyName>YggdrAshill.Nuadha.Modification</AssemblyName>
-        <RootNamespace>YggdrAshill.Nuadha.Modification</RootNamespace>
+        <AssemblyName>YggdrAshill.Nuadha.Manipulation</AssemblyName>
+        <RootNamespace>YggdrAshill.Nuadha.Manipulation</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

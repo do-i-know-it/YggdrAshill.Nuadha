@@ -1,7 +1,7 @@
 using System;
 using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Modification
+namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
     /// <see cref="IIncomingMessage{TSignal}"/> for <typeparamref name="TOutput"/> converted from <typeparamref name="TInput"/>.

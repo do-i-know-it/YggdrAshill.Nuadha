@@ -1,6 +1,6 @@
 using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Modification
+namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
     /// Define how to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
