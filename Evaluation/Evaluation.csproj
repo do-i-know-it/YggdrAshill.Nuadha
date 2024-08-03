@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
+        <AssemblyName>YggdrAshill.Nuadha.Evaluation</AssemblyName>
+        <RootNamespace>YggdrAshill.Nuadha.Evaluation</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Manipulation\Manipulation.csproj" />
+      <ProjectReference Include="..\Signalization\Signalization.csproj" />
+    </ItemGroup>
+
+</Project>

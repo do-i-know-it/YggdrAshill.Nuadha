@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conduction", "Conduction\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manipulation", "Manipulation\Manipulation.csproj", "{3485E840-5312-48D8-A328-44DB44AFC7F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evaluation", "Evaluation\Evaluation.csproj", "{531C0DA6-BC79-4F21-9875-4A90CFAF1AE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{3485E840-5312-48D8-A328-44DB44AFC7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3485E840-5312-48D8-A328-44DB44AFC7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3485E840-5312-48D8-A328-44DB44AFC7F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{531C0DA6-BC79-4F21-9875-4A90CFAF1AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{531C0DA6-BC79-4F21-9875-4A90CFAF1AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{531C0DA6-BC79-4F21-9875-4A90CFAF1AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{531C0DA6-BC79-4F21-9875-4A90CFAF1AE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
