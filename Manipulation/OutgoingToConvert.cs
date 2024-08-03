@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
-    /// <see cref="IOutgoingMessage{TSignal}"/> for <typeparamref name="TInput"/> to convert into <typeparamref name="TOutput"/>.
+    /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TInput"/> to convert into <typeparamref name="TOutput"/>.
     /// </summary>
     /// <typeparam name="TInput">
     /// Type of <see cref="ISignal"/> to convert.
@@ -11,12 +11,12 @@ namespace YggdrAshill.Nuadha.Manipulation
     /// <typeparam name="TOutput">
     /// Type of <see cref="ISignal"/> converted.
     /// </typeparam>
-    public sealed class OutgoingToConvert<TInput, TOutput> : IOutgoingMessage<TInput>
+    public sealed class OutgoingToConvert<TInput, TOutput> : IOutflow<TInput>
         where TInput : ISignal
         where TOutput : ISignal
     {
         private readonly IConversion<TInput, TOutput> conversion;
-        private readonly IOutgoingMessage<TOutput> outgoingMessage;
+        private readonly IOutflow<TOutput> outflow;
 
         /// <summary>
         /// Constructor.
@@ -24,25 +24,25 @@ namespace YggdrAshill.Nuadha.Manipulation
         /// <param name="conversion">
         /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
-        /// <param name="outgoingMessage">
-        /// <see cref="IOutgoingMessage{TSignal}"/> for <typeparamref name="TOutput"/>.
+        /// <param name="outflow">
+        /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TOutput"/>.
         /// </param>
-        public OutgoingToConvert(IConversion<TInput, TOutput> conversion, IOutgoingMessage<TOutput> outgoingMessage)
+        public OutgoingToConvert(IConversion<TInput, TOutput> conversion, IOutflow<TOutput> outflow)
         {
             this.conversion = conversion;
-            this.outgoingMessage = outgoingMessage;
+            this.outflow = outflow;
         }
 
         /// <summary>
-        /// Submits <paramref name="signal"/> to convert.
+        /// Exports <paramref name="signal"/> to convert.
         /// </summary>
         /// <param name="signal">
         /// <typeparamref name="TInput"/> to convert into <typeparamref name="TOutput"/>.
         /// </param>
-        public void Submit(TInput signal)
+        public void Export(TInput signal)
         {
             var converted = conversion.Convert(signal);
-            outgoingMessage.Submit(converted);
+            outflow.Export(converted);
         }
     }
 }

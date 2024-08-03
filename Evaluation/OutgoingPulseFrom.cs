@@ -4,16 +4,16 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Evaluation
 {
     /// <summary>
-    /// <see cref="IOutgoingMessage{TSignal}"/> for <see cref="Pulse"/> of <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>.
+    /// <see cref="IOutflow{TSignal}"/> for <see cref="Pulse"/> of <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to detect.
     /// </typeparam>
-    public sealed class OutgoingPulseFrom<TSignal> : IOutgoingMessage<TSignal>
+    public sealed class OutgoingPulseFrom<TSignal> : IOutflow<TSignal>
         where TSignal : ISignal
     {
         private readonly IDetection<TSignal> detection;
-        private readonly IOutgoingMessage<Pulse> outgoingMessage;
+        private readonly IOutflow<Pulse> outflow;
 
         /// <summary>
         /// Constructor.
@@ -21,29 +21,29 @@ namespace YggdrAshill.Nuadha.Evaluation
         /// <param name="detection">
         /// <see cref="IDetection{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
-        /// <param name="outgoingMessage">
-        /// <see cref="IOutgoingMessage{TSignal}"/> for <see cref="Pulse"/>.
+        /// <param name="outflow">
+        /// <see cref="IOutflow{TSignal}"/> for <see cref="Pulse"/>.
         /// </param>
-        public OutgoingPulseFrom(IDetection<TSignal> detection, IOutgoingMessage<Pulse> outgoingMessage)
+        public OutgoingPulseFrom(IDetection<TSignal> detection, IOutflow<Pulse> outflow)
         {
             this.detection = detection;
-            this.outgoingMessage = outgoingMessage;
+            this.outflow = outflow;
         }
 
         /// <summary>
-        /// Submits <paramref name="signal"/> to detect <see cref="Pulse"/>.
+        /// Exports <paramref name="signal"/> to detect <see cref="Pulse"/>.
         /// </summary>
         /// <param name="signal">
         /// <typeparamref name="TSignal"/> to detect.
         /// </param>
-        public void Submit(TSignal signal)
+        public void Export(TSignal signal)
         {
             if (!detection.Detect(signal))
             {
                 return;
             }
 
-            outgoingMessage.Submit(Pulse.Default);
+            outflow.Export(Pulse.Default);
         }
     }
 }

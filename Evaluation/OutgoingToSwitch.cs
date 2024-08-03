@@ -4,17 +4,17 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Evaluation
 {
     /// <summary>
-    /// <see cref="IOutgoingMessage{TSignal}"/> for <typeparamref name="TSignal"/> to switch.
+    /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TSignal"/> to switch.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to switch.
     /// </typeparam>
-    public sealed class OutgoingToSwitch<TSignal> : IOutgoingMessage<TSignal>
+    public sealed class OutgoingToSwitch<TSignal> : IOutflow<TSignal>
         where TSignal : ISignal
     {
         private readonly IDetection<TSignal> detection;
-        private readonly IOutgoingMessage<TSignal> then;
-        private readonly IOutgoingMessage<TSignal> otherwise;
+        private readonly IOutflow<TSignal> then;
+        private readonly IOutflow<TSignal> otherwise;
 
         /// <summary>
         /// Constructor.
@@ -23,12 +23,12 @@ namespace YggdrAshill.Nuadha.Evaluation
         /// <see cref="IDetection{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="then">
-        /// <see cref="IOutgoingMessage{TSignal}"/> for <typeparamref name="TSignal"/> detected.
+        /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TSignal"/> detected.
         /// </param>
         /// <param name="otherwise">
-        /// <see cref="IOutgoingMessage{TSignal}"/> for <typeparamref name="TSignal"/> not detected.
+        /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TSignal"/> not detected.
         /// </param>
-        public OutgoingToSwitch(IDetection<TSignal> detection, IOutgoingMessage<TSignal> then, IOutgoingMessage<TSignal> otherwise)
+        public OutgoingToSwitch(IDetection<TSignal> detection, IOutflow<TSignal> then, IOutflow<TSignal> otherwise)
         {
             this.detection = detection;
             this.then = then;
@@ -36,20 +36,20 @@ namespace YggdrAshill.Nuadha.Evaluation
         }
 
         /// <summary>
-        /// Submits <paramref name="signal"/> to switch.
+        /// Exports <paramref name="signal"/> to switch.
         /// </summary>
         /// <param name="signal">
         /// <typeparamref name="TSignal"/> to switch.
         /// </param>
-        public void Submit(TSignal signal)
+        public void Export(TSignal signal)
         {
             if (detection.Detect(signal))
             {
-                then.Submit(signal);
+                then.Export(signal);
             }
             else
             {
-                otherwise.Submit(signal);
+                otherwise.Export(signal);
             }
         }
     }
