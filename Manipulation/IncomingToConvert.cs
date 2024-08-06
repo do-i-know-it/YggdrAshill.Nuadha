@@ -4,7 +4,7 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
-    /// <see cref="IInflow{TSignal}"/> for <typeparamref name="TOutput"/> converted from <typeparamref name="TInput"/>.
+    /// <see cref="IIncomingFlow{TSignal}"/> for <typeparamref name="TOutput"/> converted from <typeparamref name="TInput"/>.
     /// </summary>
     /// <typeparam name="TInput">
     /// Type of <see cref="ISignal"/> to convert.
@@ -12,41 +12,41 @@ namespace YggdrAshill.Nuadha.Manipulation
     /// <typeparam name="TOutput">
     /// Type of <see cref="ISignal"/> converted.
     /// </typeparam>
-    public sealed class IncomingToConvert<TInput, TOutput> : IInflow<TOutput>
+    public sealed class IncomingToConvert<TInput, TOutput> : IIncomingFlow<TOutput>
         where TInput : ISignal
         where TOutput : ISignal
     {
-        private readonly IInflow<TInput> inflow;
+        private readonly IIncomingFlow<TInput> incomingFlow;
         private readonly IConversion<TInput, TOutput> conversion;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="inflow">
-        /// <see cref="IInflow{TSignal}"/> for <typeparamref name="TInput"/>.
+        /// <param name="incomingFlow">
+        /// <see cref="IIncomingFlow{TSignal}"/> for <typeparamref name="TInput"/>.
         /// </param>
         /// <param name="conversion">
         /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
-        public IncomingToConvert(IInflow<TInput> inflow, IConversion<TInput, TOutput> conversion)
+        public IncomingToConvert(IIncomingFlow<TInput> incomingFlow, IConversion<TInput, TOutput> conversion)
         {
-            this.inflow = inflow;
+            this.incomingFlow = incomingFlow;
             this.conversion = conversion;
         }
 
         /// <summary>
-        /// Imports <paramref name="outflow"/> to convert.
+        /// Imports <paramref name="outgoingFlow"/> to convert.
         /// </summary>
-        /// <param name="outflow">
-        /// <see cref="IOutflow{TSignal}"/> for converted <typeparamref name="TOutput"/>.
+        /// <param name="outgoingFlow">
+        /// <see cref="IOutgoingFlow{TSignal}"/> for converted <typeparamref name="TOutput"/>.
         /// </param>
         /// <returns>
         /// <see cref="IDisposable"/> to cancel sending.
         /// </returns>
-        public IDisposable Import(IOutflow<TOutput> outflow)
+        public IDisposable Import(IOutgoingFlow<TOutput> outgoingFlow)
         {
-            var flow = new OutgoingToConvert<TInput, TOutput>(conversion, outflow);
-            return inflow.Import(flow);
+            var flow = new OutgoingToConvert<TInput, TOutput>(conversion, outgoingFlow);
+            return incomingFlow.Import(flow);
         }
     }
 }

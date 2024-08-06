@@ -4,16 +4,16 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Evaluation
 {
     /// <summary>
-    /// <see cref="IOutflow{TSignal}"/> for <see cref="Pulse"/> of <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>.
+    /// <see cref="IOutgoingFlow{TSignal}"/> for <see cref="Pulse"/> of <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to detect.
     /// </typeparam>
-    public sealed class OutgoingPulseFrom<TSignal> : IOutflow<TSignal>
+    public sealed class OutgoingPulseFrom<TSignal> : IOutgoingFlow<TSignal>
         where TSignal : ISignal
     {
         private readonly IDetection<TSignal> detection;
-        private readonly IOutflow<Pulse> outflow;
+        private readonly IOutgoingFlow<Pulse> outgoingFlow;
 
         /// <summary>
         /// Constructor.
@@ -21,13 +21,13 @@ namespace YggdrAshill.Nuadha.Evaluation
         /// <param name="detection">
         /// <see cref="IDetection{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
-        /// <param name="outflow">
-        /// <see cref="IOutflow{TSignal}"/> for <see cref="Pulse"/>.
+        /// <param name="outgoingFlow">
+        /// <see cref="IOutgoingFlow{TSignal}"/> for <see cref="Pulse"/>.
         /// </param>
-        public OutgoingPulseFrom(IDetection<TSignal> detection, IOutflow<Pulse> outflow)
+        public OutgoingPulseFrom(IDetection<TSignal> detection, IOutgoingFlow<Pulse> outgoingFlow)
         {
             this.detection = detection;
-            this.outflow = outflow;
+            this.outgoingFlow = outgoingFlow;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace YggdrAshill.Nuadha.Evaluation
                 return;
             }
 
-            outflow.Export(Pulse.Default);
+            outgoingFlow.Export(Pulse.Default);
         }
     }
 }

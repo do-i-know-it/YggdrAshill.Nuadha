@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
-    /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TInput"/> to convert into <typeparamref name="TOutput"/>.
+    /// <see cref="IOutgoingFlow{TSignal}"/> for <typeparamref name="TInput"/> to convert into <typeparamref name="TOutput"/>.
     /// </summary>
     /// <typeparam name="TInput">
     /// Type of <see cref="ISignal"/> to convert.
@@ -11,12 +11,12 @@ namespace YggdrAshill.Nuadha.Manipulation
     /// <typeparam name="TOutput">
     /// Type of <see cref="ISignal"/> converted.
     /// </typeparam>
-    public sealed class OutgoingToConvert<TInput, TOutput> : IOutflow<TInput>
+    public sealed class OutgoingToConvert<TInput, TOutput> : IOutgoingFlow<TInput>
         where TInput : ISignal
         where TOutput : ISignal
     {
         private readonly IConversion<TInput, TOutput> conversion;
-        private readonly IOutflow<TOutput> outflow;
+        private readonly IOutgoingFlow<TOutput> outgoingFlow;
 
         /// <summary>
         /// Constructor.
@@ -24,13 +24,13 @@ namespace YggdrAshill.Nuadha.Manipulation
         /// <param name="conversion">
         /// <see cref="IConversion{TInput, TOutput}"/> to convert <typeparamref name="TInput"/> into <typeparamref name="TOutput"/>.
         /// </param>
-        /// <param name="outflow">
-        /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TOutput"/>.
+        /// <param name="outgoingFlow">
+        /// <see cref="IOutgoingFlow{TSignal}"/> for <typeparamref name="TOutput"/>.
         /// </param>
-        public OutgoingToConvert(IConversion<TInput, TOutput> conversion, IOutflow<TOutput> outflow)
+        public OutgoingToConvert(IConversion<TInput, TOutput> conversion, IOutgoingFlow<TOutput> outgoingFlow)
         {
             this.conversion = conversion;
-            this.outflow = outflow;
+            this.outgoingFlow = outgoingFlow;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace YggdrAshill.Nuadha.Manipulation
         public void Export(TInput signal)
         {
             var converted = conversion.Convert(signal);
-            outflow.Export(converted);
+            outgoingFlow.Export(converted);
         }
     }
 }

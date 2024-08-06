@@ -6,7 +6,7 @@ namespace YggdrAshill.Nuadha.Signalization
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> received to send.
     /// </typeparam>
-    public interface IOutflow<in TSignal>
+    public interface IOutgoingFlow<in TSignal>
         where TSignal : ISignal
     {
         /// <summary>

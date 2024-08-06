@@ -4,17 +4,17 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Evaluation
 {
     /// <summary>
-    /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TSignal"/> to switch.
+    /// <see cref="IOutgoingFlow{TSignal}"/> for <typeparamref name="TSignal"/> to switch.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to switch.
     /// </typeparam>
-    public sealed class OutgoingToSwitch<TSignal> : IOutflow<TSignal>
+    public sealed class OutgoingToSwitch<TSignal> : IOutgoingFlow<TSignal>
         where TSignal : ISignal
     {
         private readonly IDetection<TSignal> detection;
-        private readonly IOutflow<TSignal> then;
-        private readonly IOutflow<TSignal> otherwise;
+        private readonly IOutgoingFlow<TSignal> then;
+        private readonly IOutgoingFlow<TSignal> otherwise;
 
         /// <summary>
         /// Constructor.
@@ -23,12 +23,12 @@ namespace YggdrAshill.Nuadha.Evaluation
         /// <see cref="IDetection{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="then">
-        /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TSignal"/> detected.
+        /// <see cref="IOutgoingFlow{TSignal}"/> for <typeparamref name="TSignal"/> detected.
         /// </param>
         /// <param name="otherwise">
-        /// <see cref="IOutflow{TSignal}"/> for <typeparamref name="TSignal"/> not detected.
+        /// <see cref="IOutgoingFlow{TSignal}"/> for <typeparamref name="TSignal"/> not detected.
         /// </param>
-        public OutgoingToSwitch(IDetection<TSignal> detection, IOutflow<TSignal> then, IOutflow<TSignal> otherwise)
+        public OutgoingToSwitch(IDetection<TSignal> detection, IOutgoingFlow<TSignal> then, IOutgoingFlow<TSignal> otherwise)
         {
             this.detection = detection;
             this.then = then;

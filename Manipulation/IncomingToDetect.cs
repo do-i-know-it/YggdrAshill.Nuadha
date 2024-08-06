@@ -4,45 +4,45 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
-    /// <see cref="IInflow{TSignal}"/> for <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>
+    /// <see cref="IIncomingFlow{TSignal}"/> for <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to detect.
     /// </typeparam>
-    public sealed class IncomingToDetect<TSignal> : IInflow<TSignal>
+    public sealed class IncomingToDetect<TSignal> : IIncomingFlow<TSignal>
         where TSignal : ISignal
     {
-        private readonly IInflow<TSignal> inflow;
+        private readonly IIncomingFlow<TSignal> incomingFlow;
         private readonly IDetection<TSignal> detection;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="inflow">
-        /// <see cref="IInflow{TSignal}"/> for <typeparamref name="TSignal"/>.
+        /// <param name="incomingFlow">
+        /// <see cref="IIncomingFlow{TSignal}"/> for <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="detection">
         /// <see cref="IDetection{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
-        public IncomingToDetect(IInflow<TSignal> inflow, IDetection<TSignal> detection)
+        public IncomingToDetect(IIncomingFlow<TSignal> incomingFlow, IDetection<TSignal> detection)
         {
-            this.inflow = inflow;
+            this.incomingFlow = incomingFlow;
             this.detection = detection;
         }
 
         /// <summary>
-        /// Imports <paramref name="outflow"/> to detect.
+        /// Imports <paramref name="outgoingFlow"/> to detect.
         /// </summary>
-        /// <param name="outflow">
-        /// <see cref="IOutflow{TSignal}"/> for detected <typeparamref name="TSignal"/>.
+        /// <param name="outgoingFlow">
+        /// <see cref="IOutgoingFlow{TSignal}"/> for detected <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <see cref="IDisposable"/> to cancel sending.
         /// </returns>
-        public IDisposable Import(IOutflow<TSignal> outflow)
+        public IDisposable Import(IOutgoingFlow<TSignal> outgoingFlow)
         {
-            var flow = new OutgoingToDetect<TSignal>(detection, outflow);
-            return inflow.Import(flow);
+            var flow = new OutgoingToDetect<TSignal>(detection, outgoingFlow);
+            return incomingFlow.Import(flow);
         }
     }
 }
