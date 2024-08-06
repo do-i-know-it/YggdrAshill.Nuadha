@@ -9,6 +9,8 @@ namespace YggdrAshill.Nuadha
     /// </summary>
     public sealed class OutgoingPulse : IOutgoingFlow<Pulse>
     {
+        public static OutgoingPulse None { get; } = new(() => { });
+
         private readonly Action onExported;
 
         /// <summary>

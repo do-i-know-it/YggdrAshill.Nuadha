@@ -1,7 +1,5 @@
 using YggdrAshill.Nuadha.Signalization;
 using YggdrAshill.Nuadha.Unitization;
-using YggdrAshill.Nuadha.Conduction;
-using YggdrAshill.Nuadha.Signals;
 
 namespace YggdrAshill.Nuadha.Samples
 {
@@ -10,14 +8,12 @@ namespace YggdrAshill.Nuadha.Samples
         ISampleSoftware,
         IModule<ISampleHardware, ISampleSoftware>
     {
-        private readonly IPropagation<Note> input = Propagate<Note>.WithList();
-
-        private readonly IPropagation<Note> output = Propagate<Note>.WithList();
+        private readonly IFlow<Note> input = new Flow<Note>();
+        private readonly IFlow<Note> output = new Flow<Note>();
 
         public void Dispose()
         {
             input.Dispose();
-
             output.Dispose();
         }
 
@@ -25,12 +21,12 @@ namespace YggdrAshill.Nuadha.Samples
 
         public ISampleSoftware Software => this;
 
-        IProduction<Note> ISampleHardware.Input => input;
+        IIncomingFlow<Note> ISampleHardware.Input => input;
 
-        IConsumption<Note> ISampleSoftware.Input => input;
+        IOutgoingFlow<Note> ISampleSoftware.Input => input;
 
-        IConsumption<Note> ISampleHardware.Output => output;
+        IOutgoingFlow<Note> ISampleHardware.Output => output;
 
-        IProduction<Note> ISampleSoftware.Output => output;
+        IIncomingFlow<Note> ISampleSoftware.Output => output;
     }
 }

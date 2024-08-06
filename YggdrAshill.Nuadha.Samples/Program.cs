@@ -1,47 +1,39 @@
-using YggdrAshill.Nuadha.Signals;
-using System;
-using System.Linq;
+using YggdrAshill.Nuadha;
+using YggdrAshill.Nuadha.Samples;
 
-namespace YggdrAshill.Nuadha.Samples
+var module = new SampleModule();
+using var disposableHardware = module.Hardware.Input.Import(signal =>
 {
-    internal sealed class Program
+    var content = signal.Content;
+    Console.WriteLine($"Received {content} from device.");
+    module.Hardware.Output.Export(new Note()
     {
-        private static void Main(string[] arguments)
-        {
-            var module = new SampleModule();
+        Content = string.Join("", content.Reverse())
+    });
+});
+using var disposableSoftware = module.Software.Output.Import(signal =>
+{
+    Console.WriteLine($"Received {signal.Content} from system.");
+});
+while (true)
+{
+    Console.WriteLine("Please enter any keys to send signal.");
+    Console.WriteLine("If you quit this program, enter \"q\".");
+    Console.Write("Key: ");
 
-            using (module.Hardware.Input.Send(signal =>
-            {
-                Console.WriteLine($"Received {signal} from device.");
-
-                var output = string.Join("", signal.Reverse());
-
-                module.Hardware.Output.Consume((Note)output);
-            }).ToDisposable())
-            using (module.Software.Output.Send(signal =>
-            {
-                Console.WriteLine($"Received {signal} from system.");
-            }).ToDisposable())
-            {
-                while (true)
-                {
-                    Console.WriteLine("Please enter any keys to send signal.");
-                    Console.WriteLine("If you quit this program, enter \"q\".");
-                    Console.Write("Key: ");
-
-                    var input = Console.ReadLine();
-
-                    if (input == "q")
-                    {
-                        Console.WriteLine("quit.");
-                        return;
-                    }
-
-                    module.Software.Input.Consume((Note)input);
-
-                    Console.WriteLine();
-                }
-            }
-        }
+    var input = Console.ReadLine();
+    if (input == null)
+    {
+        throw new Exception($"{nameof(input)} is null.");
     }
+    if (input == "q")
+    {
+        Console.WriteLine("quit.");
+        return;
+    }
+    module.Software.Input.Export(new Note()
+    {
+        Content = input
+    });
+    Console.WriteLine();
 }

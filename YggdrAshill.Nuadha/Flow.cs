@@ -7,7 +7,7 @@ namespace YggdrAshill.Nuadha
     public sealed class Flow<TSignal> : IFlow<TSignal>
         where TSignal : ISignal
     {
-        private readonly List<IOutgoingFlow<TSignal>> outflowList = new List<IOutgoingFlow<TSignal>>();
+        private readonly List<IOutgoingFlow<TSignal>> outflowList = new();
 
         public IDisposable Import(IOutgoingFlow<TSignal> outgoingFlow)
         {

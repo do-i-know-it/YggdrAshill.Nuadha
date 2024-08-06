@@ -2,8 +2,7 @@
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    internal sealed class Signal :
-        ISignal
+    internal sealed class Signal : ISignal
     {
 
     }
