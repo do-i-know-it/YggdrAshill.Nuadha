@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Conduction\Conduction.csproj" />
+        <ProjectReference Include="..\Evaluation\Evaluation.csproj" />
         <ProjectReference Include="..\Manipulation\Manipulation.csproj" />
         <ProjectReference Include="..\Signalization\Signalization.csproj" />
         <ProjectReference Include="..\Signals\Signals.csproj" />
