@@ -1,7 +1,6 @@
-using YggdrAshill.Nuadha.Manipulation;
 using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Evaluation
+namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
     /// <see cref="IOutgoingFlow{TSignal}"/> for <see cref="Pulse"/> of <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>.
@@ -9,7 +8,7 @@ namespace YggdrAshill.Nuadha.Evaluation
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to detect.
     /// </typeparam>
-    public sealed class OutgoingPulseFrom<TSignal> : IOutgoingFlow<TSignal>
+    public sealed class OutgoingToDetectPulseFrom<TSignal> : IOutgoingFlow<TSignal>
         where TSignal : ISignal
     {
         private readonly IDetection<TSignal> detection;
@@ -24,7 +23,7 @@ namespace YggdrAshill.Nuadha.Evaluation
         /// <param name="outgoingFlow">
         /// <see cref="IOutgoingFlow{TSignal}"/> for <see cref="Pulse"/>.
         /// </param>
-        public OutgoingPulseFrom(IDetection<TSignal> detection, IOutgoingFlow<Pulse> outgoingFlow)
+        public OutgoingToDetectPulseFrom(IDetection<TSignal> detection, IOutgoingFlow<Pulse> outgoingFlow)
         {
             this.detection = detection;
             this.outgoingFlow = outgoingFlow;

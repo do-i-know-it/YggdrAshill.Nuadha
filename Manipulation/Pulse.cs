@@ -1,7 +1,7 @@
 using System;
 using YggdrAshill.Nuadha.Signalization;
 
-namespace YggdrAshill.Nuadha.Evaluation
+namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
     /// Implementation of <see cref="ISignal"/> for pulse.
