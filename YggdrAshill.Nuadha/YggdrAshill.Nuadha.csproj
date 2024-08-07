@@ -10,7 +10,6 @@
         <ProjectReference Include="..\Evaluation\Evaluation.csproj" />
         <ProjectReference Include="..\Manipulation\Manipulation.csproj" />
         <ProjectReference Include="..\Signalization\Signalization.csproj" />
-        <ProjectReference Include="..\Unitization\Unitization.csproj" />
     </ItemGroup>
 
 </Project>

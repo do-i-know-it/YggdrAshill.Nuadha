@@ -1,20 +1,20 @@
 using YggdrAshill.Nuadha;
 using YggdrAshill.Nuadha.Samples;
 
-var module = new SampleModule();
-using var disposableHardware = module.Hardware.Input.Import(signal =>
+var flow = new Flow<Note>();
+
+using var disposable = flow.Convert(signal =>
 {
     var content = signal.Content;
-    Console.WriteLine($"Received {content} from device.");
-    module.Hardware.Output.Export(new Note()
+    return new Note()
     {
         Content = string.Join("", content.Reverse())
-    });
-});
-using var disposableSoftware = module.Software.Output.Import(signal =>
+    };
+}).Import(signal =>
 {
-    Console.WriteLine($"Received {signal.Content} from system.");
+    Console.WriteLine($"Received: {signal.Content}.");
 });
+
 while (true)
 {
     Console.WriteLine("Please enter any keys to send signal.");
@@ -31,7 +31,8 @@ while (true)
         Console.WriteLine("quit.");
         return;
     }
-    module.Software.Input.Export(new Note()
+    Console.WriteLine($"Sent: {input}.");
+    flow.Export(new Note()
     {
         Content = input
     });
