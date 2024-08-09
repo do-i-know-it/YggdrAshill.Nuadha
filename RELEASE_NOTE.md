@@ -1,5 +1,10 @@
-# Release notes for version 2.0.0
+# Release notes for version 0.16.0
 
-- Added definitions for Conduction.
-- Removed unnecessary definitions.
-- Modified all definitions.
+- Redeined Signalization.
+- Redifned Transformation as Manipulation.
+- Added definitions for Evaluation.
+- Modified implementations for this framework.
+- Removed Unitization.
+- Removed Signals.
+- Removed Units.
+- Upgrade .netstandard to 2.1.
