@@ -4,12 +4,12 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
-    /// <see cref="IIncomingFlow{TSignal}"/> for <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>
+    /// <see cref="IIncomingFlow{TSignal}"/> for <see cref="Pulse"/> of <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>.
     /// </summary>
     /// <typeparam name="TSignal">
-    /// Type of <see cref="ISignal"/> to detect.
+    /// Type of <see cref="ISignal"/> to detect <see cref="Pulse"/>.
     /// </typeparam>
-    public sealed class IncomingToDetect<TSignal> : IIncomingFlow<TSignal>
+    public sealed class IncomingToDetect<TSignal> : IIncomingFlow<Pulse>
         where TSignal : ISignal
     {
         private readonly IIncomingFlow<TSignal> incomingFlow;
@@ -34,12 +34,12 @@ namespace YggdrAshill.Nuadha.Manipulation
         /// Imports <paramref name="outgoingFlow"/> to detect.
         /// </summary>
         /// <param name="outgoingFlow">
-        /// <see cref="IOutgoingFlow{TSignal}"/> for detected <typeparamref name="TSignal"/>.
+        /// <see cref="IOutgoingFlow{TSignal}"/> for <see cref="Pulse"/> of <typeparamref name="TSignal"/>.
         /// </param>
         /// <returns>
         /// <see cref="IDisposable"/> to cancel sending.
         /// </returns>
-        public IDisposable Import(IOutgoingFlow<TSignal> outgoingFlow)
+        public IDisposable Import(IOutgoingFlow<Pulse> outgoingFlow)
         {
             var flow = new OutgoingToDetect<TSignal>(detection, outgoingFlow);
             return incomingFlow.Import(flow);

@@ -3,7 +3,7 @@ using YggdrAshill.Nuadha.Signalization;
 namespace YggdrAshill.Nuadha.Manipulation
 {
     /// <summary>
-    /// <see cref="IOutgoingFlow{TSignal}"/> for <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>.
+    /// <see cref="IOutgoingFlow{TSignal}"/> for <see cref="Pulse"/> of <typeparamref name="TSignal"/> detected by <see cref="IDetection{TSignal}"/>.
     /// </summary>
     /// <typeparam name="TSignal">
     /// Type of <see cref="ISignal"/> to detect.
@@ -12,7 +12,7 @@ namespace YggdrAshill.Nuadha.Manipulation
         where TSignal : ISignal
     {
         private readonly IDetection<TSignal> detection;
-        private readonly IOutgoingFlow<TSignal> outgoingFlow;
+        private readonly IOutgoingFlow<Pulse> outgoingFlow;
 
         /// <summary>
         /// Constructor.
@@ -21,16 +21,16 @@ namespace YggdrAshill.Nuadha.Manipulation
         /// <see cref="IDetection{TSignal}"/> to detect <typeparamref name="TSignal"/>.
         /// </param>
         /// <param name="outgoingFlow">
-        /// <see cref="IOutgoingFlow{TSignal}"/> for <typeparamref name="TSignal"/>.
+        /// <see cref="IOutgoingFlow{TSignal}"/> for <see cref="Pulse"/>.
         /// </param>
-        public OutgoingToDetect(IDetection<TSignal> detection, IOutgoingFlow<TSignal> outgoingFlow)
+        public OutgoingToDetect(IDetection<TSignal> detection, IOutgoingFlow<Pulse> outgoingFlow)
         {
             this.detection = detection;
             this.outgoingFlow = outgoingFlow;
         }
 
         /// <summary>
-        /// Exports <paramref name="signal"/> to detect.
+        /// Exports <paramref name="signal"/> to detect <see cref="Pulse"/>.
         /// </summary>
         /// <param name="signal">
         /// <typeparamref name="TSignal"/> to detect.
@@ -42,7 +42,7 @@ namespace YggdrAshill.Nuadha.Manipulation
                 return;
             }
 
-            outgoingFlow.Export(signal);
+            outgoingFlow.Export(Pulse.Default);
         }
     }
 }

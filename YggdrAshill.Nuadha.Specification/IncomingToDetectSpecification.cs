@@ -3,8 +3,8 @@ using YggdrAshill.Nuadha.Manipulation;
 
 namespace YggdrAshill.Nuadha.Specification
 {
-    [TestFixture(TestOf = typeof(IncomingToDetectPulseFrom<>))]
-    internal class IncomingToDetectPulseFromSpecification
+    [TestFixture(TestOf = typeof(IncomingToDetect<>))]
+    internal class IncomingToDetectSpecification
     {
         [TestCase(true)]
         [TestCase(false)]
@@ -14,7 +14,7 @@ namespace YggdrAshill.Nuadha.Specification
             var outgoingPulse = new OutgoingPulse(() => detected = true);
             var detection = new Detection<Signal>(_ => expected);
             var flow = new Flow<Signal>();
-            var incomingSignal = new IncomingToDetectPulseFrom<Signal>(flow, detection);
+            var incomingSignal = new IncomingToDetect<Signal>(flow, detection);
 
             using var disposable = incomingSignal.Import(outgoingPulse);
 

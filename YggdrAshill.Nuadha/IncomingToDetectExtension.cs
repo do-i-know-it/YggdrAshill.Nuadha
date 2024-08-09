@@ -27,7 +27,7 @@ namespace YggdrAshill.Nuadha
         public static IIncomingFlow<Pulse> Detect<TSignal>(this IIncomingFlow<TSignal> incomingFlow, IDetection<TSignal> detection)
             where TSignal : ISignal
         {
-            return new IncomingToDetectPulseFrom<TSignal>(incomingFlow, detection);
+            return new IncomingToDetect<TSignal>(incomingFlow, detection);
         }
 
         /// <summary>
