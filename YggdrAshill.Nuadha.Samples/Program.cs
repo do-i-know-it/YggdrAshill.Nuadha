@@ -1,47 +1,24 @@
-using YggdrAshill.Nuadha.Signals;
-using System;
-using System.Linq;
+using YggdrAshill.Nuadha;
+using YggdrAshill.Nuadha.Samples;
 
-namespace YggdrAshill.Nuadha.Samples
+var device = new ConsoleDevice();
+
+using var disposable = device.Keyboard.Convert(signal =>
 {
-    internal sealed class Program
+    var content = signal.Content;
+    if (string.IsNullOrWhiteSpace(content))
     {
-        private static void Main(string[] arguments)
+        return new Response()
         {
-            var module = new SampleModule();
-
-            using (module.Hardware.Input.Send(signal =>
-            {
-                Console.WriteLine($"Received {signal} from device.");
-
-                var output = string.Join("", signal.Reverse());
-
-                module.Hardware.Output.Consume((Note)output);
-            }).ToDisposable())
-            using (module.Software.Output.Send(signal =>
-            {
-                Console.WriteLine($"Received {signal} from system.");
-            }).ToDisposable())
-            {
-                while (true)
-                {
-                    Console.WriteLine("Please enter any keys to send signal.");
-                    Console.WriteLine("If you quit this program, enter \"q\".");
-                    Console.Write("Key: ");
-
-                    var input = Console.ReadLine();
-
-                    if (input == "q")
-                    {
-                        Console.WriteLine("quit.");
-                        return;
-                    }
-
-                    module.Software.Input.Consume((Note)input);
-
-                    Console.WriteLine();
-                }
-            }
-        }
+            Result = Response.ResultType.HowToUse,
+            Content = string.Empty,
+        };
     }
-}
+    return new Response()
+    {
+        Result = Response.ResultType.Success,
+        Content = string.Join("", content.Reverse()),
+    };
+}).Import(device.Display);
+
+device.Run();
