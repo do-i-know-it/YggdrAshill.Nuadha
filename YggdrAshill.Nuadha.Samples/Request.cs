@@ -2,7 +2,7 @@
 
 namespace YggdrAshill.Nuadha.Samples;
 
-internal sealed class Note : ISignal
+internal sealed class Request : ISignal
 {
     public string Content { get; set; }
 }
