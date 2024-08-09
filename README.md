@@ -24,7 +24,7 @@ This framework is able to isolate definitions from implementations for specific 
 
 ## Dependencies
 
-This framework depends on [.NET Standard](https://docs.microsoft.com/ja-jp/dotnet/standard/net-standard) 2.0.
+This framework depends on [.NET Standard](https://docs.microsoft.com/ja-jp/dotnet/standard/net-standard) 2.1.
 
 ## Installation
 
@@ -42,22 +42,7 @@ Please see [sample applications](https://github.com/do-i-know-it/YggdrAshill.Nua
 
 ## Architecture
 
-This framework consists of core modules below.
-
-- [Signalization](./Documentation/Signalization.md)
-- [Unitization](./Documentation/Unitization.md)
-- [Transformation](./Documentation/Transformation.md)
-- [Conduction](./Documentation/Conduction.md)
-
-This framework also includes sub modules below.
-
-- [Signals](./Documentation/Signals.md)
-- [Units](./Documentation/Units.md)
-- [Nuadha](./Documentation/Nuadha.md)
-
-[Nuadha](./Documentation/Nuadha.md) module is an entry point of this framework.
-
-![Image not found.](./Documentation/Resources/FrameworkArchitecture.jpg "Architecture of this framework.")
+Now writing...
 
 ## Known issues
 
@@ -68,16 +53,18 @@ Please see [issues](https://github.com/do-i-know-it/YggdrAshill.Nuadha/issues).
 Please see [GitHub Project for road map](https://github.com/do-i-know-it/YggdrAshill.Nuadha/projects/1).
 
 - Adds definitions for Signals.
+  - ex) Touch
+  - ex) Push
+  - ex) Pull
+  - ex) Tilt
+  - ex) Battery
+  - ex) MemoryUsage
   - ex) Blink
   - ex) Pupil
   - ex) Vibration
-- Adds definitions for Units.
-  - ex) Tablet
-  - ex) Gamepad
-  - ex) Eye tracker
-  - ex) Face tracker
-  - ex) Hand pose tracker
-  - ex) Treadmill
+  - ex) Button
+  - ex) Trigger
+  - ex) Stick
 - Adds contributing guidelines.
 
 ## License
